@@ -1,0 +1,94 @@
+#include "IT2_Defines.h"
+#include "IT2_Types.h"
+#include "IT2_Vars.h"
+#include "IT2_Functions.h"
+
+uint8 FINDNEXTPLANET(uint8 ActSys, r_ShipHeader* ShipPtr)
+{
+    uint8   btx,CivVar,CivFlag;
+    r_PlanetHeader* MyPlanetHeader;
+    r_ShipHeader*   MyShipPtr;
+    r_ShipHeader*   OtherShipPtr;
+    uint8   k;
+    uint32  DistOld,DistNew,WPerc,WPercLow;
+
+    if (FINDMAQUESSHIP(ActSys-1,ShipPtr)) { return ActSys; }
+    MyShipPtr = ShipPtr;
+    CivVar = GETCIVVAR(MyShipPtr->Owner);
+    CivFlag = MyShipPtr->Owner & FLAG_CIV_MASK;
+    btx = 0;
+    DistOld = 10000;
+    for(k = 0; k < SystemHeader[ActSys-1].Planets; k++)
+    {
+        MyPlanetHeader = &(SystemHeader[ActSys-1].PlanetMemA[k]);
+        OtherShipPtr = MyPlanetHeader->FirstShip.NextShip;
+        while ((NULL != OtherShipPtr) && (0 == OtherShipPtr->Owner))
+        {
+            OtherShipPtr = OtherShipPtr->NextShip;
+        }
+        if (0 == MyPlanetHeader->Size) { MyPlanetHeader->Size = 1; }
+        WPerc    = (uint32)  (MyPlanetHeader->Water    / MyPlanetHeader->Size);
+        WPercLow = (uint32) ((MyPlanetHeader->Water-5) / MyPlanetHeader->Size);
+
+        if (
+           (((MyShipPtr->Ladung & MASK_SIEDLER )> 0) &&
+            ((MyPlanetHeader->Class == CLASS_DESERT)    ||
+             (MyPlanetHeader->Class == CLASS_HALFEARTH) ||
+             (MyPlanetHeader->Class == CLASS_EARTH)     ||
+             (MyPlanetHeader->Class == CLASS_ICE)       ||
+             (MyPlanetHeader->Class == CLASS_STONES)    ||
+             (MyPlanetHeader->Class == CLASS_WATER)
+            ) &&
+            (MyPlanetHeader->PFlags == 0) &&
+            (OtherShipPtr == NULL)
+           )
+
+         || ((MyShipPtr->Ladung == 0) &&
+             (MyShipPtr->Fracht == 0) &&
+             (WPercLow>56) &&
+             (MyPlanetHeader->Class != CLASS_STONES) &&
+             (MyPlanetHeader->Class != CLASS_GAS) &&
+             (MyPlanetHeader->Class != CLASS_SATURN) &&
+             (MyPlanetHeader->Class != CLASS_PHANTOM) &&
+             (((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == CivFlag) ||
+              ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0) ||
+              (Save.WarState[CivVar-1][GETCIVVAR(MyPlanetHeader->PFlags)-1] == LEVEL_WAR)
+             )
+            )
+
+         || ((MyShipPtr->Fracht>0) &&
+             (WPerc<55) &&
+             (MyPlanetHeader->Class!=CLASS_STONES) &&
+             (MyPlanetHeader->Class!=CLASS_GAS) &&
+             (MyPlanetHeader->Class!=CLASS_SATURN) &&
+             (MyPlanetHeader->Class!=CLASS_PHANTOM) &&
+             ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == CivFlag)
+            )
+           )
+        {
+            DistNew = it_round(abs(MyPlanetHeader->PosX - MyShipPtr->PosX));
+            if (it_round(abs(MyPlanetHeader->PosY - MyShipPtr->PosY)) > DistNew)
+            {
+                DistNew = it_round(abs(MyPlanetHeader->PosY - MyShipPtr->PosY));
+            }
+            if (DistNew < DistOld)
+            {
+                DistOld = DistNew;
+                if (btx == 0) { btx = k+1; }
+                MyShipPtr->Target = k+1;
+                MyShipPtr->Source = 0;
+                MyShipPtr->TargetShip = NULL;
+            }
+        }
+    }
+    if (btx <= 0)
+    {
+        SystemHeader[ActSys-1].State |= STATE_ALL_OCC;
+        return GOTONEXTSYSTEM(ActSys, MyShipPtr);
+    } else {
+        SystemHeader[ActSys-1].State &= (~STATE_ALL_OCC);
+    }
+    return ActSys;
+}
+
+
