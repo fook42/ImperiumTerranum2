@@ -1,0 +1,160 @@
+#ifndef _IT2_TYPES_H_
+#define _IT2_TYPES_H_
+
+#include <proto/intuition.h>
+#include <proto/graphics.h>
+#include <proto/diskfont.h>
+#include <proto/dos.h>
+#include <proto/exec.h>
+#include <proto/medplayer.h>
+
+#include <math.h>
+#include <hardware/custom.h>
+#include <hardware/cia.h>
+#include <graphics/gfxmacros.h>
+#include <utility/tagitem.h>
+#include <sys/time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+#include "IT2_Defines.h"
+
+typedef unsigned char   uint8;
+typedef unsigned short  uint16;
+typedef unsigned long   uint32;
+typedef signed char     sint8;
+typedef signed short    sint16;
+typedef signed long     sint32;
+
+typedef struct TagArr { struct TagItem data[7]; } TagArr;
+
+typedef struct PenArr { uint16      data[13]; } PenArr;
+
+typedef struct ColSpecArr { sint16  data[5]; } ColSpecArr;
+
+typedef struct StrArr           { char  data[MAXSYSTEMS][12];   } StrArr;
+typedef struct StrArr11         { char  data[12][15];           } StrArr11;
+typedef struct StrArr16         { char  data[17][60];           } StrArr16;
+typedef struct StrArr42         { char  data[43][30];           } StrArr42;
+typedef struct StrArrMAXPLANETS { char  data[MAXPLANETS+1][6];  } StrArrMAXPLANETS;
+
+typedef struct ByteArr22 { uint8    data[23]; } ByteArr22; // range 1..22
+typedef struct ByteArr42 { uint8    data[43]; } ByteArr42; // range 0..42
+
+typedef struct LongArr42 { sint32   data[43]; } LongArr42;
+
+typedef struct WordArr32 { uint16   data[35]; } WordArr32;
+
+typedef struct r_Coords { double    data[41]; } r_Coords;
+
+typedef struct PlaneArr { PLANEPTR  data[8]; } PlaneArr;
+
+typedef struct FontArr16 { uint8    data[17]; } FontArr16;
+
+typedef struct ITBitMap {
+    uint16          BytesPerRow, Rows;
+    uint8           Flags, Depth;
+    uint16          pad;
+    PLANEPTR        PPtr[8];
+    APTR            MemA;
+    uint32          MemL;
+} ITBitMap;
+
+typedef struct r_ShipData {
+    uint8           MaxLoad, MaxShield, MaxMove, WeaponPower;
+} r_ShipData;
+
+typedef struct r_ShipHeader {
+    uint8           Age, SType, Owner, Flags, ShieldBonus, Ladung, Fracht;
+    sint8           PosX, PosY;
+    uint8           Shield, Weapon, Repair;
+    sint8           Moving, Source, Target, Tactical;
+    struct r_ShipHeader*    TargetShip;
+    struct r_ShipHeader*    BeforeShip;
+    struct r_ShipHeader*    NextShip;
+} r_ShipHeader;
+
+typedef struct r_PlanetHeader {
+    uint8           Class, Size, PFlags, Ethno;
+    char            PName[16];
+    float           PosX, PosY;
+    uint32          Population, Water;
+    uint8           Biosphaere, Infrastruktur, Industrie;
+    sint32          XProjectCosts, XProjectPayed;
+    sint8           ProjectID;
+    r_ShipHeader    FirstShip;
+    struct ByteArr42*       ProjectPtr;
+} r_PlanetHeader;
+
+typedef struct r_SystemHeader {
+    r_PlanetHeader* PlanetMemA;
+    uint8           State;
+    r_ShipHeader    FirstShip;
+    uint8           Planets, vNS, SysOwner;
+} r_SystemHeader;
+
+typedef struct r_HiScore {
+    char    Player[8][HISCORE_NAMELEN];
+    uint8   CivVar[8];
+    uint32  Points[8];
+} r_HiScore;
+
+typedef struct r_WormHole {
+    uint8   System[2];
+    sint8   PosX[2], PosY[2];
+    uint8   CivKnowledge[MAXCIVS+1];    // added 1 byte to fill up 16 bytes (=compatible with original IT2)
+} r_WormHole;
+
+
+typedef struct r_Col {
+    uint8   r, g, b;
+} r_Col;
+
+typedef struct r_Save {
+    uint8       WarState[MAXCIVS][MAXCIVS];
+    uint8       LastWarState[MAXCIVS][MAXCIVS];
+    sint32      Staatstopf[MAXCIVS];
+    uint32      Bevoelkerung[MAXCIVS];
+    uint32      WarPower[MAXCIVS];
+    uint32      MaxWarPower[MAXCIVS];
+    uint32      ImperatorState[MAXCIVS];
+    uint32      SSMoney[MAXCIVS][MAXCIVS];
+    LongArr42   TechCosts[MAXCIVS];
+    LongArr42   ProjectCosts[MAXCIVS];
+    sint8       ActTech[MAXCIVS+1];
+    uint8       GlobalFlags[MAXCIVS+1];
+    sint8       GSteuer[MAXCIVS+1];
+    uint8       JSteuer[MAXCIVS+1];
+    uint8       stProject[MAXCIVS+1];
+    uint8       SService[MAXCIVS+1];
+    uint8       Military[MAXCIVS+1];
+    bool        PlayMySelf, SmallFight, SmallLand, FastMove, NoWorm;
+    uint8       WorldFlag, Systems, CivilWar;
+    StrArr      SystemName;
+    uint8       CivPlayer[MAXCIVS];
+} r_Save;
+/*
+ * originaler Code..+ Array-Grenzen
+type r_Save=record
+       WarState,LastWarState                            :array [1..MAXCIVS,1..MAXCIVS] of byte;
+       Staatstopf,Bevölkerung,WarPower,MaxWarPower,
+       ImperatorState                                   :array [1..MAXCIVS] of long;
+       SSMoney                                          :array [1..MAXCIVS,1..MAXCIVS] of long;
+       TechCosts,ProjectCosts                           :array [1..MAXCIVS] of LongArr42;
+       ActTech,GlobalFlags,GSteuer,JSteuer              :array [1..MAXCIVS] of byte;
+       stProject,SService,Military                      :array [1..MAXCIVS] of byte;
+       PlayMySelf,SmallFight,SmallLand,FastMove,NoWorm  :boolean;
+       WorldFlag,SYSTEMS,CivilWar                       :byte
+       SystemName                                       :StrArr;
+       CivPlayer                                        :array [1..MAXCIVS] of byte;
+end;
+*/
+typedef struct VectorObj {
+    sint16  PosX, PosY;
+    uint8   Flag, Size1, Size2;
+    double  X1[6],Y1[6],Z1[6],X2[6],Y2[6],Z2[6];
+} VectorObj;
+
+#endif
