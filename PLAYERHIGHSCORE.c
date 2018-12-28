@@ -10,10 +10,10 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
     uint8   i;
     uint32  ex_Points;
     uint8   ex_CivVar;
-    
+
     strcpy(s, PathStr[4]);
     strcat(s, "HiScore.dat");
-    
+
     FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     if (0 == FHandle)
     {

@@ -8,7 +8,7 @@ void CLOSEMYSCREENS()
     uint8   i;
     ScreenToFront(XScreen);
     SWITCHDISPLAY();
-    for (i = 0; i<=1; i++)
+    for (i = 0; i < 2; i++)
     {
         if (NULL != MyScreen[i])
         {
@@ -18,8 +18,8 @@ void CLOSEMYSCREENS()
             }
             CloseScreen(MyScreen[i]);
             MyScreen[i] = NULL;
-			MyRPort_PTR[i] = NULL;
-			MyVPort_PTR[i] = NULL;			
+            MyRPort_PTR[i] = NULL;
+            MyVPort_PTR[i] = NULL;
         }
     }
 }

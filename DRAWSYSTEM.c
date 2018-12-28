@@ -29,11 +29,11 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
             WRITEWIN(576,474,8,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[0],4,_PT_Rundenende);
         }
         // Display = ActSys;
-		SetAPen(MyRPort_PTR[0], 0);
-    	RectFill(MyRPort_PTR[0], 522, 9, 629, 116);	// clear little map
-    	RectFill(MyRPort_PTR[0], 0, 0, 511, 511);	// clear main display
-		SetAPen(MyRPort_PTR[0], 10);
-        RectFill(MyRPort_PTR[0], 575, 62, 577, 63);	// draw sun-spot inside little map
+        SetAPen(MyRPort_PTR[0], 0);
+        RectFill(MyRPort_PTR[0], 522, 9, 629, 116); // clear little map
+        RectFill(MyRPort_PTR[0], 0, 0, 511, 511);   // clear main display
+        SetAPen(MyRPort_PTR[0], 10);
+        RectFill(MyRPort_PTR[0], 575, 62, 577, 63); // draw sun-spot inside little map
     }
     Display = ActSys;
     SetAPen(MyRPort_PTR[0],109);
@@ -91,9 +91,9 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     }
 
     SetAPen(MyRPort_PTR[0],12);
-    for (j = 0; j < MAXHOLES; j++)
+    for (j = 0; j < MAXHOLES; ++j)
     {
-        for (i = 0; i < 2; i++)
+        for (i = 0; i < 2; ++i)
         {
             if (MyWormHole[j].System[i] == ActSys)
             {
@@ -124,7 +124,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
         }
     }
     ActSys--; // to shift the arrays
-    for (i = 0; i < SystemHeader[ActSys].Planets; i++)
+    for (i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
         PlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
         if (NULL != PlanetHeader)
@@ -220,10 +220,10 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
                 WritePixel(MyRPort_PTR[0],575+MyShipPtr->PosX,62+MyShipPtr->PosY);
                 if ((x>=0) && (x<=480) && (y>=0) && (y<=480) && (TARGET_STARGATE != MyShipPtr->SType))
                 {
-                    BOX(MyScreen[0],x,y,x+31,y+31);
+                    BOXWIN(MyRPort_PTR[0],x,y,x+31,y+31);
                     if (SHIPTYPE_FLEET == MyShipPtr->SType)
                     {
-                        BOX(MyScreen[0],x+2,y+2,x+29,y+29);
+                        BOXWIN(MyRPort_PTR[0],x+2,y+2,x+29,y+29);
                     }
                     if (SHIPFLAG_WATER == MyShipPtr->Flags)
                     {

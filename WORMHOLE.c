@@ -28,7 +28,7 @@ void WORMHOLE_LOADSOUND(char* FName, uint8 SID)
             WHSoundMemL[SID] += STEPS*3;
         }
         WHSoundMemA[SID] = AllocMem(WHSoundMemL[SID]<<1, MEMF_CHIP+MEMF_CLEAR);
-        if (0 != WHSoundMemA[SID])
+        if (NULL != WHSoundMemA[SID])
         {
             (void) Read(FHandle, WHSoundMemA[SID], WHSoundMemL[SID]<<1);
         }
@@ -96,7 +96,7 @@ void TRAVEL()
     XOff = 0;
     YOff = 0;
     Clear = 0;
-    for(j = 1; j <= 4; j++)
+    for(j = 1; j <= 4; ++j)
     {
         X[j+1] = X[j];
         Y[j+1] = Y[j];
@@ -108,7 +108,7 @@ void TRAVEL()
     DHoriz = 0;
     Joy = (uint16*) 0xDFF00C;
 
-    for(i = 1; i <= STEPS; i++)
+    for(i = 1; i <= STEPS; ++i)
     {
         if ((STEPS-55) > i)
         {
@@ -189,7 +189,7 @@ void TRAVEL()
         if (YOff >  122) { YOff =  122; }
         if (YOff < -122) { YOff = -122; }
 
-        for(j = 1; j <= 5; j++)
+        for(j = 1; j <= 5; ++j)
         {
             if (X[j]<154)
             {
@@ -222,14 +222,14 @@ void TRAVEL()
             S[1] = 10;
         }
 
-        BltBitMapRastPort((struct BitMap*) &ImgBitMapW4,170-XOff,128-YOff,&(MyScreen[AScr]->RastPort),0,0,310,256,192);
-        SetAPen(&(MyScreen[AScr]->RastPort),6);
-        for(j = 1; j <= 5; j++)
+        BltBitMapRastPort((struct BitMap*) &ImgBitMapW4,170-XOff,128-YOff, MyRPort_PTR[AScr],0,0,310,256,192);
+        SetAPen(MyRPort_PTR[AScr],6);
+        for(j = 1; j <= 5; ++j)
         {
             if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255)
               &&((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
             {
-                BOX(MyScreen[AScr], X[j]-S[j], Y[j]-S[j], X[j]+S[j], Y[j]+S[j]);
+                BOXWIN(MyRPort_PTR[AScr], X[j]-S[j], Y[j]-S[j], X[j]+S[j], Y[j]+S[j]);
             }
         }
         if ((X[5]<120) || (X[5]>200) || (Y[5]<90) || (Y[5]>165))
@@ -256,7 +256,7 @@ void TRAVEL()
             RectCol = 15;
             if ((WORMHOLE_ShipShield >= 13) && (WORMHOLE_ShipShield <= 762))
             {
-                RECT(MyScreen[AScr],0,312,1,318,it_round(258.0-WORMHOLE_ShipShield/3.0));
+                RECTWIN(MyRPort_PTR[AScr],0,312,1,318,it_round(258.0-WORMHOLE_ShipShield/3.0));
             }
             if (WORMHOLE_ShipShield < 0)
             {
@@ -264,13 +264,13 @@ void TRAVEL()
                 {
                     custom.dmacon = BITCLR | DMAF_AUDIO;
                 }
-				random_wert = (rand()%5)+5;
-                for(j = 0; j < random_wert; j++)
+                random_wert = (rand()%5)+5;
+                for(j = 0; j < random_wert; ++j)
                 {
                     PLAYSOUND(2,1100);
-                    SetRGB4(&(MyScreen[1-AScr]->ViewPort),0,8,8,15);
+                    SetRGB4(MyVPort_PTR[1-AScr],0,8,8,15);
                     delay(3);
-                    SetRGB4(&(MyScreen[1-AScr]->ViewPort),0,0,0,3);
+                    SetRGB4(MyVPort_PTR[1-AScr],0,0,0,3);
                     delay(3);
                 }
                 return;
@@ -279,45 +279,45 @@ void TRAVEL()
             RectCol = 9;
         }
 
-        SetAPen(&(MyScreen[AScr]->RastPort),5);
-        Move(&(MyScreen[AScr]->RastPort),XOff+150,YOff+128);
-        for(j = 1; j <= 5; j++)
+        SetAPen(MyRPort_PTR[AScr], 5);
+        Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
+        for(j = 1; j <= 5; ++j)
         {
             if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255))
             {
-                Draw(&(MyScreen[AScr]->RastPort),X[j]-S[j],Y[j]-S[j]);
+                Draw(MyRPort_PTR[AScr], X[j]-S[j], Y[j]-S[j]);
             }
         }
 
-        Move(&(MyScreen[AScr]->RastPort),XOff+150,YOff+128);
-        for(j = 1; j <= 5; j++)
+        Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
+        for(j = 1; j <= 5; ++j)
         {
             if (((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255))
             {
-                Draw(&(MyScreen[AScr]->RastPort),X[j]+S[j],Y[j]-S[j]);
+                Draw(MyRPort_PTR[AScr], X[j]+S[j], Y[j]-S[j]);
             }
         }
 
-        Move(&(MyScreen[AScr]->RastPort),XOff+150,YOff+128);
-        for(j = 1; j <= 5; j++)
+        Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
+        for(j = 1; j <= 5; ++j)
         {
             if (((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
             {
-                Draw(&(MyScreen[AScr]->RastPort),X[j]+S[j],Y[j]+S[j]);
+                Draw(MyRPort_PTR[AScr], X[j]+S[j], Y[j]+S[j]);
             }
         }
 
-        Move(&(MyScreen[AScr]->RastPort),XOff+150,YOff+128);
-        for(j = 1; j <= 5; j++)
+        Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
+        for(j = 1; j <= 5; ++j)
         {
             if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
             {
-                Draw(&(MyScreen[AScr]->RastPort),X[j]-S[j],Y[j]+S[j]);
+                Draw(MyRPort_PTR[AScr], X[j]-S[j], Y[j]+S[j]);
             }
         }
 
-        SetAPen(&(MyScreen[AScr]->RastPort),RectCol);
-        BOX(MyScreen[AScr],60,35,250,220);
+        SetAPen(MyRPort_PTR[AScr], RectCol);
+        BOXWIN(MyRPort_PTR[AScr],60,35,250,220);
 
         if (Audio_enable)
         {
@@ -330,7 +330,7 @@ void TRAVEL()
                 SPAddrA   = ZeroSound; SPLengthA = 1;
             }
             Clear += 4;
-            RECT(MyScreen[AScr],0,160-Clear,128-Clear,160+Clear,128+Clear);
+            RECTWIN(MyRPort_PTR[AScr],0,160-Clear,128-Clear,160+Clear,128+Clear);
         } else {
             if (Audio_enable)
             {
@@ -426,6 +426,8 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
         {
             return WORMEXIT(false, MyShipPtr, ActSys);
         }
+        MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
+        MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
     }
     if (!WORMHOLE_INITIMAGES())
     {

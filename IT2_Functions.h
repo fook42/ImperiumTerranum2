@@ -31,7 +31,7 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
 uint8 STARTBIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 ActSys);
 // <<<
 
-void BOX(struct Screen* XScreen, uint16 Left, uint16 Top, uint16 Right, uint16 Bottom);
+/// void BOX(struct Screen* XScreen, uint16 Left, uint16 Top, uint16 Right, uint16 Bottom);
 void CEBORCATTACK(uint8 CA_ActPlayerFlag);
 void CHECKPLANET(r_PlanetHeader* MyPlanetHeader);
 void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner);
@@ -245,6 +245,8 @@ void MAKEWINBORDER(struct RastPort* RPort, uint16 LEdge, uint16 TEdge, uint16 RE
 void WRITEWIN(const uint16 IPosX, const uint16 IPosY, const uint8 Color, const uint8 DMode, struct RastPort* RPort, const uint8 TA, const char* WText);
 void KLICKWINGAD(const struct RastPort* RPort, const uint16 x, const uint16 y);
 struct Window* MAKEWINDOW(uint16 LEdge, uint16 TEdge, uint16 SizeX, uint16 SizeY, struct Screen* onScreen);
+void BOXWIN(struct RastPort* RPort, uint16 Left, uint16 Top, uint16 Right, uint16 Bottom);
+
 
 
 #endif
