@@ -12,13 +12,14 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
     char            s[40];
     char*           _s1 = NULL;
     char*           _s2 = NULL;
-    uint8           i,k;
+    uint8           i;
     APTR            ModC = NULL;
     uint32          ModL;
-    //    uint32          l;  // ... todo ... not used?
     bool            PlanetLose, b;
-    struct Window* CPA_Window;
+    struct Window*  CPA_Window;
+    struct Window*  CPA2_Window;
     struct RastPort* RPort_PTR;
+    struct RastPort* RPort2_PTR;
 
     PlanetLose = false;
     MyPlanetHeader = PPtr;
@@ -123,7 +124,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                     && (GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1] == 0))
             {
                 if ((Warnung[ActPlayer] != 0) && ((rand()%10) != 0)) { return; }
-                GetPlanet[GETCIVVAR(MyPlanetHeader->Ethno)-1] = MyPlanetHeader;
+                GetPlanet[   GETCIVVAR(MyPlanetHeader->Ethno)-1] = MyPlanetHeader;
                 GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1] = ActSys;
                 CopyMem(MyPlanetHeader, &OldPlanet, sizeof(r_PlanetHeader));
                 if (Save.CivPlayer[ActPlayer-1] != 0) { TheProject = -1; }
@@ -206,27 +207,36 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         if ((Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1] != 0)
                 && (ActPlayer == GETCIVVAR(MyPlanetHeader->PFlags)))
         {
-            MAKEBORDER(MyScreen[0],85,208,425,248,12,6,0);
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7, MyPlanetHeader->Class*32,0,&(MyScreen[0]->RastPort),95,212,32,32,192);
-            for(k = 1; k <= 2; k++) { DrawImage(&(MyScreen[0]->RastPort),&GadImg1,k*140,218); }
-            WRITE(198,220,0,WRITE_Center,MyScreen[0],4,_PT_Planet);
-            WRITE(338,220,0,WRITE_Center,MyScreen[0],4,_PT_weiter);
+            CPA2_Window=MAKEWINDOW(85,208,341,41,MyScreen[0]);
+            if (NULL == CPA2_Window)
+            {
+                return;
+            }
+            RPort2_PTR = CPA2_Window->RPort;
+
+            MAKEWINBORDER(RPort2_PTR,0,0,340,40,12,6,1);
+
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7, MyPlanetHeader->Class*32,0,RPort2_PTR,10,4,32,32,192);
+            DrawImage(RPort2_PTR,&GadImg1, 55,10);
+            DrawImage(RPort2_PTR,&GadImg1,195,10);
+            WRITEWIN(113,12,0,WRITE_Center,RPort2_PTR,4,_PT_Planet);
+            WRITEWIN(253,12,0,WRITE_Center,RPort2_PTR,4,_PT_weiter);
             b = false;
             if (!Save.PlayMySelf)
             {
                 do
                 {
                     delay(RDELAY);
-                    if (LMB_PRESSED && (MouseY(0)>=218) && (MouseY(0)<=238))
+                    if (LMB_PRESSED && (CPA2_Window->MouseY >= 10) && (CPA2_Window->MouseY <= 30))
                     {
-                        if ((MouseX(0)>=140) && (MouseX(0)<=256))
+                        if ((CPA2_Window->MouseX>=55) && (CPA2_Window->MouseX<=171))
                         {
-                            KLICKGAD(140,218);
+                            KLICKWINGAD(RPort2_PTR, 55,10);
                             b = true;
                             HANDLEKNOWNPLANET(ActSys,0,MyPlanetHeader);
-                        } else if ((MouseX(0)>=280) && (MouseX(0)<=396))
+                        } else if ((CPA2_Window->MouseX >= 195) && (CPA2_Window->MouseX <= 311))
                         {
-                            KLICKGAD(280,218);
+                            KLICKWINGAD(RPort2_PTR,195,10);
                             b = true;
                         }
                     }
@@ -234,7 +244,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 while(!b);
             }
             if (Save.PlayMySelf) { delay(PAUSE); }
-            RECT(MyScreen[0],0,85,208,425,248);
+            CloseWindow(CPA2_Window);
         } else {
             if (Save.PlayMySelf) { delay(PAUSE); }
             WAITLOOP(Save.PlayMySelf);

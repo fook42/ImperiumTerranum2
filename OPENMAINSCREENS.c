@@ -33,8 +33,8 @@ bool OPENMAINSCREENS()
         {
             return false;
         }
-		MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
-		MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
+        MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
+        MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
     }
     return true;
 }

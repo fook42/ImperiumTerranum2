@@ -11,7 +11,6 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     char*   _s;
 
     RECTWIN(MyRPort_PTR[1],0,56,426,327,448);
-    RECTWIN(MyRPort_PTR[1],0,56,399,256,418);
     l = 0;
     s[0]=0;
     if (0 != MyPlanetHeader->ProjectID)
@@ -39,19 +38,20 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
         WRITEWIN(191,430,2,(1|WRITE_Center),MyRPort_PTR[1],4, _s);
     }
 
+    RECTWIN(MyRPort_PTR[1],0,56,399,256,418);
     if (l > 100) { l = 100; }
     if (l < 0)   { l = 0; }
     (void) dez2out(l, 3, s);
     WRITEWIN(278,402,4,1,MyRPort_PTR[1],2,s);
-    RECTWIN(MyRPort_PTR[1],4,56,399,56+(l<<1),418);
+    RECTWIN(MyRPort_PTR[1],4,56,399,56+(l*2),418);
 
-    RECTWIN(MyRPort_PTR[1],0,56,307,178,330);
     y = 0;   /* Kreativität */
     if (ActPProjects->data[33]>0) { ++y; }
     if (ActPProjects->data[35]>0) { ++y; }
     if (ActPProjects->data[36]>0) { ++y; }
     if (ActPProjects->data[38]>0) { ++y; }
     if (ActPProjects->data[42]>0) { ++y; }
+    RECTWIN(MyRPort_PTR[1],0,56,307,178,330);
     if (y > 0)
     {
         for(i = 0; i < y; ++i)
@@ -61,13 +61,13 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
         }
     }
 
-    RECTWIN(MyRPort_PTR[1],0,56,354,178,376);
     y = 0;   /*Produktivität*/
     if (ActPProjects->data[31]>0) { ++y; }
     if (ActPProjects->data[37]>0) { ++y; }
     if (ActPProjects->data[38]>0) { ++y; }
     if (ActPProjects->data[41]>0) { ++y; }
     if (ActPProjects->data[42]>0) { ++y; }
+    RECTWIN(MyRPort_PTR[1],0,56,354,178,376);
     if (y > 0)
     {
         for(i = 0; i < y; ++i)
