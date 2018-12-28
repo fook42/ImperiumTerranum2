@@ -20,18 +20,18 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     {
         if ((0 == Display) || (100 == Display))
         {
-            for (i = 1; i<=3; i++)
+            for (i = 0; i<3; ++i)
             {
-                DrawImage(MyRPort_PTR[0],&GadImg1,518,500-i*28);
+                DrawImage(MyRPort_PTR[0],&GadImg1,518,416+i*28);
             }
-            WRITEWIN(576,418,0,WRITE_Center,MyRPort_PTR[0],4,_PT_Suchen);
-            WRITEWIN(576,446,0,WRITE_Center,MyRPort_PTR[0],4,_PT_Sternenkarte);
+            WRITEWIN(576,418,0, WRITE_Center              ,MyRPort_PTR[0],4,_PT_Suchen);
+            WRITEWIN(576,446,0, WRITE_Center              ,MyRPort_PTR[0],4,_PT_Sternenkarte);
             WRITEWIN(576,474,8,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[0],4,_PT_Rundenende);
         }
         // Display = ActSys;
         SetAPen(MyRPort_PTR[0], 0);
-        RectFill(MyRPort_PTR[0], 522, 9, 629, 116); // clear little map
         RectFill(MyRPort_PTR[0], 0, 0, 511, 511);   // clear main display
+        RectFill(MyRPort_PTR[0], 522, 9, 629, 116); // clear little map
         SetAPen(MyRPort_PTR[0], 10);
         RectFill(MyRPort_PTR[0], 575, 62, 577, 63); // draw sun-spot inside little map
     }

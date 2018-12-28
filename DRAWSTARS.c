@@ -21,9 +21,9 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     if ((MODE_REDRAW   == Mode)
      || (MODE_STARGATE == Mode))
     {
-        for (i = 0; i<3; i++)
+        for (i = 0; i<3; ++i)
         {
-            DrawImage(MyRPort_PTR[0],&GadImg1,518,414+i*28);
+            DrawImage(MyRPort_PTR[0],&GadImg1,518,416+i*28);
         }
         WRITEWIN(576,418,0, WRITE_Center              ,MyRPort_PTR[0],4,_PT_Regierung);
         WRITEWIN(576,446,0, WRITE_Center              ,MyRPort_PTR[0],4,_PT_Hauptmenue);
