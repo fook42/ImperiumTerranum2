@@ -3,6 +3,9 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+#define PROJECTS_XSIZE  67
+#define PROJECTS_YSIZE  66
+
 void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 {
     sint32  l;
@@ -79,26 +82,26 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 
     // clear right project icon area
     RECTWIN(MyRPort_PTR[1],0,359,92,639,511);
-    x = 1;
+    x = 0;
     y = 0;
     for(i = 0; i < 7; ++i)
     {
+        // did we finished this project here?
         if (Save.ProjectCosts[ActPlayer-1].data[i+1] <= 0)
         {
-            // do we have this project finished here?
+            // was this project invented at this planet first?
             if (ActPProjects->data[i+1]>0)
             {
-                // was this project invented at this planet first?
-                RECTWIN(MyRPort_PTR[1],4,293+x*67,92+y*66,360+x*67,159+y*66);
+                RECTWIN(MyRPort_PTR[1],4,360+x,92+y,427+x,159+y);
             }
             // copy project icon bitmap to screen
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,i*64,0,MyRPort_PTR[1],295+x*67,94+y*66,64,64,192);
-            ++x;
-            if (x > 4)
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,i*64,0,MyRPort_PTR[1],362+x,94+y,64,64,192);
+            x += PROJECTS_XSIZE;
+            if (x > (PROJECTS_XSIZE*3))
             {
                 // next row
-                x = 1;
-                ++y;
+                x = 0;
+                y += PROJECTS_YSIZE;
             }
         }
     }
@@ -109,32 +112,32 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
         {
             if        ((i>=25) && (i<=27))
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-18)*64,  0,MyRPort_PTR[1],295+x*67,y*66+94,64,64,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-18)*64,  0,MyRPort_PTR[1],362+x,94+y,64,64,192);
             } else if ((i>=28) && (i<=37))
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-28)*64, 64,MyRPort_PTR[1],295+x*67,y*66+94,64,64,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-28)*64, 64,MyRPort_PTR[1],362+x,94+y,64,64,192);
             } else
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-38)*64,128,MyRPort_PTR[1],295+x*67,y*66+94,64,64,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-38)*64,128,MyRPort_PTR[1],362+x,94+y,64,64,192);
             }
             if ((26 == i) || (27 == i))
             {
                 /* settlers and landingtroops */
                 (void) dez2out(ActPProjects->data[i], 3, s);
-                WRITEWIN(309+x*67,y*66+141,4,0,MyRPort_PTR[1],2,s);
+                WRITEWIN(376+x,141+y,4,0,MyRPort_PTR[1],2,s);
             } else if ((34 == i) || (40 == i))
             {
                 /* vNeuMann and space-Phalanx */
                 (void) dez2out(ActPProjects->data[i], 3, s);
-                WRITEWIN(300+x*67,y*66+141,4,0,MyRPort_PTR[1],2,s);
+                WRITEWIN(367+x,141+y,4,0,MyRPort_PTR[1],2,s);
             }
-            ++x;
-            if (x > 4)
+            x += PROJECTS_XSIZE;
+            if (x > (3*PROJECTS_XSIZE))
             {
-                x = 1;
-                ++y;
+                x = 0;
+                y += PROJECTS_YSIZE;
             }
-            if (6 == y) { return; }
+            if ((6*PROJECTS_YSIZE) == y) { return; }
         }
     }
 }
@@ -152,6 +155,8 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     bool    DoIt, b;
     char    s[60];
     char*   _s;
+    struct Window*   HKP_Window;
+    struct RastPort* RPort_PTR;
 
     r_ShipHeader*   MyShipPtr;
     r_PlanetHeader* MyPlanetHeader;
@@ -162,9 +167,9 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
 
     INITSCREEN(SCREEN_PLANET);
     ActPProjects = MyPlanetHeader->ProjectPtr;
-    for(i = 1; i <= 3; i++)
+    for(i = 0; i < 3; ++i)
     {
-        RECTWIN(MyRPort_PTR[1],0,56,i*49+52,256,i*49+71);
+        RECTWIN(MyRPort_PTR[1],0,56,101+i*49,256,120+i*49);
     }
     RECTWIN(MyRPort_PTR[1],0,0,0,639,90);
 
@@ -236,7 +241,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     }
 
     // draw state of biosphere, infrastructure and industry
-    
+
     RECTWIN(MyRPort_PTR[1],4,56,101,56+MyPlanetHeader->Biosphaere,120);
     (void) dez2out((MyPlanetHeader->Biosphaere >> 1), 3, s);
     WRITEWIN(278,104,4,1,MyRPort_PTR[1],2,s);
@@ -375,10 +380,10 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         {
                             ProjectType[j] = 4;
                         }
-                        j++;
+                        ++j;
                     }
                 }
-                j--;
+                --j;
 //                Img = (struct Image) {0,0,384,407,7,IMemA[0],127,0,NULL};
                 RECTWIN(MyRPort_PTR[1],0,360,92,639,511);
                 WRITEWIN(365,474,4,1,MyRPort_PTR[1],4,PText[177]);
@@ -407,7 +412,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         if ((i != btx) && (i>=1) && (i<=j))
                         {
                             btx = i;
-                            for(i = 1; i <= j; i++)
+                            for(i = 1; i <= j; ++i)
                             {
                                 if (i != btx)
                                 {
@@ -417,7 +422,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                                 }
                             }
                         }
-                    
+
                         if (LMB_PRESSED)
                         {
                             PLAYSOUND(1,300);
@@ -445,30 +450,33 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     && (MyPlanetHeader->ProjectID>0))
             {
                 CLICKRECTWIN(MyRPort_PTR[1],197,455,328,481,2);
-                RECTWIN(MyRPort_PTR[1],0,360,92,639,511);
-                MAKEWINBORDER(MyRPort_PTR[1],362,350,635,487,2,32,0);
-                WRITEWIN(498,361,2,WRITE_Center,MyRPort_PTR[1],4,PText[178]);
+
+                HKP_Window=MAKEWINDOW(183,186,274,138,MyScreen[1]);
+                RPort_PTR = HKP_Window->RPort;
+                MAKEWINBORDER(RPort_PTR,0,0,273,137,2,32,1);
+
+                WRITEWIN(136, 11,2,WRITE_Center,RPort_PTR,4,PText[178]);
                 l = MyPlanetHeader->XProjectCosts-MyPlanetHeader->XProjectPayed;
                 if (l < 0) { l = 0; }
                 (void) dez2out(l, 0, s);
-                WRITEWIN(498,382,4,WRITE_Center,MyRPort_PTR[1],2,s);
-                WRITEWIN(498,403,2,WRITE_Center,MyRPort_PTR[1],4,PText[179]);
+                WRITEWIN(136, 32,4,WRITE_Center,RPort_PTR,2,s);
+                WRITEWIN(136, 53,2,WRITE_Center,RPort_PTR,4,PText[179]);
                 (void) dez2out(Save.Staatstopf[ActPlayer-1], 0, s);
-                WRITEWIN(498,424,4,WRITE_Center,MyRPort_PTR[1],2,s);
-                MAKEWINBORDER(MyRPort_PTR[1],372,450,493,475,2,32,0);
-                WRITEWIN(432,456,2,WRITE_Center,MyRPort_PTR[1],4,PText[159]);
-                MAKEWINBORDER(MyRPort_PTR[1],503,450,625,475,2,32,0);
-                WRITEWIN(564,456,2,WRITE_Center,MyRPort_PTR[1],4,"Abbruch");
+                WRITEWIN(136, 74,4,WRITE_Center,RPort_PTR,2,s);
+                MAKEWINBORDER(RPort_PTR, 10,100,131,125,2,32,1);
+                WRITEWIN( 70,106,2,WRITE_Center,RPort_PTR,4,PText[159]);
+                MAKEWINBORDER(RPort_PTR,141,100,263,125,2,32,1);
+                WRITEWIN(202,106,2,WRITE_Center,RPort_PTR,4,"Abbruch");
                 b = false;
                 do
                 {
                     delay(RDELAY);
                     if (LMB_PRESSED
-                        && (MouseX(1) >= 372) && (MouseX(1) <= 493)
-                        && (MouseY(1) >= 450) && (MouseY(1) <= 475))
+                        && (HKP_Window->MouseX >=  10) && (HKP_Window->MouseX <= 131)
+                        && (HKP_Window->MouseY >= 100) && (HKP_Window->MouseY <= 125))
                     {
                         /* Kaufen */
-                        CLICKRECTWIN(MyRPort_PTR[1],372,450,493,475,2);
+                        CLICKRECTWIN(RPort_PTR, 10,100,131,125,2);
                         b = true;
                         l = MyPlanetHeader->XProjectCosts-MyPlanetHeader->XProjectPayed;
                         if (l < 0) { l = 0; }
@@ -482,15 +490,16 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         }
                     }
                     if (RMB_PRESSED || (LMB_PRESSED
-                        && (MouseX(1) >= 503) && (MouseX(1) <= 625)
-                        && (MouseY(1) >= 450) && (MouseY(1) <= 475)))
+                        && (HKP_Window->MouseX >= 141) && (HKP_Window->MouseX <= 263)
+                        && (HKP_Window->MouseY >= 100) && (HKP_Window->MouseY <= 125)))
                     {
                         /* Abbruch */
-                        CLICKRECTWIN(MyRPort_PTR[1],503,450,625,475,2);
+                        CLICKRECTWIN(RPort_PTR,141,100,263,125,2);
                         b = true;
                     }
                 }
                 while (!b);
+                CloseWindow(HKP_Window);
                 WRITEPROJECTDATA(MyPlanetHeader, ActPProjects);
             }
         }
