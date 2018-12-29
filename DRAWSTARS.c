@@ -38,13 +38,13 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     if (Save.PlayMySelf)
     {
         MaxVal = 0;
-        for (i = 0; i < (MAXCIVS-1); i++)
+        for (i = 0; i < (MAXCIVS-1); ++i)
         {
             CVal[i] = Save.Bevoelkerung[i] + Save.WarPower[i]*20 + Save.ImperatorState[i]*10;
             if (CVal[i]>MaxVal) { MaxVal = CVal[i]; }
         }
         Factor = MaxVal/20.0;
-        for (i = 0; i < (MAXCIVS-1); i++)
+        for (i = 0; i < (MAXCIVS-1); ++i)
         {
             if ((i<7) || ((0 != Save.WorldFlag) && (WFLAG_FIELD != Save.WorldFlag)))
             {
@@ -58,7 +58,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     SetAPen(MyRPort_PTR[0],12);
     if (Informed)
     {
-        for (j = 0; j < MAXHOLES; j++)
+        for (j = 0; j < MAXHOLES; ++j)
         {
             if (FLAG_KNOWN == MyWormHole[j].CivKnowledge[DS_ActPlayer])
             {
@@ -68,7 +68,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
         }
     }
 
-    for (i = 0; i< Save.Systems; i++)
+    for (i = 0; i< Save.Systems; ++i)
     {
         if ((NULL != SystemHeader[i].FirstShip.NextShip)
             && (MODE_STARGATE != Mode))
@@ -90,7 +90,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
             }
         }
     }
-    for (i = 0; i < Save.Systems; i++)
+    for (i = 0; i < Save.Systems; ++i)
     {
         if ((!Save.PlayMySelf)
             && (((((SystemFlags[DS_ActPlayer][i] & FLAG_KNOWN) != FLAG_KNOWN) || (Save.CivPlayer[DS_ActPlayer] == 0)
@@ -108,7 +108,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
             {
                 DrawEllipse(MyRPort_PTR[0],SystemX[i],SystemY[i],4,4);
             } else {
-                RECTWIN(MyRPort_PTR[0],SystemFlags[0][i] & FLAG_CIV_MASK,(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
+                RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             }
             WRITEWIN(SystemX[i]+3,SystemY[i]+3,SystemFlags[0][i] & FLAG_CIV_MASK,1,MyRPort_PTR[0],1,Save.SystemName.data[i]);
         } else {
@@ -117,7 +117,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
             {
                 DrawEllipse(MyRPort_PTR[0],SystemX[i],SystemY[i],4,4);
             } else {
-                RECTWIN(MyRPort_PTR[0],12,(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
+                RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             }
             WRITEWIN(SystemX[i]+3,SystemY[i]+3,12,1,MyRPort_PTR[0],1,Save.SystemName.data[i]);
         }
