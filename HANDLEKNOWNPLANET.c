@@ -6,10 +6,9 @@
 #define PROJECTS_XSIZE  67
 #define PROJECTS_YSIZE  66
 
-void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
+void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
 {
     sint32  l;
-    int     i, x, y;
     char    s[4];
     char*   _s;
 
@@ -47,6 +46,45 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     (void) dez2out(l, 3, s);
     WRITEWIN(278,402,4,1,MyRPort_PTR[1],2,s);
     RECTWIN(MyRPort_PTR[1],4,56,399,56+(l*2),418);
+}
+
+void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
+{
+    uint8  i, y;
+    char   s[8];
+
+
+    // draw state of biosphere, infrastructure and industry
+    RECTWIN(MyRPort_PTR[1],4,56,101,56+MyPlanetHeader->Biosphaere,120);
+    (void) dez2out((MyPlanetHeader->Biosphaere >> 1), 3, s);
+    WRITEWIN(278,104,4,1,MyRPort_PTR[1],2,s);
+
+    y =  ActPProjects->data[30]              /* Recycling-Anl. */
+        +ActPProjects->data[31]              /* Fusions-Kraftwerk */
+        +ActPProjects->data[32]              /* Hydro-Kraftwerk */
+        +ActPProjects->data[37]              /* intell. Fabrik */
+        +ActPProjects->data[42];             /* Wetter-Sat */
+    if (y < 5)
+    {
+        y = 5-y;
+        for(i = 0; i < y; ++i)
+        {
+            // draw skulls ...
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,174,MyRPort_PTR[1],59+i*22,102,19,18,192);
+        }
+    }
+
+    RECTWIN(MyRPort_PTR[1],4,56,150,56+MyPlanetHeader->Infrastruktur,169);
+    (void) dez2out((MyPlanetHeader->Infrastruktur >> 1), 3, s);
+    WRITEWIN(278,153,4,1,MyRPort_PTR[1],2,s);
+
+    RECTWIN(MyRPort_PTR[1],4,56,199,56+MyPlanetHeader->Industrie,218);
+    (void) dez2out((MyPlanetHeader->Industrie >> 1), 3, s);
+    WRITEWIN(278,202,4,1,MyRPort_PTR[1],2,s);
+
+    (void) dez2out(MyPlanetHeader->Population, 7, s);
+    WRITEWIN(59,251,4,1,MyRPort_PTR[1],2,s);
+
 
     y = 0;   /* Kreativität */
     if (ActPProjects->data[33]>0) { ++y; }
@@ -55,6 +93,7 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     if (ActPProjects->data[38]>0) { ++y; }
     if (ActPProjects->data[42]>0) { ++y; }
     RECTWIN(MyRPort_PTR[1],0,56,307,178,330);
+
     if (y > 0)
     {
         for(i = 0; i < y; ++i)
@@ -79,6 +118,13 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
             BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,151,MyRPort_PTR[1],56+i*25,354,22,22,192);
         }
     }
+}
+
+void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
+{
+    uint8   i;
+    uint16  x, y;
+    char    s[4];
 
     // clear right project icon area
     RECTWIN(MyRPort_PTR[1],0,359,92,639,511);
@@ -97,7 +143,7 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
             // copy project icon bitmap to screen
             BltBitMapRastPort((struct BitMap*) &ImgBitMap8,i*64,0,MyRPort_PTR[1],362+x,94+y,64,64,192);
             x += PROJECTS_XSIZE;
-            if (x > (PROJECTS_XSIZE*3))
+            if ((3*PROJECTS_XSIZE) < x)
             {
                 // next row
                 x = 0;
@@ -132,7 +178,7 @@ void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
                 WRITEWIN(367+x,141+y,4,0,MyRPort_PTR[1],2,s);
             }
             x += PROJECTS_XSIZE;
-            if (x > (3*PROJECTS_XSIZE))
+            if ((3*PROJECTS_XSIZE) < x)
             {
                 x = 0;
                 y += PROJECTS_YSIZE;
@@ -240,32 +286,6 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         WRITEWIN(275,65,1,1,MyRPort_PTR[1],4,s);
     }
 
-    // draw state of biosphere, infrastructure and industry
-
-    RECTWIN(MyRPort_PTR[1],4,56,101,56+MyPlanetHeader->Biosphaere,120);
-    (void) dez2out((MyPlanetHeader->Biosphaere >> 1), 3, s);
-    WRITEWIN(278,104,4,1,MyRPort_PTR[1],2,s);
-    l = 5-ActPProjects->data[30]-ActPProjects->data[31]-ActPProjects->data[32]
-         -ActPProjects->data[37]-ActPProjects->data[42];
-    if (l > 0)
-    {
-        for(i = 0; i < l; ++i)
-        {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,174,MyRPort_PTR[1],59+i*22,102,19,18,192);
-        }
-    }
-
-    RECTWIN(MyRPort_PTR[1],4,56,150,56+MyPlanetHeader->Infrastruktur,169);
-    (void) dez2out((MyPlanetHeader->Infrastruktur >> 1), 3, s);
-    WRITEWIN(278,153,4,1,MyRPort_PTR[1],2,s);
-
-    RECTWIN(MyRPort_PTR[1],4,56,199,56+MyPlanetHeader->Industrie,218);
-    (void) dez2out((MyPlanetHeader->Industrie >> 1), 3, s);
-    WRITEWIN(278,202,4,1,MyRPort_PTR[1],2,s);
-
-    (void) dez2out(MyPlanetHeader->Population, 7, s);
-    WRITEWIN(59,251,4,1,MyRPort_PTR[1],2,s);
-
     PProd = 11+(ActPProjects->data[31]+ActPProjects->data[37]+
                 ActPProjects->data[38]+ActPProjects->data[41]+
                 ActPProjects->data[42])*6;
@@ -275,7 +295,10 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         PMoney = it_round(PMoney*0.95);
     }
 
-    WRITEPROJECTDATA(MyPlanetHeader, ActPProjects);
+    WRITEPLANETSTATUS(MyPlanetHeader, ActPProjects);
+    WRITECURRENTPROJECT(MyPlanetHeader);
+    WRITEPROJECTSSTATUS(MyPlanetHeader, ActPProjects);
+
     ScreenToFront(MyScreen[1]);
 
     blink = 0;
@@ -385,6 +408,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 }
                 --j;
 //                Img = (struct Image) {0,0,384,407,7,IMemA[0],127,0,NULL};
+                // clear right project-area to print the list of available Projects to build
                 RECTWIN(MyRPort_PTR[1],0,360,92,639,511);
                 WRITEWIN(365,474,4,1,MyRPort_PTR[1],4,PText[177]);
                 for(i = 1; i <= j; i++)
@@ -444,7 +468,8 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         strcpy(s, Project.data[MyPlanetHeader->ProjectID]);
                     }
                 }
-                WRITEPROJECTDATA(MyPlanetHeader, ActPProjects);
+                WRITECURRENTPROJECT(MyPlanetHeader);
+                WRITEPROJECTSSTATUS(MyPlanetHeader, ActPProjects);
             } else if ((MouseX(1) >= 198) && (MouseX(1) <= 328)
                     && (MouseY(1) >= 455) && (MouseY(1) <= 480)
                     && (MyPlanetHeader->ProjectID>0))
@@ -500,7 +525,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 }
                 while (!b);
                 CloseWindow(HKP_Window);
-                WRITEPROJECTDATA(MyPlanetHeader, ActPProjects);
+                WRITECURRENTPROJECT(MyPlanetHeader);
             }
         }
     }

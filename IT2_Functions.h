@@ -95,7 +95,9 @@ uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* ShipPtr);
 void GOTOPEACE(uint8 CivVar1, uint8 CivVar2);
 void GOTOWAR(uint8 CivFlag1, uint8 CivFlag2);
 // >>> HANDLEKNOWNPLANET
-void WRITEPROJECTDATA(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects);
+void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader);
+void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader,ByteArr42* ActPProjects);
+void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects);
 void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr);
 // <<<
 // >>> HANDLESYSTEM
