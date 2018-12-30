@@ -65,6 +65,11 @@
 #define _PT_Umlaufbahn_kollabiert   PText[575]
 #define _PT_Stargate_zerstoert      PText[576]
 
+#define _PT_Biosphaere_gereinigt    PText[584]
+#define _PT_Infrastructur_repariert PText[585]
+#define _PT_IndustrAnlage_repariert PText[586]
+
+
 #define _PT_Flotte                  PText[635]
 #define _PT_Naechste_Seite          PText[636]
 #define _PT_eigene                  PText[638]
