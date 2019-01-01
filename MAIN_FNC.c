@@ -24,9 +24,9 @@ void MAIN_FNC()
         if (OpenDiskFont(&(CustomTA[i])) == NULL)
         {
             DisplayBeep(NULL);
-            Printf("Can't open font: \"");
-            Printf(CustomTA[i].ta_Name);
-            Printf("\" , size: %ld\n", CustomTA[i].ta_YSize);
+            // Printf("Can't open font: \"");
+            // Printf(CustomTA[i].ta_Name);
+            // Printf("\" , size: %ld\n", CustomTA[i].ta_YSize);
         }
     }
     /* read Paths.txt-File **********************************/
@@ -34,12 +34,12 @@ void MAIN_FNC()
     FHandle = Open((CONST_STRPTR) s, MODE_OLDFILE);
     if (0 == FHandle)
     {
-        Printf("Kann Datei \"");
-        Printf(s);
-        Printf("\" nicht finden!\n");
-        Printf("Can`t find file \"");
-        Printf(s);
-        Printf("\" !\n");
+        // Printf("Kann Datei \"");
+        // Printf(s);
+        // Printf("\" nicht finden!\n");
+        // Printf("Can`t find file \"");
+        // Printf(s);
+        // Printf("\" !\n");
         return;
     }
     (void)     Seek(FHandle, 0, OFFSET_END);

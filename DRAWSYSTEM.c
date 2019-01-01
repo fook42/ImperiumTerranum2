@@ -12,7 +12,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     uint8           Leave, j;
     uint8           BelongsTo;
 
-    Printf("## in DRAWSYSTEM ##\n");
+    // Printf("## in DRAWSYSTEM ##\n");
 /*    OffsetX,Y = centre of current view */
     OldX = OffsetX;
     OldY = OffsetY;
@@ -255,5 +255,5 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     WRITEWIN(200,491,BelongsTo,0,MyRPort_PTR[0],4,Save.SystemName.data[ActSys]);
     PRINTGLOBALINFOS(ActPlayer-1);
     if (!Save.PlayMySelf) { ScreenToFront(MyScreen[0]); }
-    Printf("## out DRAWSYSTEM ##\n");
+    // Printf("## out DRAWSYSTEM ##\n");
 }

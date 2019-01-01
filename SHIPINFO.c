@@ -13,14 +13,14 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
     char*   _s;
     char    Txt_999[] = {"999"};
 
-    TactStep = it_round((MyShipPtr->Tactical * 300.0f) / MyShipPtr->Shield);
+    TactStep = it_round((MyShipPtr->Tactical * 300) / MyShipPtr->Shield);
     RECTWIN(MyRPort_PTR[1],0,386,296,513,310);
     WRITEWIN(443-TactStep,297,1,1,MyRPort_PTR[1],2,"#");
 
-    Step = (MyShipPtr->Shield / 3.0f);
+    Step = (MyShipPtr->Shield / 3);
     if (0 == it_round(Step)) { Step = 1.0f; }
-    Col1 = it_round( (MyShipPtr->Tactical+Step)*(255.0f/Step));
-    Col2 = it_round(-(MyShipPtr->Tactical-Step)*(255.0f/Step));
+    Col1 = it_round( (MyShipPtr->Tactical+Step)*(255/Step));
+    Col2 = it_round(-(MyShipPtr->Tactical-Step)*(255/Step));
     for(i = 0; i < 8; i++)
     {
         if (0 > Col1)      { c1 = 0; }

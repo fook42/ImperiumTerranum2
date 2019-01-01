@@ -86,6 +86,7 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     } else {
         FleetUsed = false;
     }
+// OpenWindow()
     MAKEBORDER(MyScreen[0],20,30,420,480,12,6,0);
     WRITE(63,37,ActPlayerFlag,0,MyScreen[0],4,ReqText);
     WRITE( 36,56,12,0,MyScreen[0],1,PText[408]);
@@ -153,6 +154,7 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     while ((!b) && RMB_NOTPRESSED);
     if (RMB_PRESSED) { PLAYSOUND(1,300); }
     RECT(MyScreen[0],0,20,30,422,482);
+// CloseWindow()
     if (b)
     {
         MyShipPtr = StShipPtr;
