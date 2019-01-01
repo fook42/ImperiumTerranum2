@@ -6,7 +6,7 @@
 void UNPACK(uint8* Anfang, uint8* PackedD, uint32 Laenge, uint8 Mode)
 {
     uint8  Anz;
-    volatile uint8* UnPackedD;
+    uint8* UnPackedD;
 
     if (0 == Mode) { SWITCHDISPLAY(); }
     UnPackedD = Anfang;

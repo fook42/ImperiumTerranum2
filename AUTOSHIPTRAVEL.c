@@ -5,10 +5,9 @@
 
 void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
 {
-//    uint32          l; // ... todo .. unused variable
-    int             i;
+    int             i = 0;
     r_ShipHeader*   MyShipPtr = NULL;
-    r_ShipHeader*   BAKShipPtr;
+    r_ShipHeader*   BAKShipPtr = NULL;
     uint8           CivVar,CivVar2,SysSteps,iStep;
     bool            DconDone,b,Visible;
     r_PlanetHeader* MyPlanetHeader;
@@ -16,20 +15,20 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
     struct Window*   AST_Window;
     struct RastPort* RPort_PTR;
 
+    Printf("## AUTOSHIPTRAVEL >>>> ###\n");
     DconDone = false;
-    if (Mode == MODE_SHIPS)
+    if (MODE_SHIPS == Mode)
     {
         SysSteps = 1;
         i = ActSys-1;
         MyShipPtr = ShipPtr;
     } else {
-        i = 0;
         SysSteps = 2;
     }
     do
     {
-        i++;
-        for(iStep = 1; iStep <= SysSteps; iStep++)
+        ++i;
+        for(iStep = 0; iStep < SysSteps; ++iStep)
         {
             if (MODE_ALL == Mode)
             {
@@ -87,8 +86,8 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                         {
                             FINDENEMYOBJECT(i,MyShipPtr);
                         }
-                        if ((MyShipPtr->TargetShip != NULL) && (CivVar>=1) && (CivVar<=MAXCIVS)
-                            && (MyShipPtr->SType != SHIPTYPE_FLEET))
+                        if ((NULL != MyShipPtr->TargetShip) && (CivVar>=1) && (CivVar<=MAXCIVS)
+                            && (SHIPTYPE_FLEET != MyShipPtr->SType))
                         {
                             if ((GETCIVVAR(MyShipPtr->TargetShip->Owner)>=1)
                                 && (GETCIVVAR(MyShipPtr->TargetShip->Owner)<=MAXCIVS)
@@ -174,10 +173,10 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                       { Save.WarState[CivVar2-1][CivVar-1] = LEVEL_PEACE; }
                                 }
                                 MOVESHIP(i,MyShipPtr,Visible);
-                            } else if ((MyShipPtr->Moving<0) && (Mode == MODE_ALL))
+                            } else if ((0 > MyShipPtr->Moving) && (MODE_ALL == Mode))
                             {
-                                MyShipPtr->Moving++;
-                                if (MyShipPtr->Moving >= 0)
+                                ++MyShipPtr->Moving;
+                                if (0 <= MyShipPtr->Moving)
                                 {
                                     CivVar2 = GETCIVVAR(SystemFlags[0][i-1]);
                                     if (CivVar2>0)
@@ -210,6 +209,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                         }
                                     }
                                     while (FINDOBJECT(i-1,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
+
                                     if ((((SystemFlags[0][i-1] & ActPlayerFlag) == ActPlayerFlag) || (CivVar == ActPlayer))
                                         && (Save.CivPlayer[ActPlayer-1] != 0) && (!DconDone))
                                     {
@@ -252,7 +252,6 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             WAITLOOP(Save.PlayMySelf);
                                             CloseWindow(AST_Window);
                                         }
-                                        REFRESHDISPLAY();
 
                                         if (((SystemFlags[0][i-1] & FLAG_CIV_MASK) == FLAG_REMALO) && (Save.CivPlayer[2] == 0)
                                             && (MyShipPtr->Owner != FLAG_REMALO)
@@ -262,8 +261,8 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             && (Save.WarState[2][GETCIVVAR(MyShipPtr->Owner)-1] != LEVEL_WAR))
                                         {
                                             AUTOVERHANDLUNG(FLAG_REMALO,MyShipPtr->Owner,ActSys,MODE_TERRITORIUM);
-                                            REFRESHDISPLAY();
                                         }
+                                        REFRESHDISPLAY();
                                     }
                                 }
                             }
@@ -279,7 +278,9 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
             }
         }
     }
-    while ((MAXSYSTEMS != i) && (MODE_SHIPS != Mode));
+    while ((MAXSYSTEMS > i) && (MODE_SHIPS != Mode));
+    Printf("## AUTOSHIPTRAVEL ---- ###\n");
+
 
     if ((Display != ActSys) && (MODE_SHIPS != Mode))
     {
@@ -290,4 +291,6 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
             DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
         }
     }
+    Printf("## AUTOSHIPTRAVEL <<<< ###\n");
+
 }

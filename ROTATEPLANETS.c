@@ -32,7 +32,7 @@ void ROTATEPLANETS(uint8 ActSys)
     struct RastPort* RPort_PTR2;
 
 
-    Printf("## ROTATEPLANETS >>>> ##\n");
+    // Printf("## ROTATEPLANETS >>>> ##\n");
 
     if ((2000 < Year) && (1 == ActPlayer)) { DOHUMANITY(); }
     RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
@@ -75,7 +75,7 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    Printf("## ROTATEPLANETS - PT 1 ##\n");
+    // Printf("## ROTATEPLANETS - PT 1 ##\n");
 
     if (1 == ActPlayer)
     {
@@ -141,7 +141,7 @@ void ROTATEPLANETS(uint8 ActSys)
             REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip,i+1,1);
         }
     }
-    Printf("## ROTATEPLANETS - PT 2 ##\n");
+    // Printf("## ROTATEPLANETS - PT 2 ##\n");
     if (ActPlayer<MAXCIVS)
     {
         for(i = 0; i < Save.Systems; i++)
@@ -240,7 +240,7 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    Printf("## ROTATEPLANETS - PT 3 ##\n");
+    // Printf("## ROTATEPLANETS - PT 3 ##\n");
     if (ActSys>0)
     {
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
@@ -550,15 +550,18 @@ void ROTATEPLANETS(uint8 ActSys)
                                     INFORMUSER();
                                     Save.ImperatorState[ActPlayer-1] += 50;
                                     Save.stProject[PlanetHeader->ProjectID-1] = ActPlayer;
-/* OpenWindow() */
-                                    MAKEBORDER(MyScreen[0],85,120,425,200,12,6,0);
+
+                                    ROT_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
+                                    RPort_PTR = ROT_Window->RPort;
+                                    MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
+
                                     strcpy(s, GETCIVNAME(ActPlayer));
                                     strcat(s, " ");
                                     strcat(s, PText[579]); // fuehren als erste
-                                    WRITE(256,127,GETCIVFLAG(ActPlayer),(1|WRITE_Center),MyScreen[0],4,s);
+                                    WRITEWIN(171, 7,GETCIVFLAG(ActPlayer),(1|WRITE_Center),RPort_PTR,4,s);
                                     strcpy(s, Project.data[PlanetHeader->ProjectID]);
                                     strcat(s, "-");
-                                    WRITE(256,149,12,(1|WRITE_Center),MyScreen[0],4,s);
+                                    WRITEWIN(171,29,                   12,(1|WRITE_Center),RPort_PTR,4,s);
                                     s[0]=0;
                                     if ((1 <= PlanetHeader->ProjectID)
                                      && (3 >= PlanetHeader->ProjectID))
@@ -567,15 +570,15 @@ void ROTATEPLANETS(uint8 ActSys)
                                         strcat(s, " ");
                                     }
                                     strcat(s, PText[580]); // durch
-                                    WRITE(256,173,12,(1|WRITE_Center),MyScreen[0],4,s);
+                                    WRITEWIN(171,53,12,(1|WRITE_Center),RPort_PTR,4,s);
                                     if (Save.PlayMySelf) { delay(PAUSE); }
                                     WAITLOOP(Save.PlayMySelf);
-                                    RECTWIN(MyRPort_PTR[0],0,85,120,425,200);
-/* CloseWindow() */
+
+                                    CloseWindow(ROT_Window);
                                 }
-                            } else if ((PlanetHeader->ProjectID>=8) && (PlanetHeader->ProjectID<=24))
+                            } else if ((8 <= PlanetHeader->ProjectID) && (PlanetHeader->ProjectID <= 24))
                             {
-                                if (Save.CivPlayer[ActPlayer-1] != 0)
+                                if (0 != Save.CivPlayer[ActPlayer-1])
                                 {
                                     btx = 1;
                                     XState = 0;
@@ -608,18 +611,19 @@ void ROTATEPLANETS(uint8 ActSys)
                         if ((l == 1) && (Save.CivPlayer[ActPlayer-1] != 0))
                         {
                             INFORMUSER();
-/* OpenWindow() */
-                            MAKEBORDER(MyScreen[0],85,120,425,200,12,6,0);
+                                    ROT_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
+                                    RPort_PTR = ROT_Window->RPort;
+                                    MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
 
                             strcpy(s, _PT_System);
                             strcat(s, ": ");
                             strcat(s, Save.SystemName.data[i]);
-                            WRITE(256,127,ActPlayerFlag,(1|WRITE_Center),MyScreen[0],4,s);
+                            WRITEWIN(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,4,s);
 
                             strcpy(s, _PT_Planet);
                             strcat(s, ": ");
                             strcat(s, PlanetHeader->PName);
-                            WRITE(256,147,ActPlayerFlag,(1|WRITE_Center),MyScreen[0],4,s);
+                            WRITEWIN(171,27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,4,s);
 
                             if (0 < PlanetHeader->ProjectID)
                             {
@@ -634,54 +638,55 @@ void ROTATEPLANETS(uint8 ActSys)
                                     default: strcpy(s, _PT_IndustrAnlage_repariert);
                                 }
                             }
-                            WRITE(256,173,12,(1|WRITE_Center),MyScreen[0],4,s);
+                            WRITEWIN(171,53,12,(1|WRITE_Center),RPort_PTR,4,s);
 
                             delay(5);
                             if (( 8 <= PlanetHeader->ProjectID)
                              && (24 >= PlanetHeader->ProjectID) && (!Save.PlayMySelf))
                             {
                                 // building ships... where to place it?
-/* OpenWindow() */
-                                MAKEBORDER(MyScreen[0],85,208,425,248,12,6,0);
-                                BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(PlanetHeader->ProjectID-8)*32,32,&(MyScreen[0]->RastPort),95,212,32,32,192);
-                                DrawImage(&(MyScreen[0]->RastPort),&GadImg1,140,218);
-                                DrawImage(&(MyScreen[0]->RastPort),&GadImg1,280,218);
+                                ROT_Window2=MAKEWINDOW(85,208,341,41,MyScreen[0]);
+                                RPort_PTR2 = ROT_Window2->RPort;
+                                MAKEWINBORDER(RPort_PTR2,0,0,340,40,12,6,1);
 
-                                WRITE(198,220,0,WRITE_Center,MyScreen[0],4,PText[587]);   // Space
-                                WRITE(338,220,0,WRITE_Center,MyScreen[0],4,PText[588]);   // Orbit
+                                BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(PlanetHeader->ProjectID-8)*32,32,RPort_PTR2,10, 4,32,32,192);
+                                DrawImage(RPort_PTR2,&GadImg1, 55,10);
+                                DrawImage(RPort_PTR2,&GadImg1,195,10);
+
+                                WRITEWIN(113,12,0,WRITE_Center,RPort_PTR2,4,PText[587]);   // Space
+                                WRITEWIN(253,12,0,WRITE_Center,RPort_PTR2,4,PText[588]);   // Orbit
                                 b = false;
                                 do
                                 {
                                     delay(RDELAY);
                                     if (LMB_PRESSED)
                                     {
-                                        if ((MouseY(0) >= 218) && (MouseY(0) <= 238))
+                                        if ((ROT_Window2->MouseY >= 10) && (ROT_Window2->MouseY <= 30))
                                         {
-                                            if ((MouseX(0) >= 140) && (MouseX(0) <= 256))
+                                            if ((ROT_Window2->MouseX >= 55) && (ROT_Window2->MouseX <= 171))
                                             {
-                                                KLICKGAD(140,218);
+                                                KLICKWINGAD(RPort_PTR2,55,10);
                                                 b = true;
                                                 ActShipPtr->PosX = it_round(PlanetHeader->PosX);
                                                 ActShipPtr->PosY = it_round(PlanetHeader->PosY);
                                                 LINKSHIP(ActShipPtr, &(SystemHeader[i].FirstShip), 1);
-                                            } else if ((MouseX(0) >= 280) && (MouseX(0) <= 396))
+                                            } else if ((ROT_Window2->MouseX >= 195) && (ROT_Window2->MouseX <= 311))
                                             {
-                                                KLICKGAD(280,218);
+                                                KLICKWINGAD(RPort_PTR2,195,10);
                                                 b = true;
                                             }
                                         }
                                     }
                                 }
                                 while (!b);
-                                RECTWIN(MyRPort_PTR[0],0,85,208,425,248);
-/* CloseWindow() */
+                                CloseWindow(ROT_Window2);
                             } else {
                                 if (Save.PlayMySelf) { delay(PAUSE); }
                                 WAITLOOP(Save.PlayMySelf);
                             }
-                            RECTWIN(MyRPort_PTR[0],0,85,120,425,200);
-/* CloseWindow() */
-                            REFRESHDISPLAY();
+                            CloseWindow(ROT_Window);
+
+//                            REFRESHDISPLAY();
                             if ((( 8  > PlanetHeader->ProjectID) || (24  < PlanetHeader->ProjectID))
                               && (24 != PlanetHeader->ProjectID) && (27 != PlanetHeader->ProjectID))
                             {
@@ -880,7 +885,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             }
                             if ((2 == l) || (0 == PlanetHeader->ProjectID))
                             {
-                                for (k = 22; k>=1; k--)
+                                for (k = 22; k>=1; --k)
                                 {
                                     if ((Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PriorityList[k]]] <= 0)
                                             /* Technologie vorhanden */
@@ -985,7 +990,7 @@ void ROTATEPLANETS(uint8 ActSys)
             }
         }
     }
-    Printf("## ROTATEPLANETS - PT 4 ##\n");
+    // Printf("## ROTATEPLANETS - PT 4 ##\n");
     ActPlayer--;
     if ((FreeSystem) &&
         (Save.WarState[ActPlayer][0] != LEVEL_WAR) && (Save.WarState[ActPlayer][1] != LEVEL_WAR) &&
@@ -1066,7 +1071,7 @@ void ROTATEPLANETS(uint8 ActSys)
             Save.WarState[3][i] = LEVEL_COLDWAR;
         }
     }
-    Printf("## ROTATEPLANETS - PT 5 ##\n");
+    // Printf("## ROTATEPLANETS - PT 5 ##\n");
 
     if (ActPlayer<MAXCIVS)
     {
@@ -1340,7 +1345,7 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
     srand((unsigned) time(&t));
-    Printf("## ROTATEPLANETS - PT 6 ##\n");
+    // Printf("## ROTATEPLANETS - PT 6 ##\n");
 
     l = 0;
     if ((Save.WorldFlag == WFLAG_JAHADR) &&
@@ -1348,16 +1353,16 @@ void ROTATEPLANETS(uint8 ActSys)
         (Save.WarState[ActPlayer-1][7] != LEVEL_COLDWAR) &&
         (0 == (Year % 5)))
     {
-        Printf("## ROTATEPLANETS - PT 6.1 ##\n");
+        // Printf("## ROTATEPLANETS - PT 6.1 ##\n");
         for(i = 1; i < (MAXCIVS-1); i++)
         {
             if ((0 == l) && (i != ActPlayer) && (Save.JSteuer[i-1]>0)
                 && (Save.WarState[ActPlayer-1][i-1] == LEVEL_WAR))
             {
-                Printf("## ROTATEPLANETS - PT 6.1a ##\n");
+                // Printf("## ROTATEPLANETS - PT 6.1a ##\n");
                 if ((0 != Save.CivPlayer[ActPlayer-1]) && (!Save.PlayMySelf))
                 {
-                    Printf("## ROTATEPLANETS - PT 6.1aa ##\n");
+                    // Printf("## ROTATEPLANETS - PT 6.1aa ##\n");
                     MAKEBORDER(MyScreen[0],80,120,430,265,12,6,0);
                     WRITE(256,136,FLAG_OTHER,(1|WRITE_Center),MyScreen[0],4,PText[602]);
                     WRITE(256,156,FLAG_OTHER,(1|WRITE_Center),MyScreen[0],4,PText[603]);
@@ -1400,7 +1405,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     REFRESHDISPLAY();
                 } else if (Save.CivPlayer[i-1] == 0)
                 {
-                    Printf("## ROTATEPLANETS - PT 6.1ab ##\n");
+                    // Printf("## ROTATEPLANETS - PT 6.1ab ##\n");
                     if (Save.JSteuer[ActPlayer-1]>0)
                     {
                         GOTOPEACE(i-1, ActPlayer-1);
@@ -1418,7 +1423,7 @@ void ROTATEPLANETS(uint8 ActSys)
             }
         }
     }
-    Printf("## ROTATEPLANETS - PT 6.2 ##\n");
+    // Printf("## ROTATEPLANETS - PT 6.2 ##\n");
 
     if ((Save.WarState[7][ActPlayer-1] == LEVEL_WAR) ||
         (Save.WarState[ActPlayer-1][7] == LEVEL_WAR))
@@ -1428,7 +1433,7 @@ void ROTATEPLANETS(uint8 ActSys)
 
     AUTOSHIPTRAVEL(Display, MODE_ALL, NULL);
 
-    Printf("## ROTATEPLANETS - PT 6.3 ##\n");
+    // Printf("## ROTATEPLANETS - PT 6.3 ##\n");
 
     if ((Save.Staatstopf[ActPlayer-1] < (Militaerausgaben[ActPlayer-1]*3)) && ((Year % 2) == 0)
         && (Save.CivPlayer[ActPlayer-1] != 0) && (Save.Staatstopf[ActPlayer-1] >= 0)
@@ -1475,7 +1480,7 @@ void ROTATEPLANETS(uint8 ActSys)
             REFRESHDISPLAY();
         }
     }
-    Printf("## ROTATEPLANETS - PT 6.4 ##\n");
+    // Printf("## ROTATEPLANETS - PT 6.4 ##\n");
 
     if ((Year>1973) && (Save.CivPlayer[ActPlayer-1] != 0))
     {
@@ -1511,7 +1516,7 @@ void ROTATEPLANETS(uint8 ActSys)
             Warnung[ActPlayer] = 0;
         }
     }
-    Printf("## ROTATEPLANETS - PT 6.5 ##\n");
+    // Printf("## ROTATEPLANETS - PT 6.5 ##\n");
 
 /* *** STATUSCHECK BueRGERKRIEG *** */
     if (((Year % 4) == 0) && (Save.WorldFlag == ActPlayerFlag))
@@ -1540,7 +1545,7 @@ void ROTATEPLANETS(uint8 ActSys)
             DRAWSTARS(MODE_REDRAW,ActPlayer);
         }
     }
-    Printf("## ROTATEPLANETS - PT 6.6 ##\n");
+    // Printf("## ROTATEPLANETS - PT 6.6 ##\n");
 /* *** SPIELER SPIELT NICHT *** */
     if (Save.WarPower[ActPlayer-1] > Save.MaxWarPower[ActPlayer-1])
     {
@@ -1601,7 +1606,7 @@ void ROTATEPLANETS(uint8 ActSys)
             ActPlayer++; // @TODO .. only to shift the arrays!!!
         }
     }
-    Printf("## ROTATEPLANETS - PT 7 ##\n");
+    // Printf("## ROTATEPLANETS - PT 7 ##\n");
 
 /* *** WIEDERAUFERSTEHUNG ZIVI *** */
     NewPNames = (rand()%MAXPLANETS);    // aus INITVARS.c hierher.. nur hier benoetigt!
@@ -1680,5 +1685,5 @@ void ROTATEPLANETS(uint8 ActSys)
             CREATEJAHADR(ActPlayer-1);
         }
     }
-    Printf("## ROTATEPLANETS <<<< ##\n");
+    // Printf("## ROTATEPLANETS <<<< ##\n");
 }

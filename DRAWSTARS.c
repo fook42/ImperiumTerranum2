@@ -13,7 +13,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     uint8           DS_ActPlayerFlag;
     char            s[20];
 
-    Printf("## in DRAWSTARS ##\n");
+    // Printf("## in DRAWSTARS ##\n");
 
     DS_ActPlayerFlag = GETCIVFLAG(DS_ActPlayer);
     DS_ActPlayer--;     // todo.. due to shifted arrays
@@ -125,5 +125,5 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     PRINTGLOBALINFOS(DS_ActPlayer);
     if (!Save.PlayMySelf) { ScreenToFront(MyScreen[0]); }
 
-    Printf("## out DRAWSTARS ##\n");
+    // Printf("## out DRAWSTARS ##\n");
 }

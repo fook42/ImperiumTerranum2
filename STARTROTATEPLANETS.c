@@ -28,7 +28,7 @@ void STARTROTATEPLANETS()
     char*   _s;
     int     len;
 
-    Printf("## in STARTROTATEPLANETS ##\n");
+    // Printf("## in STARTROTATEPLANETS ##\n");
     for(i = 0; i < MAXCIVS; i++)
     {
         Save.LastWarState[ActPlayer-1][i] = Save.WarState[ActPlayer-1][i];
@@ -241,5 +241,5 @@ void STARTROTATEPLANETS()
         RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
         WRITEWIN(521,292,12,1,MyRPort_PTR[0],4,PText[663]);
     }
-    Printf("## out STARTROTATEPLANETS ##\n");
+    // Printf("## out STARTROTATEPLANETS ##\n");
 }
