@@ -6,14 +6,14 @@
 void REFRESHDISPLAY()
 {
     uint8   Mode = MODE_REFRESH;
-	if (0 != Display)
-	{
-		if ((OldX != OffsetX) || (OldY != OffsetY))
-		{
-			Mode = MODE_REDRAW;
-		}
+    if (0 != Display)
+    {
+        if ((OldX != OffsetX) || (OldY != OffsetY))
+        {
+            Mode = MODE_REDRAW;
+        }
         DRAWSYSTEM(Mode,Display,NULL);
-	} else {
+    } else {
         DRAWSTARS(Mode,ActPlayer);
     }
 }

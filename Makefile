@@ -3,6 +3,7 @@
 
 CC      = /opt/amiga/bin/m68k-amigaos-gcc
 STRIP   = /opt/amiga/bin/m68k-amigaos-strip
+#CFLAGS  = -noixemul -O0 -m68020 -Wall -Wno-pointer-sign 
 CFLAGS  = -noixemul -s -g0 -O2 -m68020 -Wall -Wno-pointer-sign 
 TARGET  = IT2C
 LDFLAGS = -lm 
