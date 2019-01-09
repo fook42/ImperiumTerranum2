@@ -12,25 +12,24 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
     struct Window* CHP_Window;
     struct RastPort* RPort_PTR;
 
-
     HomeWorld = 0;
-    for(i = 1; i < (MAXCIVS-1); i++)
+    for(i = 1; i < (MAXCIVS-1); ++i)
     {
         if ((!strcmp(PNames[i].data[2],MyPlanetHeader->PName)) && (GETCIVVAR(MyPlanetHeader->PFlags) == i))
         {
             HomeWorld = i;
         }
     }
-    if (0 < HomeWorld)
+    if (0 != HomeWorld)
     {
         /**** Eroberte Civi abspalten ****/
         SplitWorld = 0;
-        for(i = 0; i < Save.Systems; i++)
+        for(i = 0; i < Save.Systems; ++i)
         {
-            for(j = 0; j < SystemHeader[i].Planets; j++)
+            for(j = 0; j < SystemHeader[i].Planets; ++j)
             {
                 MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                
+
                 if (GETCIVVAR(MyPlanetHeader->PFlags) == HomeWorld)
                 {
                     if ((0 == SplitWorld) && (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & FLAG_CIV_MASK)))
@@ -39,7 +38,7 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                         {
                             SplitWorld = MyPlanetHeader->Ethno;
                         }
-                        if (Save.CivPlayer[ActPlayer-1] != 0)
+                        if (0 != Save.CivPlayer[ActPlayer-1])
                         {
                             INFORMUSER();
                             CHP_Window=MAKEWINDOW(80,120,351,131,MyScreen[0]);
@@ -54,11 +53,14 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                                 strcpy(s+l, PText[209]);
                                 WRITEWIN(176,36,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,s);
                                 WRITEWIN(176,56,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,PText[210]);
-                                WRITEWIN(176,76,SplitWorld,(1|WRITE_Center),RPort_PTR,4,PText[211]);
+                                WRITEWIN(176,76,           SplitWorld,(1|WRITE_Center),RPort_PTR,4,PText[211]);
                                 strcpy(s, GETCIVADJ(GETCIVVAR(SplitWorld)));
-                                strcat(s, PText[212]);
-                                strcat(s, "!");
-                                WRITEWIN(176,96,SplitWorld,(1|WRITE_Center),RPort_PTR,4,s);
+                                l=strlen(s);
+                                strcpy(s+l, PText[212]);
+                                l=strlen(s);
+                                s[l++]='!';
+                                s[l]=0;
+                                WRITEWIN(176,96,           SplitWorld,(1|WRITE_Center),RPort_PTR,4,s);
                                 if (Save.PlayMySelf)
                                 {
                                     delay(PAUSE);
@@ -69,7 +71,7 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                             }
                         }
                     }
-                    if (SplitWorld == MyPlanetHeader->Ethno)
+                    if (MyPlanetHeader->Ethno == SplitWorld)
                     {
                         MyPlanetHeader->PFlags = MyPlanetHeader->Ethno;
                         MyShipPtr = MyPlanetHeader->FirstShip.NextShip;

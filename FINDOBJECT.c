@@ -16,10 +16,8 @@ bool FINDOBJECT(uint8 ActSys, sint16 GetX, sint16 GetY, void* ExcludeObj)
     // check if we are close to a Stargate ?
     if (NULL != ExcludeObj)
     {
-        ActShipPtr = (r_ShipHeader*) ExcludeObj;
-
         if ((TARGET_STARGATE == SystemHeader[ActSys].FirstShip.SType)
-         && (TARGET_STARGATE != ActShipPtr->SType))
+         && (TARGET_STARGATE != ((r_ShipHeader*) ExcludeObj)->SType))
         {
             x = 256+((SystemHeader[ActSys].FirstShip.PosX+OffsetX)*32);
             y = 256+((SystemHeader[ActSys].FirstShip.PosY+OffsetY)*32);

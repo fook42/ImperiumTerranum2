@@ -15,7 +15,7 @@ void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner)
 
     MyPlanetHeader = PlanetPtr;
     ActPProject = MyPlanetHeader->ProjectPtr;
-    for(i = 1; i < 8; i++)
+    for(i = 1; i < 8; ++i)
     {
         if (0 < ActPProject->data[i])
         {

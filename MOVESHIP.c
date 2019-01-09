@@ -58,7 +58,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         {
             MOVESHIP_FromX = MyShipPtr->PosX;
             MOVESHIP_FromY = MyShipPtr->PosY;
-            if ((MyShipPtr->SType == SHIPTYPE_STARGATE) && (SystemHeader[ActSys-1].FirstShip.SType != TARGET_STARGATE)) 
+            if ((MyShipPtr->SType == SHIPTYPE_STARGATE) && (SystemHeader[ActSys-1].FirstShip.SType != TARGET_STARGATE))
             {
                 /**** STARGATE INSTALLIEREN ****/
                 if (sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))<10)
@@ -102,12 +102,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 else if (MyShipPtr->TargetShip->PosY > MyShipPtr->PosY) { MyShipPtr->PosY++; }
             } else if ((MyShipPtr->Source<0) && (MyShipPtr->Target<0))
             {
-				/**** STABILES WURMLOCH BENUTZEN ****/
-				if      (MyWormHole[(-MyShipPtr->Target)-1].PosX[(-MyShipPtr->Source)-1] < MyShipPtr->PosX) { MyShipPtr->PosX--; }
-				else if (MyWormHole[(-MyShipPtr->Target)-1].PosX[(-MyShipPtr->Source)-1] > MyShipPtr->PosX) { MyShipPtr->PosX++; }
+                /**** STABILES WURMLOCH BENUTZEN ****/
+                if      (MyWormHole[(-MyShipPtr->Target)-1].PosX[(-MyShipPtr->Source)-1] < MyShipPtr->PosX) { MyShipPtr->PosX--; }
+                else if (MyWormHole[(-MyShipPtr->Target)-1].PosX[(-MyShipPtr->Source)-1] > MyShipPtr->PosX) { MyShipPtr->PosX++; }
 
-				if      (MyWormHole[(-MyShipPtr->Target)-1].PosY[(-MyShipPtr->Source)-1] < MyShipPtr->PosY) { MyShipPtr->PosY--; }
-				else if (MyWormHole[(-MyShipPtr->Target)-1].PosY[(-MyShipPtr->Source)-1] > MyShipPtr->PosY) { MyShipPtr->PosY++; }
+                if      (MyWormHole[(-MyShipPtr->Target)-1].PosY[(-MyShipPtr->Source)-1] < MyShipPtr->PosY) { MyShipPtr->PosY--; }
+                else if (MyWormHole[(-MyShipPtr->Target)-1].PosY[(-MyShipPtr->Source)-1] > MyShipPtr->PosY) { MyShipPtr->PosY++; }
             } else {
                 /**** PLANETEN ANFLIEGEN ****/
                 while (MyShipPtr->Target > SystemHeader[ActSys-1].Planets)
@@ -197,7 +197,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                 }
                                                 LINKTOORBIT(MyPlanetHeader, MyShipPtr, ActSys);
                                                 return;
-                                            } else if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
+                                            } else if (0 == (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
                                             {
                                                 if (((MyShipPtr->Ladung & MASK_SIEDLER)>0)
                                                     && ((MyPlanetHeader->Class==CLASS_DESERT)
@@ -208,7 +208,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         || (MyPlanetHeader->Class==CLASS_WATER)))
                                                 {
                                                     /**** Planet unbewohnt ****/
-                                                    if (MyPlanetHeader->ProjectPtr != NULL)
+                                                    if (NULL != MyPlanetHeader->ProjectPtr)
                                                     {
                                                         ActPProjects = MyPlanetHeader->ProjectPtr;
                                                         if ((ActPProjects->data[34]>0) || (ActPProjects->data[40]>0))
@@ -218,21 +218,22 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         }
                                                     }
                                                     Save.ImperatorState[CivVar-1] += 25;
-                                                    if (MyPlanetHeader->ProjectPtr == NULL)
+                                                    if (NULL == MyPlanetHeader->ProjectPtr)
                                                     {
                                                         l = (uint32) AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
-                                                        if (l == 0)
+                                                        if (0 == l)
                                                         {
                                                             return;
                                                         } else {
                                                             MyPlanetHeader->ProjectPtr = (ByteArr42*) l;
+                                                            l = 99;
                                                         }
                                                     } else {
                                                         l = 13;
                                                     }
                                                     ActPProjects = MyPlanetHeader->ProjectPtr;
                                                     ActPProjects->data[0] = 1;
-                                                    if ((SystemFlags[0][ActSys-1] & FLAG_CIV_MASK) == 0)
+                                                    if (0 == (SystemFlags[0][ActSys-1] & FLAG_CIV_MASK))
                                                     {
                                                         SystemFlags[0][ActSys-1] = MyShipPtr->Owner;
                                                     }
@@ -240,7 +241,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     MyPlanetHeader->Ethno  = MyShipPtr->Owner;
                                                     MyShipPtr->Ladung -= 16;
                                                     MyPlanetHeader->Population += 10;
-                                                    if (l != 13)
+                                                    if (13 != l)
                                                     {
                                                         MyPlanetHeader->Infrastruktur = 1;
                                                         MyPlanetHeader->Industrie = 1;
@@ -337,12 +338,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     MyPlanetHeader->Biosphaere    = it_round(MyPlanetHeader->Biosphaere*0.97);
                                                     MyPlanetHeader->Industrie     = it_round(MyPlanetHeader->Industrie*0.95);
                                                     MyPlanetHeader->Infrastruktur = it_round(MyPlanetHeader->Infrastruktur*0.93);
-                                                    
+
                                                     slen = strlen(PText[470]);
                                                     memcpy(s, PText[470], slen+1);
                                                     s[slen++]=' ';
                                                     strcpy(s+slen, MyPlanetHeader->PName);
-                                                    
+
                                                     slen = strlen(PText[471]);
                                                     memcpy(s2, PText[471], slen);
                                                     s2[slen++]=' ';

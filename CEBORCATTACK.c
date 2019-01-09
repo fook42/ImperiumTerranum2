@@ -18,7 +18,7 @@ void CEBORCATTACK(uint8 CA_ActPlayerFlag)
 
     if (0 != CA_ActPlayerFlag)
     {
-        for(i = 0; i < Save.Systems; i++)
+        for(i = 0; i < Save.Systems; ++i)
         {
             if ((SystemFlags[0][i] & FLAG_CIV_MASK) == CA_ActPlayerFlag)
             {
@@ -57,7 +57,7 @@ void CEBORCATTACK(uint8 CA_ActPlayerFlag)
             *CA_MyShipPtr = (r_ShipHeader) {0,l,FLAG_OTHER,0,100,1,0,(rand()%20)-40,(rand()%20)-40,
                                             ShipData(l).MaxShield,WEAPON_PTORPEDO,1,
                                             ShipData(l).MaxMove,0,0,0,NULL,NULL,NULL};
-            LINKSHIP(CA_MyShipPtr, &(SystemHeader[j].FirstShip), 0);   // TODO: where does j come from?
+            LINKSHIP(CA_MyShipPtr, &(SystemHeader[j].FirstShip), 0);
         }
     }
 }

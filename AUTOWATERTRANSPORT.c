@@ -17,7 +17,7 @@ bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr,
                 while ((MyShipPtr->Fracht < ShipData(MyShipPtr->SType).MaxLoad)
                         && (((MyPlanetHeader->Water-5) / MyPlanetHeader->Size) > 56))
                 {
-                    MyShipPtr->Fracht++;
+                    ++(MyShipPtr->Fracht);
                     MyPlanetHeader->Water -= 5;
                 }
                 (void) FINDNEXTPLANET(ActSys, MyShipPtr);
@@ -33,7 +33,7 @@ bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr,
                 while ((MyShipPtr->Fracht > 0)
                         && ((MyPlanetHeader->Water / MyPlanetHeader->Size) < 55))
                 {
-                    MyShipPtr->Fracht--;
+                    --(MyShipPtr->Fracht);
                     MyPlanetHeader->Water += 5;
                 }
                 (void) FINDNEXTPLANET(ActSys, MyShipPtr);

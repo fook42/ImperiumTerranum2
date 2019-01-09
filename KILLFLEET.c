@@ -10,13 +10,13 @@ void KILLFLEET(r_ShipHeader* MyShipPtr)
     LastShipPtr = MyShipPtr;
     MyShipPtr->NextShip = MyShipPtr->TargetShip;
     MyShipPtr->TargetShip->BeforeShip = MyShipPtr;
-    while (MyShipPtr != NULL)
+    while (NULL != MyShipPtr)
     {
         MyShipPtr->Owner = LastShipPtr->Owner;
         MyShipPtr = MyShipPtr->NextShip;
     }
     MyShipPtr->NextShip = LastShipPtr->NextShip;
-    if (LastShipPtr->NextShip != NULL)
+    if (NULL != LastShipPtr->NextShip)
     {
         LastShipPtr->NextShip->BeforeShip = MyShipPtr;
     }

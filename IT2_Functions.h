@@ -210,7 +210,8 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr);
 // <<<
 void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys);
 // >>> STARTROTATEPLANETS
-void CREATEINFOBOX();
+//// void CREATEINFOBOX();
+void CREATEINFOBOX(struct Window** CIB_Window, struct RastPort** CIB_RPort_PTR);
 void STARTROTATEPLANETS();
 // <<<
 void STATISTIK();

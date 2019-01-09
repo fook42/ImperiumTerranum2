@@ -13,8 +13,8 @@ void SYSTEMINFO(uint8 ActSys)
     r_ShipHeader*   MyShipPtr;
     r_ShipHeader*   UseShipPtr;
     bool    FleetUsed;
-	struct Window* SYS_Window;
-	struct RastPort* RPort_PTR;
+    struct Window* SYS_Window;
+    struct RastPort* RPort_PTR;
 
     b = false;
     MyShipPtr = (r_ShipHeader*) ObjPtr;
@@ -23,15 +23,15 @@ void SYSTEMINFO(uint8 ActSys)
         return;
     }
 
-	SYS_Window=MAKEWINDOW(194,119,123,114,MyScreen[0]);
-	if (NULL == SYS_Window)
-	{
-		return;
-	}
-	RPort_PTR = SYS_Window->RPort;
-	MAKEWINBORDER(RPort_PTR,0,0,122,113,12,6,1);
+    SYS_Window=MAKEWINDOW(194,119,123,114,MyScreen[0]);
+    if (NULL == SYS_Window)
+    {
+        return;
+    }
+    RPort_PTR = SYS_Window->RPort;
+    MAKEWINBORDER(RPort_PTR,0,0,122,113,12,6,1);
 
-	UseShipPtr = MyShipPtr;
+    UseShipPtr = MyShipPtr;
     if (SHIPTYPE_FLEET == MyShipPtr->SType)
     {
         FleetUsed = true;
@@ -39,9 +39,11 @@ void SYSTEMINFO(uint8 ActSys)
     } else {
         FleetUsed = false;
     }
+    y = 3;
     for(i = 0; i < 5; i++)
     {
-        DrawImage(RPort_PTR,&GadImg1,4,3+i*22);
+        DrawImage(RPort_PTR,&GadImg1,4,y);
+        y += 22;
     }
     WRITEWIN(62, 5,0,WRITE_Center,RPort_PTR,4,_PT_Sterne);
     WRITEWIN(62,27,0,WRITE_Center,RPort_PTR,4,_PT_Sprengen);
@@ -67,13 +69,13 @@ void SYSTEMINFO(uint8 ActSys)
             {
                 if ((SYS_Window->MouseY>=3) && (SYS_Window->MouseY<=23))
                 {
-					// travel to different system ...
+                    // travel to different system ...
                     KLICKWINGAD(RPort_PTR,4,3);
                     b = true;
-					CloseWindow(SYS_Window);
-					SYS_Window = NULL;
+                    CloseWindow(SYS_Window);
+                    SYS_Window = NULL;
 
-					DRAWSTARS(MODE_REDRAW,ActPlayer);
+                    DRAWSTARS(MODE_REDRAW,ActPlayer);
                     SysID = 0;
                     do
                     {
@@ -108,20 +110,20 @@ void SYSTEMINFO(uint8 ActSys)
                             MyShipPtr = SystemHeader[i-1].FirstShip.NextShip;       // TODO: where does "i" come from?
                         }
                     }
-					
+
                     DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                 } else if ((SYS_Window->MouseY>=25) && (SYS_Window->MouseY<=45))
                 {
-					// destroy ship ...
+                    // destroy ship ...
                     KLICKWINGAD(RPort_PTR,4,25);
                     b = true;
-					CloseWindow(SYS_Window);
-					SYS_Window = NULL;
+                    CloseWindow(SYS_Window);
+                    SYS_Window = NULL;
 
                     x = 256+(UseShipPtr->PosX+OffsetX)*32;
                     y = 256+(UseShipPtr->PosY+OffsetY)*32;
                     PLAYSOUND(2,1100);
-					// show explosion-animation
+                    // show explosion-animation
                     if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
                     {
                         RECTWIN(MyRPort_PTR[0],0,x,y,x+31,y+31);
@@ -133,7 +135,7 @@ void SYSTEMINFO(uint8 ActSys)
                         RECTWIN(MyRPort_PTR[0],0,x,y,x+31,y+31);
                     }
                     delay(10);
-					// remove ship/fleet
+                    // remove ship/fleet
                     UseShipPtr->Owner = 0;
                     UseShipPtr->SType = 8;
                     UseShipPtr->Moving = 0;
@@ -149,13 +151,13 @@ void SYSTEMINFO(uint8 ActSys)
                     custom.dmacon = BITCLR | DMAF_AUD0 | DMAF_AUD1; // 0x0003
                 } else if ((SYS_Window->MouseY>=47) && (SYS_Window->MouseY<=67))
                 {
-					// free/stick to position ...
+                    // free/stick to position ...
                     KLICKWINGAD(RPort_PTR,4,47);
                     b = true;
-					CloseWindow(SYS_Window);
-					SYS_Window = NULL;
+                    CloseWindow(SYS_Window);
+                    SYS_Window = NULL;
 
-					if (TARGET_POSITION == UseShipPtr->Target)
+                    if (TARGET_POSITION == UseShipPtr->Target)
                     {
                         UseShipPtr->Target = ActSys;
                         if (UseShipPtr->Moving>0)
@@ -167,43 +169,43 @@ void SYSTEMINFO(uint8 ActSys)
                     }
                 } else if ((SYS_Window->MouseY>=69) && (SYS_Window->MouseY<=89))
                 {
-					// watering / turn to stargate ...
+                    // watering / turn to stargate ...
                     KLICKWINGAD(RPort_PTR,4,69);
                     b = true;
-					CloseWindow(SYS_Window);
-					SYS_Window = NULL;
+                    CloseWindow(SYS_Window);
+                    SYS_Window = NULL;
                     if (SHIPTYPE_STARGATE == MyShipPtr->SType)
                     {
                         if (it_round((double) sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))) >= 10)
                         {
-							// too far from sun
-							SYS_Window=MAKEWINDOW(70,115,371,86,MyScreen[0]);
-							if (NULL == SYS_Window)
-							{
-								return;
-							}
-							RPort_PTR = SYS_Window->RPort;
-							MAKEWINBORDER(RPort_PTR,0,0,370,86,12,6,1);
+                            // too far from sun
+                            SYS_Window=MAKEWINDOW(70,115,371,86,MyScreen[0]);
+                            if (NULL == SYS_Window)
+                            {
+                                return;
+                            }
+                            RPort_PTR = SYS_Window->RPort;
+                            MAKEWINBORDER(RPort_PTR,0,0,370,86,12,6,1);
                             WRITEWIN(186,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[481]);
                             WRITEWIN(186,32,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[482]);
                             WRITEWIN(186,54,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[483]);
                             WAITLOOP(false);
                         } else if (0 == SystemHeader[ActSys-1].FirstShip.SType)
                         {
-							// install stargate
+                            // install stargate
                             SystemHeader[ActSys-1].FirstShip.SType = TARGET_STARGATE;
                             SystemHeader[ActSys-1].FirstShip.PosX = MyShipPtr->PosX;
                             SystemHeader[ActSys-1].FirstShip.PosY = MyShipPtr->PosY;
                             MyShipPtr->Owner = 0;
 
-							REFRESHDISPLAY();
+                            REFRESHDISPLAY();
                             delay(15);
                         } else {
-							// stargate is already there
+                            // stargate is already there
                             REQUEST(PText[485],PText[486],ActPlayerFlag,ActPlayerFlag);
                         }
                     } else {
-						// turn the ship into/out of watering-mode
+                        // turn the ship into/out of watering-mode
                         if (0 == MyShipPtr->Ladung)
                         {
                             if (!FleetUsed)
@@ -211,19 +213,19 @@ void SYSTEMINFO(uint8 ActSys)
                                 MyShipPtr->Flags = 1-MyShipPtr->Flags;
                                 /* SHIPFLAG_NONE <-> SHIPFLAG_WATER */
                                 MyShipPtr->Moving = 0;
-								REFRESHDISPLAY();
-							} else {
-								// fleets cant water
+                                REFRESHDISPLAY();
+                            } else {
+                                // fleets cant water
                                 REQUEST(PText[487],PText[488],ActPlayerFlag,ActPlayerFlag);
                             }
                         } else {
-							// still freight on board
+                            // still freight on board
                             REQUEST(PText[489],PText[490],ActPlayerFlag,ActPlayerFlag);
                         }
                     }
                 } else if ((SYS_Window->MouseY>=91) && (SYS_Window->MouseY<=111))
                 {
-					// wait at current position...
+                    // wait at current position...
                     KLICKWINGAD(RPort_PTR,4,91);
                     UseShipPtr->Moving = 0;
                     b = true;
@@ -237,8 +239,8 @@ void SYSTEMINFO(uint8 ActSys)
         }
     }
     while (!b);
-	if (NULL != SYS_Window)
-	{
-		CloseWindow(SYS_Window);
-	}
+    if (NULL != SYS_Window)
+    {
+        CloseWindow(SYS_Window);
+    }
 }

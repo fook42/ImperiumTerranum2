@@ -6,34 +6,41 @@
 void DOSSIER(bool Cheat)
 {
     uint8   i, j;
+    uint8   civflag;
+    uint16  posy;
     char    s[30];
     char*   _s;
-	struct Window* DOS_Window;
-	struct RastPort* RPort_PTR;
-	DOS_Window=MAKEWINDOW(0,50,511,393,MyScreen[0]);
-	if (NULL == DOS_Window)
-	{
-		return;
-	}
-	RPort_PTR = DOS_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,510,205,12,6,0);
-    MAKEWINBORDER(RPort_PTR,0,206,510,392,12,6,0);
+    struct Window* DOS_Window;
+    struct RastPort* RPort_PTR;
+    DOS_Window=MAKEWINDOW(0,50,511,393,MyScreen[0]);
+    if (NULL == DOS_Window)
+    {
+        return;
+    }
+    RPort_PTR = DOS_Window->RPort;
+    MAKEWINBORDER(RPort_PTR,0,  0,510,205,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,206,510,392,12,6,1);
 
-	WRITEWIN(175,10,12,WRITE_Right,RPort_PTR,3,_PT_Status);
+    WRITEWIN(175,10,12,WRITE_Right,RPort_PTR,3,_PT_Status);
     WRITEWIN(275,10,12,WRITE_Right,RPort_PTR,3,_PT_Bevoelkerung);
     WRITEWIN(345,10,12,WRITE_Right,RPort_PTR,3,_PT_Militaer);
     WRITEWIN(430,10,12,WRITE_Right,RPort_PTR,3,_PT_Guthaben);
     WRITEWIN(500,10,12,WRITE_Right,RPort_PTR,3,_PT_Wertung);
-    for (i = 1; i<MAXCIVS; i++)
+    posy = 20;
+    // i = 1..8
+    for (i = 1; i < MAXCIVS; ++i)
     {
-        if (((Save.WarState[i-1][ActPlayer-1] != LEVEL_UNKNOWN) || (i == ActPlayer) || (Cheat))
-         && ((i<8) || ((Save.WorldFlag!=0) && (Save.WorldFlag!=WFLAG_FIELD))))
+        if (((LEVEL_UNKNOWN != Save.WarState[i-1][ActPlayer-1]) || (i == ActPlayer) || (Cheat))
+         && ((8 > i) || ((0           != Save.WorldFlag) &&
+                         (WFLAG_FIELD != Save.WorldFlag)) ))
         {
+            posy += 20;
+            civflag = GETCIVFLAG(i);
             _s = GETCIVNAME(i);
-            WRITEWIN(14,i*20+20,GETCIVFLAG(i),0,RPort_PTR,3,_s);
-            if (i<8)
+            WRITEWIN(14, posy, civflag,0,RPort_PTR,3,_s);
+            if (8 > i)
             {
-                WRITEWIN(i*73-35,215,GETCIVFLAG(i),WRITE_Center,RPort_PTR,3,_s);
+                WRITEWIN(i*73-35,215,civflag,WRITE_Center,RPort_PTR,3,_s);
             }
             switch (Save.WarState[ActPlayer-1][i-1])
             {
@@ -44,56 +51,62 @@ void DOSSIER(bool Cheat)
             }
             if (i != ActPlayer)
             {
-                WRITEWIN(175,i*20+20,GETCIVFLAG(i),WRITE_Right,RPort_PTR,3,_s);
+                WRITEWIN(175, posy, civflag,WRITE_Right,RPort_PTR,3,_s);
             }
             if ((i == ActPlayer) || (Save.WarState[ActPlayer-1][i-1] == LEVEL_DIED)
              || (Save.SSMoney[ActPlayer-1][i-1] > (Save.WarPower[i-1]*39)) || (Cheat))
             {
                 _s = dez2out(Save.Bevoelkerung[i-1], 0, s);
                 strcpy(_s, " Mio");
-                WRITEWIN(275,i*20+20,GETCIVFLAG(i),WRITE_Right,RPort_PTR,3,s);
+                WRITEWIN(275, posy,civflag,WRITE_Right,RPort_PTR,3,s);
 
                 (void) dez2out(Save.WarPower[i-1], 0, s);
-                WRITEWIN(345,i*20+20,GETCIVFLAG(i),WRITE_Right,RPort_PTR,3,s);
+                WRITEWIN(345, posy,civflag,WRITE_Right,RPort_PTR,3,s);
 
                 (void) dez2out(Save.Staatstopf[i-1], 0, s);
-                WRITEWIN(430,i*20+20,GETCIVFLAG(i),WRITE_Right,RPort_PTR,3,s);
-                for (j = 1; j<=7; j++)
+                WRITEWIN(430, posy,civflag,WRITE_Right,RPort_PTR,3,s);
+                if ( ((0 < i) && (i < 8)) || ((0 != Save.WorldFlag) && (WFLAG_FIELD != Save.WorldFlag)) )
                 {
-                    if (( ((i>=1) && (i<=7)) || ((Save.WorldFlag!=0) && (Save.WorldFlag!=WFLAG_FIELD)) )
-                     && (((Save.WarState[i-1][j-1]!=LEVEL_DIED) && (Save.WarState[i-1][j-1]!=LEVEL_UNKNOWN)) || (Cheat))
-                     && ((i != j) || (GETCIVVAR(Save.WorldFlag) == i)))
+                    for (j = 1; j < 8; ++j)
                     {
-                        switch (Save.WarState[i-1][j-1])
+                        if ((   (LEVEL_DIED    != Save.WarState[i-1][j-1])
+                             && (LEVEL_UNKNOWN != Save.WarState[i-1][j-1]))
+                           || (Cheat))
                         {
-                           case LEVEL_ALLIANZ: _s = _PT_Allianz;    break;
-                           case LEVEL_DIED:    _s = _Txt_Separator; break;
-                           case LEVEL_WAR:     _s = _PT_Krieg;      break;
-                           default:
-                           {
-                              _s = _PT_Frieden;
-                              if ((Save.WorldFlag == WFLAG_JAHADR) && (i == 8) && (Save.JSteuer[j-1]>0))
-                              {
-                                 _s = PText[696];
-                              }
-                           }
-                        }
-                        if ((i == j) && (GETCIVVAR(Save.WorldFlag) == i))
-                        {
-                            WRITEWIN(j*73-35,217+i*18,GETCIVFLAG(i),(5|WRITE_Center),RPort_PTR,3, _PT_Krieg);
-                        } else {
-                            WRITEWIN(j*73-35,217+i*18,GETCIVFLAG(i),WRITE_Center,RPort_PTR,3, _s);
+                            if ((i != j) || (i == GETCIVVAR(Save.WorldFlag)))
+                            {
+                                switch (Save.WarState[i-1][j-1])
+                                {
+                                   case LEVEL_ALLIANZ: _s = _PT_Allianz;    break;
+                                   case LEVEL_DIED:    _s = _Txt_Separator; break;
+                                   case LEVEL_WAR:     _s = _PT_Krieg;      break;
+                                   default:
+                                   {
+                                      _s = _PT_Frieden;
+                                      if ((WFLAG_JAHADR == Save.WorldFlag) && (8 == i) && (0 < Save.JSteuer[j-1]))
+                                      {
+                                         _s = PText[696];
+                                      }
+                                   }
+                                }
+                                if ((i == j) && (i == GETCIVVAR(Save.WorldFlag)))
+                                {
+                                    WRITEWIN(j*73-35,217+i*18,civflag,(5|WRITE_Center),RPort_PTR,3, _PT_Krieg);
+                                } else {
+                                    WRITEWIN(j*73-35,217+i*18,civflag,   WRITE_Center ,RPort_PTR,3, _s);
+                                }
+                            }
                         }
                     }
                 }
             } else {
-                WRITEWIN(210,i*20+20,GETCIVFLAG(i),0,RPort_PTR,3, _PT_keineInfos);
+                WRITEWIN(210, posy,civflag,0,RPort_PTR,3, _PT_keineInfos);
             }
 
             (void) dez2out(Save.ImperatorState[i-1], 0, s);
-            WRITEWIN(500,i*20+20,GETCIVFLAG(i),WRITE_Right,RPort_PTR,3,s);
+            WRITEWIN(500, posy,civflag,WRITE_Right,RPort_PTR,3,s);
         }
     }
     WAITLOOP(false);
-	CloseWindow(DOS_Window);
+    CloseWindow(DOS_Window);
 }

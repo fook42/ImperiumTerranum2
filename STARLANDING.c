@@ -4,19 +4,19 @@
 #include "IT2_Functions.h"
 
 enum GROUND {
- ID_WATER     = -1,
- ID_WOOD      = (0<<5),
- ID_GRASS     = (1<<5),
- ID_DESERT    = (2<<5),
- ID_HILLS     = (3<<5),
- ID_SPHALANX  = (4<<5),
- ID_SDI       = (5<<5),
- ID_CITY1     = (6<<5),
- ID_CITY2     = (7<<5),
- ID_LAKE      = (8<<5),
- ID_UFER_OUT  = (9<<5),
- ID_UFER_IN   =(10<<5),
- ID_DESTROYED =(11<<5)
+    ID_WATER     = -1,
+    ID_WOOD      = (0<<5),
+    ID_GRASS     = (1<<5),
+    ID_DESERT    = (2<<5),
+    ID_HILLS     = (3<<5),
+    ID_SPHALANX  = (4<<5),
+    ID_SDI       = (5<<5),
+    ID_CITY1     = (6<<5),
+    ID_CITY2     = (7<<5),
+    ID_LAKE      = (8<<5),
+    ID_UFER_OUT  = (9<<5),
+    ID_UFER_IN   =(10<<5),
+    ID_DESTROYED =(11<<5)
 };
 
 
@@ -44,15 +44,14 @@ bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShip
     strcpy(s+stringlen, "LandScape");
     stringlen=strlen(s);
     switch (MyPlanetHeader->Class) {
-        case CLASS_DESERT:   s[stringlen] = 'D'; break;
-        case CLASS_HALFEARTH:s[stringlen] = 'H'; break;
-        case CLASS_EARTH:    s[stringlen] = 'M'; break;
-        case CLASS_ICE:      s[stringlen] = 'I'; break;
-        case CLASS_STONES:   s[stringlen] = 'T'; break;
-        case CLASS_WATER:    s[stringlen] = 'W'; break;
+        case CLASS_DESERT:   s[stringlen++] = 'D'; break;
+        case CLASS_HALFEARTH:s[stringlen++] = 'H'; break;
+        case CLASS_EARTH:    s[stringlen++] = 'M'; break;
+        case CLASS_ICE:      s[stringlen++] = 'I'; break;
+        case CLASS_STONES:   s[stringlen++] = 'T'; break;
+        case CLASS_WATER:    s[stringlen++] = 'W'; break;
         default: { }
     }
-    stringlen++;
     strcpy(s+stringlen, ".img");
     if (!RAWLOADIMAGE(s,0,0,640,32,5,&ImgBitMap5))
     {
@@ -114,7 +113,7 @@ void LANDING_DRAWFIRE()
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[HitX][HitY],0,MyRPort_PTR[1-AScr],HitX*32,HitY*32-Moved[1-AScr],32,32,192);
             } else {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[HitX][HitY],0,MyRPort_PTR[1-AScr],HitX*32,HitY*32-32,32,32,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[HitX][HitY],0,MyRPort_PTR[1-AScr],HitX*32,HitY*32-           32,32,32,192);
             }
             HitX = -1;
             HitY = -1;
@@ -123,7 +122,7 @@ void LANDING_DRAWFIRE()
     if (0 < Fired)
     {
         Fired--;
-    } else if ((LMB_PRESSED) && (MouseY(AScr) >= 65) && (MouseY(AScr) <= 382))
+    } else if ((LMB_PRESSED) && (MouseY(AScr) > 64) && (MouseY(AScr) < 383))
     {
         Fired = 7;
         if (Audio_enable)
@@ -133,18 +132,18 @@ void LANDING_DRAWFIRE()
             SPAddrD = SLSoundMemA; SPFreqD = 300; SPLengthD = SLSoundSize; SPVolD = 50;
             custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3;
         }
-        HitX = (MouseX(AScr) - 32) >> 5;
-        HitY = ((MouseY(AScr) / 2) + Moved[AScr]) >> 5;
+        HitX = MouseX(AScr) >> 5;
+        HitY = ((MouseY(AScr) >> 1) + Moved[AScr]) >> 5;
         LandShield[HitX][HitY] -= ShipWeapon;
         if ((((ID_SDI  ==LandID[HitX][HitY])|| (ID_SPHALANX==LandID[HitX][HitY])) && (0 > LandShield[HitX][HitY]))
            || (ID_WOOD ==LandID[HitX][HitY])|| (ID_GRASS==LandID[HitX][HitY]) || (ID_DESERT==LandID[HitX][HitY])
            || (ID_HILLS==LandID[HitX][HitY])|| (ID_CITY2==LandID[HitX][HitY]) || (ID_CITY1 ==LandID[HitX][HitY]))
         {
-            if       (ID_SDI      == LandID[HitX][HitY])  { SDIBaseHit++; }
-            else if  (ID_SPHALANX == LandID[HitX][HitY])  { SPHBaseHit++; }
+            if       (ID_SDI      == LandID[HitX][HitY])  { ++SDIBaseHit; }
+            else if  (ID_SPHALANX == LandID[HitX][HitY])  { ++SPHBaseHit; }
             else if ((ID_CITY1    == LandID[HitX][HitY])
-                  || (ID_CITY2    == LandID[HitX][HitY])) { CityHit++; }
-            else                                          { BioHit++; }
+                  || (ID_CITY2    == LandID[HitX][HitY])) { ++CityHit; }
+            else                                          { ++BioHit; }
             PLAYSOUND(2,800);
             LandID[HitX][HitY] = ID_DESTROYED;
             BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_DESTROYED,0,MyRPort_PTR[AScr],HitX*32,HitY*32-Moved[AScr],32,32,192);
@@ -169,7 +168,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     char*   _s;
     int     slen;
 
-    for(i = 0; i < 2; i++)
+    for(i = 0; i < 2; ++i)
     {
         RECTWIN(MyRPort_PTR[i],DefaultColor,0,0,255,240);
         RECTWIN(MyRPort_PTR[i],12,0,244,255,255);
@@ -178,9 +177,9 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
             RECTWIN(MyRPort_PTR[i],0,ShipShield,245,254,254);
         }
     }
-    for(j = 0; j < 8; j++)
+    for(j = 0; j < 8; ++j)
     {
-        for(i = 0; i < 8; i++)
+        for(i = 0; i < 8; ++i)
         {
             LandID[j][i] = ID_WATER;
             LandShield[j][i] = 0;
@@ -203,7 +202,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     BioDrawed = 0;
     BioHit = 0;
     CityComp = (MyPlanetHeader->Population / 300)+1;
-    if (CityComp>30)
+    if (30 < CityComp)
     {
         CityComp = 30;
     }
@@ -211,18 +210,20 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     do
     {
         /* MOVE UFER_IN */
-        SDIBases++;
+        ++SDIBases;
         Moved[AScr] -= 4;
         ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-        for(i = 0; i < 8; i++)
+        j = 0;
+        for(i = 0; i < 8; ++i)
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr],i*32,0,32,4,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
+            j += 32;
         }
         LANDING_DRAWFIRE();
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
     }
-    while (SDIBases < 14);
+    while (14 > SDIBases);
 
     SDIBases = (ActPProjects->data[34] / 10)-1;
     SPHBases = (ActPProjects->data[40] / 10)-1;
@@ -236,11 +237,13 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         SetRGB32(MyVPort_PTR[AScr],0,0,0,0);
         if (30 == Moved[AScr])
         {
-            for(i = 0; i <= 7; i++)
+            j = 0;
+            for(i = 0; i < 8; ++i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0], 0,MyRPort_PTR[AScr],i*32,2,32,2,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0], 0,MyRPort_PTR[AScr], j,2,32,2,192);
+                j += 32;
             }
-            for(i = 0; i <= 7; i++)
+            for(i = 0; i < 8; ++i)
             {
                 if ((ID_SDI == LandID[i][7]) || (ID_SPHALANX == LandID[i][7]))
                 {
@@ -250,73 +253,75 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                     if (0 > ShipShield) { ShipShield = 0; }
                     if ((0 <= ShipShield) && (255 >= ShipShield))
                     {
-                        for(k = 0; k < 2; k++)
-                        {
-                            RECTWIN(MyRPort_PTR[k],0,ShipShield,245,254,254);
-                        }
+                        RECTWIN(MyRPort_PTR[0],0,ShipShield,245,254,254);
+                        RECTWIN(MyRPort_PTR[1],0,ShipShield,245,254,254);
                     }
                 }
-                for (j = 6; j>=0; j--)
+                for (j = 6; j>=0; --j)
                 {
                     LandID[i][j+1]     = LandID[i][j];
                     LandShield[i][j+1] = LandShield[i][j];
                 }
             }
-            for(i = 0; i <= 7; i++)
+            for(i = 0; i < 8; ++i)
             {
                 LandShield[i][0] = 0;
-                if ((0 == (rand()%5)) || (CityDrawed>CityComp))
+                if ((0 == (rand()%5)) || (CityDrawed > CityComp))
                 {
-                    LandID[i][0] = (rand()%9)*32;
+                    LandID[i][0] = (rand()%9) << 5;     // 0..8 = ID_WOOD .. ID_LAKE
                     switch (LandID[i][0]) {
-                        case ID_SDI: if (SDIBases<0)
-                                    {
-                                        LandID[i][0] = ID_CITY1;
-                                    } else {
-                                        SDIBases--;
-                                        SDIBaseDrawed++;
-                                        LandShield[i][0] = 18;
-                                    } break;
-                        case ID_SPHALANX: if (SPHBases<0)
-                                    {
-                                        LandID[i][0] = ID_CITY2;
-                                    } else {
-                                        SPHBases--;
-                                        SPHBaseDrawed++;
-                                        LandShield[i][0] = 72;
-                                    } break;
+                        case ID_SDI:        if (0 > SDIBases)
+                                            {
+                                                LandID[i][0] = ID_CITY1;
+                                            } else {
+                                                --SDIBases;
+                                                ++SDIBaseDrawed;
+                                                LandShield[i][0] = 18;
+                                            } break;
+                        case ID_SPHALANX:   if (0 > SPHBases)
+                                            {
+                                                LandID[i][0] = ID_CITY2;
+                                            } else {
+                                                --SPHBases;
+                                                ++SPHBaseDrawed;
+                                                LandShield[i][0] = 72;
+                                            } break;
                         default: { }
                     }
                     if ((ID_CITY1 == LandID[i][0]) || (ID_CITY2 == LandID[i][0]))
                     {
-                        CityDrawed++;
+                        ++CityDrawed;
                     } else if ((ID_WOOD == LandID[i][0]) || (ID_HILLS == LandID[i][0]))
                     {
-                        BioDrawed++;
+                        ++BioDrawed;
                     }
                 } else {
                     if ((190 > MyPlanetHeader->Biosphaere) && (5 > (rand()%100)))
                     {
                         LandID[i][0] = 608; // 288+320 = ID_UFER_IN+ID_UFER_OUT
                     } else {
-                        LandID[i][0] = (rand()%3) << 5; // 0,32,64
-                        BioDrawed++;
+                        LandID[i][0] = (rand()%3) << 5; // 0,32,64  = ID_WOOD, ID_GRASS, ID_DESERT
+                        ++BioDrawed;
                     }
                 }
             }
-            for(i = 0; i <= 7; i++)
+            j = 0;
+            for(i = 0; i < 8; ++i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],30,MyRPort_PTR[AScr],i*32,0,32,2,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],         30,MyRPort_PTR[AScr], j,0,32,2,192);
+                j += 32;
             }
-            if (HitY>-1)
+            if (-1 < HitY)
             {
                 HitY++;
                 if (8 == HitY) { HitY = 0; }
             }
         } else {
-            for(i = 0; i <= 7; i++)
+            j = 0;
+            for(i = 0; i < 8; ++i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr],i*32,0,32,4,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
+                j += 32;
             }
         }
         LANDING_DRAWFIRE();
@@ -324,7 +329,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         AScr = 1-AScr;
         if ((SDIBases<0) && (SPHBases<0))
         {
-            SDIBases--;
+            --SDIBases;
         }
     }
     while (((ShipShield > 0) && ((SDIBases>=(-160)) || (CityDrawed<=CityComp))) || (AScr != 1));
@@ -387,9 +392,11 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
             {
                 Moved[AScr] -= 4;
                 ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-                for(i = 0; i < 8; i++)
+                j = 0;
+                for(i = 0; i < 8; ++i)
                 {
-                    BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr],i*32,0,32,4,192);
+                    BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
+                    j += 32;
                 }
                 LANDING_DRAWFIRE();
                 ScreenToFront(MyScreen[AScr]);
@@ -402,23 +409,31 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
 
         Moved[AScr] += 28;
         ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
+        j = 0;
         for(i = 0; i < 8; i++)
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0], 0,MyRPort_PTR[AScr],i*32,2,32,2,192);
-
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0], 0,MyRPort_PTR[AScr], j,2,32,2,192);
+            j += 32;
+        }
+        for(i = 0; i < 8; i++)
+        {
             for (j = 6; j>=0; j--)
             {
                 LandID[i][j+1]     = LandID[i][j];
                 LandShield[i][j+1] = LandShield[i][j];
             }
             LandID[i][0] = ID_UFER_OUT;
-
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_UFER_OUT,30,MyRPort_PTR[AScr],i*32,0,32,2,192);
         }
-        if (HitY>-1)
+        j = 0;
+        for(i = 0; i < 8; i++)
+        {
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_UFER_OUT,30,MyRPort_PTR[AScr], j,0,32,2,192);
+            j += 32;
+        }
+        if (-1 < HitY)
         {
             HitY++;
-            if (HitY == 8) { HitY = 0; }
+            if (8 == HitY) { HitY = 0; }
         }
 
         LANDING_DRAWFIRE();
@@ -426,30 +441,32 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         AScr = 1-AScr;
         do
         {
-            SDIBases++;
+            ++SDIBases;
             Moved[AScr] -= 4;
-            if (Moved[AScr]<0) { Moved[AScr] += 32; }
-            if (Moved[AScr] == 30)
+            if (0  >  Moved[AScr]) { Moved[AScr] += 32; }
+            if (30 == Moved[AScr])
             {
-                for(i = 0; i < 8; i++)
+                for(i = 0; i < 8; ++i)
                 {
-                    for (j = 6; j>=0; j--)
+                    for (j = 6; j>=0; --j)
                     {
                         LandID[i][j+1]     = LandID[i][j];
                         LandShield[i][j+1] = LandShield[i][j];
                     }
                     LandID[i][0] = ID_WATER;
                 }
-                if (HitY>-1)
+                if (-1 < HitY)
                 {
-                    HitY++;
-                    if (HitY == 8) { HitY = 0; }
+                    ++HitY;
+                    if (8 == HitY) { HitY = 0; }
                 }
             }
             ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-            for(i = 0; i <= 7; i++)
+            j = 0;
+            for(i = 0; i < 8; ++i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr],i*32,0,32,4,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
+                j += 32;
             }
             LANDING_DRAWFIRE();
             ScreenToFront(MyScreen[AScr]);
@@ -457,25 +474,25 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         }
         while (SDIBases < 14);
 
-        for(k = 1; k <= 128; k++)
+        for(k = 1; k < 129; k++)
         {
             Moved[AScr] -= 4;
             if (Moved[AScr]<0) { Moved[AScr] += 32; }
             if (Moved[AScr] == 30)
             {
-                for(i = 0; i < 8; i++)
+                for(i = 0; i < 8; ++i)
                 {
                     LandID[i][0] = ID_WATER;
-                    for (j = 6; j>=0; j--)
+                    for (j = 6; j>=0; --j)
                     {
                         LandID[i][j+1]     = LandID[i][j];
                         LandShield[i][j+1] = LandShield[i][j];
                     }
                 }
-                if (HitY>-1)
+                if (-1 < HitY)
                 {
-                    HitY++;
-                    if (HitY == 8) { HitY = 0; }
+                    ++HitY;
+                    if (8 == HitY) { HitY = 0; }
                 }
             }
             ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);

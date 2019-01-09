@@ -7,36 +7,40 @@ void FORSCHUNG()
 {
     sint32  l;
     int     i, j;
-    uint16  offset, pos;
+    uint16  offset;
+    uint16  posx, posy;
     uint8   haveTechColor;
     char    s[50];
     char*   _s;
-	struct Window* FOR_Window;
-	struct RastPort* RPort_PTR;
-	FOR_Window=MAKEWINDOW(0,0,511,512,MyScreen[0]);
-	if (NULL == FOR_Window)
-	{
-		return;
-	}
-	RPort_PTR = FOR_Window->RPort;
+    struct Window* FOR_Window;
+    struct RastPort* RPort_PTR;
+    FOR_Window=MAKEWINDOW(0,0,511,512,MyScreen[0]);
+    if (NULL == FOR_Window)
+    {
+        return;
+    }
+    RPort_PTR = FOR_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,  0,510,330,12,6,1);
     MAKEWINBORDER(RPort_PTR,0,331,510,400,12,6,1);
     MAKEWINBORDER(RPort_PTR,0,401,510,511,12,6,1);
 
     WRITEWIN(255,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[737]);
-    for (i = 0; i<=1; i++)
+    posx = 10;
+    for (i = 0; i < 2; ++i)
     {
-        pos=i*245+10;
-        for (j = 1; j<=21; j++)
+        posy = 29;
+        for (j = 0; j < 21; ++j)
         {
             haveTechColor = 29;
-            offset = i*21+j;
+            offset = i*21+j+1;
             if (Save.TechCosts[ActPlayer-1].data[offset]<=0)
             {
                 haveTechColor = 12;
             }
-            WRITEWIN(pos, j*14+15, haveTechColor, 0,RPort_PTR, 3, TechnologyL.data[offset]);
+            WRITEWIN(posx, posy, haveTechColor, 0, RPort_PTR, 3, TechnologyL.data[offset]);
+            posy += 14;
         }
+        posx += 245;
     }
 
     if (Save.ActTech[ActPlayer-1]>0)
@@ -48,7 +52,7 @@ void FORSCHUNG()
         *_s++=' ';
         strcpy(_s, _PT_Jahre);
         WRITEWIN(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,4,s);
- 
+
         MAKEWINBORDER(RPort_PTR,20,365,492,390,6,12,0);
         l = Save.TechCosts[ActPlayer-1].data[Save.ActTech[0]];
         if (l < 0) { l = 0; }
@@ -71,15 +75,15 @@ void FORSCHUNG()
             if (l<4)
             {
                 l++;
-                pos=415+l*18;
-                WRITEWIN(10,pos,ActPlayerFlag,0,RPort_PTR,3,Project.data[i]);
-                (void)dez2out(ShipData(i).MaxLoad,0,s);     WRITEWIN(150,pos,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
-                (void)dez2out(ShipData(i).MaxMove,0,s);     WRITEWIN(250,pos,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
-                (void)dez2out(ShipData(i).MaxShield,0,s);   WRITEWIN(350,pos,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
-                (void)dez2out(ShipData(i).WeaponPower,0,s); WRITEWIN(450,pos,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                posy=415+l*18;
+                WRITEWIN(10, posy, ActPlayerFlag, 0, RPort_PTR, 3, Project.data[i]);
+                (void)dez2out(ShipData(i).MaxLoad,0,s);     WRITEWIN(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                (void)dez2out(ShipData(i).MaxMove,0,s);     WRITEWIN(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                (void)dez2out(ShipData(i).MaxShield,0,s);   WRITEWIN(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                (void)dez2out(ShipData(i).WeaponPower,0,s); WRITEWIN(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
             }
         }
     }
     WAITLOOP(false);
-	CloseWindow(FOR_Window);
+    CloseWindow(FOR_Window);
 }

@@ -3,6 +3,18 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+char* SHIPINFO_MAKETEXT(char* s, char* text_PTR)
+{
+    uint8  l;
+    l = strlen(text_PTR);
+    memcpy(s, text_PTR, l);
+    s += l;
+    *s++=':';
+    *s++=' ';
+    *s++=' ';
+    return s;
+}
+
 void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
 {
     sint16  w1,w2,Col1,Col2;
@@ -71,9 +83,8 @@ void SHIPINFO(uint8 ActSys)
 {
     char    s[50];
     char*   _s;
-    char    Txt_Separate[]={":  "};
-    const int _Txt_Separate_len = (sizeof(Txt_Separate)/sizeof(Txt_Separate[0]))-1;
-    uint8   l,l1,l2;
+    char*   _s2;
+    uint8   l1,l2;
     r_ShipHeader*   MyShipPtr;
     APTR    ModC = NULL;
     uint32  ModL;
@@ -98,90 +109,61 @@ void SHIPINFO(uint8 ActSys)
 
     WRITEWIN(290,15,1,0,MyRPort_PTR[1],4,Project.data[MyShipPtr->SType]);
     s[0]='-'; s[1]=' ';
-    l=strlen(PText[190]);
-    memcpy(s+2, PText[190], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
+    _s2=s+2;
+    _s = SHIPINFO_MAKETEXT(_s2, PText[190]);
     switch (MyShipPtr->Weapon) {
-        case WEAPON_GUN:       strcpy(s+l, PText[185]); break;
-        case WEAPON_LASER:     strcpy(s+l, PText[186]); break;
-        case WEAPON_PHASER:    strcpy(s+l, PText[187]); break;
-        case WEAPON_DISRUPTOR: strcpy(s+l, PText[188]); break;
-        case WEAPON_PTORPEDO:  strcpy(s+l, PText[189]); break;
-        default: (void) dez2out(MyShipPtr->Weapon, 0, s+l);
+        case WEAPON_GUN:       strcpy(_s, PText[185]); break;
+        case WEAPON_LASER:     strcpy(_s, PText[186]); break;
+        case WEAPON_PHASER:    strcpy(_s, PText[187]); break;
+        case WEAPON_DISRUPTOR: strcpy(_s, PText[188]); break;
+        case WEAPON_PTORPEDO:  strcpy(_s, PText[189]); break;
+        default: (void) dez2out(MyShipPtr->Weapon, 0, _s);
     }  
     WRITEWIN(290,42,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[191]);
-    memcpy(s+2, PText[191], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    (void)dez2out(it_round((double)ShipData(MyShipPtr->SType).WeaponPower*(MyShipPtr->Weapon/10+1)), 0, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[191]);
+    (void)dez2out(it_round((double)ShipData(MyShipPtr->SType).WeaponPower*(MyShipPtr->Weapon/10+1)), 0, _s);
     WRITEWIN(290,62,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[192]);
-    memcpy(s+2, PText[192], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    (void)dez2out(ShipData(MyShipPtr->SType).MaxShield, 0, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[192]);
+    (void)dez2out(ShipData(MyShipPtr->SType).MaxShield, 0, _s);
     WRITEWIN(290,82,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[193]);
-    memcpy(s+2, PText[193], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    (void)dez2out(MyShipPtr->ShieldBonus, 0, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[193]);
+    (void)dez2out(MyShipPtr->ShieldBonus, 0, _s);
     WRITEWIN(290,102,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[194]);
-    memcpy(s+2, PText[194], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    _s = float2out( ((double) MyShipPtr->Shield / ShipData(MyShipPtr->SType).MaxShield*100.0), 0, 2, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[194]);
+    _s = float2out( ((double) MyShipPtr->Shield / ShipData(MyShipPtr->SType).MaxShield*100.0), 0, 2, _s);
     *_s++=' ';
     *_s++='%';
     *_s  =0;
     WRITEWIN(290,122,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[195]);
-    memcpy(s+2, PText[195], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    (void)dez2out(ShipData(MyShipPtr->SType).MaxMove, 0, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[195]);
+    (void)dez2out(ShipData(MyShipPtr->SType).MaxMove, 0, _s);
     WRITEWIN(290,142,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[196]);
-    memcpy(s+2, PText[196], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    (void)dez2out( ((MyShipPtr->Ladung & MASK_SIEDLER) / 16), 0, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[196]);
+    (void)dez2out( ((MyShipPtr->Ladung & MASK_SIEDLER) / 16), 0, _s);
     WRITEWIN(290,162,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[197]);
-    memcpy(s+2, PText[197], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    (void)dez2out( (MyShipPtr->Ladung & MASK_LTRUPPS), 0, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[197]);
+    (void)dez2out( (MyShipPtr->Ladung & MASK_LTRUPPS), 0, _s);
     WRITEWIN(290,182,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[198]);
-    memcpy(s+2, PText[198], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
-    _s = dez2out(it_round((double) MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, s+l);
+    _s = SHIPINFO_MAKETEXT(_s2, PText[198]);
+    _s = dez2out(it_round((double) MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, _s);
     strcpy(_s, "% belegt");
     WRITEWIN(290,202,1,0,MyRPort_PTR[1],3,s);
 
-    l=strlen(PText[199]);
-    memcpy(s+2, PText[199], l);
-    memcpy(s+2+l, Txt_Separate, _Txt_Separate_len);
-    l+=2+_Txt_Separate_len;
+    _s = SHIPINFO_MAKETEXT(_s2, PText[199]);
     if (MyShipPtr->Age<200)
     {
-        (void)dez2out(Year-(MyShipPtr->Age), 0, s+l);
+        (void)dez2out(Year-(MyShipPtr->Age), 0, _s);
     } else {
-        s[l++]=' ';
-        strcpy(s+l, PText[200]);
+        *_s++=' ';
+        strcpy(_s, PText[200]);
     }
     WRITEWIN(290,222,1,0,MyRPort_PTR[1],3,s);
 
@@ -198,12 +180,12 @@ void SHIPINFO(uint8 ActSys)
                 if ((MouseX(1)>=380) && (MouseX(1)<=410)
                         && (MyShipPtr->Repair < ShipData(MyShipPtr->SType).MaxMove))
                 {
-                    MyShipPtr->Repair++;
+                    ++(MyShipPtr->Repair);
                 }
                 if ((MouseX(1)>=490) && (MouseX(1)<=525)
                         && (MyShipPtr->Repair > 0))
                 {
-                    MyShipPtr->Repair--;
+                    --(MyShipPtr->Repair);
                 }
                 SHIPINFO_WRITEDATA(MyShipPtr);
             }
@@ -213,13 +195,13 @@ void SHIPINFO(uint8 ActSys)
                         && (MyShipPtr->Tactical < (ShipData(MyShipPtr->SType).WeaponPower-2))
                         && ((3*MyShipPtr->Tactical) < (MyShipPtr->Shield-2)))
                 {
-                    MyShipPtr->Tactical++;
+                    ++(MyShipPtr->Tactical);
                 }
                 if ((MouseX(1)>=490) && (MouseX(1)<=525)
                         && ((-3*MyShipPtr->Tactical) < (MyShipPtr->Shield-2))
                         && ((-MyShipPtr->Tactical) < (ShipData(MyShipPtr->SType).WeaponPower-2)))
                 {
-                    MyShipPtr->Tactical--;
+                    --(MyShipPtr->Tactical);
                 }
                 SHIPINFO_WRITEDATA(MyShipPtr);
             }

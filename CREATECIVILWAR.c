@@ -6,6 +6,7 @@
 void CREATECIVILWAR(uint8 CivVar)
 {
     int     i,j;
+    uint8   len;
     uint8   CivFlag;
     r_PlanetHeader* MyPlanetHeader;
     r_ShipHeader*   MyShipPtr;
@@ -15,21 +16,23 @@ void CREATECIVILWAR(uint8 CivVar)
 
     CivFlag = GETCIVFLAG(CivVar);
     if ((0 != Save.WorldFlag) && (Save.WorldFlag != CivFlag))
-	{ return; }
+    { return; }
     if  (0 == Save.WorldFlag)
     {
-        strcpy(s, PText[385]);
-        strcat(s, " ");
-        strcat(s, GETCIVNAME(CivVar));
-        strcat(s, " ");
-        strcat(s, PText[386]);
+        len = strlen(PText[385]);
+        memcpy(s, PText[385], len);
+        s[len++]=' ';
+        strcpy(s+len, GETCIVNAME(CivVar));
+        len = strlen(s);
+        s[len++]=' ';
+        strcpy(s+len, PText[386]);
         if (0 != Save.CivPlayer[CivVar-1])
         {
             ModC = GETTHESOUND(2);
             ModL = ModMemL[2];
             REQUEST(s,PText[387],CivFlag,CivFlag);
         }
-        for(i = 0; i < (MAXCIVS-1); i++)
+        for(i = 0; i < (MAXCIVS-1); ++i)
         {
             Save.WarState[i][7] = LEVEL_PEACE;
             Save.WarState[7][i] = LEVEL_PEACE;
@@ -38,7 +41,7 @@ void CREATECIVILWAR(uint8 CivVar)
         Save.WarState[7][CivVar-1] = LEVEL_WAR;
         Save.GSteuer[7] = 0;
         Save.Staatstopf[7] = -5000;
-        for(i = 1; i <= 42; i++)
+        for(i = 1; i < 43; ++i)
         {
             Save.TechCosts[7].data[i]    = Save.TechCosts[CivVar-1].data[i];
             Save.ProjectCosts[7].data[i] = Save.ProjectCosts[CivVar-1].data[i];
@@ -47,9 +50,9 @@ void CREATECIVILWAR(uint8 CivVar)
     Save.WorldFlag = CivFlag;
     Save.CivilWar = CivVar;
     SETWORLDCOLORS();
-    for(i = 0; i < Save.Systems; i++)
+    for(i = 0; i < Save.Systems; ++i)
     {
-        for(j = 0; j < SystemHeader[i].Planets; j++)
+        for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
             if ((GETCIVVAR(MyPlanetHeader->PFlags) == CivVar) && ((rand()%100) >= 50))

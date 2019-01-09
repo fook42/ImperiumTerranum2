@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void CREATEINFOBOX()
+void CREATEINFOBOX(struct Window** CIB_Window, struct RastPort** CIB_RPort_PTR)
 {
     char    s[60];
     char*   _s;
@@ -13,14 +13,19 @@ void CREATEINFOBOX()
     INFORMUSER();
     --ActPlayer;    // for array shifting...
 
-    MAKEWINBORDER(MyRPort_PTR[0],30,100,480,270,12,6,0);
-    len = strlen(PText[646]);
-    memcpy(s, PText[646], len);
-    s[len++]=' ';
-    _s = dez2out(Year, 0, s+len);
-    _s[0] = ':';
-    _s[1] = 0;
-    WRITEWIN(255,110,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],4,s);
+    *CIB_Window = MAKEWINDOW(30,100,451,171,MyScreen[0]);
+    if (NULL != (*CIB_Window))
+    {
+        *CIB_RPort_PTR = (*CIB_Window)->RPort;
+        MAKEWINBORDER(*CIB_RPort_PTR,0,0,450,170,12,6,1);
+        len = strlen(PText[646]);
+        memcpy(s, PText[646], len);
+        s[len++]=' ';
+        _s = dez2out(Year, 0, s+len);
+        _s[0] = ':';
+        _s[1] = 0;
+        WRITEWIN(225, 10,ActPlayerFlag,WRITE_Center,*CIB_RPort_PTR,4,s);
+    }
     PRINTGLOBALINFOS(ActPlayer);
 }
 
@@ -30,6 +35,8 @@ void STARTROTATEPLANETS()
     char    s[99];
     char*   _s;
     int     len;
+    struct Window*   SRP_Window = NULL;
+    struct RastPort* RPort_PTR = NULL;
 
     // Printf("## in STARTROTATEPLANETS ##\n");
     for(i = 0; i < MAXCIVS; i++)
@@ -56,14 +63,14 @@ void STARTROTATEPLANETS()
 
     if ((Year>1900) && (Save.CivPlayer[ActPlayer] != 0))
     {
-        if (Save.WarState[ActPlayer][ActPlayer] != LEVEL_DIED)
+        if (LEVEL_DIED != Save.WarState[ActPlayer][ActPlayer])
         {
             for(i = 0; i < (MAXCIVS-1); ++i)
             {
                 if (Save.LastWarState[ActPlayer][i] != Save.WarState[ActPlayer][i])
                 {
                     j++;
-                    if (Save.WarState[ActPlayer][i] == LEVEL_DIED)
+                    if (LEVEL_DIED == Save.WarState[ActPlayer][i])
                     {
                         len = strlen(PText[600]);
                         memcpy(s, PText[600], len);
@@ -88,7 +95,7 @@ void STARTROTATEPLANETS()
                         strcat(s, GETCIVNAME(ActPlayer+1));
                         strcat(s, " ");
                         strcat(s, PText[649]);
-                    } else if (Save.WarState[ActPlayer][i] == LEVEL_ALLIANZ) 
+                    } else if (Save.WarState[ActPlayer][i] == LEVEL_ALLIANZ)
                     {
                         strcpy(s, GETCIVNAME(i+1));
                         strcat(s, " ");
@@ -102,8 +109,8 @@ void STARTROTATEPLANETS()
                 }
                 if (j>1)
                 {
-                    if (!Informed) { CREATEINFOBOX(); }
-                    WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,s);
+                    if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
+                    WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
                 }
             }
         }
@@ -117,43 +124,40 @@ void STARTROTATEPLANETS()
             strcpy(s, GETCIVNAME(FLAG_OTHER));
             strcat(s, " ");
             strcat(s, PText[655]);
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,s);
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,PText[656]);
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,PText[656]);
         }
 
-        if ((0 != Save.CivilWar) && (6 == ActPlayer)
-         && (Save.WarState[Save.CivilWar-1][7] == Save.LastWarState[Save.CivilWar-1][7]))
-        {
-            Save.CivilWar = 0;
-        }
         if (0 != Save.CivilWar)
         {
-            if ((Save.WarState[Save.CivilWar-1][7] == LEVEL_UNKNOWN)
-             && (Save.LastWarState[Save.CivilWar-1][7] == LEVEL_WAR)
-             && (GETCIVVAR(Save.WorldFlag)>=1) && (GETCIVVAR(Save.WorldFlag)<=7))
+            if ((6 == ActPlayer) && (Save.WarState[Save.CivilWar-1][7] == Save.LastWarState[Save.CivilWar-1][7]))
+            {
+                Save.CivilWar = 0;
+            } else if ((LEVEL_UNKNOWN == Save.WarState[Save.CivilWar-1][7])
+                    && (LEVEL_WAR == Save.LastWarState[Save.CivilWar-1][7])
+                    && (GETCIVVAR(Save.WorldFlag)>=1) && (GETCIVVAR(Save.WorldFlag)<=7))
             {
                 strcpy(s, GETCIVNAME(FLAG_OTHER));
                 strcat(s, " ");
                 strcat(s, PText[657]);
-                if (!Informed) { CREATEINFOBOX(); }
+                if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
                 j++;
-                WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,s);
+                WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
             }
         }
-
-        if (GetPlanetSys[ActPlayer] != 0)
+        if (0 != GetPlanetSys[ActPlayer])
         {
             strcpy(s, _PT_Planet);
             strcat(s, " ");
             strcat(s, GetPlanet[ActPlayer]->PName);
             strcat(s, " ");
             strcat(s, PText[658]);
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,s);
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
         }
         if (Verschrottung[ActPlayer]>0)
         {
@@ -166,9 +170,9 @@ void STARTROTATEPLANETS()
             } else {
                 _s = PText[660];
             }
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4, _s);
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4, _s);
             Verschrottung[ActPlayer] = 0;
         }
 
@@ -177,9 +181,9 @@ void STARTROTATEPLANETS()
             strcpy(s, GETCIVNAME(ActPlayer+1));
             strcat(s, " ");
             strcat(s, PText[662]);
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,s);
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
             vNSonde[ActPlayer] = false;
         }
     }
@@ -188,39 +192,39 @@ void STARTROTATEPLANETS()
     {
         if        (1963 == Year)
         {
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"Auf der Erde nimmt Dank Gene Roddenberry");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"Auf der Erde nimmt Dank Gene Roddenberry");
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"eine Legende ihren Anfang!");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"eine Legende ihren Anfang!");
         } else if (1973 == Year)
         {
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"Auf der Erde wird ein");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"Auf der Erde wird ein");
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"genialer Programmierer geboren!");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"genialer Programmierer geboren!");
         } else if (2001 == Year)
         {
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"Stanley Kubricks & Arthur C. Clarkes");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"Stanley Kubricks & Arthur C. Clarkes");
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"Vision wird Wirklichkeit!");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"Vision wird Wirklichkeit!");
         } else if (2010 == Year)
         {
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"Peter Hyams & Arthur C. Clarkes");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"Peter Hyams & Arthur C. Clarkes");
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"Vision wird Wirklichkeit!");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"Vision wird Wirklichkeit!");
         } else if (2063 == Year)
         {
-            if (!Informed) { CREATEINFOBOX(); }
+            if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"Auf der Erde findet");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"Auf der Erde findet");
             j++;
-            WRITEWIN(255,100+j*18,12,WRITE_Center,MyRPort_PTR[0],4,"\"Der erste Kontakt\" statt!");
+            WRITEWIN(225,j*18,12,WRITE_Center,RPort_PTR,4,"\"Der erste Kontakt\" statt!");
         }
     }
     ++ActPlayer;    // for array shifting...
@@ -229,8 +233,11 @@ void STARTROTATEPLANETS()
     {
         if (Save.PlayMySelf) { delay(PAUSE); }
         WAITLOOP(Save.PlayMySelf);
-        RECTWIN(MyRPort_PTR[0],0,30,100,480,270);
-        REFRESHDISPLAY();
+        if (NULL != SRP_Window)
+        {
+            CloseWindow(SRP_Window);
+        }
+//        REFRESHDISPLAY();
         if (0 != GetPlanetSys[ActPlayer-1])
         {
             if ((!Save.PlayMySelf) && (0 != Save.CivPlayer[ActPlayer-1]))
@@ -251,7 +258,7 @@ void STARTROTATEPLANETS()
             HANDLESYSTEM(&LastDisplay[ActPlayer],NULL);
         }
     }
-    if ((Save.CivPlayer[ActPlayer-1] != 0) && (Informed))
+    if ((0 != Save.CivPlayer[ActPlayer-1]) && (Informed))
     {
         RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
         WRITEWIN(521,292,12,1,MyRPort_PTR[0],4,PText[663]);

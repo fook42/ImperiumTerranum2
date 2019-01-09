@@ -27,7 +27,7 @@ void AUTOVERHANDLUNG(uint8 CivFlag1, uint8 CivFlag2, uint8 ActSys, uint8 Mode)
     CivVar1--;
     CivVar2--;
     if ((!Save.PlayMySelf)
-        && ((Save.CivPlayer[CivVar1] != 0) || (Save.CivPlayer[CivVar2] != 0)))
+        && ((0 != Save.CivPlayer[CivVar1]) || (0 != Save.CivPlayer[CivVar2])))
     {
         if ((MODE_TERRITORIUM == Mode) || (MODE_BELEIDIGUNG == Mode))
         {
@@ -55,7 +55,7 @@ void AUTOVERHANDLUNG(uint8 CivFlag1, uint8 CivFlag2, uint8 ActSys, uint8 Mode)
     {
         if ((Save.JSteuer[CivVar2] >= 1) && (Save.JSteuer[CivVar2] <= 99))
         {
-            Save.JSteuer[CivVar2]++;
+            ++(Save.JSteuer[CivVar2]);
         } else {
             Save.JSteuer[CivVar2] = (uint8) (2+2*(Save.WarPower[7] / (double) (Save.WarPower[CivVar2]+1)));
             if (Save.JSteuer[CivVar2] > 53)

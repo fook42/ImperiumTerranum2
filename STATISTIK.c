@@ -12,14 +12,16 @@ void STATISTIK()
     char    s[50];
     char*   _s;
     uint8   i, j;
-	struct Window* STA_Window;
-	struct RastPort* RPort_PTR;
-	STA_Window=MAKEWINDOW(10,30,491,361,MyScreen[0]);
-	if (NULL == STA_Window)
-	{
-		return;
-	}
-	RPort_PTR = STA_Window->RPort;
+    uint16  posy;
+    
+    struct Window* STA_Window;
+    struct RastPort* RPort_PTR;
+    STA_Window=MAKEWINDOW(10,30,491,361,MyScreen[0]);
+    if (NULL == STA_Window)
+    {
+        return;
+    }
+    RPort_PTR = STA_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,490,360,12,6,1);
 
     Produktivitaet = 0;
@@ -32,11 +34,11 @@ void STATISTIK()
     Eth = 0;
     Buildings = 0;
 
-    for (i = 0; i < Save.Systems; i++)
+    for (i = 0; i < Save.Systems; ++i)
     {
         if ((SystemFlags[ActPlayer-1][i] & FLAG_KNOWN) == FLAG_KNOWN)
         {
-            for (j = 0; j < SystemHeader[i].Planets; j++)
+            for (j = 0; j < SystemHeader[i].Planets; ++j)
             {
                 MyPlanet = &(SystemHeader[i].PlanetMemA[j]);
                 if ((MyPlanet->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
@@ -56,7 +58,7 @@ void STATISTIK()
                     Infra   += MyPlanet->Infrastruktur;
                     Ind     += MyPlanet->Industrie;
                     Groesse += MyPlanet->Size;
-                    if ((MyPlanet->Ethno != 0) && ((MyPlanet->PFlags & FLAG_CIV_MASK) != MyPlanet->Ethno))
+                    if ((0 != MyPlanet->Ethno) && ((MyPlanet->PFlags & FLAG_CIV_MASK) != MyPlanet->Ethno))
                     {
                         Eth++;
                     }
@@ -65,9 +67,11 @@ void STATISTIK()
         }
     }
 
-    for (i = 1; i<=9; i++)
+    posy = 0;
+    for (i = 0; i < 9; i++)
     {
-        WRITEWIN(20,i*20,12,0,RPort_PTR,4, PText[700 + i-1]);
+        posy += 20;
+        WRITEWIN(20,posy,12,0,RPort_PTR,4, PText[700 + i]);
     }
 
     if (Planeten>0)
@@ -76,7 +80,7 @@ void STATISTIK()
         *_s++='%';
         *_s  =0;
         WRITEWIN(355,20,8,WRITE_Right,RPort_PTR,2,s);
-        
+
         _s = float2out( ((double)(20*Produktivitaet)/Planeten), 0, 2, s);
         *_s++='%';
         *_s  =0;
@@ -102,6 +106,7 @@ void STATISTIK()
 
         (void)dez2out(it_round((double)Groesse/(double)Planeten/10.0f), 0, s);
         WRITEWIN(340,140,8,WRITE_Right,RPort_PTR,2,s);
+
         _s = float2out( ((double)Eth/Planeten*100.0), 0, 2, s);
         *_s++='%';
         *_s  =0;
@@ -112,7 +117,7 @@ void STATISTIK()
     WRITEWIN(50,230,ActPlayerFlag,0,RPort_PTR,4,PText[710]);
     WRITEWIN(50,250,ActPlayerFlag,0,RPort_PTR,4,PText[711]);
 
-    if (Planeten>0)
+    if (0 < Planeten)
     {
         l = it_round((Buildings/Planeten*10.0)+(Bio/Planeten/2.0)+(Infra/Planeten/2.0));
         _s = float2out( ((double)l/3.1), 0, 2, s);
@@ -173,7 +178,7 @@ void STATISTIK()
     strcpy(_s, PText[414]);
     WRITEWIN(20,320,12,0,RPort_PTR,4,s);
 
-    
+
     // TODO ... debug-display???
     _s=dez2out(MaquesShips, 0, s);
     *_s++=' ';
@@ -181,5 +186,5 @@ void STATISTIK()
     WRITEWIN( 3, 2,12,0,RPort_PTR,1,s);
     WAITLOOP(false);
 
-	CloseWindow(STA_Window);
+    CloseWindow(STA_Window);
 }

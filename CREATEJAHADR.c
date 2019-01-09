@@ -15,7 +15,7 @@ void CREATEJAHADR(uint8 CJ_ActPlayer)
         return;
     }
     Save.WorldFlag = WFLAG_JAHADR;
-    for(i = 0; i < 8; i++)
+    for(i = 0; i < 8; ++i)
     {
         Save.WarState[i][CJ_ActPlayer]     = LEVEL_DIED;
         Save.LastWarState[i][CJ_ActPlayer] = LEVEL_DIED;
@@ -27,16 +27,16 @@ void CREATEJAHADR(uint8 CJ_ActPlayer)
     Save.TechCosts[7].data[15] = 0;
     Save.TechCosts[7].data[16] = 0;
     Save.GSteuer[7] = 0;
-    for(i = 1; i <= 42; i++)
+    for(i = 1; i < 43; ++i)
     {
         if (Save.TechCosts[CJ_ActPlayer].data[i] <= 0)
         {
             Save.TechCosts[7].data[i] = 0;
         }
     }
-    for(i = 0; i < Save.Systems; i++)
+    for(i = 0; i < Save.Systems; ++i)
     {
-        for(j = 0; j < SystemHeader[i].Planets; j++)
+        for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
             if (NULL != MyPlanetHeader)
@@ -59,16 +59,14 @@ void CREATEJAHADR(uint8 CJ_ActPlayer)
                         MyPlanetHeader->ProjectPtr->data[27] = MyPlanetHeader->ProjectPtr->data[27] | 16;
                     }
                     MyPlanetHeader->ProjectID = 0;
-                    if (NULL != MyPlanetHeader->FirstShip.NextShip)
+
+                    MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
+                    while (NULL != MyShipPtr)
                     {
-                        MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
-                        do
-                        {
-                            MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
-                            MyShipPtr = MyShipPtr->NextShip;
-                        }
-                        while (NULL != MyShipPtr);
+                        MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
+                        MyShipPtr = MyShipPtr->NextShip;
                     }
+
                 }
             }
         }

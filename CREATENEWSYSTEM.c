@@ -68,38 +68,29 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
 
     if (false == life_possible)
     {
-        i = (rand()%2)+2;
-        MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
-        l = (rand()%50)+5;
+        MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[(rand()%2)+2]);
 
+        l = (rand()%50)+5;
         MyPlanetHeader->Class = CLASS_EARTH;
         MyPlanetHeader->Size  = (rand()%197)+1;
-//        MyPlanetHeader->PFlags= 0;
         MyPlanetHeader->Ethno = 0;
-//        MyPlanetHeader->PosX  = (i*3.0)+4.0;
         MyPlanetHeader->PosY  = 0.0;
         MyPlanetHeader->Population = l;
         MyPlanetHeader->Water = l*73;
         MyPlanetHeader->Biosphaere    = 200;
         MyPlanetHeader->Infrastruktur = (rand()%50)+50;
         MyPlanetHeader->Industrie     = (rand()%50)+50;
-//        MyPlanetHeader->XProjectCosts = 0;
         MyPlanetHeader->XProjectPayed = 0;
-//        MyPlanetHeader->ProjectID = 0;
         memcpy(&MyPlanetHeader->FirstShip, &DefaultShip, sizeof(r_ShipHeader));
-//        MyPlanetHeader->ProjectPtr = NULL;
-
-//        strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
-//        strcat(MyPlanetHeader->PName, Romanum[i]);
     }
     l = SystemHeader[ActSys].Planets*20;
-    for (i = 1; i<=l; i++)
+    for (i = 0; i < l; ++i)
     {
-        for (j = 1; j<=SystemHeader[ActSys].Planets; j++)
+        for (j = 0; j < SystemHeader[ActSys].Planets; ++j)
         {
-            MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[j-1]);
+            MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[j]);
 
-            d = 1.0/((j*3.0)+1);
+            d = 1.0/((3.0+j*3.0)+1.0);
             sin_rot = sin(d);
             cos_rot = cos(d);
             d = MyPlanetHeader->PosX;
