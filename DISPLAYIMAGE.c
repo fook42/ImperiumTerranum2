@@ -8,7 +8,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
     char    FName[80];
     BPTR    FHandle;
     uint16  CNum, i;
-	uint16	CNum3;
+    uint16  CNum3;
     uint32  ISize, l=0, Addr;
     uint32* Size;
     uint16* Colors;
@@ -36,9 +36,9 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
         UNPACK(IMemA[0], IMemA[0]+IMemL[0]-ISize-250, l, 0);
         Close(FHandle);
     }
-	CNum =1<<Depth;		// 2 -> 4, 3 -> 8 ... 8 -> 256
-	CNum3=3*CNum;		// 2 -> 12,3 -> 24... 8 -> 768
-	
+    CNum =1<<Depth;     // 2 -> 4, 3 -> 8 ... 8 -> 256
+    CNum3=3*CNum;       // 2 -> 12,3 -> 24... 8 -> 768
+
     if (true == ImageIsValid)
     {
         memcpy(IMemA[0], (CacheMemA[CacheNum]+CNum3+8), (CacheMemL[CacheNum]-CNum3-8));
@@ -84,7 +84,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
         Addr += 4;
         Colors = (uint16*) Addr;
         Addr += 4;
-        for (i=0; i<(*Colors); i++)
+        for (i = 0; i < (*Colors); ++i)
         {
             RGB  = (r_Col*) Addr;
             Addr += 3;

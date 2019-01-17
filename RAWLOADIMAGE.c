@@ -21,28 +21,32 @@ bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
             (void) Read(FHandle, (IMemA[0]+IMemL[0]-ISize-250), ISize);
             l = (Width*Height*Depth)>>3;
 
-            UNPACK(IMemA[0], IMemA[0]+IMemL[0]-ISize-250, l, 0);       
-            if ((l == (DestBitMap->MemL)) && (Depth == 4))
+            UNPACK(IMemA[0], IMemA[0]+IMemL[0]-ISize-250, l, 0);
+            if ((l == (DestBitMap->MemL)) && (4 == Depth))
             {
                 CopyMemQuick(IMemA[0], DestBitMap->MemA, l);
+                _RAWLOADIMAGE = true;
             }
             else
             {
                 ISize = (Width*Height)>>3;
-
-                MyBitMap.BytesPerRow  = Width>>3;
-                MyBitMap.Rows         = Height;
-                MyBitMap.Flags        = 1;
-                MyBitMap.Depth        = Depth;
-                MyBitMap.pad          = 0;
-                for (i=0; i<8; i++)
+                InitBitMap(&MyBitMap, Depth, Width, Height);
+                l = 0;
+                for (i = 0; i < Depth; ++i)
                 {
-                    MyBitMap.Planes[i] = (PLANEPTR) (IMemA[0] + (i*ISize));
+                    MyBitMap.Planes[i] = (PLANEPTR) (IMemA[0] + l);
+                    l += ISize;
+                }
+                for (i = Depth; i < 8; ++i)
+                {
+                    MyBitMap.Planes[i] = NULL;
                 }
 
-                (void) BltBitMap( &MyBitMap, 0, 0, (struct BitMap*) DestBitMap, LEdge, TEdge, Width, Height, 192, 255, NULL );
+                if (Depth == BltBitMap( &MyBitMap, 0, 0, (struct BitMap*) DestBitMap, LEdge, TEdge, Width, Height, 192, 255, NULL ))
+                {
+                    _RAWLOADIMAGE = true;
+                }
             }
-            _RAWLOADIMAGE = true;
         }
         Close(FHandle);
     }

@@ -33,7 +33,7 @@ void DISPLAYLOGO(uint8 DL_ActPlayer, uint16 LEdge, uint16 TEdge)
                 (void) Seek(FHandle, 0, OFFSET_END);
                 ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
                 (void) Read(FHandle, (APTR) (ActMem+LOGOSIZE-ISize-150), ISize);
-                UNPACK(ActMem, (APTR) ActMem+LOGOSIZE-ISize-150, 14336, 1);
+                UNPACK(ActMem, (APTR) (ActMem+LOGOSIZE-ISize-150), LOGOMEMSIZE, 1);
                 Close(FHandle);
             }
         }

@@ -3,21 +3,21 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-enum GROUND {
-    ID_WATER     = -1,
-    ID_WOOD      = (0<<5),
-    ID_GRASS     = (1<<5),
-    ID_DESERT    = (2<<5),
-    ID_HILLS     = (3<<5),
-    ID_SPHALANX  = (4<<5),
-    ID_SDI       = (5<<5),
-    ID_CITY1     = (6<<5),
-    ID_CITY2     = (7<<5),
-    ID_LAKE      = (8<<5),
-    ID_UFER_OUT  = (9<<5),
-    ID_UFER_IN   =(10<<5),
-    ID_DESTROYED =(11<<5)
-};
+
+#define ID_WATER      (-1)
+#define ID_WOOD       (0)
+#define ID_GRASS      (1<<5)
+#define ID_DESERT     (2<<5)
+#define ID_HILLS      (3<<5)
+#define ID_SPHALANX   (4<<5)
+#define ID_SDI        (5<<5)
+#define ID_CITY1      (6<<5)
+#define ID_CITY2      (7<<5)
+#define ID_LAKE       (8<<5)
+#define ID_UFER_OUT   (9<<5)
+#define ID_UFER_IN   (10<<5)
+#define ID_DESTROYED (11<<5)
+#define ID_BUSTED    (19<<5)
 
 
 ITBitMap    ImgBitMap5;
@@ -32,12 +32,13 @@ int         LandShield[8][8];
 sint16      HitX, HitY, Fired;
 uint32      SDIBaseHit, SPHBaseHit, CityHit, BioHit;
 
-bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr)
+bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, uint8 Ship_Weapon)
 {
     //ImgBitMap5 , SLSoundSize, SLSoundMemA
     char    s[40];
     uint8   stringlen;
     BPTR    FHandle;
+    bool    returnvalue = false;
 
     stringlen = strlen(PathStr[0]);
     memcpy(s, PathStr[0], stringlen);
@@ -53,47 +54,49 @@ bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShip
         default: { }
     }
     strcpy(s+stringlen, ".img");
-    if (!RAWLOADIMAGE(s,0,0,640,32,5,&ImgBitMap5))
+    if (RAWLOADIMAGE(s,0,0,640,32,5,&ImgBitMap5))
     {
-        return false;
-    }
+        strcpy(s+stringlen, ".pal");
+        (void) SETCOLOR(MyScreen[0],s);
+        (void) SETCOLOR(MyScreen[1],s);
 
-    strcpy(s+stringlen, ".pal");
-    (void) SETCOLOR(MyScreen[0],s);
-    (void) SETCOLOR(MyScreen[1],s);
-
-    if (Audio_enable)
-    {
-        stringlen = strlen(PathStr[6]);
-        memcpy(s, PathStr[6], stringlen);
-        switch (MyShipPtr->Weapon) {
-            case WEAPON_GUN:       strcpy(s+stringlen,       "Gun"); break;
-            case WEAPON_LASER:     strcpy(s+stringlen,     "Laser"); break;
-            case WEAPON_PHASER:    strcpy(s+stringlen,    "Phaser"); break;
-            case WEAPON_DISRUPTOR: strcpy(s+stringlen, "Disruptor"); break;
-            case WEAPON_PTORPEDO:  strcpy(s+stringlen,  "PTorpedo"); break;
-            default: { }
-        }
-        strcat(s, ".RAW");
-        FHandle = OPENSMOOTH(s,MODE_OLDFILE);
-        if (0 == FHandle)
+        if (Audio_enable)
         {
-            return false;
+            stringlen = strlen(PathStr[6]);
+            memcpy(s, PathStr[6], stringlen);
+            switch (Ship_Weapon) {
+                case WEAPON_GUN:       strcpy(s+stringlen,       "Gun"); break;
+                case WEAPON_LASER:     strcpy(s+stringlen,     "Laser"); break;
+                case WEAPON_PHASER:    strcpy(s+stringlen,    "Phaser"); break;
+                case WEAPON_DISRUPTOR: strcpy(s+stringlen, "Disruptor"); break;
+                case WEAPON_PTORPEDO:  strcpy(s+stringlen,  "PTorpedo"); break;
+                default: { }
+            }
+            strcat(s, ".RAW");
+            FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+            if (0 != FHandle)
+            {
+                (void)        Seek(FHandle, 0, OFFSET_END);
+                SLSoundSize = Seek(FHandle, 0, OFFSET_BEGINNING);
+                SLSoundMemA = IMemA[0];
+                (void) Read(FHandle, SLSoundMemA, SLSoundSize);
+                SLSoundSize >>= 1;
+                Close(FHandle);
+                returnvalue = true;
+            }
+        } else {
+            returnvalue = true;
         }
-        (void)        Seek(FHandle, 0, OFFSET_END);
-        SLSoundSize = Seek(FHandle, 0, OFFSET_BEGINNING);
-        SLSoundMemA = IMemA[0];
-        (void) Read(FHandle, SLSoundMemA, SLSoundSize);
-        SLSoundSize >>= 1;
-        Close(FHandle);
     }
-    return true;
+    return returnvalue;
 }
 
 void LANDING_DRAWFIRE()
 {
     // r:  ImgBitMap5, AScr, Moved[], ShipWeapon
     // rw: Fired, HitX, HitY, LandID[][], LandShield[][], SDIBaseHit, SPHBaseHit, CityHit, BioHit
+
+    sint16  LandType;
 
     if (Audio_enable)
     {
@@ -106,18 +109,21 @@ void LANDING_DRAWFIRE()
     if ((HitX>-1) && (HitY>-1))
     {
         LandID[HitX][HitY] += 32;
-        BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[HitX][HitY],0,MyRPort_PTR[AScr],HitX*32,HitY*32-Moved[AScr],32,32,192);
-        if (608 == LandID[HitX][HitY])
+        LandType = LandID[HitX][HitY];
+
+        BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandType,0,MyRPort_PTR[AScr],HitX*32,HitY*32-Moved[AScr],32,32,192);
+        if (ID_BUSTED == LandType)
         {
             if (0 < Moved[1-AScr])
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[HitX][HitY],0,MyRPort_PTR[1-AScr],HitX*32,HitY*32-Moved[1-AScr],32,32,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_BUSTED,0,MyRPort_PTR[1-AScr],HitX*32,HitY*32-Moved[1-AScr],32,32,192);
             } else {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[HitX][HitY],0,MyRPort_PTR[1-AScr],HitX*32,HitY*32-           32,32,32,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_BUSTED,0,MyRPort_PTR[1-AScr],HitX*32,HitY*32-           32,32,32,192);
             }
             HitX = -1;
             HitY = -1;
         }
+        
     }
     if (0 < Fired)
     {
@@ -132,18 +138,24 @@ void LANDING_DRAWFIRE()
             SPAddrD = SLSoundMemA; SPFreqD = 300; SPLengthD = SLSoundSize; SPVolD = 50;
             custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3;
         }
-        HitX = MouseX(AScr) >> 5;
-        HitY = ((MouseY(AScr) >> 1) + Moved[AScr]) >> 5;
+        HitX = (MouseX(AScr)) >> 5;
+        HitY = (MouseY(AScr) + Moved[AScr]) >> 5;
+
         LandShield[HitX][HitY] -= ShipWeapon;
-        if ((((ID_SDI  ==LandID[HitX][HitY])|| (ID_SPHALANX==LandID[HitX][HitY])) && (0 > LandShield[HitX][HitY]))
-           || (ID_WOOD ==LandID[HitX][HitY])|| (ID_GRASS==LandID[HitX][HitY]) || (ID_DESERT==LandID[HitX][HitY])
-           || (ID_HILLS==LandID[HitX][HitY])|| (ID_CITY2==LandID[HitX][HitY]) || (ID_CITY1 ==LandID[HitX][HitY]))
+        LandType = LandID[HitX][HitY];
+
+        if ((((ID_SDI  ==LandType)|| (ID_SPHALANX==LandType)) && (0 > LandShield[HitX][HitY]))
+           || (ID_WOOD ==LandType)|| (ID_GRASS==LandType) || (ID_DESERT==LandType)
+           || (ID_HILLS==LandType)|| (ID_CITY2==LandType) || (ID_CITY1 ==LandType))
         {
-            if       (ID_SDI      == LandID[HitX][HitY])  { ++SDIBaseHit; }
-            else if  (ID_SPHALANX == LandID[HitX][HitY])  { ++SPHBaseHit; }
-            else if ((ID_CITY1    == LandID[HitX][HitY])
-                  || (ID_CITY2    == LandID[HitX][HitY])) { ++CityHit; }
-            else                                          { ++BioHit; }
+            switch (LandType)
+            {
+                case ID_SDI:        ++SDIBaseHit; break;
+                case ID_SPHALANX:   ++SPHBaseHit; break;
+                case ID_CITY1:
+                case ID_CITY2:      ++CityHit; break;
+                default:            ++BioHit;
+            }
             PLAYSOUND(2,800);
             LandID[HitX][HitY] = ID_DESTROYED;
             BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_DESTROYED,0,MyRPort_PTR[AScr],HitX*32,HitY*32-Moved[AScr],32,32,192);
@@ -163,6 +175,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     uint32  SDIBaseDrawed,SPHBaseDrawed,CityDrawed,BioDrawed,CityComp;
     double  Percs;
     int     i, j, k;
+    sint16  LandType;
 
     char    s[80];
     char*   _s;
@@ -177,14 +190,14 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
             RECTWIN(MyRPort_PTR[i],0,ShipShield,245,254,254);
         }
     }
-    for(j = 0; j < 8; ++j)
+    for(i = 0; i < 8; ++i)
     {
-        for(i = 0; i < 8; ++i)
+        for(j = 0; j < 8; ++j)
         {
-            LandID[j][i] = ID_WATER;
-            LandShield[j][i] = 0;
+            LandID[i][j] = ID_WATER;
+            LandShield[i][j] = 0;
         }
-        LandID[j][0] = ID_UFER_IN;
+        LandID[i][0] = ID_UFER_IN;
     }
     Moved[AScr]   = 32;
     Moved[1-AScr] = 30;
@@ -213,11 +226,11 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         ++SDIBases;
         Moved[AScr] -= 4;
         ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-        j = 0;
+        k = 0;
         for(i = 0; i < 8; ++i)
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
-            j += 32;
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], k,0,32,4,192);
+            k += 32;
         }
         LANDING_DRAWFIRE();
         ScreenToFront(MyScreen[AScr]);
@@ -237,20 +250,17 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         SetRGB32(MyVPort_PTR[AScr],0,0,0,0);
         if (30 == Moved[AScr])
         {
-            j = 0;
+            k = 0;
             for(i = 0; i < 8; ++i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0], 0,MyRPort_PTR[AScr], j,2,32,2,192);
-                j += 32;
-            }
-            for(i = 0; i < 8; ++i)
-            {
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0], 0,MyRPort_PTR[AScr], k,2,32,2,192);
+
                 if ((ID_SDI == LandID[i][7]) || (ID_SPHALANX == LandID[i][7]))
                 {
                     SetRGB32(MyVPort_PTR[AScr],0,0xFF000000,0xFF000000,0xFF000000);
                     PLAYSOUND(2,400);
                     ShipShield -= GroundWeapon;
-                    if (0 > ShipShield) { ShipShield = 0; }
+                    if (0  >  ShipShield) { ShipShield = 0; }
                     if ((0 <= ShipShield) && (255 >= ShipShield))
                     {
                         RECTWIN(MyRPort_PTR[0],0,ShipShield,245,254,254);
@@ -262,17 +272,15 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                     LandID[i][j+1]     = LandID[i][j];
                     LandShield[i][j+1] = LandShield[i][j];
                 }
-            }
-            for(i = 0; i < 8; ++i)
-            {
                 LandShield[i][0] = 0;
+
                 if ((0 == (rand()%5)) || (CityDrawed > CityComp))
                 {
-                    LandID[i][0] = (rand()%9) << 5;     // 0..8 = ID_WOOD .. ID_LAKE
-                    switch (LandID[i][0]) {
+                    LandType = (rand()%9) << 5;     // 0..8 = ID_WOOD .. ID_LAKE
+                    switch (LandType) {
                         case ID_SDI:        if (0 > SDIBases)
                                             {
-                                                LandID[i][0] = ID_CITY1;
+                                                LandType = ID_CITY1;
                                             } else {
                                                 --SDIBases;
                                                 ++SDIBaseDrawed;
@@ -280,61 +288,58 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                                             } break;
                         case ID_SPHALANX:   if (0 > SPHBases)
                                             {
-                                                LandID[i][0] = ID_CITY2;
+                                                LandType = ID_CITY2;
                                             } else {
                                                 --SPHBases;
                                                 ++SPHBaseDrawed;
                                                 LandShield[i][0] = 72;
                                             } break;
+                        case ID_WOOD:
+                        case ID_HILLS:      ++BioDrawed; break;
                         default: { }
                     }
-                    if ((ID_CITY1 == LandID[i][0]) || (ID_CITY2 == LandID[i][0]))
+                    if ((ID_CITY1 == LandType) || (ID_CITY2 == LandType))
                     {
                         ++CityDrawed;
-                    } else if ((ID_WOOD == LandID[i][0]) || (ID_HILLS == LandID[i][0]))
-                    {
-                        ++BioDrawed;
                     }
                 } else {
                     if ((190 > MyPlanetHeader->Biosphaere) && (5 > (rand()%100)))
                     {
-                        LandID[i][0] = 608; // 288+320 = ID_UFER_IN+ID_UFER_OUT
+                        LandType = ID_BUSTED; // ???
                     } else {
-                        LandID[i][0] = (rand()%3) << 5; // 0,32,64  = ID_WOOD, ID_GRASS, ID_DESERT
+                        LandType = (rand()%3) << 5; // 0,32,64  = ID_WOOD, ID_GRASS, ID_DESERT
                         ++BioDrawed;
                     }
                 }
-            }
-            j = 0;
-            for(i = 0; i < 8; ++i)
-            {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],         30,MyRPort_PTR[AScr], j,0,32,2,192);
-                j += 32;
+                LandID[i][0] = LandType;
+
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5, LandID[i][0], 30,MyRPort_PTR[AScr], k,0,32,2,192);
+                k += 32;
             }
             if (-1 < HitY)
             {
-                HitY++;
+                ++HitY;
                 if (8 == HitY) { HitY = 0; }
             }
         } else {
-            j = 0;
+            k = 0;
             for(i = 0; i < 8; ++i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
-                j += 32;
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], k,0,32,4,192);
+                k += 32;
             }
         }
         LANDING_DRAWFIRE();
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        if ((SDIBases<0) && (SPHBases<0))
+        if ((0 > SDIBases) && (0 > SPHBases))
         {
             --SDIBases;
         }
     }
-    while (((ShipShield > 0) && ((SDIBases>=(-160)) || (CityDrawed<=CityComp))) || (AScr != 1));
+    while (((0 < ShipShield) && (((-160) <= SDIBases) || (CityDrawed <= CityComp))) || (AScr != 0));
 
-    if (ShipShield<0)   /* DESTROYED SHIP */
+    if (0 > ShipShield)   /* DESTROYED SHIP */
     {
         MyShipPtr->Owner = 0;
         if (Audio_enable)
@@ -379,62 +384,57 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
             SPAddrC   = ZeroSound; SPLengthC = 1;
         }
 
-        for(i = 1; i <= 20; i++)
+        for(i = 0; i < 20; ++i)
         {
             ScreenToFront(MyScreen[AScr]);
             AScr = 1-AScr;
             WaitTOF();
         }
     } else {    /* MOVE UFER_OUT */
-        if ((Moved[AScr]-4)>0)
+        if (4 < Moved[AScr])
         {
             do
             {
                 Moved[AScr] -= 4;
                 ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-                j = 0;
+                k = 0;
                 for(i = 0; i < 8; ++i)
                 {
-                    BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
-                    j += 32;
+                    BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], k,0,32,4,192);
+                    k += 32;
                 }
                 LANDING_DRAWFIRE();
                 ScreenToFront(MyScreen[AScr]);
                 AScr = 1-AScr;
             }
-            while ((Moved[AScr]-4) >= 0);
+            while (3 < Moved[AScr]);
         }
-
-        SDIBases = 0;
 
         Moved[AScr] += 28;
         ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-        j = 0;
-        for(i = 0; i < 8; i++)
+        k = 0;
+        for(i = 0; i < 8; ++i)
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0], 0,MyRPort_PTR[AScr], j,2,32,2,192);
-            j += 32;
-        }
-        for(i = 0; i < 8; i++)
-        {
-            for (j = 6; j>=0; j--)
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap5, LandID[i][0], 0,MyRPort_PTR[AScr], k,2,32,2,192);
+
+            for (j = 6; j>=0; --j)
             {
                 LandID[i][j+1]     = LandID[i][j];
                 LandShield[i][j+1] = LandShield[i][j];
             }
             LandID[i][0] = ID_UFER_OUT;
-        }
-        j = 0;
-        for(i = 0; i < 8; i++)
-        {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_UFER_OUT,30,MyRPort_PTR[AScr], j,0,32,2,192);
-            j += 32;
+
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_UFER_OUT,30,MyRPort_PTR[AScr], k,0,32,2,192);
+            
+            k += 32;
         }
         if (-1 < HitY)
         {
-            HitY++;
+            ++HitY;
             if (8 == HitY) { HitY = 0; }
         }
+
+        SDIBases = 0;
 
         LANDING_DRAWFIRE();
         ScreenToFront(MyScreen[AScr]);
@@ -462,23 +462,24 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                 }
             }
             ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-            j = 0;
+            k = 0;
             for(i = 0; i < 8; ++i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], j,0,32,4,192);
-                j += 32;
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap5,LandID[i][0],Moved[AScr],MyRPort_PTR[AScr], k,0,32,4,192);
+                k += 32;
             }
+
             LANDING_DRAWFIRE();
             ScreenToFront(MyScreen[AScr]);
             AScr = 1-AScr;
         }
         while (SDIBases < 14);
 
-        for(k = 1; k < 129; k++)
+        for(k = 0; k < 128; ++k)
         {
             Moved[AScr] -= 4;
-            if (Moved[AScr]<0) { Moved[AScr] += 32; }
-            if (Moved[AScr] == 30)
+            if (0  >  Moved[AScr]) { Moved[AScr] += 32; }
+            if (30 == Moved[AScr])
             {
                 for(i = 0; i < 8; ++i)
                 {
@@ -495,8 +496,9 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                     if (8 == HitY) { HitY = 0; }
                 }
             }
+
             ScrollRaster(MyRPort_PTR[AScr],0,-4,0,0,255,240);
-            RECT(MyScreen[AScr],DefaultColor,0,0,255,4);
+            RECTWIN(MyRPort_PTR[AScr],DefaultColor,0,0,255,4);
             LANDING_DRAWFIRE();
             ScreenToFront(MyScreen[AScr]);
             AScr = 1-AScr;
@@ -686,7 +688,7 @@ void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
 
     SWITCHDISPLAY();
 
-    if (!STARLANDING_INITIMAGES(MyPlanetHeader, MyShipPtr))
+    if (!STARLANDING_INITIMAGES(MyPlanetHeader, MyShipPtr->Weapon))
     {
         STARLANDINGEXIT(true,PPtr,SPtr,ActSys);
         return;
@@ -721,7 +723,7 @@ void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
         } else {
             MyShipPtr->Shield = 1;
         }
-        MyShipPtr->ShieldBonus++;
+        ++(MyShipPtr->ShieldBonus);
     } else {
         MyShipPtr->Owner = 0;
     }

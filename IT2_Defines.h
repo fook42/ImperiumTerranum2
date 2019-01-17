@@ -26,8 +26,10 @@
 #define MASK_LTRUPPS    0x0f
 #define MASK_SIEDLER    0xf0
 
-#define RDELAY          1
 #define LOGOSIZE        14500
+#define LOGOMEMSIZE     (128*128*7/8)
+
+#define RDELAY          1
 #define PAUSE           10 //85
 
 #define GFLAG_EXPLORE   1

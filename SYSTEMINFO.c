@@ -40,7 +40,7 @@ void SYSTEMINFO(uint8 ActSys)
         FleetUsed = false;
     }
     y = 3;
-    for(i = 0; i < 5; i++)
+    for(i = 0; i < 5; ++i)
     {
         DrawImage(RPort_PTR,&GadImg1,4,y);
         y += 22;
@@ -89,6 +89,7 @@ void SYSTEMINFO(uint8 ActSys)
                         }
                     }
                     while((RMB_NOTPRESSED) && (0 == SysID));
+
                     if (RMB_PRESSED) { PLAYSOUND(1,300); }
                     if ((0 < SysID) && (MAXSYSTEMS >= SysID) && (ActSys != SysID))
                     {
@@ -127,7 +128,7 @@ void SYSTEMINFO(uint8 ActSys)
                     if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
                     {
                         RECTWIN(MyRPort_PTR[0],0,x,y,x+31,y+31);
-                        for(i = 0; i <= 15; i++)
+                        for(i = 0; i <= 15; ++i)
                         {
                             BltBitMapRastPort((struct BitMap*) &ImgBitMap4,i*32,0,MyRPort_PTR[0],x,y,31,31,192);
                             delay(5);

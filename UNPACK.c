@@ -15,7 +15,7 @@ void UNPACK(uint8* Anfang, uint8* PackedD, uint32 Laenge, uint8 Mode)
         Anz = *PackedD++;
         if (Anz&128)
         {
-            Anz = Anz-127;
+            Anz -= 127;
             memcpy((void*)UnPackedD, PackedD, Anz);
             PackedD += Anz;
         } else {
