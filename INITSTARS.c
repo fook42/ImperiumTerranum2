@@ -17,25 +17,31 @@ bool INITSTARS()
     srand((unsigned) time(&t));
 
     SystemFlags[0][0] = FLAG_TERRA|FLAG_KNOWN;
-    for (i = 1; i<(MAXCIVS-1); i++)
+    for (i = 1; i<(MAXCIVS-1); ++i)
     {
-        for (j = 1; j <= HomePlanets; j++)
+        for (j = 1; j <= HomePlanets; ++j)
         {
             PMemA[i][j] = AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
-            if (NULL == PMemA[i][j]) { return false; }
+            if (NULL == PMemA[i][j])
+            {
+                return false;
+            }
             ActPProjects = (ByteArr42*) PMemA[i][j];
             ActPProjects->data[0] = 1;
         }
     }
 
-    for (i = 0; i < MAXSYSTEMS; i++)
+    for (i = 0; i < MAXSYSTEMS; ++i)
     {
         SystemHeader[i] = (r_SystemHeader) {NULL,0,DefaultShip,0,0,0};
     }
     SystemHeader[0].FirstShip.Owner = FLAG_TERRA;
     SystemHeader[0].Planets = 9;
     SystemHeader[0].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[0].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
-    if (NULL == SystemHeader[0].PlanetMemA) { return false; }
+    if (NULL == SystemHeader[0].PlanetMemA)
+    {
+        return false;
+    }
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[0]);
     *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   2,FLAG_UNKNOWN,0,"",4,4,0,24,0,0,0,0,0,0,DefaultShip,NULL};
@@ -64,7 +70,7 @@ bool INITSTARS()
     PlanetHeader = &(SystemHeader[0].PlanetMemA[8]);
     *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   1,FLAG_UNKNOWN,0,"",30,30,0,11,0,0,0,0,0,0,DefaultShip,NULL};
     
-    for(i=0; i<9; i++)
+    for(i=0; i < 9; ++i)
     {
         strcpy(SystemHeader[0].PlanetMemA[i].PName, PNames[1].data[i]);
     }
@@ -74,7 +80,7 @@ bool INITSTARS()
     if (HomePlanets > 1)
     {
         l = HomePlanets;
-        for (j = 0; j < SystemHeader[0].Planets; j++)
+        for (j = 0; j < SystemHeader[0].Planets; ++j)
         {
             PlanetHeader = &(SystemHeader[0].PlanetMemA[j]);
             if (  (PlanetHeader->Class==CLASS_DESERT) || (PlanetHeader->Class==CLASS_HALFEARTH)
@@ -101,30 +107,30 @@ bool INITSTARS()
         Save.ImperatorState[0] -= HomePlanetProd*3;
         if (it_round(HomePlanetProd/15.0)>1)
         {
-            for (i = 1; i<=42; i++)
+            for (i = 1; i < 43; ++i)
             {
                 Save.TechCosts[0].data[i] = it_round((double) Save.TechCosts[0].data[i]*(HomePlanetProd/15.0));
             }
         }
     }
 
-    for (i = 0; i < 200; i++)
+    for (i = 0; i < 200; ++i)
     {
-        for (j = 0; j < SystemHeader[0].Planets; j++)
+        for (j = 0; j < SystemHeader[0].Planets; ++j)
         {
             PlanetHeader = &(SystemHeader[0].PlanetMemA[j]);
             d = 1.0/((j*3.0)+4);
             sin_rot = sin(d);
             cos_rot = cos(d);
             d = PlanetHeader->PosX; // added... to store previous PosX... d is unused at this point
-            PlanetHeader->PosX = PlanetHeader->PosX*cos_rot - PlanetHeader->PosY*sin_rot;
-            PlanetHeader->PosY = d*sin_rot                  + PlanetHeader->PosY*cos_rot;
+            PlanetHeader->PosX = d*cos_rot - PlanetHeader->PosY*sin_rot;
+            PlanetHeader->PosY = d*sin_rot + PlanetHeader->PosY*cos_rot;
         }
     }
     SystemX[0] = 10+(rand()%250)+(rand()%208);
     SystemY[0] = 10+(rand()%250)+(rand()%240);
 
-    for (i = 1; i < MAXSYSTEMS; i++)
+    for (i = 1; i < MAXSYSTEMS; ++i)
     {
         do
         {
@@ -134,7 +140,7 @@ bool INITSTARS()
             // check if the new system is too close to any previous one..
             // reduced calculation: dist^2=x^2+y^2 ... x,y = delta x,y
             // if x+y < 30 -> dist is max. sqrt(550)=~ 23
-            for (j = 0; j < i; j++)
+            for (j = 0; j < i; ++j)
             {
                 if ((abs(SystemX[i]-SystemX[j])+abs(SystemY[i]-SystemY[j])) < 30)
                 {
@@ -146,7 +152,7 @@ bool INITSTARS()
         SystemHeader[i].Planets = 0;
         SystemHeader[i].PlanetMemA = NULL;
         memcpy(&SystemHeader[i].FirstShip, &DefaultShip, sizeof(r_ShipHeader));
-        for (j = 0; j < (MAXCIVS-2); j++)
+        for (j = 0; j < (MAXCIVS-2); ++j)
         {
             SystemFlags[j][i] = FLAG_UNKNOWN;
         }
@@ -217,15 +223,15 @@ bool INITSTARS()
             }
         }
     }
-    if (HomePlanets>1)
+    if (1 < HomePlanets)
     {
-        for(k = 0; k < (HomePlanets+3); k++)
+        for(k = 0; k < (HomePlanets+3); ++k)
         {
-            for(i = 0; i < (MAXCIVS-2); i++)
+            for(i = 0; i < (MAXCIVS-2); ++i)
             {
-                if (Save.CivPlayer[i] != 0)
+                if (0 != Save.CivPlayer[i])
                 {
-                    for(j = 1; j <= 42; j++)
+                    for(j = 1; j < 43; ++j)
                     {
                         Save.ProjectCosts[i].data[j] = it_round(Save.ProjectCosts[i].data[j]*INFLATION);
                     }
@@ -234,10 +240,10 @@ bool INITSTARS()
         }
     }
 
-    for (j = 0; j < MAXHOLES; j++)
+    for (j = 0; j < MAXHOLES; ++j)
     {
         /* no civilization shall know about the wormholes */
-        for (i = 0; i < MAXCIVS; i++)
+        for (i = 0; i < MAXCIVS; ++i)
         {
             MyWormHole[j].CivKnowledge[i] = 0;
         }
@@ -254,7 +260,7 @@ bool INITSTARS()
             MyWormHole[j].System[1] = 0;
         } else {
             /* if the wormhole is valid, the position will be detemined */
-            for (i = 0; i < 2; i++)
+            for (i = 0; i < 2; ++i)
             {
                 /* pick any number  4 <= x <= 35 */
                 MyWormHole[j].PosX[i] = 35-(rand()%32);

@@ -3,19 +3,24 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+const struct worldcolors_t const worldcolors[] = {  {0x00000000,0xFF000000,0xFF000000}, // cyan
+                                                    {0x66000000,0x66000000,0xF7000000}, // light blue
+                                                    {0xFF000000,0x00000000,0x00000000}, // red
+                                                    {0x00000000,0xFF000000,0x12000000}, // green
+                                                    {0xFF000000,0xFF000000,0x00000000}, // yellow
+                                                    {0xBA000000,0x8B000000,0x48000000}, // brown
+                                                    {0xFF000000,0x00000000,0xB0000000}, // purple
+                                                    {0x77000000,0x77000000,0x77000000} // grey
+                                                };
+
 void SETWORLDCOLORS()
 {
-    uint8 r, g, b;
-    switch (GETCIVVAR(Save.WorldFlag))
+    uint8 col;
+    col = GETCIVVAR(Save.WorldFlag);
+    if (8 <= col)
     {
-        case 1: { r = 0x66; g = 0x66; b = 0xF7; break; } /* light blue */
-        case 2: { r = 0xFF; g = 0x00; b = 0x00; break; } /* red */
-        case 3: { r = 0x00; g = 0xFF; b = 0x12; break; } /* green */
-        case 4: { r = 0xFF; g = 0xFF; b = 0x00; break; } /* yellow */
-        case 5: { r = 0xBA; g = 0x8B; b = 0x48; break; } /* brown */
-        case 6: { r = 0xFF; g = 0x00; b = 0xB0; break; } /* purple */
-        case 7: { r = 0x77; g = 0x77; b = 0x77; break; } /* grey */
-        default:{ r = 0x00; g = 0xFF; b = 0xFF; }        /* cyan */
+        col = 0;
     }
-    SetRGB32(&(MyScreen[0]->ViewPort),1,((uint32) r)<<24,((uint32) g)<<24,((uint32) b)<<24);
+
+    SetRGB32(MyVPort_PTR[0], 1, worldcolors[col].r, worldcolors[col].g, worldcolors[col].b);
 }

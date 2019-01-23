@@ -112,6 +112,10 @@ typedef struct r_Col {
     uint8   r, g, b;
 } r_Col;
 
+typedef struct worldcolors_t {
+    uint32  r, g, b;
+} worldcolors_t;
+
 typedef struct r_Save {
     uint8       WarState[MAXCIVS][MAXCIVS];
     uint8       LastWarState[MAXCIVS][MAXCIVS];

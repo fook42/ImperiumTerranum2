@@ -46,9 +46,8 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
 
     if (ActPProjects->data[34]>0)
     {
-        LandShield = it_round(16.0*ActPProjects->data[34]/10.0);
+        LandShield = it_round(1.6*ActPProjects->data[34]);
         do{
-            
             switch (rand()%(5)) {
             case 0: ShipShield -= GroundWeapon; break;
             default: {
@@ -73,7 +72,7 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
     if ((ActPProjects->data[40]>0) && (ShipShield >= 0))
     {
         delay(20);
-        LandShield = it_round(64.0*ActPProjects->data[40]/10.0);
+        LandShield = it_round(6.4*ActPProjects->data[40]);
         do
         {
             switch (rand()%(5)) {

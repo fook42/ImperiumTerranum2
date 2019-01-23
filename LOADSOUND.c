@@ -11,7 +11,7 @@ void LOADSOUND(char* FName, uint8 SID)
     FHandle = OPENSMOOTH( FName, MODE_OLDFILE );
     if (0 == FHandle) { return; }
 
-    l = Seek(FHandle, 0, OFFSET_END);
+    (void) Seek(FHandle, 0, OFFSET_END);
     l = Seek(FHandle, 0, OFFSET_BEGINNING);
     SoundSize[SID] = l / 2;
     SoundMemA[SID] = AllocMem(l, MEMF_CHIP+MEMF_CLEAR);

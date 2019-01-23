@@ -6,7 +6,7 @@
 void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys)
 {
     sint16  x,y;
-    if ((MyShipPtr->Ladung & MASK_SIEDLER) == 0)
+    if (0 == (MyShipPtr->Ladung & MASK_SIEDLER))
     {
         LINKSHIP(MyShipPtr, &MyPlanetHeader->FirstShip,1);
     }

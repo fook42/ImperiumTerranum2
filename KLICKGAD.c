@@ -14,7 +14,7 @@ void KLICKGAD(const uint16 x, const uint16 y)
 }
 
 
-void KLICKWINGAD(const struct RastPort* RPort, const uint16 x, const uint16 y)
+void KLICKWINGAD(struct RastPort* RPort, const uint16 x, const uint16 y)
 {
     ClipBlit(RPort,x,y,&(XScreen->RastPort),0,0,116,20,192);
     DrawImage(RPort,&GadImg2,x,y);

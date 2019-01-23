@@ -18,6 +18,10 @@ void SYSTEMINFO(uint8 ActSys)
 
     b = false;
     MyShipPtr = (r_ShipHeader*) ObjPtr;
+    if (NULL == MyShipPtr)
+    {
+        return;
+    }
     if (0 == Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1])
     {
         return;
@@ -97,9 +101,9 @@ void SYSTEMINFO(uint8 ActSys)
                         MyShipPtr->Target = SysID;
                         MyShipPtr->Source = ActSys;
                         l = abs(SystemX[ActSys-1]-SystemX[SysID-1]) + abs(SystemY[ActSys-1]-SystemY[SysID-1]);
-                        l = -(l / ShipData(MyShipPtr->SType).MaxMove)-1;
-                        if (l<-127) { l = -127; }
-                        MyShipPtr->Moving = l;
+                        l = (l / ShipData(MyShipPtr->SType).MaxMove)+1;
+                        if (127 < l) { l = 127; }
+                        MyShipPtr->Moving = (-l);
                         if (!FleetUsed)
                         {
                             LINKSHIP(MyShipPtr, &SystemHeader[SysID-1].FirstShip, 1);
@@ -128,7 +132,7 @@ void SYSTEMINFO(uint8 ActSys)
                     if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
                     {
                         RECTWIN(MyRPort_PTR[0],0,x,y,x+31,y+31);
-                        for(i = 0; i <= 15; ++i)
+                        for(i = 0; i < 16; ++i)
                         {
                             BltBitMapRastPort((struct BitMap*) &ImgBitMap4,i*32,0,MyRPort_PTR[0],x,y,31,31,192);
                             delay(5);

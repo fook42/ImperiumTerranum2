@@ -49,7 +49,6 @@ struct TextAttr CustomTA[FONTS]={{(STRPTR) _Txt_FontName,11,0,0}, \
                                 
 struct Image    GadImg1 = { 0, 0, 116, 20, 7, NULL , 127, 0, NULL};
 struct Image    GadImg2 = { 0, 0, 116, 20, 7, NULL , 127, 0, NULL};
-
 #endif
 
 
@@ -67,8 +66,8 @@ _EXTERN_  struct Screen*    MyScreen[2];
 _EXTERN_  struct NewWindow  NeuWindow;
 _EXTERN_  struct Window*    MyWindow[2];
 _EXTERN_  struct Screen*    XScreen;
-_EXTERN_  struct RastPort*	MyRPort_PTR[2];
-_EXTERN_  struct ViewPort*	MyVPort_PTR[2];
+_EXTERN_  struct RastPort*  MyRPort_PTR[2];
+_EXTERN_  struct ViewPort*  MyVPort_PTR[2];
 
 
 _EXTERN_  struct ITBitMap   ImgBitMap4, ImgBitMap7, ImgBitMap8;
@@ -120,14 +119,14 @@ _EXTERN_  uint8         ActPlayer, ActPlayerFlag, Display;
 _EXTERN_  uint8         HomePlanets;
 
 _EXTERN_  void*         ObjPtr;
-_EXTERN_  uint8			ObjType;
+_EXTERN_  uint8         ObjType;
 
 // _EXTERN_  struct Gadget     DKnopf[GADGETS+1];
 // _EXTERN_  struct IntuiText  DKnopfTx[GADGETS+1];
 // _EXTERN_  void*         MTBase;
 // _EXTERN_  void*         MDBBase;
 _EXTERN_  bool          WBench, Bool_var, Valid; // , IMemID;
-_EXTERN_  bool			DoClock, MultiPlayer, Informed;
+_EXTERN_  bool          DoClock, MultiPlayer, Informed;
 _EXTERN_  r_HiScore     HiScore;
 
 _EXTERN_  struct r_PlanetHeader*    GetPlanet[MAXCIVS]; // new range 0..MAXCIVS-1

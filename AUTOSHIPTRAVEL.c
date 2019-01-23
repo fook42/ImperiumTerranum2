@@ -196,25 +196,25 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                     }
                                     SystemFlags[CivVar-1][i-1] |= FLAG_KNOWN;
 
-                                    srand((unsigned) time(&t));
-                                    if (0 == rand()%2)
-                                    {
-                                        MyShipPtr->PosX = -35;
-                                    } else {
-                                        MyShipPtr->PosX = +35;
-                                    }
-
-                                    switch (rand()%3) {
-                                        case 0: MyShipPtr->PosY = -35; break;
-                                        case 1: MyShipPtr->PosY = +35; break;
-                                        case 2: MyShipPtr->PosY =   0; break;
-                                        default: { }
-                                    }
                                     Printf("lp1 in\n");
-                                    printf("## AST - lp1 - OffsetX: %d OffsetY: %d\n",OffsetX, OffsetY);
 
+                                    srand((unsigned) time(&t));
                                     do
                                     {
+                                        if (0 == rand()%2)
+                                        {
+                                            MyShipPtr->PosX = -35;
+                                        } else {
+                                            MyShipPtr->PosX = +35;
+                                        }
+
+                                        switch (rand()%3) {
+                                            case 0: MyShipPtr->PosY = -35; break;
+                                            case 1: MyShipPtr->PosY = +35; break;
+                                            case 2: MyShipPtr->PosY =   0; break;
+                                            default: { }
+                                        }
+
                                         switch (rand()%4) {
                                             case 0: ++(MyShipPtr->PosX); break;
                                             case 1: ++(MyShipPtr->PosY); break;
@@ -222,8 +222,8 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             case 3: --(MyShipPtr->PosY); break;
                                             default: { }
                                         }
-                                        printf("## AST - i: %d - iStep: %d - ActSys: %d - Mode: %d - SysSteps: %d\n", i, iStep, ActSys, Mode, SysSteps);
-                                        printf("## AST - posx : %d - posy %d - findobj-type: %d\n",MyShipPtr->PosX, MyShipPtr->PosY, ObjType);
+                                        printf("## AST - i %02d - iStep %02d - ActSys %02d - Mode %02d - SysSteps %02d\n", i, iStep, ActSys, Mode, SysSteps);
+                                        printf("## AST ## posx %03d # posy %03d # OffsetX %03d # OffsetY %03d # findobj %02d ###\n",MyShipPtr->PosX, MyShipPtr->PosY, OffsetX, OffsetY, ObjType);
                                     }
                                     while (FINDOBJECT(i-1, 256+(MyShipPtr->PosX+OffsetX)*32, 256+(MyShipPtr->PosY+OffsetY)*32, MyShipPtr));
                                     Printf("lp1 out\n");

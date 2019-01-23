@@ -4,63 +4,63 @@
 #include "IT2_Functions.h"
 
 const char* const PName_def[8][11] =
-	{  {"Tacoron","Delosiab","Dhelax","Lakusid","Rosod",
-		"Munaxx", "Zehketa", "Yamos", "Jake",   "Emeneres",
-		"Andmun"},
-	   {0,0,0,0,0,0,0,0,0,0,0},
-	   {"Darukis","Akaneb", "Kleganeb","Sedokub","Khalakeb",
-		"Dasekab","Redaseb","Vedekab", "Damakeb","Khetomer",
-		"Zhalakab"},
-	   {"Akusum", "Celadum","Remalus","Dianum","Ecanum",
-		"Jamaris","Lorius", "Noratum","Tamarus","Pekateg",
-		"Raletis"},
-	   {"Inarett",  "Ferraccud","Cardaccia","Latecca",  "Ooro",
-		"Reedameec","Soorov",   "Zalee",    "Zaalasena","Veda",
-		"Sodoora"},
-	   {"Deragi",  "Sodaki",  "Feragini","Zolati", "Plauti",
-		"Olsatebi","Munakati","Rastoki", "Mosavli","Berali",
-		"Dresadai"},
-	   {"Bos","Dak","Bajo","Zeda","Co",
-		"Zud","Fec","Paq", "Loa", "Zate",
-		"Wid"},
-	   {"Wolaron","Unareus", "Volkan","Ataneia","Peratham",
-		"Musacem","Geratios","Paluae","Idakel", "Amirima",
-		"Ressan"}};
+    {  {"Tacoron","Delosiab","Dhelax","Lakusid","Rosod",
+        "Munaxx", "Zehketa", "Yamos", "Jake",   "Emeneres",
+        "Andmun"},
+       {0,0,0,0,0,0,0,0,0,0,0},
+       {"Darukis","Akaneb", "Kleganeb","Sedokub","Khalakeb",
+        "Dasekab","Redaseb","Vedekab", "Damakeb","Khetomer",
+        "Zhalakab"},
+       {"Akusum", "Celadum","Remalus","Dianum","Ecanum",
+        "Jamaris","Lorius", "Noratum","Tamarus","Pekateg",
+        "Raletis"},
+       {"Inarett",  "Ferraccud","Cardaccia","Latecca",  "Ooro",
+        "Reedameec","Soorov",   "Zalee",    "Zaalasena","Veda",
+        "Sodoora"},
+       {"Deragi",  "Sodaki",  "Feragini","Zolati", "Plauti",
+        "Olsatebi","Munakati","Rastoki", "Mosavli","Berali",
+        "Dresadai"},
+       {"Bos","Dak","Bajo","Zeda","Co",
+        "Zud","Fec","Paq", "Loa", "Zate",
+        "Wid"},
+       {"Wolaron","Unareus", "Volkan","Ataneia","Peratham",
+        "Musacem","Geratios","Paluae","Idakel", "Amirima",
+        "Ressan"}};
 
 const char* const ProjectShips[] =
-	{	"Wostok",    "Mir",      "Spaceshuttle","Starwing",
-		"Galaxy",    "Catamaran","Quasar",      "Destroyer",
-		"Voyager",   "Deltawing","Tristars",    "Voyager2",
-		"Warbird",   "Stargate", "Voyager3",    "Pulsar",
-		"Starburner" };
+    {   "Wostok",    "Mir",      "Spaceshuttle","Starwing",
+        "Galaxy",    "Catamaran","Quasar",      "Destroyer",
+        "Voyager",   "Deltawing","Tristars",    "Voyager2",
+        "Warbird",   "Stargate", "Voyager3",    "Pulsar",
+        "Starburner" };
 
 const LongArr42 techcosts =
-	{{	0,    2010, 2510, 3020, 13020,3030, 4530,  4040, 5040, 6550,
-	    7050, 7060, 9560, 11070,11070,12580,13080,15090, 15100,16100,
-	    17100,18200,29200,21300,21800,22900,23400,24500, 26000,26600,
-	    27600,29200,30200,33300,33800,35400,38900,40500, 55000,15000,
-	    55000,85000,135000}};
+    {{  0,    2010, 2510, 3020, 13020,3030, 4530,  4040, 5040, 6550,
+        7050, 7060, 9560, 11070,11070,12580,13080,15090, 15100,16100,
+        17100,18200,29200,21300,21800,22900,23400,24500, 26000,26600,
+        27600,29200,30200,33300,33800,35400,38900,40500, 55000,15000,
+        55000,85000,135000}};
 
 const LongArr42 projcosts =
-	{{ 0,  92010, 184020, 276030,
-		368040, 561050, 664060,
-		795000,
-		15080,17090,22100,25110,
-		28120,31130,34140,37150,
-		39160,43170,49180,55190,
-		63200,70210,78220,86230,
-		96240,
-		45250,12260,17270,45280,
-		50290, 19300, 55310,
-		35320, 50330, 55340,
-		30350, 25360, 25370,
-		50380, 35390,130400,
-		70410, 80420}};
+    {{ 0,  92010, 184020, 276030,
+        368040, 561050, 664060,
+        795000,
+        15080,17090,22100,25110,
+        28120,31130,34140,37150,
+        39160,43170,49180,55190,
+        63200,70210,78220,86230,
+        96240,
+        45250,12260,17270,45280,
+        50290, 19300, 55310,
+        35320, 50330, 55340,
+        30350, 25360, 25370,
+        50380, 35390,130400,
+        70410, 80420}};
 
 
 void INITVARS()
 {
-	int i,j;
+    int i,j;
 
     memset(&Pens, 0, sizeof(PenArr));
 
@@ -140,7 +140,7 @@ void INITVARS()
             Save.SSMoney[i][j] = 0;
             Save.WarState[i][j] = LEVEL_UNKNOWN;
             Save.LastWarState[i][j] = LEVEL_UNKNOWN;
-        }       
+        }
         Save.WarState[i][7] = LEVEL_DIED;
         Save.WarState[i][8] = LEVEL_DIED;
     }

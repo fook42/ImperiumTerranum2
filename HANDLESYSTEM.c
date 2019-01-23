@@ -95,16 +95,16 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
     RECTWIN(MyRPort_PTR[0],0,0,0,511,511);
     y = 0;
     z = 0;
-    for(i =  1; i <= 35; ++i) { PSys[i] = 0; }
-    for(i = 36; i <= 37; ++i) { PSys[i] = 1; }
+    for(i =  1; i < 36; ++i) { PSys[i] = 0; }
+    for(i = 36; i < 38; ++i) { PSys[i] = 1; }
 
-    for (i = stSys; i<= Save.Systems; ++i)
+    for (i = (stSys-1); i< Save.Systems; ++i)
     {
-        if ((SystemFlags[ActPlayer-1][i-1] & FLAG_KNOWN) == FLAG_KNOWN)
+        if ((SystemFlags[ActPlayer-1][i] & FLAG_KNOWN) == FLAG_KNOWN)
         {
-            for(j = 1; j <= SystemHeader[i-1].Planets; ++j)
+            for(j = 0; j < SystemHeader[i].Planets; ++j)
             {
-                MyPlanet = &(SystemHeader[i-1].PlanetMemA[j-1]);
+                MyPlanet = &(SystemHeader[i].PlanetMemA[j]);
 
                 if ((((MyPlanet->PFlags & FLAG_CIV_MASK) == CivFlag)       && (CivFlag != 0)) ||
                     (((MyPlanet->PFlags & FLAG_CIV_MASK) != ActPlayerFlag) && (CivFlag == 0) && (MyPlanet->PFlags>0)))
@@ -112,12 +112,11 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                     ++z;
                     if (36 == z)
                     {
-                        // LastSys = i;
                         WRITEWIN(100,497,12,0,MyRPort_PTR[0], 3, _Txt_nextPage);
-                        return i;
+                        return (i+1);
                     }
-                    PSys[z] = i;
-                    PNum[z] = j;
+                    PSys[z] = i+1;
+                    PNum[z] = j+1;
                     PCol[z] = MyPlanet->PFlags & FLAG_CIV_MASK;
                     if (PCol[z] == 0) { PCol[z] = 1; }
                     WRITEWIN(50,y,PCol[z],0,MyRPort_PTR[0],3,MyPlanet->PName);
@@ -154,7 +153,6 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
             }
         }
     }
-    // LastSys = 1;
     WRITEWIN(100,497,12,0,MyRPort_PTR[0],3,_Txt_nextPage);
     return 1;
 }
@@ -311,8 +309,8 @@ void SEARCHOBJECT(uint8* ActSys)
         while (RMB_NOTPRESSED && (!b));
     } else {
         // search planets ---
-        do
-        {
+//        do
+//        {
             delay(RDELAY);
             LastSys = DRAWPLANETS(Mode, 1, PSys, PNum, PCol);
             do
@@ -322,17 +320,17 @@ void SEARCHOBJECT(uint8* ActSys)
                 {
                     delay(RDELAY);
                     ThisP = (MouseY(0) / 14)+1;
-                    if ((PSys[ThisP] != 0) && (ThisP != LastP)
+                    if ((0 != PSys[ThisP]) && (ThisP != LastP)
                         && (MouseX(0)>=0) && (MouseX(0)<=511))
                     {
-                        if ((LastP<36) && (PSys[LastP] != 0))
+                        if ((36 > LastP) && (0 != PSys[LastP]))
                         {
                             MyPlanet = &(SystemHeader[PSys[LastP]-1].PlanetMemA[PNum[LastP]-1]);
                             WRITE(50,(LastP-1)*14,PCol[LastP],1,MyScreen[0],3,MyPlanet->PName);
                         } else {
                             WRITE(100,497,12,1,MyScreen[0],3,_Txt_nextPage);
                         }
-                        if (ThisP<36)
+                        if (36 > ThisP)
                         {
                             MyPlanet = &(SystemHeader[PSys[ThisP]-1].PlanetMemA[PNum[ThisP]-1]);
                             WRITE(50,(ThisP-1)*14,PCol[ThisP],5,MyScreen[0],3,MyPlanet->PName);
@@ -348,11 +346,11 @@ void SEARCHOBJECT(uint8* ActSys)
                 if (LMB_PRESSED)
                 {
                     PLAYSOUND(1,300);
-                    if (ThisP >= 36)
+                    if (37 < ThisP)
                     {
                         LastSys = DRAWPLANETS(Mode, LastSys, PSys, PNum, PCol);
                     } else {
-                        if (PSys[ThisP] != 0)
+                        if (0 != PSys[ThisP])
                         {
                             OffsetX = -it_round(MyPlanet->PosX)-1;
                             OffsetY = -it_round(MyPlanet->PosY)-1;
@@ -364,8 +362,8 @@ void SEARCHOBJECT(uint8* ActSys)
                 }
             }
             while (RMB_NOTPRESSED && (!b));
-        }
-        while (RMB_NOTPRESSED && (!b));
+//        }
+//        while (RMB_NOTPRESSED && (!b));
     }
     if (RMB_PRESSED)
     {

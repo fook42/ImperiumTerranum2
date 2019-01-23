@@ -6,9 +6,10 @@
 bool INITLANG()
 {
     bool    WordSet;
-    uint8*  c;
+    uint8   c;
     uint16  i;
-    uint32  Addr1;
+    uint8*  TextMemEnd;
+    uint8*  Char_PTR;
     char    s[] = {"Language.txt\0"};
     BPTR    FHandle;
 
@@ -35,28 +36,28 @@ bool INITLANG()
     }
     (void) Read(FHandle, TextMemA, TextMemL);
     Close(FHandle);
-    Addr1 = (uint32) TextMemA;
+    TextMemEnd = (uint8*) (TextMemA + TextMemL);
+    Char_PTR = (uint8*) TextMemA;
     i = 1;
     WordSet = false;
     do
     {
-        c = (uint8*) Addr1;
-        Addr1 = Addr1+1;
-        if ((((*c>=33) && (*c<=58)) || ((*c>=60) && (*c<=255))) && (!WordSet))
+        c = *Char_PTR;
+        if ( (33 <= c) && (59 != c) && (255 >= c) && (!WordSet) )
         {
-            PText[i] = (char*) (Addr1-1);
-            i++;
+            PText[i] = Char_PTR;
+            ++i;
             WordSet = true;
-            
-        } else if (*c == 59)
+        } else if (59 == c)
         {
             WordSet = true;
-        } else if ((*c == 10) && (WordSet))
+        } else if ((10 == c) && (WordSet))
         {
-            *c = 0;
+            *Char_PTR = 0;
             WordSet = false;
         }
+        ++Char_PTR;
     }
-    while ((Addr1 <= (((uint32) TextMemA)+TextMemL)) && (i<=MAXSTR));
+    while ((TextMemEnd >= Char_PTR) && (MAXSTR >= i));
     return true;
 }

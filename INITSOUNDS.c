@@ -5,17 +5,17 @@
 
 void INITSOUNDS()
 {
-    int     l;
+    uint8   slen;
     char    s[50];
 
-    l = strlen(PathStr[6]);
-    memcpy(s, PathStr[6], l+1);
-    strcpy(s+l, "Blip.RAW");
+    slen = strlen(PathStr[6]);
+    memcpy(s, PathStr[6], slen+1);
+    strcpy(s+slen, "Blip.RAW");
     LOADSOUND(s, 0);
 
-    strcpy(s+l, "DestroyDS.RAW");
+    strcpy(s+slen, "DestroyDS.RAW");
     LOADSOUND(s, 1);
 
-    strcpy(s+l, "StargateDS.RAW");
+    strcpy(s+slen, "StargateDS.RAW");
     LOADSOUND(s, 2);
 }

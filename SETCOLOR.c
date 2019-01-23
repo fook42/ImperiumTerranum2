@@ -5,7 +5,7 @@
 
 uint8 SETCOLOR(struct Screen* XScreen, char* FName)
 {
-    uint32  AddrX, l, ISize;
+    uint32  AddrX, AddrEnd, l, ISize;
     int     i;
     uint32* ColorID;
     r_Col*  Col;
@@ -19,13 +19,15 @@ uint8 SETCOLOR(struct Screen* XScreen, char* FName)
         ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
         (void) Read(FHandle, IMemA[0], ISize);
         Close(FHandle);
-        AddrX = (uint32) IMemA[0];
+        AddrX   = (uint32) IMemA[0];
+        AddrEnd = AddrX + ISize;
         do
         {
             ColorID = (uint32*) AddrX;
             AddrX = AddrX+4;
         }
-        while ((AddrX < ((uint32) IMemA[0]+ISize)) && (_COLOR_CMAP_TEXT_ != *ColorID));
+        while ((AddrX < AddrEnd) && (_COLOR_CMAP_TEXT_ != *ColorID));
+
         if (_COLOR_CMAP_TEXT_ == *ColorID)
         {
             AddrX = AddrX+4;
@@ -37,7 +39,7 @@ uint8 SETCOLOR(struct Screen* XScreen, char* FName)
                 SetRGB32(&(XScreen->ViewPort), i, (Col->r)<<24, (Col->g)<<24, (Col->b)<<24);
                 i++;
             }
-            while (AddrX<((uint32) IMemA[0]+ISize));
+            while (AddrX < AddrEnd);
             l = (uint32) ((ISize-8) / 3);
             i = 0;
             do

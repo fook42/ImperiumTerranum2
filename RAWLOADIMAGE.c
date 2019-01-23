@@ -6,7 +6,8 @@
 bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, ITBitMap* DestBitMap)
 {
     BPTR            FHandle;
-    uint32          ISize, l;
+    uint32          ISize, piclen;
+    PLANEPTR        plane_PTR;
     int             i;
     bool            _RAWLOADIMAGE = false;
     struct BitMap   MyBitMap;
@@ -19,23 +20,23 @@ bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
         if (0 != ISize)
         {
             (void) Read(FHandle, (IMemA[0]+IMemL[0]-ISize-250), ISize);
-            l = (Width*Height*Depth)>>3;
+            piclen = (Width*Height*Depth)>>3;
 
-            UNPACK(IMemA[0], IMemA[0]+IMemL[0]-ISize-250, l, 0);
-            if ((l == (DestBitMap->MemL)) && (4 == Depth))
+            UNPACK(IMemA[0], IMemA[0]+IMemL[0]-ISize-250, piclen, 0);
+            if ((piclen == (DestBitMap->MemL)) && (4 == Depth))
             {
-                CopyMemQuick(IMemA[0], DestBitMap->MemA, l);
+                CopyMemQuick(IMemA[0], DestBitMap->MemA, piclen);
                 _RAWLOADIMAGE = true;
             }
             else
             {
                 ISize = (Width*Height)>>3;
                 InitBitMap(&MyBitMap, Depth, Width, Height);
-                l = 0;
+                plane_PTR = (PLANEPTR) IMemA[0];
                 for (i = 0; i < Depth; ++i)
                 {
-                    MyBitMap.Planes[i] = (PLANEPTR) (IMemA[0] + l);
-                    l += ISize;
+                    MyBitMap.Planes[i] = plane_PTR;
+                    plane_PTR += ISize;
                 }
                 for (i = Depth; i < 8; ++i)
                 {

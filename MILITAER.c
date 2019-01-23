@@ -6,6 +6,7 @@
 void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 {
     uint8   i, btx;
+    uint16  y;
     uint8   XState, Fight, Costs;
     char    s[20];
     char*   _s;
@@ -22,17 +23,19 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
     XState = 0;
     Fight = 0;
     Costs = Save.Military[ActPlayer-1];
-    for (i = 1; i<=6; i++)
+    y = 55;
+    for (i = 0; i < 6; ++i)
     {
         if ((Save.Military[ActPlayer-1] & btx) == btx)
         {
-            XState += i;
+            XState += i+1;
             Fight  += 8;
-            WRITEWIN(24,i*30+25,12,1,RPort,4,"|");
+            WRITEWIN(24, y, 12, 1, RPort, 4,"|");
         } else {
-            RectFill(RPort, 24, i*30+25, 40, i*30+40);
+            RectFill(RPort, 24, y, 40, y+15);
         }
         btx = btx<<1;
+        y +=30;
     }
     s[0]=' ';
     s[1]='-';
@@ -54,21 +57,25 @@ void MILITAER()
     char    Txt_notavail[]= "--- (benötigt ";
     const int _Txt_notavail_len = (sizeof(Txt_notavail)/sizeof(Txt_notavail[0]))-1;
     char*   _s;
-    int   i;
+    int     i;
+    uint16  y;
 
-	struct Window* MIL_Window;
-	struct RastPort* RPort_PTR;
-	MIL_Window=MAKEWINDOW(50,70,411,331,MyScreen[0]);
-	if (NULL == MIL_Window)
-	{
-		return;
-	}
-	RPort_PTR = MIL_Window->RPort;
+    struct Window* MIL_Window;
+    struct RastPort* RPort_PTR;
+    MIL_Window=MAKEWINDOW(50,70,411,331,MyScreen[0]);
+    if (NULL == MIL_Window)
+    {
+        return;
+    }
+    RPort_PTR = MIL_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,410,330,12,6,1);
 
-
-    for (i = 0; i<6; i++)
-        { MAKEWINBORDER( RPort_PTR,20,i*30+50,45,i*30+75,12,6,1); }
+    y = 50;
+    for (i = 0; i < 6; ++i)
+    {
+        MAKEWINBORDER( RPort_PTR, 20, y, 45, y+25, 12, 6, 1);
+        y += 30;
+    }
 
     WRITEWIN(205,10,ActPlayerFlag,WRITE_Center, RPort_PTR,4,PText[667]);
     WRITEWIN(60, 55,12,0, RPort_PTR,4,PText[668]);
@@ -125,6 +132,6 @@ void MILITAER()
     }
     while (RMB_NOTPRESSED);
 
-	CloseWindow(MIL_Window);
+    CloseWindow(MIL_Window);
 }
 

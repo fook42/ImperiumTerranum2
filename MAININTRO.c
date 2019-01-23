@@ -16,7 +16,7 @@ VectorObj   VObj[13];
 
 void SETDARKCOLOR(char* FName, r_Col* Colors)
 {
-    uint32  AddrX, ISize;
+    uint32  AddrX, AddrEnd, ISize;
     uint8   i;
     uint32* ColorID;
     BPTR    FHandle;
@@ -29,12 +29,13 @@ void SETDARKCOLOR(char* FName, r_Col* Colors)
         (void) Read(FHandle, IMemA[0], ISize);
         Close(FHandle);
         AddrX = (uint32) IMemA[0];
+        AddrEnd = AddrX + ISize;
         do
         {
             ColorID = (uint32*) AddrX;
             AddrX += 4;
         }
-        while ((AddrX < ((uint32) IMemA[0]+ISize)) && (_COLOR_CMAP_TEXT_ != *ColorID));
+        while ((AddrX < AddrEnd) && (_COLOR_CMAP_TEXT_ != *ColorID));
 
         if (_COLOR_CMAP_TEXT_ == *ColorID)
         {
@@ -48,7 +49,7 @@ void SETDARKCOLOR(char* FName, r_Col* Colors)
                 AddrX += 3;
                 i++;
             }
-            while (AddrX < ((uint32) IMemA[0]+ISize));
+            while (AddrX < AddrEnd);
         }
         Colors[31].r = 45;
         Colors[31].g = 45;
@@ -273,8 +274,8 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
         Factor += 0.02f;
-        Ctr++;
-        for (i = 1; i<=31; i++)
+        ++Ctr;
+        for (i = 1; i < 32; ++i)
         {
             SetRGB32(MyVPort_PTR[AScr],i,it_round(Colors[i].r*Factor)<<24,
                                          it_round(Colors[i].g*Factor)<<24,
@@ -298,7 +299,7 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
     WaitTOF();
     WaitTOF();
     SetRGB4(MyVPort_PTR[AScr],0,0,0,0);
-    for (i = 1; i<=31; i++)
+    for (i = 1; i < 32; i++)
     {
         SetRGB32(MyVPort_PTR[AScr],i,Colors[i].r<<24,Colors[i].g<<24,Colors[i].b<<24);
     }
@@ -312,24 +313,24 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
                                       it_round(Colors[31].b*Factor)<<24);
         ScreenToFront(MyScreen[AScr]);
     }
-    while (Factor > 0);
-    for (i = 0; i<Objects; i++)
+    while (0 < Factor);
+    for (i = 0; i < Objects; ++i)
     {
-        for (j = 0; j<VObj[i].Size1; j++)
+        for (j = 0; j<VObj[i].Size1; ++j)
         {
-            VObj[i].PosX = VObj[i].PosX+VObj[i].X1[j];
-            VObj[i].PosY = VObj[i].PosY+VObj[i].Y1[j];
+            VObj[i].PosX += VObj[i].X1[j];
+            VObj[i].PosY += VObj[i].Y1[j];
         }
         VObj[i].PosX =     it_round(VObj[i].PosX / (double) VObj[i].Size1);
         VObj[i].PosY = 235+it_round(VObj[i].PosY / (double) VObj[i].Size1);
-        for (j = 0; j<VObj[i].Size1; j++)
+        for (j = 0; j<VObj[i].Size1; ++j)
         {
             VObj[i].X1[j] = (VObj[i].PosX+1)-VObj[i].X1[j];
             VObj[i].Y1[j] = (VObj[i].PosY+1)-VObj[i].Y1[j]-235;
         }
-        if (VObj[i].Size2>0)
+        if (0 < VObj[i].Size2)
         {
-            for (j = 0; j<VObj[i].Size2; j++)
+            for (j = 0; j<VObj[i].Size2; ++j)
             {
                 VObj[i].X2[j] = (VObj[i].PosX+1)-VObj[i].X2[j];
                 VObj[i].Y2[j] = (VObj[i].PosY+1)-VObj[i].Y2[j]-235;
@@ -342,15 +343,15 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
 
     custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
     Factor = 1.0025;
-    for (i = 1; (i<=29) && LMB_NOTPRESSED; i++)
+    for (i = 1; (i < 30) && LMB_NOTPRESSED; ++i)
     {
         Factor = Factor+0.004;
-        if (i>1)
+        if (1 < i)
         {
             SetAPen(MyRPort_PTR[AScr],0);
             RectFill(MyRPort_PTR[AScr],0,150,639,330);    /*75..434*/
         } else {
-            for (j = 2; j<=30; j++)
+            for (j = 2; j < 31; ++j)
             {
                 SetRGB32(MyVPort_PTR[AScr], j, (Colors[j].r*0xA)<<20,
                                                (Colors[j].g*0xA)<<20,
@@ -359,31 +360,29 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
         }
         if (i>16) { VObj[rand()%13].Size1 = 0; }
 
-        for (j = 0; j<Objects; j++)
+        SetAPen(MyRPort_PTR[AScr],1);
+        for (j = 0; j < Objects; ++j)
         {
-            if (VObj[j].Size1>0)
+            if (0 < VObj[j].Size1)
             {
-                if (j > 1)
+                if (1 < j)
                 {
                     SetAPen(MyRPort_PTR[AScr],0);
-                    if (VObj[j].Size2>4)
+                    if (4 < VObj[j].Size2)
                     {
-                        AreaMove(    MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X2[3]),it_round(VObj[j].PosY-VObj[j].Y2[3]));
-                        for (k = 4; k<=5; k++)
-                        {
-                            AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X2[k]),it_round(VObj[j].PosY-VObj[j].Y2[k]));
-                        }
+                        AreaMove(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X2[3]),it_round(VObj[j].PosY-VObj[j].Y2[3]));
+                        AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X2[4]),it_round(VObj[j].PosY-VObj[j].Y2[4]));
+                        AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X2[5]),it_round(VObj[j].PosY-VObj[j].Y2[5]));
                     }
-                    AreaMove(    MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X1[3]),it_round(VObj[j].PosY-VObj[j].Y1[3]));
-                    for (k = 4; k<=5; k++)
-                    {
-                        AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X1[k]),it_round(VObj[j].PosY-VObj[j].Y1[k]));
-                    }
+                    AreaMove(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X1[3]),it_round(VObj[j].PosY-VObj[j].Y1[3]));
+                    AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X1[4]),it_round(VObj[j].PosY-VObj[j].Y1[4]));
+                    AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X1[5]),it_round(VObj[j].PosY-VObj[j].Y1[5]));
+
                     AreaEnd(MyRPort_PTR[AScr]);
+                    SetAPen(MyRPort_PTR[AScr],1);
                 }
-                SetAPen(MyRPort_PTR[AScr],1);
                 AreaMove(    MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X1[0]),it_round(VObj[j].PosY-VObj[j].Y1[0]));
-                for (k = 1; k<VObj[j].Size1; k++)
+                for (k = 1; k<VObj[j].Size1; ++k)
                 {
                     AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X1[k]),it_round(VObj[j].PosY-VObj[j].Y1[k]));
                 }
@@ -391,20 +390,20 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
                 if (VObj[j].Size2>0)
                 {
                     AreaMove(    MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X2[0]),it_round(VObj[j].PosY-VObj[j].Y2[0]));
-                    for (k = 1; k<VObj[j].Size2; k++)
+                    for (k = 1; k<VObj[j].Size2; ++k)
                     {
                         AreaDraw(MyRPort_PTR[AScr],it_round(VObj[j].PosX-VObj[j].X2[k]),it_round(VObj[j].PosY-VObj[j].Y2[k]));
                     }
                     AreaEnd(MyRPort_PTR[AScr]);
                 }
+                if ((VObj[j].Flag & ROTATE_PX) != 0) { ROTATEpX(j); }
+                if ((VObj[j].Flag & ROTATE_PY) != 0) { ROTATEpY(j); }
+                if ((VObj[j].Flag & ROTATE_PZ) != 0) { ROTATEpZ(j); }
+                if ((VObj[j].Flag & ROTATE_NX) != 0) { ROTATEnX(j); }
+                if ((VObj[j].Flag & ROTATE_NY) != 0) { ROTATEnY(j); }
+                if ((VObj[j].Flag & ROTATE_NZ) != 0) { ROTATEnZ(j); }
+                FLY(j, Factor);
             }
-            if ((VObj[j].Flag & ROTATE_PX) != 0) { ROTATEpX(j); }
-            if ((VObj[j].Flag & ROTATE_PY) != 0) { ROTATEpY(j); }
-            if ((VObj[j].Flag & ROTATE_PZ) != 0) { ROTATEpZ(j); }
-            if ((VObj[j].Flag & ROTATE_NX) != 0) { ROTATEnX(j); }
-            if ((VObj[j].Flag & ROTATE_NY) != 0) { ROTATEnY(j); }
-            if ((VObj[j].Flag & ROTATE_NZ) != 0) { ROTATEnZ(j); }
-            FLY(j, Factor);
         }
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;

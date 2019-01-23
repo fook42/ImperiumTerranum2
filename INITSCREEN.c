@@ -6,6 +6,7 @@
 void INITSCREEN(uint8 Mode)
 {
     uint8   i;
+    uint16  y;
     char    s[40];
 
     if (SCREEN_TECH == Mode)
@@ -33,9 +34,11 @@ void INITSCREEN(uint8 Mode)
         WRITEWIN(185,359,2,           0,MyRPort_PTR[1],4,PText[157]);
         WRITEWIN(120,461,2,WRITE_Center,MyRPort_PTR[1],4,PText[158]);
         WRITEWIN(262,461,2,WRITE_Center,MyRPort_PTR[1],4,PText[159]);
-        for (i = 0; i<3; i++)
+        y = 103;
+        for (i = 0; i < 3; ++i)
         {
-            WRITEWIN(333,i*49+103,2,0,MyRPort_PTR[1],4,"%");
+            WRITEWIN(333, y,2,0,MyRPort_PTR[1],4,"%");
+            y += 49;
         }
         WRITEWIN(333,402,2,0,MyRPort_PTR[1],4,"%");
     }

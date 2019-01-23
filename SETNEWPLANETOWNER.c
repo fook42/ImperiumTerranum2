@@ -5,7 +5,7 @@
 
 bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet, sint16* TheProject, uint8 ActSys, char** s1, char** s2, bool* PlanetLose)
 {
-    uint8           i, NewEthnoFlag;
+    uint8           i, NewEthnoFlag, CivVar;
     r_ShipHeader*   MyShipPtr;
 
     NewEthnoFlag = 0;
@@ -23,7 +23,7 @@ bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet
             }
         }
 
-        if (NewEthnoFlag != 0)
+        if (0 != NewEthnoFlag)
         {
             do
             {
@@ -35,16 +35,17 @@ bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet
             NewEthnoFlag = GETCIVFLAG(i+1);
         }
     }
-    if (NewEthnoFlag == 0)
+    if (0 == NewEthnoFlag)
         { return false; }
 
-    if (GetPlanetSys[GETCIVVAR(NewEthnoFlag)-1] != 0)
+    CivVar = GETCIVVAR(NewEthnoFlag)-1;
+    if (0 != GetPlanetSys[CivVar])
         { return false; }
 
-    GetPlanet[GETCIVVAR(NewEthnoFlag)-1] = MyPlanetHeader;
-    GetPlanetSys[GETCIVVAR(NewEthnoFlag)-1] = ActSys;
+    GetPlanet[CivVar] = MyPlanetHeader;
+    GetPlanetSys[CivVar] = ActSys;
     memcpy(OldPlanet, MyPlanetHeader, sizeof(r_PlanetHeader));
-    if (Save.CivPlayer[ActPlayer-1] != 0)
+    if (0 != Save.CivPlayer[ActPlayer-1])
         { *TheProject = -1; }
 
     *s1 = PText[555];
@@ -52,22 +53,26 @@ bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet
     {
         *s2 = PText[556];
     }
+    CivVar = GETCIVVAR(MyPlanetHeader->Ethno)-1;
     for(i = 0; i < (MAXCIVS-1); i++)
     {
-        if (Save.WarState[i][GETCIVVAR(MyPlanetHeader->Ethno)-1] == LEVEL_DIED)
+        if (LEVEL_DIED == Save.WarState[i][CivVar])
         {
-            Save.WarState[i][GETCIVVAR(MyPlanetHeader->Ethno)-1] = LEVEL_PEACE;
+            Save.WarState[i][CivVar] = LEVEL_PEACE;
         }
     }
-    if (Save.WarState[GETCIVVAR(MyPlanetHeader->PFlags)-1][GETCIVVAR(MyPlanetHeader->Ethno)-1] == LEVEL_DIED)
+    if (LEVEL_DIED == Save.WarState[GETCIVVAR(MyPlanetHeader->PFlags)-1][CivVar])
     {
-        Save.WarState[GETCIVVAR(MyPlanetHeader->PFlags)-1][GETCIVVAR(MyPlanetHeader->Ethno)-1] = LEVEL_COLDWAR;
+        Save.WarState[GETCIVVAR(MyPlanetHeader->PFlags)-1][CivVar] = LEVEL_COLDWAR;
     }
     MyPlanetHeader->PFlags = NewEthnoFlag;
     MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
     while (NULL != MyShipPtr)
     {
-        if (0 != MyShipPtr->Owner) { MyShipPtr->Owner = NewEthnoFlag; }
+        if (0 != MyShipPtr->Owner)
+        {
+            MyShipPtr->Owner = NewEthnoFlag;
+        }
         MyShipPtr = MyShipPtr->NextShip;
     }
     Save.ImperatorState[ActPlayer-1] += 35;
