@@ -5,9 +5,9 @@
 
 void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
 {
-    sint32  l;
+    sint32  l, SysEntfernung;
     uint8   i, j;
-    uint8   SysEntfernung, SysID;
+    uint8   SysID;
     r_ShipHeader*   MyShipPtr;
 
     MyShipPtr = ShipPtr;
@@ -27,7 +27,7 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
              || (MyShipPtr->Flags == SHIPFLAG_WATER))
             {
                 if ((l<SysEntfernung) && (MyShipPtr->Flags == SHIPFLAG_WATER)
-                    && ((rand()%3) == 0))
+                    && (0 == (rand()%3)))
                 {
                     SysEntfernung = l;
                     SysID = i;

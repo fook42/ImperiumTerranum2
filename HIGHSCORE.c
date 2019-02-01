@@ -9,6 +9,7 @@ void CREATEHIGHSCORE()
 {
     BPTR    FHandle;
     uint8   i;
+    uint32  points;
     char    s[30];
 
     strcpy(s, PathStr[4]);
@@ -19,9 +20,11 @@ void CREATEHIGHSCORE()
         ScreenToFront(MyScreen[0]);
         return;
     }
-    for (i = 0; i<8; i++)
+    points = 20000;
+    for (i = 0; i < 8; ++i)
     {
-        HiScore.Points[i] = 2800+(8-i)*2150;
+        HiScore.Points[i] = points;
+        points -= 2150;
         HiScore.CivVar[i] = i+1;
         if (7 == i) { HiScore.CivVar[i] = 1; }
     }
@@ -51,11 +54,12 @@ void HIGHSCORE()
 {
     BPTR    FHandle;
     uint8   i, col;
+    uint16  ypos;
     char    s[30];
 
     SWITCHDISPLAY();
     INITSCREEN(SCREEN_HISCORE);
-    WRITE(210,60,127,(WRITE_Center|WRITE_Shadow),MyScreen[1],5,"Imperium Terranum Highscores");
+    WRITEWIN(210,60,127,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[1],5,"Imperium Terranum Highscores");
     strcpy(s, PathStr[4]);
     strcat(s, "HiScore.dat");
     FHandle = OPENSMOOTH(s,MODE_OLDFILE);
@@ -68,12 +72,14 @@ void HIGHSCORE()
     {
         (void) Read(FHandle, &HiScore, sizeof(r_HiScore));
         Close(FHandle);
-        for(i = 0; i < 8; i++)
+        ypos = 130;
+        for(i = 0; i < 8; ++i)
         {
             col = GETCOLOR(HiScore.CivVar[i]);
             (void) dez2out( HiScore.Points[i], 0, s);
-            WRITE(115,130+i*30,col,(WRITE_Right|WRITE_Shadow), MyScreen[1], 5, s);
-            WRITE(135,130+i*30,col,WRITE_Shadow, MyScreen[1], 5, HiScore.Player[i]);
+            WRITEWIN(115,ypos,col,(WRITE_Right|WRITE_Shadow), MyRPort_PTR[1], 5, s);
+            WRITEWIN(135,ypos,col,             WRITE_Shadow , MyRPort_PTR[1], 5, HiScore.Player[i]);
+            ypos += 30;
         }
         ScreenToFront(MyScreen[1]);
         do

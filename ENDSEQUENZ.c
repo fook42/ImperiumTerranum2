@@ -9,7 +9,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
 
     SArr13  SA13;
     uint8   i, t;
-    uint16  l;
+    uint16  slen, ypos;
     BPTR    FHandle;
     struct MMD0 *SndModulePtr = NULL;
     char    s[70];
@@ -37,13 +37,13 @@ typedef struct SArr13 { char* data[11]; } SArr13;
         return;
     }
 
-    l = strlen(PathStr[4]);
-    memcpy(s, PathStr[4], l);
+    slen = strlen(PathStr[4]);
+    memcpy(s, PathStr[4], slen);
     if ((1 == Mode) || (-3 == Mode))
     {
-        strcpy( s+l, "MOD.HappyEnd" );
+        strcpy( s+slen, "MOD.HappyEnd" );
     } else {
-        strcpy( s+l, "MOD.DeadEnd" );
+        strcpy( s+slen, "MOD.DeadEnd" );
     }
     FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     if (0 != FHandle)
@@ -63,15 +63,15 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     {
         if (Save.WorldFlag == WFLAG_FIELD)
         {
-            strcpy( s+l, "FieldEnd.pal" );
+            strcpy( s+slen, "FieldEnd.pal" );
         } else {
-            strcpy( s+l, "DeadEnd.pal" );
+            strcpy( s+slen, "DeadEnd.pal" );
         }
     } else if (-2 == Mode)
     {
-        strcpy( s+l, "BigBang.pal" );
+        strcpy( s+slen, "BigBang.pal" );
     } else {
-        strcpy( s+l, "HappyEnd.pal" );
+        strcpy( s+slen, "HappyEnd.pal" );
     }
     (void) SETCOLOR(MyScreen[0], s);
     strcpy( s+strlen(s)-3, "img" );
@@ -84,10 +84,10 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     SetRGB4(&(MyScreen[0]->ViewPort),255,7,7,7);
     if (-1 == Mode)
     {
-        l = strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, l);
-        s[l++]=' ';
-        _s = dez2out(Year, 0, s+l);
+        slen = strlen(_PT_ImJahre);
+        memcpy(s, _PT_ImJahre, slen);
+        s[slen++]=' ';
+        _s = dez2out(Year, 0, s+slen);
         *_s++=' ';
         strcpy(_s, PText[759]);
         if (Save.WorldFlag == WFLAG_FIELD)
@@ -96,10 +96,10 @@ typedef struct SArr13 { char* data[11]; } SArr13;
                                 PText[765],PText[766],PText[767],PText[768],PText[769]}};
             t = 11;
         } else {
-            l=strlen(PText[771]);
+            slen = strlen(PText[771]);
             strcpy(s2, PText[771]);
-            s2[l++]=' ';
-            strcpy(s2+l, GETCIVADJ(ActPlayer));
+            s2[slen++]=' ';
+            strcpy(s2+slen, GETCIVADJ(ActPlayer));
             strcpy(s2+strlen(s2), PText[772]);
             SA13 = (SArr13) {{s,s2,        PText[773],PText[774],PText[775],PText[776],
                                 PText[777],PText[778],PText[779],PText[780],NULL}};
@@ -110,82 +110,84 @@ typedef struct SArr13 { char* data[11]; } SArr13;
         _s = dez2out(Year, 0, s);
         *_s++=' ';
         strcpy(_s, PText[782]);
-        l=strlen(s);
-        s[l++]=' ';
-        strcpy(s+l, GETCIVNAME(ActPlayer));
-        l=strlen(s);
-        s[l++]=' ';
-        strcpy(s+l, PText[783]);
+        slen = strlen(s);
+        s[slen++]=' ';
+        strcpy(s+slen, GETCIVNAME(ActPlayer));
+        slen = strlen(s);
+        s[slen++]=' ';
+        strcpy(s+slen, PText[783]);
         SA13 = (SArr13) {{s,PText[784],PText[785],PText[786],PText[787],PText[788],
                             PText[789],PText[790],PText[791],NULL,NULL}};
         t = 9;
     } else if (-3 == Mode)
     {
         Save.ImperatorState[ActPlayer-1] -= 1500;
-        l=strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, l);
-        s[l++]=' ';
-        _s = dez2out(Year, 0, s+l);
+        slen = strlen(_PT_ImJahre);
+        memcpy(s, _PT_ImJahre, slen);
+        s[slen++]=' ';
+        _s = dez2out(Year, 0, s+slen);
         *_s++=' ';
         strcpy(_s, PText[794]);
-        l=strlen(s);
-        s[l++]=' ';
-        strcpy(s+l, GETCIVNAME(ActPlayer));
-        l=strlen(s);
-        s[l++]=' ';
-        strcpy(s+l, PText[795]);
+        slen = strlen(s);
+        s[slen++]=' ';
+        strcpy(s+slen, GETCIVNAME(ActPlayer));
+        slen = strlen(s);
+        s[slen++]=' ';
+        strcpy(s+slen, PText[795]);
         SA13 = (SArr13) {{s,PText[796],PText[797],PText[798],PText[799],PText[800],
                             PText[801],PText[802],PText[803],PText[804],NULL}};
         t = 10;
     } else if (1 == Mode)
     {
-        l=strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, l);
-        s[l++]=' ';
-        _s = dez2out(Year, 0, s+l);
+        slen = strlen(_PT_ImJahre);
+        memcpy(s, _PT_ImJahre, slen);
+        s[slen++]=' ';
+        _s = dez2out(Year, 0, s+slen);
         *_s++=' ';
         strcpy(_s, PText[794]);
-        l=strlen(s);
-        s[l++]=' ';
-        strcpy(s+l, GETCIVNAME(ActPlayer));
-        l=strlen(s);
+        slen = strlen(s);
+        s[slen++]=' ';
+        strcpy(s+slen, GETCIVNAME(ActPlayer));
+        slen = strlen(s);
         if (3 != ActPlayer)
         {
-            s[l++]='n';
+            s[slen++]='n';
         }
-        s[l++]=',';
-        s[l++]=' ';
-        strcpy(s+l, PText[806]);
+        s[slen++]=',';
+        s[slen++]=' ';
+        strcpy(s+slen, PText[806]);
         SA13 = (SArr13) {{s,PText[807],PText[808],PText[809],PText[810],PText[811],
                             PText[812],PText[813],PText[814],NULL,NULL}};
         t = 9;
     } else {
-        l=strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, l);
-        s[l++]=' ';
-        _s = dez2out(Year, 0, s+l);
+        slen = strlen(_PT_ImJahre);
+        memcpy(s, _PT_ImJahre, slen);
+        s[slen++]=' ';
+        _s = dez2out(Year, 0, s+slen);
         *_s++=' ';
         strcpy(_s, PText[794]);
-        l=strlen(s);
-        s[l++]=' ';
-        strcpy(s+l, GETCIVNAME(Mode));
-        l=strlen(s);
+        slen = strlen(s);
+        s[slen++]=' ';
+        strcpy(s+slen, GETCIVNAME(Mode));
+        slen = strlen(s);
         if (3 != Mode)
         {
-            s[l++]='n';
+            s[slen++]='n';
         }
-        s[l++]=',';
-        s[l++]=' ';
-        strcpy(s+l, PText[816]);
+        s[slen++]=',';
+        s[slen++]=' ';
+        strcpy(s+slen, PText[816]);
         SA13 = (SArr13) {{s,PText[817],PText[818],PText[819],PText[820],PText[821],
                             PText[822],PText[823],NULL,NULL,NULL}};
         t = 8;
     }
     ScreenToFront(MyScreen[0]);
     delay(200);
-    for (i = 0; i<t; i++)
+    ypos = 105;
+    for (i = 0; i < t; ++i)
     {
-        WRITE(320,i*25+105,255,(WRITE_Center|WRITE_Shadow),MyScreen[0],5,SA13.data[i]);
+        WRITE(320,ypos,255,(WRITE_Center|WRITE_Shadow),MyScreen[0],5,SA13.data[i]);
+        ypos += 25;
         delay(50);
     }
     if (-2 == Mode)

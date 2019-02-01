@@ -11,33 +11,30 @@ bool FINDMAQUESSHIP(uint8 ActSys, r_ShipHeader* MyShipPtr)
     bool    _FINDMAQUESSHIP = false;
 
     CivVar = GETCIVVAR(MyShipPtr->Owner);
-    if ((CivVar!=0) && (CivVar!=9))
+    if ((0 != CivVar) && (9 != CivVar))
     {
         DistOld = 10000;
-//        if (SystemHeader[ActSys].FirstShip.NextShip != NULL)
-//        {
-            OtherShipPtr = SystemHeader[ActSys].FirstShip.NextShip;
-            while (OtherShipPtr != NULL)
+        OtherShipPtr = SystemHeader[ActSys].FirstShip.NextShip;
+        while (NULL != OtherShipPtr)
+        {
+            CivVar2 = GETCIVVAR(OtherShipPtr->Owner);
+            if ((OtherShipPtr->Moving >= 0) && (CivVar2 == 9))
             {
-                CivVar2 = GETCIVVAR(OtherShipPtr->Owner);
-                if ((OtherShipPtr->Moving >= 0) && (CivVar2 == 9))
+                DistNew = abs(OtherShipPtr->PosX - MyShipPtr->PosX);
+                if (abs(OtherShipPtr->PosY - MyShipPtr->PosY)>DistNew)
                 {
-                    DistNew = abs(OtherShipPtr->PosX - MyShipPtr->PosX);
-                    if (abs(OtherShipPtr->PosY - MyShipPtr->PosY)>DistNew)
-                    {
-                        DistNew = abs(OtherShipPtr->PosY-MyShipPtr->PosY);
-                    }
-                    if (DistNew<DistOld)
-                    {
-                        DistOld = DistNew;
-                        _FINDMAQUESSHIP = true;
-                        MyShipPtr->Target = TARGET_ENEMY_SHIP;
-                        MyShipPtr->TargetShip = OtherShipPtr;
-                    }
+                    DistNew = abs(OtherShipPtr->PosY-MyShipPtr->PosY);
                 }
-                OtherShipPtr = OtherShipPtr->NextShip;
+                if (DistNew<DistOld)
+                {
+                    DistOld = DistNew;
+                    _FINDMAQUESSHIP = true;
+                    MyShipPtr->Target = TARGET_ENEMY_SHIP;
+                    MyShipPtr->TargetShip = OtherShipPtr;
+                }
             }
-//        }
+            OtherShipPtr = OtherShipPtr->NextShip;
+        }
     }
     return _FINDMAQUESSHIP;
 }

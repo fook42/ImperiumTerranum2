@@ -6,8 +6,8 @@
 void GOTOWAR(uint8 CivFlag1, uint8 CivFlag2)
 {
     uint8   CivVar1,CivVar2;
-	struct Window* GTW_Window;
-	struct RastPort* RPort_PTR;
+    struct Window* GTW_Window;
+    struct RastPort* RPort_PTR;
 
     CivVar1 = GETCIVVAR(CivFlag1);
     CivVar2 = GETCIVVAR(CivFlag2);
@@ -35,22 +35,22 @@ void GOTOWAR(uint8 CivFlag1, uint8 CivFlag2)
     {
         return;
     }
-	RPort_PTR = GTW_Window->RPort;
+    RPort_PTR = GTW_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
     WRITEWIN(171,11,CivFlag1,(1|WRITE_Center),RPort_PTR,4, GETCIVNAME(CivVar1));
     WRITEWIN(171,31,      12,(1|WRITE_Center),RPort_PTR,4, _PT_beginnenKrieggegen);
     WRITEWIN(171,51,CivFlag2,(1|WRITE_Center),RPort_PTR,4, GETCIVNAME(CivVar2));
     if (Save.PlayMySelf) { delay(PAUSE); }
     WAITLOOP(Save.PlayMySelf);
-	CloseWindow(GTW_Window);
+    CloseWindow(GTW_Window);
 
     if ((0 != Save.CivPlayer[CivVar2-1]) && (!Save.PlayMySelf))
     {
         if (((Save.WarPower[CivVar1-1] > Save.WarPower[CivVar2-1]) && (0==(rand()%40)))
          || ((CivVar1==8)
             && ((Save.WorldFlag==WFLAG_CEBORC)
-			 || (Save.WorldFlag==WFLAG_JAHADR)
-			 || (Save.WorldFlag==WFLAG_DCON))
+             || (Save.WorldFlag==WFLAG_JAHADR)
+             || (Save.WorldFlag==WFLAG_DCON))
             && (0==(rand()%10))))
         {
             QUOTEPICARD();

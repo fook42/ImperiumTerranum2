@@ -119,12 +119,12 @@ enum {  SCREEN_PLANET = 1,
 #define MAXPMONEY       102000L
 #define MAXSTR          900
 
-#define ROTATE_PX       1
-#define ROTATE_PY       2
-#define ROTATE_PZ       4
-#define ROTATE_NX       8
-#define ROTATE_NY       16
-#define ROTATE_NZ       32
+#define ROTATE_PX       (1<<0)
+#define ROTATE_PY       (1<<1)
+#define ROTATE_PZ       (1<<2)
+#define ROTATE_NX       (1<<3)
+#define ROTATE_NY       (1<<4)
+#define ROTATE_NZ       (1<<5)
 
 #define _COLOR_CMAP_TEXT_ (0x434D4150)
 

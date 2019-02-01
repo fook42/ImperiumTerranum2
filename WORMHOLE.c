@@ -96,7 +96,7 @@ void TRAVEL()
     XOff = 0;
     YOff = 0;
     Clear = 0;
-    for(j = 1; j <= 4; ++j)
+    for(j = 1; j < 5; ++j)
     {
         X[j+1] = X[j];
         Y[j+1] = Y[j];
@@ -124,7 +124,7 @@ void TRAVEL()
                 }
                 DirCnt = 1;
             } else {
-                DirCnt++;
+                ++DirCnt;
             }
         } else {
             DHoriz = 0;
@@ -165,17 +165,17 @@ void TRAVEL()
         {
             JVert = -8;
         }
-        if (JHoriz != 0)
+        if (0 != JHoriz)
         {
-            for(j = 1; j <= 5; j++)
+            for(j = 1; j < 6; ++j)
             {
                 X[j] += JHoriz;
             }
             XOff += JHoriz;
         }
-        if (JVert != 0)
+        if (0 != JVert)
         {
-            for(j = 1; j <= 5; j++)
+            for(j = 1; j < 6; ++j)
             {
                 Y[j] += JVert;
             }
@@ -189,29 +189,29 @@ void TRAVEL()
         if (YOff >  122) { YOff =  122; }
         if (YOff < -122) { YOff = -122; }
 
-        for(j = 1; j <= 5; ++j)
+        for(j = 1; j < 6; ++j)
         {
-            if (X[j]<154)
+            if (154 > X[j])
             {
-                X[j] = it_round((double) 155-(155-X[j])*0.98);
-            } else if (X[j]>156)
+                X[j] = 155-it_round((double) (155-X[j])*0.98);
+            } else if (156 < X[j])
             {
-                X[j] = it_round((double) (X[j]-155)+0.98+155);
+                X[j] = it_round((double) X[j]+0.98);
             }
 
-            if (Y[j]<127)
+            if (127 > Y[j])
             {
-                Y[j] = it_round((double) 128-(128-Y[j])*0.98);
-            } else if (Y[j]>129)
+                Y[j] = 128-it_round((double) (128-Y[j])*0.98);
+            } else if (129 < Y[j])
             {
-                Y[j] = it_round((double) (Y[j]-128)+0.98+128);
+                Y[j] = it_round((double) Y[j]+0.98);
             }
             S[j] = it_round(S[j]*1.06);
         }
 
-        if (S[5]>240)
+        if (240 < S[5])
         {
-            for (j = 4; j>=1; j--)
+            for (j = 4; j > 0; --j)
             {
                 X[j+1] = X[j];
                 Y[j+1] = Y[j];
@@ -224,7 +224,7 @@ void TRAVEL()
 
         BltBitMapRastPort((struct BitMap*) &ImgBitMapW4,170-XOff,128-YOff, MyRPort_PTR[AScr],0,0,310,256,192);
         SetAPen(MyRPort_PTR[AScr],6);
-        for(j = 1; j <= 5; ++j)
+        for(j = 1; j < 6; ++j)
         {
             if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255)
               &&((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
@@ -256,7 +256,7 @@ void TRAVEL()
             RectCol = 15;
             if ((WORMHOLE_ShipShield >= 13) && (WORMHOLE_ShipShield <= 762))
             {
-                RECTWIN(MyRPort_PTR[AScr],0,312,1,318,it_round(258.0-WORMHOLE_ShipShield/3.0));
+                RECTWIN(MyRPort_PTR[AScr],0, 312, 1, 318, 258-it_round(WORMHOLE_ShipShield/3.0));
             }
             if (WORMHOLE_ShipShield < 0)
             {
@@ -281,7 +281,7 @@ void TRAVEL()
 
         SetAPen(MyRPort_PTR[AScr], 5);
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j <= 5; ++j)
+        for(j = 1; j < 6; ++j)
         {
             if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255))
             {
@@ -290,7 +290,7 @@ void TRAVEL()
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j <= 5; ++j)
+        for(j = 1; j < 6; ++j)
         {
             if (((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255))
             {
@@ -299,7 +299,7 @@ void TRAVEL()
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j <= 5; ++j)
+        for(j = 1; j < 6; ++j)
         {
             if (((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
             {
@@ -308,7 +308,7 @@ void TRAVEL()
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j <= 5; ++j)
+        for(j = 1; j < 6; ++j)
         {
             if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
             {
@@ -345,7 +345,7 @@ void TRAVEL()
 bool SMALLWORMFLIGHT(r_ShipHeader* MyShipPtr)
 {
     WORMHOLE_ShipShield = it_round((double) WORMHOLE_ShipShield*((rand()%45)+15)/100.0);
-    if (WORMHOLE_ShipShield <= 0)
+    if (WORMHOLE_ShipShield < 1)
     {
         return false;
     } else {
@@ -360,7 +360,7 @@ bool WORMEXIT(bool _WORMEXIT, r_ShipHeader* MyShipPtr, uint8 ActSys)
 
     DoClock = false;
     CLOSEMYSCREENS();
-    for(i = 0; i < 2; i++)
+    for(i = 0; i < 2; ++i)
     {
         if (NULL != WHSoundMemA[i])
         {
@@ -408,7 +408,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
     {
         return SMALLWORMFLIGHT(MyShipPtr);
     }
-    for(i = 0; i < 2; i++)
+    for(i = 0; i < 2; ++i)
     {
         WHSoundMemA[i] = NULL;
     }
@@ -419,7 +419,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
     }
 
     memcpy( Tags, newTags, 7*sizeof(struct TagItem));
-    for(i = 0; i < 2; i++)
+    for(i = 0; i < 2; ++i)
     {
         MyScreen[i] = OpenScreenTagList(&WH_NeuScreen, Tags);
         if (NULL == MyScreen[i])
@@ -435,7 +435,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
     }
     WORMHOLE_INITSOUNDS();
     TRAVEL();
-    if (WORMHOLE_ShipShield <= 0)
+    if (WORMHOLE_ShipShield < 1)
     {
         _WORMFLIGHT = false;
     } else {
@@ -506,7 +506,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
 
     PLAYSOUND(3,250);
     delay(7);
-    for(i = 0; i < 16; i++)
+    for(i = 0; i < 16; ++i)
     {
         BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,&(MyScreen[0]->RastPort),MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
         WaitTOF();

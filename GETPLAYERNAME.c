@@ -5,32 +5,39 @@
 
 void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
 {
+    struct NewWindow GPN_NewWindow = {0,0,640,512,0,0,VANILLAKEY,
+                                      BORDERLESS+BACKDROP+ACTIVATE+SIMPLE_REFRESH,
+                                      NULL,NULL,NULL,MyScreen[1],NULL,
+                                      0,0,0,0,CUSTOMSCREEN};
+
     struct Window*   GPN_Window;
     struct RastPort* RPort_PTR;
     struct IntuiMessage*  IMsg;
     uint8   VKey = 0;
-    int     PName_len = 0;
+    int     PName_len;
     char    s[40];
 
-    GPN_Window=MAKEWINDOW(0,0,640,512,MyScreen[1]);
+    GPN_Window = OpenWindow(&GPN_NewWindow);
     if (NULL == GPN_Window)
     {
-        strcpy(PName, "PlayerX");
+        strcpy(PName, "Player X");
+        ScreenToFront(MyScreen[1]);
         return;
     }
     RPort_PTR = GPN_Window->RPort;
 
-    SetRGB4(&(MyScreen[1]->ViewPort),1,15,15,15);
-    SetRGB4(&(MyScreen[1]->ViewPort),2,3,3,15);
-    SetRGB4(&(MyScreen[1]->ViewPort),3,9,9,9);
+    SetRGB4(MyVPort_PTR[1],1,15,15,15);
+    SetRGB4(MyVPort_PTR[1],2,3,3,15);
+    SetRGB4(MyVPort_PTR[1],3,9,9,9);
     WRITEWIN(320,100,1,WRITE_Center,RPort_PTR,4,PText[160]);
     if (!MultiPlayer)
     {
         WRITEWIN(320,150,2,WRITE_Center,RPort_PTR,4,PText[161]);
     } else {
         strcpy(s, "Player 0");
-        s[strlen(s)-1]=Save.CivPlayer[GPN_ActPlayer]+'0';
-        strcat(s, PText[162]);
+        PName_len = strlen(s);
+        s[PName_len-1] = Save.CivPlayer[GPN_ActPlayer]+'0';
+        strcpy(s+PName_len, PText[162]);
         WRITEWIN(320,150,2,WRITE_Center,RPort_PTR,4,s);
     }
     MAKEWINBORDER(RPort_PTR,100,200,540,230,1,3,1);
@@ -49,18 +56,18 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
             }
             ReplyMsg((struct Message *)IMsg);
         }
-        if ((8 == VKey) && (PName_len > 0))
+        if ((8 == VKey) && (0 < PName_len))
         {
-             PName[--PName_len] = 0;
-             RECTWIN(RPort_PTR,0,102,202,538,228);
+            PName[--PName_len] = 0;
+            RECTWIN(RPort_PTR,0,102,202,538,228);
         }
-        if ((VKey>30) && ((PName_len+1) < HISCORE_NAMELEN))
+        if ((30 < VKey) && (HISCORE_NAMELEN > (PName_len+1)))
         {
             PName[PName_len++] = VKey;
             PName[PName_len] = 0;
         }
         WRITEWIN(320,208,2,(1|WRITE_Center),RPort_PTR,4,PName);
     }
-    while (VKey != 13);
+    while (13 != VKey);
     CloseWindow(GPN_Window);
 }

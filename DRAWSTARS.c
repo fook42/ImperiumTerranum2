@@ -8,12 +8,11 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     int             i, j;
     r_ShipHeader*   MyShipPtr;
     uint32          MaxVal;
+    uint16          pos;
     double          Factor;
     uint32          CVal[MAXCIVS];
     uint8           DS_ActPlayerFlag;
     char            s[20];
-
-    // Printf("## in DRAWSTARS ##\n");
 
     DS_ActPlayerFlag = GETCIVFLAG(DS_ActPlayer);
     DS_ActPlayer--;     // todo.. due to shifted arrays
@@ -21,16 +20,18 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     if ((MODE_REDRAW   == Mode)
      || (MODE_STARGATE == Mode))
     {
-        for (i = 0; i<3; ++i)
+        pos = 416;
+        for (i = 0; i < 3; ++i)
         {
-            DrawImage(MyRPort_PTR[0],&GadImg1,518,416+i*28);
+            DrawImage(MyRPort_PTR[0], &GadImg1, 518, pos);
+            pos += 28;
         }
         WRITEWIN(576,418,0, WRITE_Center              ,MyRPort_PTR[0],4,_PT_Regierung);
         WRITEWIN(576,446,0, WRITE_Center              ,MyRPort_PTR[0],4,_PT_Hauptmenue);
         WRITEWIN(576,474,8,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[0],4,_PT_Rundenende);
         RECTWIN(MyRPort_PTR[0],0,0,0,511,511);
         SetAPen(MyRPort_PTR[0],6);
-        for (i = 0; i<310; i++)
+        for (i = 0; i<310; ++i)
         {
             WritePixel(MyRPort_PTR[0],(rand()%255)+(rand()%255),(rand()%255)+(rand()%255));
         }
@@ -44,15 +45,17 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
             if (CVal[i]>MaxVal) { MaxVal = CVal[i]; }
         }
         Factor = MaxVal/20.0;
+        pos = 0;
         for (i = 0; i < (MAXCIVS-1); ++i)
         {
             if ((i<7) || ((0 != Save.WorldFlag) && (WFLAG_FIELD != Save.WorldFlag)))
             {
-                RECTWIN(MyRPort_PTR[0],0              , i*64, 490, i*64+62, it_round(511.0-(CVal[i]/Factor)));
-                RECTWIN(MyRPort_PTR[0],GETCIVFLAG(i+1), i*64, it_round(511.0-(CVal[i]/Factor)), i*64+62, 511);
-                (void) dez2out(CVal[i-1], 0, s);
-                WRITEWIN(i*64+66,502,45,WRITE_Right,MyRPort_PTR[0],1,s);
+                RECTWIN(MyRPort_PTR[0],0              , pos, 490, pos+62, 511-it_round(CVal[i]/Factor));
+                RECTWIN(MyRPort_PTR[0],GETCIVFLAG(i+1), pos, 511-it_round(CVal[i]/Factor), pos+62, 511);
+                (void) dez2out(CVal[i], 0, s);
+                WRITEWIN(pos+66,502,45,WRITE_Right,MyRPort_PTR[0],1,s);
             }
+            pos += 64;
         }
     }
     SetAPen(MyRPort_PTR[0],12);
@@ -124,6 +127,4 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     }
     PRINTGLOBALINFOS(DS_ActPlayer);
     if (!Save.PlayMySelf) { ScreenToFront(MyScreen[0]); }
-
-    // Printf("## out DRAWSTARS ##\n");
 }

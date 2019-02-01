@@ -11,31 +11,29 @@ void FREESYSTEMMEMORY()
     uint8   i,j;
     APTR    FreePointer;
 
-    for (i = 0; i < MAXSYSTEMS; i++)
+    for (i = 0; i < MAXSYSTEMS; ++i)
     {
         if (NULL != SystemHeader[i].PlanetMemA)
         {
-            for (j = 0; j < SystemHeader[i].Planets; j++)
+            for (j = 0; j < SystemHeader[i].Planets; ++j)
             {
                 MyPlanetHeader = (r_PlanetHeader*) &(SystemHeader[i].PlanetMemA[j]);
                 if (NULL != MyPlanetHeader->ProjectPtr)
                 {
                     FreeMem( MyPlanetHeader->ProjectPtr, sizeof(ByteArr42));
                 }
-                if (NULL != MyPlanetHeader->FirstShip.NextShip)
+                ActShipPtr = MyPlanetHeader->FirstShip.NextShip;
+                if (NULL != ActShipPtr)
                 {
-                    ActShipPtr = MyPlanetHeader->FirstShip.NextShip;
-                    if ((SHIPTYPE_FLEET == ActShipPtr->SType)
-                        && (NULL != ActShipPtr->TargetShip))
+                    if (SHIPTYPE_FLEET == ActShipPtr->SType)
                     {
                         FleetShipPtr = ActShipPtr->TargetShip;
-                        do
+                        while (NULL != FleetShipPtr)
                         {
                             FreePointer = (APTR) FleetShipPtr;
                             FleetShipPtr = FleetShipPtr->NextShip;
                             FreeMem( FreePointer, sizeof(r_ShipHeader) );
                         }
-                        while (NULL != FleetShipPtr);
                     }
                     do
                     {

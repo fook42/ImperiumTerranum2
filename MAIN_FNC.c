@@ -74,7 +74,7 @@ void MAIN_FNC()
         GAMEEXIT();
         return;
     }
-    for (i = 1; i<=127; i++) { SetRGB4(&(XScreen->ViewPort),i,0,0,0); };
+    for (i = 1; i<128; ++i) { SetRGB4(&(XScreen->ViewPort),i,0,0,0); };
 
     //    INITCHANNELS();
 
@@ -257,15 +257,12 @@ void MAIN_FNC()
                     return;
                 }
 
-                if ((Save.ProjectCosts[0].data[7] <= 0) ||
-                    (Save.ProjectCosts[1].data[7] <= 0) ||
-                    (Save.ProjectCosts[2].data[7] <= 0) ||
-                    (Save.ProjectCosts[3].data[7] <= 0) ||
-                    (Save.ProjectCosts[4].data[7] <= 0) ||
-                    (Save.ProjectCosts[5].data[7] <= 0) ||
-                    (Save.ProjectCosts[6].data[7] <= 0))
+                for (i = 0; i < 7; ++i)
                 {
-                    Bool_var = true;
+                    if (Save.ProjectCosts[i].data[7] <= 0)
+                    {
+                        Bool_var = true;
+                    }
                 }
             }
             else
@@ -274,14 +271,14 @@ void MAIN_FNC()
                 {
                     Bool_var = true;
 
-                    for (i = 0; i < (MAXCIVS-2); i++)
+                    for (i = 0; i < (MAXCIVS-2); ++i)
                     {
-                        if ((Save.CivPlayer[i] != 0) && (Save.Bevoelkerung[i]>10) && (i != (ActPlayer-1)))
+                        if ((0 != Save.CivPlayer[i]) && (10 < Save.Bevoelkerung[i]) && (i != (ActPlayer-1)))
                         {
                             Bool_var = false;
                         }
                     }
-                    if (Save.CivPlayer[ActPlayer-1] != 0)
+                    if (0 != Save.CivPlayer[ActPlayer-1])
                     {
                         strcpy(s, PathStr[4]);
                         strcat(s, "MOD.HappyEnd");
@@ -298,6 +295,7 @@ void MAIN_FNC()
                             }
                         }
 
+                        // OpenWin
                         MAKEBORDER(MyScreen[0],40,100,470,190,12,6,0);
                         WRITE(256,113,ActPlayerFlag,WRITE_Center,MyScreen[0],4,PText[834]);
                         WRITE(256,137,ActPlayerFlag,WRITE_Center,MyScreen[0],4,PText[835]);
@@ -305,11 +303,13 @@ void MAIN_FNC()
                         WAITLOOP(Save.PlayMySelf);
                         RECT(MyScreen[0],0,40,100,470,190);
                         REFRESHDISPLAY();
+                        // CloseWin
+
                         REMOVEPLAYER(ActPlayer);
                         DISPLAYSTATE();
                         PLAYERHIGHSCORE(ActPlayer);
 
-                        for (i = 0; i < (MAXCIVS-1); i++)
+                        for (i = 0; i < (MAXCIVS-1); ++i)
                         {
                             Save.WarState[ActPlayer-1][i] = LEVEL_DIED;
                             Save.WarState[i][ActPlayer-1] = LEVEL_DIED;
@@ -321,7 +321,7 @@ void MAIN_FNC()
                             UnLoadModule(SndModulePtr);
                         }
 
-                        for (i = 0; i < MAXCIVS; i++)
+                        for (i = 0; i < MAXCIVS; ++i)
                         {
                             Save.ImperatorState[i] -= 500;
                         }
@@ -372,14 +372,14 @@ void MAIN_FNC()
     {
         if (!MultiPlayer)
         {
-            for (i = 0; i < (MAXCIVS-1); i++)
+            for (i = 0; i < (MAXCIVS-1); ++i)
             {
-                if (Save.ProjectCosts[i].data[7] <= 0)
+                if (0 >= Save.ProjectCosts[i].data[7])
                 {
                     j = i+1;
-                    if (i == (MAXCIVS-2))
+                    if ((MAXCIVS-2) == i)
                     {
-                        while (Save.ImperatorState[i] > 2400)
+                        while (2400 < Save.ImperatorState[i])
                         {
                             Save.ImperatorState[i] -= rand()%250;
                         }

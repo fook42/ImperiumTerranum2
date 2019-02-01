@@ -13,11 +13,11 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
     PID = 0;
     Objects = 0;
     XProjectID = 0;
-    for(i = 0; i < Save.Systems; i++)
+    for(i = 0; i < Save.Systems; ++i)
     {
-        if (SystemHeader[i].Planets>0)
+        if (0 < SystemHeader[i].Planets)
         {
-            for(j = 0; j < SystemHeader[i].Planets; j++)
+            for(j = 0; j < SystemHeader[i].Planets; ++j)
             {
                 MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
                 l = 0;
@@ -58,7 +58,7 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
         {
             XProjectID = (rand()%42)+1;
         }
-        while (((XProjectID != 25) && ((XProjectID < 28) || (XProjectID >42))) || (ActPProject->data[XProjectID]<=0));
+        while (((25 != XProjectID) && ((28 > XProjectID) || (XProjectID > 42))) || (ActPProject->data[XProjectID]<=0));
         ActPProject->data[XProjectID] = 0;
         Save.Staatstopf[CivVar] += (Save.ProjectCosts[CivVar].data[XProjectID] / 29);
     }

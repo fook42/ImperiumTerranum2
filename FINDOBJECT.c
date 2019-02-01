@@ -33,8 +33,8 @@ bool FINDOBJECT(uint8 ActSys, sint16 GetX, sint16 GetY, void* ExcludeObj)
     for(i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
         PlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
-        x = 256+(it_round(PlanetHeader->PosX+OffsetX) << 5);
-        y = 256+(it_round(PlanetHeader->PosY+OffsetY) << 5);
+        x = 256+((it_round(PlanetHeader->PosX)+OffsetX) << 5);
+        y = 256+((it_round(PlanetHeader->PosY)+OffsetY) << 5);
 
         if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)) && (PlanetHeader != (r_PlanetHeader*) ExcludeObj))
         {

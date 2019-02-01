@@ -4,32 +4,32 @@
 #include "IT2_Functions.h"
 
 const char* const Technology[] =
-		{	"Halbleiter",              "Informatik",
-			"Recycling",               "Kernfusion",
-			"Carbonfasern",            "Keramik-Technologie",
-			"Mikroelektronik",         "Fotovoltaik",
-			"Gentechnik",              "Teilchenphysik",
-			"Raumstations-Technologie","Supraleiter",
-			"Mikrocomputer",           "selbstwachsende Strukturen",
-			"Hochenergie-Laser",       "Raumdock-Technologie",
-			"Triravit",                "Cyberspace",
-			"Bio-Elektronik",          "Ionenantrieb",
-			"Duravit",                 "kuenstliche Intelligenz",
-			"Bio-Computer",            "Phaser",
-			"Duranium",                "Androiden",
-			"Raumholografie",          "Impulsantrieb",
-			"Materiedestruktion",      "Sol-Antrieb",
-			"Beamen",                  "Disruptoren",
-			"Warp-Antrieb",            "selbstorganisierende Systeme",
-			"Tiefschlaf-Technologie",  "Transwarp",
-			"Protonentorpedos",        "Bewusstseins-Transformation",
-			"Chaostheorie",            "Energiestrukturen",
-			"Weltformel",              "energetische Intelligenz" };
+        {   "Halbleiter",              "Informatik",
+            "Recycling",               "Kernfusion",
+            "Carbonfasern",            "Keramik-Technologie",
+            "Mikroelektronik",         "Fotovoltaik",
+            "Gentechnik",              "Teilchenphysik",
+            "Raumstations-Technologie","Supraleiter",
+            "Mikrocomputer",           "selbstwachsende Strukturen",
+            "Hochenergie-Laser",       "Raumdock-Technologie",
+            "Triravit",                "Cyberspace",
+            "Bio-Elektronik",          "Ionenantrieb",
+            "Duravit",                 "kuenstliche Intelligenz",
+            "Bio-Computer",            "Phaser",
+            "Duranium",                "Androiden",
+            "Raumholografie",          "Impulsantrieb",
+            "Materiedestruktion",      "Sol-Antrieb",
+            "Beamen",                  "Disruptoren",
+            "Warp-Antrieb",            "selbstorganisierende Systeme",
+            "Tiefschlaf-Technologie",  "Transwarp",
+            "Protonentorpedos",        "Bewusstseins-Transformation",
+            "Chaostheorie",            "Energiestrukturen",
+            "Weltformel",              "energetische Intelligenz" };
 
 
 void DISPLAYTECH(uint8 TechID)
 {
-	char    s[50];
+    char    s[50];
     uint8   Depth, CivVar, Offset=0;
     uint16  l;
     APTR    ModC = NULL;
@@ -42,7 +42,7 @@ void DISPLAYTECH(uint8 TechID)
     ModC = GETTHESOUND(1);
     RECTWIN(MyRPort_PTR[1],0,0,0,639,511);        // clear the screen
 
-	s[0]=0;
+    s[0]=0;
     if      ((TechID>= 1) && (TechID<=18)) { strcpy(s, PathStr[1]); }
     else if ((TechID>=19) && (TechID<=38)) { strcpy(s, PathStr[2]); }
     else if ((TechID>=39) && (TechID<=42)) { strcpy(s, PathStr[3]); }
@@ -80,9 +80,9 @@ void DISPLAYTECH(uint8 TechID)
     {
         WRITEWIN(340,190,1,0,MyRPort_PTR[1],4,PText[225]);
         l = 0;
-        for(CivVar = 1; CivVar <= 42; CivVar++)
+        for(CivVar = 1; CivVar < 43; ++CivVar)
         {
-            if (TechUse1[CivVar] == TechID) { l = CivVar; }
+            if (TechUse1[CivVar] == TechID) { l      = CivVar; }
             if (TechUse2[CivVar] == TechID) { Offset = CivVar; }
         }
         if (l>0) { WRITEWIN(370,210,1,0,MyRPort_PTR[1],4,TechnologyL.data[l]); }
@@ -92,13 +92,13 @@ void DISPLAYTECH(uint8 TechID)
         }
     }
     l = 320;
-    for(CivVar = 1; CivVar <= 42; CivVar++)
+    for(CivVar = 1; CivVar < 43; ++CivVar)
     {
         if (ProjectNeedsTech[CivVar] == TechID)
         {
-            if      ((CivVar>=1) && (CivVar<= 7)) { strcpy(s, PText[226]); }
-            else if ((CivVar>=8) && (CivVar<=24)) { strcpy(s, PText[227]); }
-            else                                  { strcpy(s, PText[228]); }
+            if       (CivVar < 8)                   { strcpy(s, PText[226]); }
+            else if ((CivVar > 7) && (CivVar < 25)) { strcpy(s, PText[227]); }
+            else                                    { strcpy(s, PText[228]); }
             strcat(s, "  ");
             strcat(s, Project.data[CivVar]);
             WRITEWIN(20,l,1,0,MyRPort_PTR[1],4,s);

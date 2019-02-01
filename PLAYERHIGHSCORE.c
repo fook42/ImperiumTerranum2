@@ -35,7 +35,7 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
             } else {
                 strcpy(HiScore.Player[7], GETCIVNAME(PHS_ActPlayer+1));
             }
-            for (i = 7; i>0; i--)
+            for (i = 7; i > 0; --i)
             {
                 if (HiScore.Points[i] > HiScore.Points[i-1])
                 {

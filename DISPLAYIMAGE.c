@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, struct Screen* XScreen, uint8 CacheNum)
+bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, struct Screen* DI_Screen, uint8 CacheNum)
 {
     char    FName[80];
     BPTR    FHandle;
@@ -44,7 +44,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
         memcpy(IMemA[0], (CacheMemA[CacheNum]+CNum3+8), (CacheMemL[CacheNum]-CNum3-8));
     }
     struct Image DI_Img = {0, 0, Width, Height, Depth, IMemA[0], CNum-1, 0, NULL};
-    DrawImage(&(XScreen->RastPort), &DI_Img, LEdge, TEdge);
+    DrawImage(&(DI_Screen->RastPort), &DI_Img, LEdge, TEdge);
 
     if ((0 < CacheNum) && (false == ImageIsValid))
     {
@@ -75,7 +75,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
             memcpy((void*)Addr, IMemA[0], *Size);
             ImageIsValid = true;
         } else {
-            (void) SETCOLOR(XScreen, FName);
+            (void) SETCOLOR(DI_Screen, FName);
         }
     }
     if (true == ImageIsValid)
@@ -88,9 +88,8 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
         {
             RGB  = (r_Col*) Addr;
             Addr += 3;
-            SetRGB32(&(XScreen->ViewPort), i, (RGB->r)<<24, (RGB->g)<<24, (RGB->b)<<24);
+            SetRGB32(&(DI_Screen->ViewPort), i, (RGB->r)<<24, (RGB->g)<<24, (RGB->b)<<24);
         }
     }
-//    ScreenToFront(XScreen);
     return true;
 }

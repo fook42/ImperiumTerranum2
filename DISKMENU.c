@@ -96,8 +96,10 @@ void SAVESHIPS(r_ShipHeader* ShipPtr, BPTR FHandle)
 void GETSAVENAME(char* Title, char* SName)
 {
     char    ID[6][30];
-    uint32  Y,Version;
-    uint8   Lev;
+    uint32  SYear, SVersion;
+    uint8   SLevel;
+
+    uint16  ypos;
     sint16  i;
     sint16  mouse_over, selected;
     int     path_len;
@@ -121,7 +123,7 @@ void GETSAVENAME(char* Title, char* SName)
         Close(FHandle);
     }
     strcpy(s+path_len, "IMPT.0");
-    for(i = 0; i < 6; i++)
+    for(i = 0; i < 6; ++i)
     {
         ID[i][0] = 0;
         s[strlen(s)-1] = i + '1';
@@ -132,20 +134,21 @@ void GETSAVENAME(char* Title, char* SName)
             {
                 strcpy(ID[i], PText[525]);      // = "leer"
             } else {
-                (void) Read(FHandle, &Version, 4);  // game-version
-                if (Version == ACTVERSION)
+                (void) Read(FHandle, &SVersion, 4);   // game-version
+                if (ACTVERSION == SVersion)
                 {
-                    (void) Read(FHandle, &Y, 4);    // year
-                    (void) Read(FHandle, &Lev, 1);  // level
+                    (void) Read(FHandle, &SYear, 4);  // year
+                    (void) Read(FHandle, &SLevel, 1); // level
 
                     stringlen=strlen(_PT_Jahr);
                     memcpy(ID[i], _PT_Jahr, stringlen);
                     ID[i][stringlen++]=':';
                     ID[i][stringlen++]=' ';
-                    pos = dez2out(Y, 4, ID[i]+stringlen);
+                    pos = dez2out(SYear, 4, ID[i]+stringlen);
+
                     strcpy(pos, "     Level: ");
                     stringlen = strlen(ID[i]);
-                    (void)dez2out(Lev, 0, ID[i]+stringlen);
+                    (void)dez2out(SLevel, 0, ID[i]+stringlen);
 
                     Close(FHandle);
                 } else {
@@ -154,7 +157,7 @@ void GETSAVENAME(char* Title, char* SName)
                 }
             }
         }
-        while (ID[i][0] == 0);
+        while (0 == ID[i][0]);
     }
 
     GSN_Window=MAKEWINDOW(100,80,311,191,MyScreen[0]);
@@ -167,27 +170,33 @@ void GETSAVENAME(char* Title, char* SName)
     MAKEWINBORDER(RPort_PTR,10, 30,300,145,6,12,0);
     MAKEWINBORDER(RPort_PTR,10,155,300,180,6,12,0);
     WRITEWIN(155,7,ActPlayerFlag,(WRITE_Center|WRITE_Shadow),RPort_PTR,4,Title);
-    for(i = 0; i < 6; i++)
-        { WRITEWIN(20,35+i*18,ActPlayerFlag,0,RPort_PTR,4,ID[i]); }
+    ypos = 35;
+    for(i = 0; i < 6; ++i)
+    {
+        WRITEWIN( 20, ypos, ActPlayerFlag, 0, RPort_PTR, 4, ID[i]);
+        ypos += 18;
+    }
     selected = 99;
     do
     {
         mouse_over = (sint16) (((GSN_Window->MouseY)-35) / 18);
-        if ((0 <= mouse_over) && (5 >= mouse_over))
+        if ((0 <= mouse_over) && (6 > mouse_over))
         {
             if (selected != mouse_over)
             {
-                for(i = 0; i < 6; i++)
+                ypos = 35;
+                for(i = 0; i < 6; ++i)
                 {
                     if (i == mouse_over)
                     {
-                        WRITEWIN(20,35+i*18,           12,0,RPort_PTR,4,ID[i]);
+                        WRITEWIN(20, ypos,           12,0,RPort_PTR,4,ID[i]);
                         RECTWIN(RPort_PTR,0,12,157,298,178);
                         WRITEWIN(20,160,12,1,RPort_PTR,4,ID[i]);
                         selected = mouse_over;
                     } else {
-                        WRITEWIN(20,35+i*18,ActPlayerFlag,0,RPort_PTR,4,ID[i]);
+                        WRITEWIN(20, ypos,ActPlayerFlag,0,RPort_PTR,4,ID[i]);
                     }
+                    ypos += 18;
                 }
             }
         }
@@ -205,7 +214,7 @@ void GETSAVENAME(char* Title, char* SName)
 void ENCODEDATA()
 {
     uint8   i;
-    for(i = 0; i < MAXCIVS; i++)
+    for(i = 0; i < MAXCIVS; ++i)
     {
         Save.Staatstopf[i] = ((Save.Staatstopf[i] ^ 0x17031973)+0x13605185) ^ 0xFA5375AF;
     }
@@ -214,7 +223,7 @@ void ENCODEDATA()
 void DECODEDATA()
 {
     uint8   i;
-    for(i = 0; i < MAXCIVS; i++)
+    for(i = 0; i < MAXCIVS; ++i)
     {
         Save.Staatstopf[i] = ((Save.Staatstopf[i] ^ 0xFA5375AF)-0x13605185) ^ 0x17031973;
     }
@@ -230,6 +239,7 @@ bool DISKMENU(uint8 Autoselect)
     bool _DISKMENU = true;
     r_PlanetHeader* PlanetHeader;
     uint32  l;
+    uint16  ypos;
     int     i, j, k;
     char    s[40];
     BPTR    FHandle;
@@ -245,9 +255,11 @@ bool DISKMENU(uint8 Autoselect)
     RPort_PTR = DIS_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,122,135,12,6,1);
 
-    for(i = 0; i < 6; i++)
+    ypos = 3;
+    for(i = 0; i < 6; ++i)
     {
-        DrawImage(RPort_PTR,&GadImg1,4,3+i*22);
+        DrawImage(RPort_PTR,&GadImg1,4, ypos);
+        ypos += 22;
     }
     WRITEWIN(61,  5,0,WRITE_Center,RPort_PTR,4,PText[529]);
     WRITEWIN(61, 27,0,WRITE_Center,RPort_PTR,4,PText[530]);
@@ -274,7 +286,7 @@ bool DISKMENU(uint8 Autoselect)
                         FHandle = OPENSMOOTH(s,MODE_OLDFILE);
                         if (0 != FHandle)
                         {
-                            FREESYSTEMMEMORY();
+                            FREESYSTEMMEMORY(); // freemem of SystemHeader-stucts: projects, planetMem, ships.
                             (void) Read(FHandle, &l, 4);   // should be the ACTVERSION.. but we dont check here - was done in GETSAVENAME
                             (void) Read(FHandle, &Year, 4);
                             (void) Read(FHandle, &Level, 1);
@@ -285,25 +297,26 @@ bool DISKMENU(uint8 Autoselect)
                             (void) Read(FHandle, &SystemFlags[0][0], MAXSYSTEMS*MAXCIVS*sizeof(SystemFlags[0][0]));
                             (void) Read(FHandle, &MaquesShips, 4);
 
-                            for(i = 0; i < MAXSYSTEMS; i++)
+                            for(i = 0; i < MAXSYSTEMS; ++i)
                             {
                                 (void) Read(FHandle, &SystemHeader[i],sizeof(r_SystemHeader));
-                                if ((SystemHeader[i].PlanetMemA > 0) && (SystemHeader[i].Planets>0))
+                                if ((NULL != SystemHeader[i].PlanetMemA) && (0 < SystemHeader[i].Planets))
                                 {
                                     if (NULL != SystemHeader[i].FirstShip.NextShip)
                                     {
                                         LOADSHIPS(&SystemHeader[i].FirstShip, FHandle);
                                     }
+                                    // PlanetMemA is set, but the memory is Free'd already.. so we need to reallocate it
                                     SystemHeader[i].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[i].Planets*sizeof(r_PlanetHeader), MEMF_ANY);
                                     if (NULL == SystemHeader[i].PlanetMemA)
                                     {
-                                        NOMEMMESSAGE();
                                         Close(FHandle); // was missing...
                                         CloseWindow(DIS_Window);
+                                        NOMEMMESSAGE();
                                         return _DISKMENU;
                                     }
                                     (void) Read(FHandle, SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
-                                    for(j = 0; j < SystemHeader[i].Planets; j++)
+                                    for(j = 0; j < SystemHeader[i].Planets; ++j)
                                     {
                                         PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
                                         if (NULL != PlanetHeader->ProjectPtr)
@@ -311,8 +324,9 @@ bool DISKMENU(uint8 Autoselect)
                                             l = (uint32) AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
                                             if (0 == l)
                                             {
-                                                NOMEMMESSAGE();
-                                                for(k = 1; k <= SystemHeader[i].Planets; k++)
+                                                Close(FHandle);
+                                                CloseWindow(DIS_Window);
+                                                for(k = 0; k < SystemHeader[i].Planets; ++k)
                                                 {
                                                     if (NULL != PlanetHeader->ProjectPtr)
                                                     {
@@ -320,8 +334,7 @@ bool DISKMENU(uint8 Autoselect)
                                                     }
                                                     PlanetHeader->ProjectPtr = NULL;
                                                 }
-                                                Close(FHandle);
-                                                CloseWindow(DIS_Window);
+                                                NOMEMMESSAGE();
                                                 return _DISKMENU;
                                             }
                                             PlanetHeader->ProjectPtr = (ByteArr42*) l;
@@ -340,9 +353,9 @@ bool DISKMENU(uint8 Autoselect)
 
                             SETWORLDCOLORS();
                             MultiPlayer = false;
-                            for(i = 1; i < 7; i++)
+                            for(i = 1; i < 7; ++i)
                             {
-                                if (Save.CivPlayer[i] != 0)
+                                if (0 != Save.CivPlayer[i])
                                 {
                                     MultiPlayer = true;
                                 }
@@ -355,7 +368,7 @@ bool DISKMENU(uint8 Autoselect)
                             DRAWSTARS(MODE_REDRAW, ActPlayer);
                         }
                     }
-                } else if (((DIS_Window->MouseY>=25) && (DIS_Window->MouseY<=45)) || (DISKMENU_SAVEGAME == Autoselect))
+                } else if (((DIS_Window->MouseY > 24) && (DIS_Window->MouseY < 46)) || (DISKMENU_SAVEGAME == Autoselect))
                 {
                 /* ----------------- save the current game */
                     KLICKWINGAD(RPort_PTR,4,25);
@@ -376,21 +389,27 @@ bool DISKMENU(uint8 Autoselect)
                             (void) Write(FHandle, &SystemY[0], MAXSYSTEMS*sizeof(SystemY[0]));
                             (void) Write(FHandle, &SystemFlags[0][0], MAXSYSTEMS*MAXCIVS*sizeof(SystemFlags[0][0]));
                             (void) Write(FHandle, &MaquesShips, 4);
-                            for(i = 0; i < MAXSYSTEMS; i++)
+                            for(i = 0; i < MAXSYSTEMS; ++i)
                             {
                                 (void) Write(FHandle, &SystemHeader[i],sizeof(r_SystemHeader));
-                                if ((SystemHeader[i].PlanetMemA>0) && (SystemHeader[i].Planets>0))
+                                if ((NULL != SystemHeader[i].PlanetMemA) && (0 < SystemHeader[i].Planets))
                                 {
                                     if (NULL != SystemHeader[i].FirstShip.NextShip)
-                                        { SAVESHIPS(&SystemHeader[i].FirstShip, FHandle); }
+                                    {
+                                        SAVESHIPS(&SystemHeader[i].FirstShip, FHandle);
+                                    }
                                     (void) Write(FHandle, SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
-                                    for(j = 0; j < SystemHeader[i].Planets; j++)
+                                    for(j = 0; j < SystemHeader[i].Planets; ++j)
                                     {
                                         PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
                                         if (NULL != PlanetHeader->ProjectPtr)
-                                            { (void) Write(FHandle, PlanetHeader->ProjectPtr, sizeof(ByteArr42)); }
+                                        {
+                                            (void) Write(FHandle, PlanetHeader->ProjectPtr, sizeof(ByteArr42));
+                                        }
                                         if (NULL != PlanetHeader->FirstShip.NextShip)
-                                            { SAVESHIPS(&PlanetHeader->FirstShip, FHandle); }
+                                        {
+                                            SAVESHIPS(&PlanetHeader->FirstShip, FHandle);
+                                        }
                                     }
                                 }
                             }
@@ -402,7 +421,7 @@ bool DISKMENU(uint8 Autoselect)
                             puts("No Savefile\n");
                         }
                     }
-                } else if ((DIS_Window->MouseY>=47) && (DIS_Window->MouseY<=67))
+                } else if ((DIS_Window->MouseY > 46) && (DIS_Window->MouseY < 68))
                 {
                     KLICKWINGAD(RPort_PTR,4,47);
                     GETSAVENAME(PText[538], s);
@@ -411,16 +430,16 @@ bool DISKMENU(uint8 Autoselect)
                         (void) DeleteFile((CONST_STRPTR) s);
                     }
                     leave_dialog = true;
-                } else if ((DIS_Window->MouseY>=69) && (DIS_Window->MouseY<=89))
+                } else if ((DIS_Window->MouseY > 68) && (DIS_Window->MouseY < 90))
                 {
                     KLICKWINGAD(RPort_PTR,4,69);
                     OPTIONMENU(0);
                     ScreenToFront(MyScreen[0]);
-                } else if ((DIS_Window->MouseY>=91) && (DIS_Window->MouseY<=111))
+                } else if ((DIS_Window->MouseY > 90) && (DIS_Window->MouseY < 112))
                 {
                     KLICKWINGAD(RPort_PTR,4,91);
                     HIGHSCORE();
-                } else if ((DIS_Window->MouseY>=113) && (DIS_Window->MouseY<=133))
+                } else if ((DIS_Window->MouseY > 112) && (DIS_Window->MouseY < 134))
                 {
                     KLICKWINGAD(RPort_PTR,4,113);
                     _DISKMENU = false;

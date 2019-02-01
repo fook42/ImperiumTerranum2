@@ -13,59 +13,50 @@ void REMOVEPLAYER(uint8 RP_ActPlayer)
 
     Save.Bevoelkerung[RP_ActPlayer-1] = 0;
     RP_ActPlayerFlag = GETCIVFLAG(RP_ActPlayer);
-    for(i = 0; i < MAXSYSTEMS; i++)
+    for(i = 0; i < MAXSYSTEMS; ++i)
     {
         if (NULL != SystemHeader[i].PlanetMemA)
         {
-            for(j = 0; j < SystemHeader[i].Planets; j++)
+            for(j = 0; j < SystemHeader[i].Planets; ++j)
             {
                 MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == RP_ActPlayerFlag)
+                if (RP_ActPlayerFlag == (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
                 {
-                    MyPlanetHeader->PFlags = 0;
-                    MyPlanetHeader->Ethno = 0;
-                    MyPlanetHeader->Population = 0;
+                    MyPlanetHeader->PFlags        = 0;
+                    MyPlanetHeader->Ethno         = 0;
+                    MyPlanetHeader->Population    = 0;
                     MyPlanetHeader->XProjectCosts = 0;
                     MyPlanetHeader->XProjectPayed = 0;
-                    MyPlanetHeader->ProjectID = 0;
+                    MyPlanetHeader->ProjectID     = 0;
                     if (NULL != MyPlanetHeader->ProjectPtr)
                     {
-                        MyPlanetHeader->ProjectPtr->data[7] = 0;
+                        MyPlanetHeader->ProjectPtr->data[7]  = 0;
                         MyPlanetHeader->ProjectPtr->data[26] = 0;
                         MyPlanetHeader->ProjectPtr->data[27] = 0;
                         // free the memory???
                     }
                 }
                 MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
-                if (NULL != MyShipPtr)
+                while (NULL != MyShipPtr)
                 {
-                    do
-                    {
-                        if (MyShipPtr->Owner == RP_ActPlayerFlag) { MyShipPtr->Owner = 0; }
-                        MyShipPtr = MyShipPtr->NextShip;
-                    }
-                    while (NULL != MyShipPtr);
+                    if (RP_ActPlayerFlag == MyShipPtr->Owner) { MyShipPtr->Owner = 0; }
+                    MyShipPtr = MyShipPtr->NextShip;
                 }
             }
             MyShipPtr = SystemHeader[i].FirstShip.NextShip;
-            if (NULL != MyShipPtr)
+            while (NULL != MyShipPtr)
             {
-                do
+                if (RP_ActPlayerFlag == MyShipPtr->Owner) { MyShipPtr->Owner = 0; }
+                if (SHIPTYPE_FLEET   == MyShipPtr->SType)
                 {
-                    if (MyShipPtr->Owner == RP_ActPlayerFlag) { MyShipPtr->Owner = 0; }
-                    if (MyShipPtr->SType == SHIPTYPE_FLEET)
+                    ActShipPtr = MyShipPtr->TargetShip;
+                    while (NULL != ActShipPtr)
                     {
-                        ActShipPtr = MyShipPtr->TargetShip;
-                        do
-                        {
-                            if (ActShipPtr->Owner == RP_ActPlayerFlag) { ActShipPtr->Owner = 0; }
-                            ActShipPtr = ActShipPtr->NextShip;
-                        }
-                        while (NULL != ActShipPtr);
+                        if (RP_ActPlayerFlag == ActShipPtr->Owner) { ActShipPtr->Owner = 0; }
+                        ActShipPtr = ActShipPtr->NextShip;
                     }
-                    MyShipPtr = MyShipPtr->NextShip;
                 }
-                while (NULL != MyShipPtr);
+                MyShipPtr = MyShipPtr->NextShip;
             }
         }
     }

@@ -31,17 +31,14 @@ void ROTATEPLANETS(uint8 ActSys)
     struct RastPort* RPort_PTR;
     struct RastPort* RPort_PTR2;
 
-
-    // Printf("## ROTATEPLANETS >>>> ##\n");
-
     if ((2000 < Year) && (1 == ActPlayer)) { DOHUMANITY(); }
     RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
     Valid = false;
-    if (1 == ActPlayer) { Year++; }
+    if (1 == ActPlayer) { ++Year; }
     FreeSystem = false;
     if ((0 == (Year % 10)) && (!Save.PlayMySelf)) { INFORMUSER(); }
     AllCreative[ActPlayer-1] = 0;
-    for(j = 1; j < 8; j++)
+    for(j = 1; j < 8; ++j)
     {
         if (Save.ProjectCosts[ActPlayer-1].data[j] <= 0)
         {
@@ -58,14 +55,14 @@ void ROTATEPLANETS(uint8 ActSys)
     if (1 == ActPlayer)
     {
         MaquesShips = 0;
-        for(i = 0; i < MAXCIVS; i++)
+        for(i = 0; i < MAXCIVS; ++i)
         {
             Save.WarPower[i] = 0;
             Save.Bevoelkerung[i] = 0;
             Militaerausgaben[i] = 0;
         }
     }
-    for(i = 0; i < Save.Systems; i++)
+    for(i = 0; i < Save.Systems; ++i)
     {
         if ((Save.ProjectCosts[ActPlayer-1].data[39] <= 0) && (vonNeuMannSonde_exists)
           && (SystemHeader[i].vNS != FLAG_KNOWN) && ((rand()%5) == 0))
@@ -75,20 +72,18 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    // Printf("## ROTATEPLANETS - PT 1 ##\n");
-
     if (1 == ActPlayer)
     {
-        for(i = 0; i < Save.Systems; i++)
+        for(i = 0; i < Save.Systems; ++i)
         {
             if (0 == SystemHeader[i].Planets) { continue; }
 
-            for(j = 0; j < MAXCIVS; j++)
+            for(j = 0; j < MAXCIVS; ++j)
             {
                 SystemFlags[j][i] &= FLAG_CIV_MASK;
             }
 
-            if (SystemHeader[i].FirstShip.SType == TARGET_STARGATE)
+            if (TARGET_STARGATE == SystemHeader[i].FirstShip.SType)
             {
                 // store old position of the stargate...
                 FromX = SystemHeader[i].FirstShip.PosX;
@@ -141,14 +136,14 @@ void ROTATEPLANETS(uint8 ActSys)
             REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip,i+1,1);
         }
     }
-    // Printf("## ROTATEPLANETS - PT 2 ##\n");
+
     if (ActPlayer<MAXCIVS)
     {
-        for(i = 0; i < Save.Systems; i++)
+        for(i = 0; i < Save.Systems; ++i)
         {
             if (0 == SystemHeader[i].Planets) { continue; }
 
-            for(j = 1; j <= SystemHeader[i].Planets; j++)
+            for(j = 1; j <= SystemHeader[i].Planets; ++j)
             {
                 PlanetHeader = &(SystemHeader[i].PlanetMemA[j-1]);
                 if (NULL == PlanetHeader) { continue; }
@@ -163,7 +158,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         (0 != (PlanetHeader->PFlags & FLAG_CIV_MASK)))
                     {
                         ActPProjects = PlanetHeader->ProjectPtr;
-                        for(k = 1; k <= 7; k++)
+                        for(k = 1; k < 8; ++k)
                         {
                             if (ActPProjects->data[k]>0)
                             {
@@ -179,11 +174,11 @@ void ROTATEPLANETS(uint8 ActSys)
                     CivVar = GETCIVVAR(PlanetHeader->PFlags);
                     if (0 == CivVar)
                     {
-                        if (PlanetHeader->Infrastruktur>0)
+                        if (0 < PlanetHeader->Infrastruktur)
                         {
                             PlanetHeader->Infrastruktur = abs(PlanetHeader->Infrastruktur-(rand()%7));
                         }
-                        if (PlanetHeader->Industrie>0)
+                        if (0 < PlanetHeader->Industrie)
                         {
                             PlanetHeader->Industrie = abs(PlanetHeader->Industrie-(rand()%7));
                         }
@@ -240,18 +235,17 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    // Printf("## ROTATEPLANETS - PT 3 ##\n");
     if (ActSys>0)
     {
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     }
     if (ActPlayer<MAXCIVS)
     {
-        for(i = 0; i < Save.Systems; i++)
+        for(i = 0; i < Save.Systems; ++i)
         {
             if (0 == SystemHeader[i].Planets) { continue; }
 
-            for(j = 1; j <= MAXCIVS; j++)
+            for(j = 1; j <= MAXCIVS; ++j)
             {
                 SystemOwn[j] = 0;
             }

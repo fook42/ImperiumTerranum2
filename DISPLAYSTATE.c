@@ -5,7 +5,7 @@
 
 void DISPLAYSTATE()
 {
-    uint32  l;
+    uint32  punkte;
     char    s[10];
     char    Txt_Sep[]= "-------\0";
 
@@ -21,28 +21,30 @@ void DISPLAYSTATE()
     WRITEWIN(540,130,2,WRITE_Right,MyRPort_PTR[1],2,s);
 
     WRITEWIN(100,160,1,0,MyRPort_PTR[1],4,_PT_Levelbonus);
-    (void) dez2out(it_round(Save.ImperatorState[ActPlayer-1]*(1+Level/30.0))-Save.ImperatorState[ActPlayer-1], 0, s);
+    punkte = it_round(Save.ImperatorState[ActPlayer-1]*(Level/30.0));
+    (void) dez2out(punkte, 0, s);
     WRITEWIN(540,160,2,WRITE_Right,MyRPort_PTR[1],2,s);
 
     WRITEWIN(100,190,1,0,MyRPort_PTR[1],4,_PT_Spieldauer);
-    if (Year<=0)
+    if (0 >= Year)
     {
         s[0] = '0';
         s[1] = 0;
     } else {
-        (void) dez2out(-Year, 0, s);
+        s[0] = '-';
+        (void) dez2out(Year, 0, s+1);
     }
     WRITEWIN(540,190,2,WRITE_Right,MyRPort_PTR[1],2, s);
 
-    WRITEWIN(540,210,2,WRITE_Right,MyRPort_PTR[1],2,Txt_Sep);
+    WRITEWIN(540,210,2,WRITE_Right,MyRPort_PTR[1],2, Txt_Sep);
 
     WRITEWIN(100,240,1,0,MyRPort_PTR[1],4,_PT_Gesamtpunktzahl);
-    l = it_round(Save.ImperatorState[ActPlayer-1]*(1+Level/30.0));
-    if (Year>0)
+    punkte += Save.ImperatorState[ActPlayer-1];
+    if (0 < Year)
     {
-        (void) dez2out(l-Year, 0, s);
+        (void) dez2out(punkte-Year, 0, s);
     } else {
-        (void) dez2out(l, 0, s);
+        (void) dez2out(punkte, 0, s);
     }
     WRITEWIN(540,240,2,WRITE_Right,MyRPort_PTR[1],2,s);
 

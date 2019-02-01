@@ -13,11 +13,11 @@ bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet
     {
         NewEthnoFlag = MyPlanetHeader->Ethno;
     } else {
-        for(i = 0; i < (MAXCIVS-2); i++)
+        for(i = 0; i < (MAXCIVS-2); ++i)
         {
-            if ((Save.ImperatorState[i]>2000)
-                && (Save.WarState[ActPlayer-1][i]!=LEVEL_UNKNOWN)
-                && (Save.WarState[ActPlayer-1][i]!=LEVEL_DIED))
+            if ((2000 < Save.ImperatorState[i])
+                && (LEVEL_UNKNOWN != Save.WarState[ActPlayer-1][i])
+                && (LEVEL_DIED    != Save.WarState[ActPlayer-1][i]))
             {
                 NewEthnoFlag = GETCIVFLAG(i+1);
             }
@@ -29,9 +29,9 @@ bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet
             {
                i = rand()%(MAXCIVS-2);
             }
-            while ((Save.ImperatorState[i]<=2000)
-                || (Save.WarState[ActPlayer-1][i]==LEVEL_UNKNOWN)
-                || (Save.WarState[ActPlayer-1][i]==LEVEL_DIED));
+            while ((2001 > Save.ImperatorState[i])
+                || (LEVEL_UNKNOWN == Save.WarState[ActPlayer-1][i])
+                || (LEVEL_DIED    == Save.WarState[ActPlayer-1][i]));
             NewEthnoFlag = GETCIVFLAG(i+1);
         }
     }
@@ -54,7 +54,7 @@ bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet
         *s2 = PText[556];
     }
     CivVar = GETCIVVAR(MyPlanetHeader->Ethno)-1;
-    for(i = 0; i < (MAXCIVS-1); i++)
+    for(i = 0; i < (MAXCIVS-1); ++i)
     {
         if (LEVEL_DIED == Save.WarState[i][CivVar])
         {

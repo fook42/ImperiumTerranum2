@@ -36,27 +36,32 @@ void FINANZEN_WRITEDATA(struct RastPort* RPort, uint8 Mode, uint8 FWD_ActPlayer)
 void FINANZEN()
 {
     uint8   i;
-	struct Window* FIN_Window;
-	struct RastPort* RPort_PTR;
+    uint16  ypos;
+    struct Window* FIN_Window;
+    struct RastPort* RPort_PTR;
 
-	FIN_Window=MAKEWINDOW(60,100,371,176,MyScreen[0]);
-	if (NULL == FIN_Window)
-	{
-		return;
-	}
-	RPort_PTR = FIN_Window->RPort;
-	MAKEWINBORDER(RPort_PTR,0,0,370,175,12,6,1);
+    FIN_Window=MAKEWINDOW(60,100,371,176,MyScreen[0]);
+    if (NULL == FIN_Window)
+    {
+        return;
+    }
+    RPort_PTR = FIN_Window->RPort;
+    MAKEWINBORDER(RPort_PTR,0,0,370,175,12,6,1);
 
-	ActPlayer--;    // TODO ... due to shifted Save-array...
+    ActPlayer--;    // TODO ... due to shifted Save-array...
 
     WRITEWIN(196, 10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[678]);
     WRITEWIN( 20, 47,           12,           0,RPort_PTR,4,PText[679]);
     WRITEWIN( 20, 92,ActPlayerFlag,           0,RPort_PTR,4,PText[680]);
     WRITEWIN( 20,137,           12,           0,RPort_PTR,4,PText[681]);
+    ypos = 42;
     for (i = 0; i<3; i++)
-        { MAKEWINBORDER(RPort_PTR,231,i*45+42,310,i*45+65,12,6,1); }
+    {
+        MAKEWINBORDER(RPort_PTR,231, ypos,310, ypos+23,12,6,1);
+        ypos += 45;
+    }
 
-	WRITEWIN(250, 70,12,0,RPort_PTR,2,"I J");
+    WRITEWIN(250, 70,12,0,RPort_PTR,2,"I J");
     WRITEWIN(250,115,12,0,RPort_PTR,2,"J I");
     if ((WFLAG_JAHADR == Save.WorldFlag)
         && (Save.JSteuer[ActPlayer]>0)
@@ -122,7 +127,7 @@ void FINANZEN()
                    delay(10);
                 }
                 ActPlayer++;    // TODO ... due to shifted Save-array...
-				CloseWindow(FIN_Window);
+                CloseWindow(FIN_Window);
                 GOTOWAR(ActPlayerFlag, FLAG_OTHER);
                 return;
             }
@@ -131,6 +136,6 @@ void FINANZEN()
     while (RMB_NOTPRESSED);
     ActPlayer++;    // TODO ... due to shifted Save-array...
 
-	CloseWindow(FIN_Window);
+    CloseWindow(FIN_Window);
 }
 

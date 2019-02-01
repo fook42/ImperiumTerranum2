@@ -10,14 +10,14 @@ const struct worldcolors_t const worldcolors[] = {  {0x00000000,0xFF000000,0xFF0
                                                     {0xFF000000,0xFF000000,0x00000000}, // yellow
                                                     {0xBA000000,0x8B000000,0x48000000}, // brown
                                                     {0xFF000000,0x00000000,0xB0000000}, // purple
-                                                    {0x77000000,0x77000000,0x77000000} // grey
+                                                    {0x77000000,0x77000000,0x77000000}  // grey
                                                 };
 
 void SETWORLDCOLORS()
 {
     uint8 col;
     col = GETCIVVAR(Save.WorldFlag);
-    if (8 <= col)
+    if (7 < col)
     {
         col = 0;
     }

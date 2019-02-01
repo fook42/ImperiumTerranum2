@@ -392,7 +392,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                             } else {
                                Ships++;
                                ProjectType[j] = 3;
-                               ProjectRounds[j] = it_round(ProjectRounds[j]+(ProjectRounds[j]*(Save.Military[ActPlayer-1]/100.0)));
+                               ProjectRounds[j] += it_round(ProjectRounds[j]*(Save.Military[ActPlayer-1]/100.0));
                             }
                         }
                         if ((i>=1) && (i<=7))
