@@ -21,11 +21,11 @@ void DOSSIER(bool Cheat)
     MAKEWINBORDER(RPort_PTR,0,  0,510,205,12,6,1);
     MAKEWINBORDER(RPort_PTR,0,206,510,392,12,6,1);
 
-    WRITE(175,10,12,WRITE_Right,RPort_PTR,3,_PT_Status);
-    WRITE(275,10,12,WRITE_Right,RPort_PTR,3,_PT_Bevoelkerung);
-    WRITE(345,10,12,WRITE_Right,RPort_PTR,3,_PT_Militaer);
-    WRITE(430,10,12,WRITE_Right,RPort_PTR,3,_PT_Guthaben);
-    WRITE(500,10,12,WRITE_Right,RPort_PTR,3,_PT_Wertung);
+    WRITE(175,10,12,WRITE_Right,RPort_PTR,2,_PT_Status);
+    WRITE(275,10,12,WRITE_Right,RPort_PTR,2,_PT_Bevoelkerung);
+    WRITE(345,10,12,WRITE_Right,RPort_PTR,2,_PT_Militaer);
+    WRITE(430,10,12,WRITE_Right,RPort_PTR,2,_PT_Guthaben);
+    WRITE(500,10,12,WRITE_Right,RPort_PTR,2,_PT_Wertung);
     posy = 20;
     // i = 1..8
     for (i = 1; i < MAXCIVS; ++i)
@@ -37,10 +37,10 @@ void DOSSIER(bool Cheat)
             posy += 20;
             civflag = GETCIVFLAG(i);
             _s = GETCIVNAME(i);
-            WRITE(14, posy, civflag,0,RPort_PTR,3,_s);
+            WRITE(14, posy, civflag,0,RPort_PTR,2,_s);
             if (8 > i)
             {
-                WRITE(i*73-35,215,civflag,WRITE_Center,RPort_PTR,3,_s);
+                WRITE(i*73-35,215,civflag,WRITE_Center,RPort_PTR,2,_s);
             }
             switch (Save.WarState[ActPlayer-1][i-1])
             {
@@ -51,20 +51,20 @@ void DOSSIER(bool Cheat)
             }
             if (i != ActPlayer)
             {
-                WRITE(175, posy, civflag,WRITE_Right,RPort_PTR,3,_s);
+                WRITE(175, posy, civflag,WRITE_Right,RPort_PTR,2,_s);
             }
             if ((i == ActPlayer) || (Save.WarState[ActPlayer-1][i-1] == LEVEL_DIED)
              || (Save.SSMoney[ActPlayer-1][i-1] > (Save.WarPower[i-1]*39)) || (Cheat))
             {
                 _s = dez2out(Save.Bevoelkerung[i-1], 0, s);
                 strcpy(_s, " Mio");
-                WRITE(275, posy,civflag,WRITE_Right,RPort_PTR,3,s);
+                WRITE(275, posy,civflag,WRITE_Right,RPort_PTR,2,s);
 
                 (void) dez2out(Save.WarPower[i-1], 0, s);
-                WRITE(345, posy,civflag,WRITE_Right,RPort_PTR,3,s);
+                WRITE(345, posy,civflag,WRITE_Right,RPort_PTR,2,s);
 
                 (void) dez2out(Save.Staatstopf[i-1], 0, s);
-                WRITE(430, posy,civflag,WRITE_Right,RPort_PTR,3,s);
+                WRITE(430, posy,civflag,WRITE_Right,RPort_PTR,2,s);
                 if ( ((0 < i) && (i < 8)) || ((0 != Save.WorldFlag) && (WFLAG_FIELD != Save.WorldFlag)) )
                 {
                     for (j = 1; j < 8; ++j)
@@ -91,20 +91,20 @@ void DOSSIER(bool Cheat)
                                 }
                                 if ((i == j) && (i == GETCIVVAR(Save.WorldFlag)))
                                 {
-                                    WRITE(j*73-35,217+i*18,civflag,(5|WRITE_Center),RPort_PTR,3, _PT_Krieg);
+                                    WRITE(j*73-35,217+i*18,civflag,(5|WRITE_Center),RPort_PTR,2, _PT_Krieg);
                                 } else {
-                                    WRITE(j*73-35,217+i*18,civflag,   WRITE_Center ,RPort_PTR,3, _s);
+                                    WRITE(j*73-35,217+i*18,civflag,   WRITE_Center ,RPort_PTR,2, _s);
                                 }
                             }
                         }
                     }
                 }
             } else {
-                WRITE(210, posy,civflag,0,RPort_PTR,3, _PT_keineInfos);
+                WRITE(210, posy,civflag,0,RPort_PTR,2, _PT_keineInfos);
             }
 
             (void) dez2out(Save.ImperatorState[i-1], 0, s);
-            WRITE(500, posy,civflag,WRITE_Right,RPort_PTR,3,s);
+            WRITE(500, posy,civflag,WRITE_Right,RPort_PTR,2,s);
         }
     }
     WAITLOOP(false);

@@ -480,7 +480,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     *_s++='-';
                     _s = dez2out(it_round((MyShipPtr->Shield+MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, _s);
                     *_s++='%'; *_s=0;
-                    WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyRPort_PTR[0],2,s);
+                    WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyRPort_PTR[0],1,s);
                     OldMoving = MyShipPtr->Moving;
                 }
             }
@@ -517,7 +517,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     slen = _s - s;
                 }
                 s[slen]=0;
-                WRITE(MOVESHIP_x+2,MOVESHIP_y+21,MyShipPtr->Owner,0,MyRPort_PTR[0],1,s);
+                WRITE(MOVESHIP_x+2,MOVESHIP_y+21,MyShipPtr->Owner,0,MyRPort_PTR[0],0,s);
             }
         } else if (30 == blink)
         {
@@ -798,7 +798,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 *_s++='%'; *_s=0;
             }
             OldMoving = MyShipPtr->Moving;
-            WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyRPort_PTR[0],2,s);
+            WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyRPort_PTR[0],1,s);
         }
         MOVESHIP_x = 256+((MyShipPtr->PosX+OffsetX)*32);
         MOVESHIP_y = 256+((MyShipPtr->PosY+OffsetY)*32);

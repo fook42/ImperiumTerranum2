@@ -49,21 +49,21 @@ void SYSTEMINFO(uint8 ActSys)
         DrawImage(RPort_PTR,&GadImg1,4,y);
         y += 22;
     }
-    WRITE(62, 5,0,WRITE_Center,RPort_PTR,4,_PT_Sterne);
-    WRITE(62,27,0,WRITE_Center,RPort_PTR,4,_PT_Sprengen);
+    WRITE(62, 5,0,WRITE_Center,RPort_PTR,3,_PT_Sterne);
+    WRITE(62,27,0,WRITE_Center,RPort_PTR,3,_PT_Sprengen);
     if (TARGET_POSITION == UseShipPtr->Target)
     {
-        WRITE(62,49,0,WRITE_Center,RPort_PTR,4,_PT_Abloesen);
+        WRITE(62,49,0,WRITE_Center,RPort_PTR,3,_PT_Abloesen);
     } else {
-        WRITE(62,49,0,WRITE_Center,RPort_PTR,4,_PT_Position);
+        WRITE(62,49,0,WRITE_Center,RPort_PTR,3,_PT_Position);
     }
     if (SHIPTYPE_STARGATE != MyShipPtr->SType)
     {
-        WRITE(62,71,0,WRITE_Center,RPort_PTR,4,_PT_Bewaessern);
+        WRITE(62,71,0,WRITE_Center,RPort_PTR,3,_PT_Bewaessern);
     } else {
-        WRITE(62,71,0,WRITE_Center,RPort_PTR,4,_PT_Stargate);
+        WRITE(62,71,0,WRITE_Center,RPort_PTR,3,_PT_Stargate);
     }
-    WRITE(62,93,0,WRITE_Center,RPort_PTR,4,_PT_Warten);
+    WRITE(62,93,0,WRITE_Center,RPort_PTR,3,_PT_Warten);
     do
     {
         delay(RDELAY);
@@ -189,9 +189,9 @@ void SYSTEMINFO(uint8 ActSys)
                             {
                                 RPort_PTR = SYS_Window->RPort;
                                 MAKEWINBORDER(RPort_PTR,0,0,370,86,12,6,1);
-                                WRITE(186,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[481]);
-                                WRITE(186,32,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[482]);
-                                WRITE(186,54,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[483]);
+                                WRITE(186,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[481]);
+                                WRITE(186,32,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[482]);
+                                WRITE(186,54,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[483]);
                                 WAITLOOP(false);
                             }
                         } else if (0 == SystemHeader[ActSys-1].FirstShip.SType)

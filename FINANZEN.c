@@ -10,15 +10,15 @@ void FINANZEN_WRITEDATA(struct RastPort* RPort, uint8 Mode, uint8 FWD_ActPlayer)
     (void) dez2out(Save.GSteuer[FWD_ActPlayer], 3, s);
     s[3]='%';
     s[4]=0;
-    WRITE(307, 47,8,(1|WRITE_Right),RPort,2,s);
+    WRITE(307, 47,8,(1|WRITE_Right),RPort,1,s);
     (void) dez2out((100-Save.JSteuer[FWD_ActPlayer]-Save.GSteuer[FWD_ActPlayer]-Save.SService[FWD_ActPlayer]), 3, s);
     s[3]='%';
     s[4]=0;
-    WRITE(307, 92,8,(1|WRITE_Right),RPort,2,s);
+    WRITE(307, 92,8,(1|WRITE_Right),RPort,1,s);
     (void) dez2out(Save.SService[FWD_ActPlayer], 3, s);
     s[3]='%';
     s[4]=0;
-    WRITE(307,137,8,(1|WRITE_Right),RPort,2,s);
+    WRITE(307,137,8,(1|WRITE_Right),RPort,1,s);
     if ((WFLAG_JAHADR == Save.WorldFlag)
         && ((Save.JSteuer[FWD_ActPlayer]+Mode)>0)
         && (LEVEL_UNKNOWN != Save.WarState[FWD_ActPlayer][7])
@@ -27,7 +27,7 @@ void FINANZEN_WRITEDATA(struct RastPort* RPort, uint8 Mode, uint8 FWD_ActPlayer)
         (void) dez2out(Save.JSteuer[FWD_ActPlayer], 3, s);
         s[3]='%';
         s[4]=0;
-        WRITE(307,227,8,(1|WRITE_Right),RPort,2,s);
+        WRITE(307,227,8,(1|WRITE_Right),RPort,1,s);
     }
 }
 
@@ -50,10 +50,10 @@ void FINANZEN()
 
     ActPlayer--;    // TODO ... due to shifted Save-array...
 
-    WRITE(196, 10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[678]);
-    WRITE( 20, 47,           12,           0,RPort_PTR,4,PText[679]);
-    WRITE( 20, 92,ActPlayerFlag,           0,RPort_PTR,4,PText[680]);
-    WRITE( 20,137,           12,           0,RPort_PTR,4,PText[681]);
+    WRITE(196, 10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[678]);
+    WRITE( 20, 47,           12,           0,RPort_PTR,3,PText[679]);
+    WRITE( 20, 92,ActPlayerFlag,           0,RPort_PTR,3,PText[680]);
+    WRITE( 20,137,           12,           0,RPort_PTR,3,PText[681]);
     ypos = 42;
     for (i = 0; i<3; i++)
     {
@@ -61,18 +61,18 @@ void FINANZEN()
         ypos += 45;
     }
 
-    WRITE(250, 70,12,0,RPort_PTR,2,"I J");
-    WRITE(250,115,12,0,RPort_PTR,2,"J I");
+    WRITE(250, 70,12,0,RPort_PTR,1,"I J");
+    WRITE(250,115,12,0,RPort_PTR,1,"J I");
     if ((WFLAG_JAHADR == Save.WorldFlag)
         && (Save.JSteuer[ActPlayer]>0)
         && (LEVEL_UNKNOWN != Save.WarState[ActPlayer][7])
         && (LEVEL_DIED    != Save.WarState[ActPlayer][7]))
     {
         MAKEWINBORDER(RPort_PTR,0,100,370,265,12,6,0);
-        WRITE(265,205,8,0,RPort_PTR,2,"I");
-        WRITE( 20,216,FLAG_OTHER,0,RPort_PTR,4,PText[683]);
+        WRITE(265,205,8,0,RPort_PTR,1,"I");
+        WRITE( 20,216,FLAG_OTHER,0,RPort_PTR,3,PText[683]);
         MAKEWINBORDER(RPort_PTR,231,222,310,245,12,6,1);
-        WRITE( 20,233,FLAG_OTHER,0,RPort_PTR,4,PText[684]);
+        WRITE( 20,233,FLAG_OTHER,0,RPort_PTR,3,PText[684]);
     }
     FINANZEN_WRITEDATA(RPort_PTR, 0, ActPlayer);
     do

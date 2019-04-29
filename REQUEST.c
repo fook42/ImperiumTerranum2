@@ -11,8 +11,8 @@ void REQUEST(char* s1, char* s2, uint8 c1, uint8 c2)
     {
         MAKEWINBORDER(REQ_Window->RPort,0,0,440,80,12,6,1);
 
-        WRITE(221,20,c1,WRITE_Center,REQ_Window->RPort,4,s1);
-        WRITE(221,45,c2,WRITE_Center,REQ_Window->RPort,4,s2);
+        WRITE(221,20,c1,WRITE_Center,REQ_Window->RPort,3,s1);
+        WRITE(221,45,c2,WRITE_Center,REQ_Window->RPort,3,s2);
         if (Save.PlayMySelf) { delay(PAUSE); }
         WAITLOOP(Save.PlayMySelf);
         CloseWindow(REQ_Window);

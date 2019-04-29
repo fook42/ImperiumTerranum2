@@ -20,7 +20,7 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
             if (0 != MyShipPtr->Owner)
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->SType-8)*32,32,MyRPort_PTR[0],35,37+i*32,32,32,192);
-                WRITE(72,45+i*32,12,0,MyRPort_PTR[0],4,Project.data[MyShipPtr->SType]);
+                WRITE(72,45+i*32,12,0,MyRPort_PTR[0],3,Project.data[MyShipPtr->SType]);
 
                 strcpy(ShipNames[j], Project.data[MyShipPtr->SType]);
 
@@ -32,7 +32,7 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
                 *pos++=' ';
                 pos = dez2out(it_round((MyShipPtr->Shield + MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, pos);
                 *pos++='%'; *pos=0;
-                WRITE(235,45+i*32,8,0,MyRPort_PTR[0],2,s);
+                WRITE(235,45+i*32,8,0,MyRPort_PTR[0],1,s);
                 i++;
                 j++;
             }
@@ -89,16 +89,16 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     }
 // OpenWindow()
     MAKEBORDER(MyScreen[0],20,30,420,480,12,6,0);
-    WRITE(63,37,ActPlayerFlag,0,MyRPort_PTR[0],4,ReqText);
-    WRITE( 36,56,12,0,MyRPort_PTR[0],1,PText[408]);
-    WRITE(232,56,12,0,MyRPort_PTR[0],1,PText[409]);
+    WRITE(63,37,ActPlayerFlag,0,MyRPort_PTR[0],3,ReqText);
+    WRITE( 36,56,12,0,MyRPort_PTR[0],0,PText[408]);
+    WRITE(232,56,12,0,MyRPort_PTR[0],0,PText[409]);
 
     i = DRAWSHIPS(1, ShipNames, MyShipPtr);
     if ((i>12) && (NULL != MyShipPtr))
     {
 //         MoreThanShown = true;
         DrawImage(MyRPort_PTR[0],&GadImg1,300,457);
-        WRITE(335,460,0,0,MyRPort_PTR[0],4,PText[410]);
+        WRITE(335,460,0,0,MyRPort_PTR[0],3,PText[410]);
 //     } else {
 //         MoreThanShown = false;
     }
@@ -117,9 +117,9 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
                 {
                     if ((j+1) != k)
                     {
-                        WRITE(72,ypos,           12,0,MyRPort_PTR[0],4,ShipNames[j]);
+                        WRITE(72,ypos,           12,0,MyRPort_PTR[0],3,ShipNames[j]);
                     } else {
-                        WRITE(72,ypos,ActPlayerFlag,0,MyRPort_PTR[0],4,ShipNames[j]);
+                        WRITE(72,ypos,ActPlayerFlag,0,MyRPort_PTR[0],3,ShipNames[j]);
                     }
                     ypos += 32;
                 }

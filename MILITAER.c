@@ -30,7 +30,7 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
         {
             XState += i+1;
             Fight  += 8;
-            WRITE(24, ypos, 12, 1, RPort, 4,"|");
+            WRITE(24, ypos, 12, 1, RPort,3,"|");
         } else {
             RectFill(RPort, 24, ypos, 40, ypos+15);
         }
@@ -40,13 +40,13 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
     s[0]=' ';
     s[1]='-';
     (void)dez2out(XState, 0, s+2);
-    WRITE(230,240,8,(1|WRITE_Right),RPort,2,s);
+    WRITE(230,240,8,(1|WRITE_Right),RPort,1,s);
     s[1]='+';
     (void)dez2out(Fight, 0, s+2);
-    WRITE(230,265,8,(1|WRITE_Right),RPort,2,s);
+    WRITE(230,265,8,(1|WRITE_Right),RPort,1,s);
     _s = dez2out(Costs, 0, s+2);
     *_s++='%'; *_s=0;
-    WRITE(244,290,8,(1|WRITE_Right),RPort,2,s);
+    WRITE(244,290,8,(1|WRITE_Right),RPort,1,s);
 }
 
 /* -------------------------------------------------------- */
@@ -77,11 +77,11 @@ void MILITAER()
         ypos += 30;
     }
 
-    WRITE(205,10,ActPlayerFlag,WRITE_Center, RPort_PTR,4,PText[667]);
-    WRITE(60, 55,12,0, RPort_PTR,4,PText[668]);
-    WRITE(60, 85,12,0, RPort_PTR,4,PText[669]);
-    WRITE(60,115,12,0, RPort_PTR,4,PText[670]);
-    WRITE(60,145,12,0, RPort_PTR,4,PText[671]);
+    WRITE(205,10,ActPlayerFlag,WRITE_Center, RPort_PTR,3,PText[667]);
+    WRITE(60, 55,12,0, RPort_PTR,3,PText[668]);
+    WRITE(60, 85,12,0, RPort_PTR,3,PText[669]);
+    WRITE(60,115,12,0, RPort_PTR,3,PText[670]);
+    WRITE(60,145,12,0, RPort_PTR,3,PText[671]);
 
     if (Save.TechCosts[ActPlayer-1].data[9]  <= 0)
     {
@@ -94,7 +94,7 @@ void MILITAER()
         s[_Txt_notavail_len+i]=0;
         _s = s;
     }
-    WRITE(60,175,12,0, RPort_PTR,4,_s);
+    WRITE(60,175,12,0, RPort_PTR,3,_s);
 
     if (Save.TechCosts[ActPlayer-1].data[23] <= 0)
     {
@@ -107,10 +107,10 @@ void MILITAER()
         s[_Txt_notavail_len+i]=0;
         _s = s;
     }
-    WRITE(60,205,12,0, RPort_PTR,4,_s);
-    WRITE(20,240,ActPlayerFlag,0, RPort_PTR,4,PText[674]);
-    WRITE(20,265,ActPlayerFlag,0, RPort_PTR,4,PText[675]);
-    WRITE(20,290,ActPlayerFlag,0, RPort_PTR,4,PText[676]);
+    WRITE(60,205,12,0, RPort_PTR,3,_s);
+    WRITE(20,240,ActPlayerFlag,0, RPort_PTR,3,PText[674]);
+    WRITE(20,265,ActPlayerFlag,0, RPort_PTR,3,PText[675]);
+    WRITE(20,290,ActPlayerFlag,0, RPort_PTR,3,PText[676]);
     DRAWDATA(RPort_PTR, 0);
     do
     {

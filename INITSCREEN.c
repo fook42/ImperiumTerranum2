@@ -25,22 +25,22 @@ void INITSCREEN(uint8 Mode)
         strcpy(s, PathStr[0]);
         strcat(s, "PlanetDesk.img");
         if (!DISPLAYIMAGE(s,0,94,384,394,8,MyScreen[1],2)) { return; }
-        WRITE( 62,126,2,           0,MyRPort_PTR[1],4,PText[151]);
-        WRITE( 62,175,2,           0,MyRPort_PTR[1],4,PText[152]);
-        WRITE( 62,224,2,           0,MyRPort_PTR[1],4,PText[153]);
-        WRITE(165,250,2,           0,MyRPort_PTR[1],4,PText[154]);
-        WRITE( 62,273,2,           0,MyRPort_PTR[1],4,PText[155]);
-        WRITE(185,312,2,           0,MyRPort_PTR[1],4,PText[156]);
-        WRITE(185,359,2,           0,MyRPort_PTR[1],4,PText[157]);
-        WRITE(120,461,2,WRITE_Center,MyRPort_PTR[1],4,PText[158]);
-        WRITE(262,461,2,WRITE_Center,MyRPort_PTR[1],4,PText[159]);
+        WRITE( 62,126,2,           0,MyRPort_PTR[1],3,PText[151]);
+        WRITE( 62,175,2,           0,MyRPort_PTR[1],3,PText[152]);
+        WRITE( 62,224,2,           0,MyRPort_PTR[1],3,PText[153]);
+        WRITE(165,250,2,           0,MyRPort_PTR[1],3,PText[154]);
+        WRITE( 62,273,2,           0,MyRPort_PTR[1],3,PText[155]);
+        WRITE(185,312,2,           0,MyRPort_PTR[1],3,PText[156]);
+        WRITE(185,359,2,           0,MyRPort_PTR[1],3,PText[157]);
+        WRITE(120,461,2,WRITE_Center,MyRPort_PTR[1],3,PText[158]);
+        WRITE(262,461,2,WRITE_Center,MyRPort_PTR[1],3,PText[159]);
         y = 103;
         for (i = 0; i < 3; ++i)
         {
-            WRITE(333, y,2,0,MyRPort_PTR[1],4,"%");
+            WRITE(333, y,2,0,MyRPort_PTR[1],3,"%");
             y += 49;
         }
-        WRITE(333,402,2,0,MyRPort_PTR[1],4,"%");
+        WRITE(333,402,2,0,MyRPort_PTR[1],3,"%");
     }
     else if (SCREEN_HISCORE == Mode)
     {

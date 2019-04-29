@@ -24,7 +24,7 @@ void CREATEINFOBOX(struct Window** CIB_Window, struct RastPort** CIB_RPort_PTR)
         _s = dez2out(Year, 0, s+len);
         _s[0] = ':';
         _s[1] = 0;
-        WRITE(225, 10,ActPlayerFlag,WRITE_Center,*CIB_RPort_PTR,4,s);
+        WRITE(225, 10,ActPlayerFlag,WRITE_Center,*CIB_RPort_PTR,3,s);
     }
     PRINTGLOBALINFOS(ActPlayer);
 }
@@ -110,7 +110,7 @@ void STARTROTATEPLANETS()
                 if (j>1)
                 {
                     if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
-                    WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
+                    WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,s);
                 }
             }
         }
@@ -126,9 +126,9 @@ void STARTROTATEPLANETS()
             strcat(s, PText[655]);
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,s);
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,PText[656]);
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,PText[656]);
         }
 
         if (0 != Save.CivilWar)
@@ -145,7 +145,7 @@ void STARTROTATEPLANETS()
                 strcat(s, PText[657]);
                 if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
                 j++;
-                WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
+                WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,s);
             }
         }
         if (0 != GetPlanetSys[ActPlayer])
@@ -157,7 +157,7 @@ void STARTROTATEPLANETS()
             strcat(s, PText[658]);
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,s);
         }
         if (Verschrottung[ActPlayer]>0)
         {
@@ -172,7 +172,7 @@ void STARTROTATEPLANETS()
             }
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4, _s);
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3, _s);
             Verschrottung[ActPlayer] = 0;
         }
 
@@ -183,7 +183,7 @@ void STARTROTATEPLANETS()
             strcat(s, PText[662]);
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,s);
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,s);
             vNSonde[ActPlayer] = false;
         }
     }
@@ -194,37 +194,37 @@ void STARTROTATEPLANETS()
         {
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"Auf der Erde nimmt Dank Gene Roddenberry");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"Auf der Erde nimmt Dank Gene Roddenberry");
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"eine Legende ihren Anfang!");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"eine Legende ihren Anfang!");
         } else if (1973 == Year)
         {
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"Auf der Erde wird ein");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"Auf der Erde wird ein");
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"genialer Programmierer geboren!");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"genialer Programmierer geboren!");
         } else if (2001 == Year)
         {
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"Stanley Kubricks & Arthur C. Clarkes");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"Stanley Kubricks & Arthur C. Clarkes");
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"Vision wird Wirklichkeit!");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"Vision wird Wirklichkeit!");
         } else if (2010 == Year)
         {
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"Peter Hyams & Arthur C. Clarkes");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"Peter Hyams & Arthur C. Clarkes");
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"Vision wird Wirklichkeit!");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"Vision wird Wirklichkeit!");
         } else if (2063 == Year)
         {
             if (!Informed) { CREATEINFOBOX(&SRP_Window, &RPort_PTR); }
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"Auf der Erde findet");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"Auf der Erde findet");
             j++;
-            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,4,"\"Der erste Kontakt\" statt!");
+            WRITE(225,j*18,12,WRITE_Center,RPort_PTR,3,"\"Der erste Kontakt\" statt!");
         }
     }
     ++ActPlayer;    // for array shifting...
@@ -261,7 +261,7 @@ void STARTROTATEPLANETS()
     if ((0 != Save.CivPlayer[ActPlayer-1]) && (Informed))
     {
         RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
-        WRITE(521,292,12,1,MyRPort_PTR[0],4,PText[663]);
+        WRITE(521,292,12,1,MyRPort_PTR[0],3,PText[663]);
     }
     // Printf("## out STARTROTATEPLANETS ##\n");
 }

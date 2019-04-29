@@ -37,14 +37,14 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
                         }
             }
         }
-        WRITE(191,430,2,(1|WRITE_Center),MyRPort_PTR[1],4, _s);
+        WRITE(191,430,2,(1|WRITE_Center),MyRPort_PTR[1],3, _s);
     }
 
     RECTWIN(MyRPort_PTR[1],0,56,399,256,418);
     if (l > 100) { l = 100; }
     if (l < 0)   { l = 0; }
     (void) dez2out(l, 3, s);
-    WRITE(278,402,4,1,MyRPort_PTR[1],2,s);
+    WRITE(278,402,4,1,MyRPort_PTR[1],1,s);
     RECTWIN(MyRPort_PTR[1],4,56,399,56+(l*2),418);
 }
 
@@ -57,7 +57,7 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     // draw state of biosphere, infrastructure and industry
     RECTWIN(MyRPort_PTR[1],4,56,101,56+MyPlanetHeader->Biosphaere,120);
     (void) dez2out((MyPlanetHeader->Biosphaere >> 1), 3, s);
-    WRITE(278,104,4,1,MyRPort_PTR[1],2,s);
+    WRITE(278,104,4,1,MyRPort_PTR[1],1,s);
 
     y =  ActPProjects->data[30]              /* Recycling-Anl. */
         +ActPProjects->data[31]              /* Fusions-Kraftwerk */
@@ -76,14 +76,14 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 
     RECTWIN(MyRPort_PTR[1],4,56,150,56+MyPlanetHeader->Infrastruktur,169);
     (void) dez2out((MyPlanetHeader->Infrastruktur >> 1), 3, s);
-    WRITE(278,153,4,1,MyRPort_PTR[1],2,s);
+    WRITE(278,153,4,1,MyRPort_PTR[1],1,s);
 
     RECTWIN(MyRPort_PTR[1],4,56,199,56+MyPlanetHeader->Industrie,218);
     (void) dez2out((MyPlanetHeader->Industrie >> 1), 3, s);
-    WRITE(278,202,4,1,MyRPort_PTR[1],2,s);
+    WRITE(278,202,4,1,MyRPort_PTR[1],1,s);
 
     (void) dez2out(MyPlanetHeader->Population, 7, s);
-    WRITE(59,251,4,1,MyRPort_PTR[1],2,s);
+    WRITE(59,251,4,1,MyRPort_PTR[1],1,s);
 
 
     y = 0;   /* Kreativität */
@@ -170,12 +170,12 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
             {
                 /* settlers and landingtroops */
                 (void) dez2out(ActPProjects->data[i], 3, s);
-                WRITE(376+x,141+y,4,0,MyRPort_PTR[1],2,s);
+                WRITE(376+x,141+y,4,0,MyRPort_PTR[1],1,s);
             } else if ((34 == i) || (40 == i))
             {
                 /* vNeuMann and space-Phalanx */
                 (void) dez2out(ActPProjects->data[i], 3, s);
-                WRITE(367+x,141+y,4,0,MyRPort_PTR[1],2,s);
+                WRITE(367+x,141+y,4,0,MyRPort_PTR[1],1,s);
             }
             x += PROJECTS_XSIZE;
             if ((3*PROJECTS_XSIZE) < x)
@@ -222,12 +222,12 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     strcpy(s, _PT_System);
     strcat(s, ": ");
     strcat(s, Save.SystemName.data[ActSys-1]);
-    WRITE(5,5,1,1,MyRPort_PTR[1],4,s);
+    WRITE(5,5,1,1,MyRPort_PTR[1],3,s);
 
     strcpy(s, _PT_Planet);
     strcat(s, ": ");
     strcat(s, MyPlanetHeader->PName);
-    WRITE(5,25,1,1,MyRPort_PTR[1],4,s);
+    WRITE(5,25,1,1,MyRPort_PTR[1],3,s);
 
     strcpy(s, _PT_Klasse);
     strcat(s, ": ");
@@ -243,23 +243,23 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     strcat(s, " ");
     strcat(s, _PT_Besiedlung);
     strcat(s, ")");
-    WRITE(5,45,1,1,MyRPort_PTR[1],4,s);
+    WRITE(5,45,1,1,MyRPort_PTR[1],3,s);
 
     strcpy(s, _PT_Groesse);
     strcat(s, ": ");
 
     _s = float2out( (MyPlanetHeader->Size/10.0), 0, 2, s+strlen(s));
     strcpy(_s, PText[171]);
-    WRITE(5,65,1,1,MyRPort_PTR[1],4,s);
+    WRITE(5,65,1,1,MyRPort_PTR[1],3,s);
 
     if (Save.ActTech[ActPlayer-1]>0)
     {
         strcpy(s, PText[172]);
         strcat(s, ": ");
         strcat(s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
-        WRITE(275,5,1,1,MyRPort_PTR[1],4,s);
+        WRITE(275,5,1,1,MyRPort_PTR[1],3,s);
     } else {
-        WRITE(275,5,1,1,MyRPort_PTR[1],4,PText[173]);
+        WRITE(275,5,1,1,MyRPort_PTR[1],3,PText[173]);
     }
 
     if (NULL != MyPlanetHeader->FirstShip.NextShip)
@@ -276,14 +276,14 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         strcpy(s, PText[175]);
         strcat(s, ": ");
         (void) dez2out(i, 0, s+strlen(s));
-        WRITE(275,45,1,1,MyRPort_PTR[1],4,s);
+        WRITE(275,45,1,1,MyRPort_PTR[1],3,s);
     }
     if (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & ActPlayerFlag))
     {
         strcpy (s, PText[176]);
         strcat(s, " ");
         strcat(s, GETCIVNAME(GETCIVVAR(MyPlanetHeader->Ethno)));
-        WRITE(275,65,1,1,MyRPort_PTR[1],4,s);
+        WRITE(275,65,1,1,MyRPort_PTR[1],3,s);
     }
 
     PProd = 11+(ActPProjects->data[31]+ActPProjects->data[37]+
@@ -310,10 +310,10 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
             blink++;
             if (20 == blink)
             {
-                WRITE(278,402,0,1,MyRPort_PTR[1],2, "100");
+                WRITE(278,402,0,1,MyRPort_PTR[1],1, "100");
             } else if (40 == blink)
             {
-                WRITE(278,402,4,1,MyRPort_PTR[1],2, "100");
+                WRITE(278,402,4,1,MyRPort_PTR[1],1, "100");
                 blink = 0;
             }
         }
@@ -410,10 +410,10 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
 //                Img = (struct Image) {0,0,384,407,7,IMemA[0],127,0,NULL};
                 // clear right project-area to print the list of available Projects to build
                 RECTWIN(MyRPort_PTR[1],0,360,92,639,511);
-                WRITE(365,474,4,1,MyRPort_PTR[1],4,PText[177]);
+                WRITE(365,474,4,1,MyRPort_PTR[1],3,PText[177]);
                 for(i = 1; i <= j; i++)
                 {
-                    WRITE(365,78+i*16,ProjectType[i],1,MyRPort_PTR[1],3,NewProject[i]);
+                    WRITE(365,78+i*16,ProjectType[i],1,MyRPort_PTR[1],2,NewProject[i]);
                     if (ProjectNum[i]>0)
                     {
                         l = ProjectRounds[i]-MyPlanetHeader->XProjectPayed;
@@ -423,7 +423,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     l = (l / PMoney ) +1;
                     if (l <= 0) { l = 1; }
                     (void) dez2out(l, 7 ,s);
-                    WRITE(575,78+i*16,ProjectType[i],1,MyRPort_PTR[1],3,s);
+                    WRITE(575,78+i*16,ProjectType[i],1,MyRPort_PTR[1],2,s);
                 }
                 btx = 1;
                 MyPlanetHeader->ProjectID = 0;
@@ -440,9 +440,9 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                             {
                                 if (i != btx)
                                 {
-                                    WRITE(365,78+i*16,ProjectType[i],1,MyRPort_PTR[1],3,NewProject[i]);
+                                    WRITE(365,78+i*16,ProjectType[i],1,MyRPort_PTR[1],2,NewProject[i]);
                                 } else {
-                                    WRITE(365,78+i*16,ProjectType[i],5,MyRPort_PTR[1],3,NewProject[i]);
+                                    WRITE(365,78+i*16,ProjectType[i],5,MyRPort_PTR[1],2,NewProject[i]);
                                 }
                             }
                         }
@@ -480,18 +480,18 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 RPort_PTR = HKP_Window->RPort;
                 MAKEWINBORDER(RPort_PTR,0,0,273,137,2,32,1);
 
-                WRITE(136, 11,2,WRITE_Center,RPort_PTR,4,PText[178]);
+                WRITE(136, 11,2,WRITE_Center,RPort_PTR,3,PText[178]);
                 l = MyPlanetHeader->XProjectCosts-MyPlanetHeader->XProjectPayed;
                 if (l < 0) { l = 0; }
                 (void) dez2out(l, 0, s);
-                WRITE(136, 32,4,WRITE_Center,RPort_PTR,2,s);
-                WRITE(136, 53,2,WRITE_Center,RPort_PTR,4,PText[179]);
+                WRITE(136, 32,4,WRITE_Center,RPort_PTR,1,s);
+                WRITE(136, 53,2,WRITE_Center,RPort_PTR,3,PText[179]);
                 (void) dez2out(Save.Staatstopf[ActPlayer-1], 0, s);
-                WRITE(136, 74,4,WRITE_Center,RPort_PTR,2,s);
+                WRITE(136, 74,4,WRITE_Center,RPort_PTR,1,s);
                 MAKEWINBORDER(RPort_PTR, 10,100,131,125,2,32,1);
-                WRITE( 70,106,2,WRITE_Center,RPort_PTR,4,PText[159]);
+                WRITE( 70,106,2,WRITE_Center,RPort_PTR,3,PText[159]);
                 MAKEWINBORDER(RPort_PTR,141,100,263,125,2,32,1);
-                WRITE(202,106,2,WRITE_Center,RPort_PTR,4,"Abbruch");
+                WRITE(202,106,2,WRITE_Center,RPort_PTR,3,"Abbruch");
                 b = false;
                 do
                 {

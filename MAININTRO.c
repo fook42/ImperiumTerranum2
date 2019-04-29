@@ -468,7 +468,9 @@ void MAININTRO()
         "Jakob Gaardsted   Andy Jones", "George Moore",
         "Surround-Sounds created with", "WaveTracer DS®",
         "Colors in Technicolor®",       "Panaflex® Camera and Lenses by Panavision®"};
-    const uint8 FArr[] = {0, 4,5, 4,5, 4,5, 4,5, 4,5, 5,5, 4,5, 4,4};
+//  const uint8 FArr[] = {0, 4,5, 4,5, 4,5, 4,5, 4,5, 5,5, 4,5, 4,4};
+    const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3};
+
 
     r_Coords ShipX = {{ 390, 264,252,186,186,192,256,290,354,360,360,294,282, 252, 256, 290,294, 282,294,294, 258,265,273,281,288, 185,185,190,190, 356,356,361,361,0,0,0,0,0,0,0,0}};
     r_Coords ShipY = {{ 315, 174,275,250,188,225,234,234,225,188,250,275,174, 275, 243, 243,275, 174,275,275, 269,342,269,342,269, 187,172,172,187, 187,172,172,187,0,0,0,0,0,0,0,0}};
@@ -625,7 +627,7 @@ void MAININTRO()
     SETDARKCOLOR(s, Colors);
     strcpy(s+pathname_len, "Frame1.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
-    WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],5,"PRESENTS");
+    WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRESENTS");
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,75,192);
 
     /* T */
@@ -691,8 +693,8 @@ void MAININTRO()
     SETDARKCOLOR(s, Colors);
     strcpy(s+pathname_len, "Frame2.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
-    WRITE(320,205,31,WRITE_Center,MyRPort_PTR[AScr],5,"A");
-    WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],5,"PRODUCTION");
+    WRITE(320,205,31,WRITE_Center,MyRPort_PTR[AScr],4,"A");
+    WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRODUCTION");
     ClipBlit(MyRPort_PTR[AScr],0,200,MyRPort_PTR[1-AScr],0,200,640,100,192);
 
     /* V */

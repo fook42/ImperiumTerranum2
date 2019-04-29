@@ -175,14 +175,14 @@ void GETSAVENAME(char* Title, char* SName)
     MAKEWINBORDER(RPort_PTR,10,155,300,180,6,12,0);
     MAKEWINBORDER(RPort_PTR,10,190,300,215,12,6,1);
 
-    WRITE(155,7,ActPlayerFlag,(WRITE_Center|WRITE_Shadow),RPort_PTR,4,Title);
+    WRITE(155,7,ActPlayerFlag,(WRITE_Center|WRITE_Shadow),RPort_PTR,3,Title);
     ypos = 35;
     for(i = 0; i < 6; ++i)
     {
-        WRITE( 20, ypos, ActPlayerFlag, 0, RPort_PTR, 4, ID[i]);
+        WRITE( 20, ypos, ActPlayerFlag, 0, RPort_PTR,3, ID[i]);
         ypos += 18;
     }
-    WRITE(155,195,8,(WRITE_Center|WRITE_Shadow),RPort_PTR,4,_PT_ENDE);
+    WRITE(155,195,8,(WRITE_Center|WRITE_Shadow),RPort_PTR,3,_PT_ENDE);
     selected = 99;
     do
     {
@@ -198,12 +198,12 @@ void GETSAVENAME(char* Title, char* SName)
                 {
                     if (i == mouse_over)
                     {
-                        WRITE(20, ypos,           12,0,RPort_PTR,4,ID[i]);
+                        WRITE(20, ypos,           12,0,RPort_PTR,3,ID[i]);
                         RECTWIN(RPort_PTR,0,12,157,298,178);
-                        WRITE(20,160,12,1,RPort_PTR,4,ID[i]);
+                        WRITE(20,160,12,1,RPort_PTR,3,ID[i]);
                         selected = mouse_over;
                     } else {
-                        WRITE(20, ypos,ActPlayerFlag,0,RPort_PTR,4,ID[i]);
+                        WRITE(20, ypos,ActPlayerFlag,0,RPort_PTR,3,ID[i]);
                     }
                     ypos += 18;
                 }
@@ -281,12 +281,12 @@ bool DISKMENU(uint8 Autoselect)
         DrawImage(RPort_PTR,&GadImg1,4, ypos);
         ypos += 22;
     }
-    WRITE(61,  5,0,WRITE_Center,RPort_PTR,4,PText[529]);
-    WRITE(61, 27,0,WRITE_Center,RPort_PTR,4,PText[530]);
-    WRITE(61, 49,0,WRITE_Center,RPort_PTR,4,PText[531]);
-    WRITE(61, 71,0,WRITE_Center,RPort_PTR,4,PText[532]);
-    WRITE(61, 93,0,WRITE_Center,RPort_PTR,4,PText[533]);
-    WRITE(61,115,8,WRITE_Center,RPort_PTR,4,PText[534]);
+    WRITE(61,  5,0,WRITE_Center,RPort_PTR,3,PText[529]);
+    WRITE(61, 27,0,WRITE_Center,RPort_PTR,3,PText[530]);
+    WRITE(61, 49,0,WRITE_Center,RPort_PTR,3,PText[531]);
+    WRITE(61, 71,0,WRITE_Center,RPort_PTR,3,PText[532]);
+    WRITE(61, 93,0,WRITE_Center,RPort_PTR,3,PText[533]);
+    WRITE(61,115,8,WRITE_Center,RPort_PTR,3,PText[534]);
 
     do
     {

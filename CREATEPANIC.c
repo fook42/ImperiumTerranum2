@@ -184,25 +184,25 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         RPort_PTR = CPA_Window->RPort;
 
         MAKEWINBORDER(RPort_PTR,0,0,340,90,12,6,1);
-        WRITE(171,51,12,(1|WRITE_Center),RPort_PTR,3, _s1);
+        WRITE(171,51,12,(1|WRITE_Center),RPort_PTR,2, _s1);
         strcpy(s, _PT_System);
         strcat(s, ": ");
         strcat(s, Save.SystemName.data[ActSys-1]);
-        WRITE(171, 7,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
+        WRITE(171, 7,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
         strcpy(s, _PT_Planet);
         strcat(s, ": ");
         strcat(s, MyPlanetHeader->PName);
-        WRITE(171,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
+        WRITE(171,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
         if ((0 < TheProject) && (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[TheProject]]))
         {
             strcpy(s, PText[570]);
             strcat(s, " ");
             strcat(s, Project.data[TheProject]);
-            WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,3, s);
+            WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,2, s);
         }
         if (-1 == TheProject)
         {
-            WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,3, _s2);
+            WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,2, _s2);
         }
 
         if ((Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1] != 0)
@@ -220,8 +220,8 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7, MyPlanetHeader->Class*32,0,RPort2_PTR,10,4,32,32,192);
             DrawImage(RPort2_PTR,&GadImg1, 55,10);
             DrawImage(RPort2_PTR,&GadImg1,195,10);
-            WRITE(113,12,0,WRITE_Center,RPort2_PTR,4,_PT_Planet);
-            WRITE(253,12,0,WRITE_Center,RPort2_PTR,4,_PT_weiter);
+            WRITE(113,12,0,WRITE_Center,RPort2_PTR,3,_PT_Planet);
+            WRITE(253,12,0,WRITE_Center,RPort2_PTR,3,_PT_weiter);
             b = false;
             if (!Save.PlayMySelf)
             {

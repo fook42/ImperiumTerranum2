@@ -65,30 +65,30 @@ void DISPLAYTECH(uint8 TechID)
 
     if (!DISPLAYIMAGE(s,0,40,320,256,Depth,MyScreen[1],0)) { }
 
-    WRITE(340,50,1,0,MyRPort_PTR[1],3,PText[223]);
-    WRITE(340,70,1,0,MyRPort_PTR[1],4,TechnologyL.data[TechID]);
+    WRITE(340,50,1,0,MyRPort_PTR[1],2,PText[223]);
+    WRITE(340,70,1,0,MyRPort_PTR[1],3,TechnologyL.data[TechID]);
     if (TechUse1[TechID]>0)
     {
-        WRITE(340,110,1,0,MyRPort_PTR[1],4,PText[224]);
-        WRITE(370,130,1,0,MyRPort_PTR[1],4,TechnologyL.data[TechUse1[TechID]]);
+        WRITE(340,110,1,0,MyRPort_PTR[1],3,PText[224]);
+        WRITE(370,130,1,0,MyRPort_PTR[1],3,TechnologyL.data[TechUse1[TechID]]);
         if (TechUse1[TechID] != TechUse2[TechID])
         {
-            WRITE(370,150,1,0,MyRPort_PTR[1],4,TechnologyL.data[TechUse2[TechID]]);
+            WRITE(370,150,1,0,MyRPort_PTR[1],3,TechnologyL.data[TechUse2[TechID]]);
         }
     }
     if (27 != TechID)
     {
-        WRITE(340,190,1,0,MyRPort_PTR[1],4,PText[225]);
+        WRITE(340,190,1,0,MyRPort_PTR[1],3,PText[225]);
         l = 0;
         for(CivVar = 1; CivVar < 43; ++CivVar)
         {
             if (TechUse1[CivVar] == TechID) { l      = CivVar; }
             if (TechUse2[CivVar] == TechID) { Offset = CivVar; }
         }
-        if (l>0) { WRITE(370,210,1,0,MyRPort_PTR[1],4,TechnologyL.data[l]); }
+        if (l>0) { WRITE(370,210,1,0,MyRPort_PTR[1],3,TechnologyL.data[l]); }
         if ((l != Offset) && (Offset>=1) && (Offset<=42))
         {
-            WRITE(370,230,1,0,MyRPort_PTR[1],4,TechnologyL.data[Offset]);
+            WRITE(370,230,1,0,MyRPort_PTR[1],3,TechnologyL.data[Offset]);
         }
     }
     l = 320;
@@ -101,7 +101,7 @@ void DISPLAYTECH(uint8 TechID)
             else                                    { strcpy(s, PText[228]); }
             strcat(s, "  ");
             strcat(s, Project.data[CivVar]);
-            WRITE(20,l,1,0,MyRPort_PTR[1],4,s);
+            WRITE(20,l,1,0,MyRPort_PTR[1],3,s);
             l += 20;
         }
     }

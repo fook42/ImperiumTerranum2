@@ -34,19 +34,19 @@ void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner)
                     l=strlen(s);
                     s[l++]=' ';
                     strcpy(s+l, PText[205]);
-                    WRITE(171,12,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
+                    WRITE(171,12,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
 
                     l=strlen(Project.data[i]);
                     memcpy(s, Project.data[i], l);
                     s[l++]='-';
                     s[l]=0;
-                    WRITE(171,32,12,(1|WRITE_Center),RPort_PTR,4,s);
+                    WRITE(171,32,12,(1|WRITE_Center),RPort_PTR,3,s);
 
                     l=strlen(PText[206]);
                     memcpy(s, PText[206], l);
                     s[l++]=' ';
                     strcpy(s+l, GETCIVNAME(GETCIVVAR(NewOwner)));
-                    WRITE(171,53,NewOwner & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
+                    WRITE(171,53,NewOwner & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
                     if (Save.PlayMySelf)
                     {
                         delay(PAUSE);

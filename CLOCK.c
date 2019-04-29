@@ -26,6 +26,6 @@ void CLOCK()
         pos = dez2out(Stunde, 2, s);
         *pos++=':';
         (void) dez2out(Minute, 2, pos);
-        WRITE(541,354,8,1,MyRPort_PTR[0],2,s);
+        WRITE(541,354,8,1,MyRPort_PTR[0],1,s);
     }
 }
