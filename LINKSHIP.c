@@ -5,11 +5,6 @@
 
 void LINKSHIP(r_ShipHeader* SourcePtr, r_ShipHeader* TargetPtr, uint8 Mode)
 {
-//    r_ShipHeader*   SourcePtr;
-//    r_ShipHeader*   TargetPtr;
-
-//    SourcePtr = SPtr;
-//    TargetPtr = TPtr;
     if (1 == Mode)
     {
         SourcePtr->BeforeShip->NextShip = SourcePtr->NextShip;

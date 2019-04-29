@@ -29,12 +29,14 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     IMemA[0] = AllocMem(IMemL[0], MEMF_CHIP);
     if (NULL == IMemA[0])
     {
+        puts("not enough chip-memory (225KB) - exit!\n");
         return;
     }
 
     MyScreen[0] = OPENCINEMA(8);
     if (NULL == MyScreen[0])
     {
+        puts("can not open screen - exit!\n");
         return;
     }
 
@@ -81,6 +83,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
 
     if (!DISPLAYIMAGE(s,0,75,640,360,8,MyScreen[0],0))
     {
+        puts("can not display image - exit!\n");
         return;
     }
 
