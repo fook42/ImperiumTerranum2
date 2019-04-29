@@ -13,7 +13,7 @@ void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
 
     MyPlanetHeader = PPtr;
     INFORMUSER();
-    ModC = GETTHESOUND(4);
+    ModC = GETTHESOUND(3);
 
     DEC_Window=MAKEWINDOW(80,120,351,101,MyScreen[0]);
     if (NULL != DEC_Window)
@@ -42,6 +42,6 @@ void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
     if (NULL != ModC)
     {
         StopPlayer();
-        FreeMem(ModC,ModMemL[4]);
+        FreeMem(ModC,ModMemL[3]);
     }
 }

@@ -39,7 +39,7 @@ void DISPLAYTECH(uint8 TechID)
         return;
     }
     SWITCHDISPLAY();
-    ModC = GETTHESOUND(1);
+    ModC = GETTHESOUND(0);
     RECTWIN(MyRPort_PTR[1],0,0,0,639,511);        // clear the screen
 
     s[0]=0;
@@ -117,7 +117,6 @@ void DISPLAYTECH(uint8 TechID)
         StopPlayer();
         FreePlayer();
         UnLoadModule(ModC);
-//        FreeMem(ModC, ModMemL[1]);
     }
     ScreenToFront(MyScreen[0]);
 }

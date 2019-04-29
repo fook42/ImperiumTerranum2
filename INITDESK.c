@@ -59,13 +59,13 @@ bool INITDESK(uint8 Mode)
         memcpy(s, PathStr[4], slen+1);
 
         strcpy(s+slen, "MOD.Invention");
-        LOADMOD( s, 1 );
+        LOADMOD( s, 0 );
         strcpy(s+slen, "MOD.War");
-        LOADMOD( s, 2 );
+        LOADMOD( s, 1 );
         strcpy(s+slen, "MOD.Tech");
-        LOADMOD( s, 3 );
+        LOADMOD( s, 2 );
         strcpy(s+slen, "MOD.Bad");
-        LOADMOD( s, 4 );
+        LOADMOD( s, 3 );
 
         slen = strlen(PathStr[7]);
         memcpy(s, PathStr[7], slen+1);

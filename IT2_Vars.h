@@ -97,8 +97,8 @@ _EXTERN_  uint32        LogoSMemL[MAXCIVS-1];
 _EXTERN_  UWORD*        ZeroSound;
 _EXTERN_  APTR          IMemA[IMAGES+1];
 _EXTERN_  uint32        IMemL[IMAGES+1];
-_EXTERN_  APTR          ModMemA[MODULES+1];
-_EXTERN_  uint32        ModMemL[MODULES+1];
+_EXTERN_  APTR          ModMemA[MODULES];
+_EXTERN_  uint32        ModMemL[MODULES];
 _EXTERN_  char*         PathStr[PATHS];
 
 _EXTERN_  r_ShipData    ShipData[18]; // offset 8 -> range 0..17 = 8..25

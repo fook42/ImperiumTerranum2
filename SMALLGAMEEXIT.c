@@ -24,7 +24,7 @@ void SMALLGAMEEXIT()
         FreeMem(ImgBitMap8.MemA, ImgBitMap8.MemL); ImgBitMap8.MemA = NULL;
     }
 
-    for (i = 1; i<=MODULES; i++)
+    for (i = 0; i< MODULES; i++)
     {
         if (NULL != ModMemA[i])
         {

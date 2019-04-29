@@ -66,7 +66,7 @@ void INITVARS()
 
     for (i = 0; i< SOUNDS;  i++ ) { SoundMemA[i] = NULL; }
     for (i = 0; i<=IMAGES;  i++ ) { IMemA[i]     = NULL; }
-    for (i = 1; i<=MODULES; i++ ) { ModMemA[i]   = NULL; }
+    for (i = 0; i< MODULES; i++ ) { ModMemA[i]   = NULL; }
     for (i = 1; i<=CACHES;  i++ ) { CacheMemA[i] = NULL; }
 
     memset(&ImgBitMap4, 0, sizeof(ITBitMap));

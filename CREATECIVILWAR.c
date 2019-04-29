@@ -28,8 +28,8 @@ void CREATECIVILWAR(uint8 CivVar)
         strcpy(s+len, PText[386]);
         if (0 != Save.CivPlayer[CivVar-1])
         {
-            ModC = GETTHESOUND(2);
-            ModL = ModMemL[2];
+            ModC = GETTHESOUND(1);
+            ModL = ModMemL[1];
             REQUEST(s,PText[387],CivFlag,CivFlag);
         }
         for(i = 0; i < (MAXCIVS-1); ++i)

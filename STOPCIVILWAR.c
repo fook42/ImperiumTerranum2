@@ -30,8 +30,8 @@ void STOPCIVILWAR(uint8 EndText)
     Save.Staatstopf[7] = 0;
     if (0 != Save.CivPlayer[CivVar])
     {
-        ModC = GETTHESOUND(2);
-        ModL = ModMemL[2];
+        ModC = GETTHESOUND(1);
+        ModL = ModMemL[1];
     }
     if (0 == EndText)
     {

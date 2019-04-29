@@ -96,8 +96,8 @@ void SHIPINFO(uint8 ActSys)
     {
         return;
     }
-    ModC = GETTHESOUND(3);
-    ModL = ModMemL[3];
+    ModC = GETTHESOUND(2);
+    ModL = ModMemL[2];
 
     INITSCREEN(SCREEN_TECH);
     l1=strlen(PathStr[5]);
