@@ -18,6 +18,18 @@
 #define FLAG_CIV_MASK   (FLAG_TERRA | FLAG_KLEGAN | FLAG_REMALO | FLAG_CARDAC | FLAG_FERAGI | FLAG_BAROJA | FLAG_VOLKAN | FLAG_OTHER | FLAG_MAQUES)
                                     /* 0x7F = 0111 1111 */
 
+enum { CIVVAR_NONE  = 0,
+       CIVVAR_TERRA = 1,
+       CIVVAR_KLEGAN,
+       CIVVAR_REMALO,
+       CIVVAR_CARDAC,
+       CIVVAR_FERAGI,
+       CIVVAR_BAROJA,
+       CIVVAR_VOLKAN,
+       CIVVAR_OTHER,
+       CIVVAR_MAQUES
+     };
+
 #define WFLAG_CEBORC    2
 #define WFLAG_DCON      3
 #define WFLAG_FIELD     4
@@ -62,7 +74,7 @@
 #define CLASS_EARTH     6   /*M*/
 #define CLASS_PHANTOM   7   /*P*/
 #define CLASS_ICE       8   /*I*/
-#define CLASS_MAX_TYPES	9
+#define CLASS_MAX_TYPES 9
 
 #define WEAPON_GUN       1
 #define WEAPON_LASER     3

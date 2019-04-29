@@ -21,12 +21,12 @@
 
 #include "IT2_Defines.h"
 
-typedef unsigned char   uint8;
-typedef unsigned short  uint16;
-typedef unsigned long   uint32;
-typedef signed char     sint8;
-typedef signed short    sint16;
-typedef signed long     sint32;
+typedef UBYTE  uint8;
+typedef UWORD  uint16;
+typedef ULONG  uint32;
+typedef BYTE   sint8;
+typedef WORD   sint16;
+typedef LONG   sint32;
 
 typedef struct TagArr { struct TagItem data[7]; } TagArr;
 
@@ -36,22 +36,14 @@ typedef struct ColSpecArr { sint16  data[5]; } ColSpecArr;
 
 typedef struct StrArr           { char  data[MAXSYSTEMS][12];   } StrArr;
 typedef struct StrArr11         { char  data[12][15];           } StrArr11;
-typedef struct StrArr16         { char  data[17][60];           } StrArr16;
 typedef struct StrArr42         { char  data[43][30];           } StrArr42;
 typedef struct StrArrMAXPLANETS { char  data[MAXPLANETS+1][6];  } StrArrMAXPLANETS;
 
-typedef struct ByteArr22 { uint8    data[23]; } ByteArr22; // range 1..22
 typedef struct ByteArr42 { uint8    data[43]; } ByteArr42; // range 0..42
 
 typedef struct LongArr42 { sint32   data[43]; } LongArr42;
 
-typedef struct WordArr32 { uint16   data[35]; } WordArr32;
-
 typedef struct r_Coords { double    data[41]; } r_Coords;
-
-typedef struct PlaneArr { PLANEPTR  data[8]; } PlaneArr;
-
-typedef struct FontArr16 { uint8    data[17]; } FontArr16;
 
 typedef struct ITBitMap {
     uint16          BytesPerRow, Rows;

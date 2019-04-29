@@ -103,9 +103,9 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
         {
             RPort_PTR = STD_Window->RPort;
             MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
-            WRITEWIN(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[391]);
-            WRITEWIN(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[392]);
-            WRITEWIN(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[393]);
+            WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[391]);
+            WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[392]);
+            WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[393]);
             WAITLOOP(false);
             CloseWindow(STD_Window);
         }
@@ -128,9 +128,9 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     RPort_PTR = STD_Window->RPort;
                     MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
 
-                    WRITEWIN(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[394]);
-                    WRITEWIN(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,_PT_Der_Spieler_wurde);
-                    WRITEWIN(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[396]);
+                    WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[394]);
+                    WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,_PT_Der_Spieler_wurde);
+                    WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[396]);
                     for(i = 0; i < Save.Systems; i++)
                     {
                         do
@@ -218,9 +218,9 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     {
                         RPort_PTR = STD_Window->RPort;
                         MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
-                        WRITEWIN(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,_PT_Der_Spieler_wurde);
-                        WRITEWIN(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[398]);
-                        WRITEWIN(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[399]);
+                        WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,_PT_Der_Spieler_wurde);
+                        WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[398]);
+                        WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[399]);
                         WAITLOOP(false);
                         CloseWindow(STD_Window);
                     }
@@ -232,9 +232,9 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     RPort_PTR = STD_Window->RPort;
                     MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
 
-                    WRITEWIN(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,_PT_Der_Spieler_wurde);
-                    WRITEWIN(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[401]);
-                    WRITEWIN(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[402]);
+                    WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,_PT_Der_Spieler_wurde);
+                    WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[401]);
+                    WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[402]);
                     while (Year>(-40000))
                     {
                         Year -= (rand()%89) * (rand()%89);
@@ -324,9 +324,9 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     {
                         RPort_PTR = STD_Window->RPort;
                         MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
-                        WRITEWIN(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[404]);
-                        WRITEWIN(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[405]);
-                        WRITEWIN(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[406]);
+                        WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[404]);
+                        WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[405]);
+                        WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[406]);
                         WAITLOOP(false);
                         CloseWindow(STD_Window);
                     }

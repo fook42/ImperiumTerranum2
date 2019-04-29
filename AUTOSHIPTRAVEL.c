@@ -196,12 +196,10 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                     }
                                     SystemFlags[CivVar-1][i-1] |= FLAG_KNOWN;
 
-                                    Printf("lp1 in\n");
-
                                     srand((unsigned) time(&t));
                                     do
                                     {
-                                        if (0 == rand()%2)
+                                        if (0 == (rand()%2))
                                         {
                                             MyShipPtr->PosX = -35;
                                         } else {
@@ -222,12 +220,10 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             case 3: --(MyShipPtr->PosY); break;
                                             default: { }
                                         }
-                                        printf("## AST - i %02d - iStep %02d - ActSys %02d - Mode %02d - SysSteps %02d\n", i, iStep, ActSys, Mode, SysSteps);
-                                        printf("## AST ## posx %03d # posy %03d # OffsetX %03d # OffsetY %03d # findobj %02d ###\n",MyShipPtr->PosX, MyShipPtr->PosY, OffsetX, OffsetY, ObjType);
+//                                        printf("## AST - i %02d - iStep %02d - ActSys %02d - Mode %02d - SysSteps %02d\n", i, iStep, ActSys, Mode, SysSteps);
+//                                        printf("## AST ## posx %03d # posy %03d # OffsetX %03d # OffsetY %03d # findobj %02d ###\n",MyShipPtr->PosX, MyShipPtr->PosY, OffsetX, OffsetY, ObjType);
                                     }
                                     while (FINDOBJECT(i-1, 256+(MyShipPtr->PosX+OffsetX)*32, 256+(MyShipPtr->PosY+OffsetY)*32, MyShipPtr));
-                                    Printf("lp1 out\n");
-
 
                                     if ((((SystemFlags[0][i-1] & ActPlayerFlag) == ActPlayerFlag) || (CivVar == ActPlayer))
                                         && (Save.CivPlayer[ActPlayer-1] != 0) && (!DconDone))
@@ -251,15 +247,15 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                                     strcat(s, PText[553]);
                                                 }
                                             }
-                                            WRITEWIN(195,16,MyShipPtr->Owner,(1|WRITE_Center),RPort_PTR,4,s);
+                                            WRITE(195,16,MyShipPtr->Owner,(1|WRITE_Center),RPort_PTR,4,s);
                                             strcpy(s, _PT_System);
                                             strcat(s, " ");
                                             strcat(s, Save.SystemName.data[i-1]);
                                             if ((SystemFlags[0][i-1] & FLAG_CIV_MASK) != 0)
                                             {
-                                                WRITEWIN(195,43,SystemFlags[0][i-1] & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
+                                                WRITE(195,43,SystemFlags[0][i-1] & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
                                             } else {
-                                                WRITEWIN(195,43,                                 12,(1|WRITE_Center),RPort_PTR,4,s);
+                                                WRITE(195,43,                                 12,(1|WRITE_Center),RPort_PTR,4,s);
                                             }
                                             if (SHIPTYPE_FLEET != MyShipPtr->SType)
                                             {

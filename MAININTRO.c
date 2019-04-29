@@ -625,7 +625,7 @@ void MAININTRO()
     SETDARKCOLOR(s, Colors);
     strcpy(s+pathname_len, "Frame1.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
-    WRITEWIN(320,285,31,WRITE_Center,MyRPort_PTR[AScr],5,"PRESENTS");
+    WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],5,"PRESENTS");
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,75,192);
 
     /* T */
@@ -691,8 +691,8 @@ void MAININTRO()
     SETDARKCOLOR(s, Colors);
     strcpy(s+pathname_len, "Frame2.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
-    WRITEWIN(320,205,31,WRITE_Center,MyRPort_PTR[AScr],5,"A");
-    WRITEWIN(320,285,31,WRITE_Center,MyRPort_PTR[AScr],5,"PRODUCTION");
+    WRITE(320,205,31,WRITE_Center,MyRPort_PTR[AScr],5,"A");
+    WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],5,"PRODUCTION");
     ClipBlit(MyRPort_PTR[AScr],0,200,MyRPort_PTR[1-AScr],0,200,640,100,192);
 
     /* V */
@@ -896,7 +896,6 @@ void MAININTRO()
         (void) Read(FHandle,(APTR) (IMemA[0]+IMemL[0]-ISize-250), ISize);
         UNPACK(IMemA[0],IMemA[0]+IMemL[0]-ISize-250,20160,0);
         Close(FHandle);
-    } else {
     }
 
     struct BitMap MyBitMap = { 20, 144, 1, 7, 0, \
@@ -937,17 +936,16 @@ void MAININTRO()
             { goto leave_intro; }
     }
 
-    for (i = 1; i<36; ++i)
+    for (i = 0; i<35; ++i)
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
         ScrollRaster(MyRPort_PTR[AScr],0,-8,0,75,639,434);
         ClipBlit(MyRPort_PTR[AScr],0,270,MyRPort_PTR[AScr],0,75,640,8,192);
-        BltBitMapRastPort(&MyBitMap,0,140-i*4,MyRPort_PTR[AScr],380,75,160,8,192);
+        BltBitMapRastPort(&MyBitMap,0,136-i*4,MyRPort_PTR[AScr],380,75,160,8,192);
         if (LMB_PRESSED)
             { goto leave_intro; }
     }
-
 
     ScreenToFront(MyScreen[AScr]);
     AScr = 1-AScr;
@@ -963,16 +961,16 @@ void MAININTRO()
         ClipBlit(MyRPort_PTR[AScr],0,270,MyRPort_PTR[AScr],0,75,640,8,192);
         if (LMB_PRESSED)
             { goto leave_intro; }
-
     }
+
     delay(10);
     if (LMB_PRESSED)
         { goto leave_intro; }
 
-    RECT(MyScreen[AScr],0,0,75,639,434);
+    RECTWIN(MyRPort_PTR[AScr],0,0,75,639,434);
     ScreenToFront(MyScreen[AScr]);
     AScr = 1-AScr;
-    RECT(MyScreen[AScr],0,0,75,639,434);
+    RECTWIN(MyRPort_PTR[AScr],0,0,75,639,434);
 
     strcpy(s+pathname_len, "Frame6.pal");
     (void) SETCOLOR(MyScreen[  AScr],s);
@@ -1113,8 +1111,8 @@ void MAININTRO()
         RectFill(MyRPort_PTR[AScr],0,75,0,200);
         if (1 < ISize)
         {
-            WRITEWIN(320,220,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l  ],SArr[l  ]);
-            WRITEWIN(320,245,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l+1],SArr[l+1]);
+            WRITE(320,220,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l  ],SArr[l  ]);
+            WRITE(320,245,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l+1],SArr[l+1]);
         }
         ++ISize;
         if (55 < ISize)
@@ -1138,8 +1136,8 @@ void MAININTRO()
             BltBitMapRastPort(&MyBitMap,0,0,MyRPort_PTR[AScr],0,75,640,360,192);
             if (0 < ISize)
             {
-                WRITEWIN(320,220,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l  ],SArr[l  ]);
-                WRITEWIN(320,245,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l+1],SArr[l+1]);
+                WRITE(320,220,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l  ],SArr[l  ]);
+                WRITE(320,245,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l+1],SArr[l+1]);
             }
             ++ISize;
             if (20 < ISize)

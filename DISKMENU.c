@@ -102,9 +102,12 @@ void GETSAVENAME(char* Title, char* SName)
     uint16  ypos;
     sint16  i;
     sint16  mouse_over, selected;
+    volatile bool   mouse_b;
+    volatile sint16 mouse_y;
     int     path_len;
     char    s[40];
     char*   pos;
+    uint8   file_slen;
     int     stringlen;
     BPTR    FHandle;
     struct Window* GSN_Window;
@@ -123,10 +126,11 @@ void GETSAVENAME(char* Title, char* SName)
         Close(FHandle);
     }
     strcpy(s+path_len, "IMPT.0");
+    file_slen=strlen(s)-1;
     for(i = 0; i < 6; ++i)
     {
         ID[i][0] = 0;
-        s[strlen(s)-1] = i + '1';
+        s[file_slen] = i + '1';
         do
         {
             FHandle = Open((CONST_STRPTR) s ,MODE_OLDFILE);
@@ -160,26 +164,31 @@ void GETSAVENAME(char* Title, char* SName)
         while (0 == ID[i][0]);
     }
 
-    GSN_Window=MAKEWINDOW(100,80,311,191,MyScreen[0]);
+    GSN_Window=MAKEWINDOW(100,80,311,226,MyScreen[0]);
     if (NULL == GSN_Window)
     {
         return;
     }
     RPort_PTR = GSN_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,   0,310,190,12,6,2);
+    MAKEWINBORDER(RPort_PTR,0,   0,310,225,12,6,2);
     MAKEWINBORDER(RPort_PTR,10, 30,300,145,6,12,0);
     MAKEWINBORDER(RPort_PTR,10,155,300,180,6,12,0);
-    WRITEWIN(155,7,ActPlayerFlag,(WRITE_Center|WRITE_Shadow),RPort_PTR,4,Title);
+    MAKEWINBORDER(RPort_PTR,10,190,300,215,12,6,1);
+
+    WRITE(155,7,ActPlayerFlag,(WRITE_Center|WRITE_Shadow),RPort_PTR,4,Title);
     ypos = 35;
     for(i = 0; i < 6; ++i)
     {
-        WRITEWIN( 20, ypos, ActPlayerFlag, 0, RPort_PTR, 4, ID[i]);
+        WRITE( 20, ypos, ActPlayerFlag, 0, RPort_PTR, 4, ID[i]);
         ypos += 18;
     }
+    WRITE(155,195,8,(WRITE_Center|WRITE_Shadow),RPort_PTR,4,_PT_ENDE);
     selected = 99;
     do
     {
-        mouse_over = (sint16) (((GSN_Window->MouseY)-35) / 18);
+        mouse_y = GSN_Window->MouseY;
+        mouse_b = LMB_PRESSED;
+        mouse_over = (sint16) ((mouse_y-35) / 18);
         if ((0 <= mouse_over) && (6 > mouse_over))
         {
             if (selected != mouse_over)
@@ -189,24 +198,35 @@ void GETSAVENAME(char* Title, char* SName)
                 {
                     if (i == mouse_over)
                     {
-                        WRITEWIN(20, ypos,           12,0,RPort_PTR,4,ID[i]);
+                        WRITE(20, ypos,           12,0,RPort_PTR,4,ID[i]);
                         RECTWIN(RPort_PTR,0,12,157,298,178);
-                        WRITEWIN(20,160,12,1,RPort_PTR,4,ID[i]);
+                        WRITE(20,160,12,1,RPort_PTR,4,ID[i]);
                         selected = mouse_over;
                     } else {
-                        WRITEWIN(20, ypos,ActPlayerFlag,0,RPort_PTR,4,ID[i]);
+                        WRITE(20, ypos,ActPlayerFlag,0,RPort_PTR,4,ID[i]);
                     }
                     ypos += 18;
                 }
             }
+        } else if ((mouse_y > 190) && (mouse_y < 215))
+        {
+            if (mouse_b)
+            {
+                MAKEWINBORDER(RPort_PTR,10,190,300,215,6,12,1);
+                while (LMB_PRESSED) {};
+                selected = -1;
+            }
         }
     }
-    while ((0 > selected) || (5 < selected) || LMB_NOTPRESSED);
+    while ((-1 > selected) || (5 < selected) || (!mouse_b));
     PLAYSOUND(1,300);
 
-    memcpy(SName, PathStr[8], path_len+1);
-    strcpy(SName+path_len, "IMPT.0");
-    SName[strlen(SName)-1] = selected + '1';
+    if (-1 < selected)
+    {
+        memcpy(SName, PathStr[8], path_len+1);
+        strcpy(SName+path_len, "IMPT.0");
+        SName[strlen(SName)-1] = selected + '1';
+    }
     CloseWindow(GSN_Window);
     return;
 }
@@ -261,12 +281,12 @@ bool DISKMENU(uint8 Autoselect)
         DrawImage(RPort_PTR,&GadImg1,4, ypos);
         ypos += 22;
     }
-    WRITEWIN(61,  5,0,WRITE_Center,RPort_PTR,4,PText[529]);
-    WRITEWIN(61, 27,0,WRITE_Center,RPort_PTR,4,PText[530]);
-    WRITEWIN(61, 49,0,WRITE_Center,RPort_PTR,4,PText[531]);
-    WRITEWIN(61, 71,0,WRITE_Center,RPort_PTR,4,PText[532]);
-    WRITEWIN(61, 93,0,WRITE_Center,RPort_PTR,4,PText[533]);
-    WRITEWIN(61,115,8,WRITE_Center,RPort_PTR,4,PText[534]);
+    WRITE(61,  5,0,WRITE_Center,RPort_PTR,4,PText[529]);
+    WRITE(61, 27,0,WRITE_Center,RPort_PTR,4,PText[530]);
+    WRITE(61, 49,0,WRITE_Center,RPort_PTR,4,PText[531]);
+    WRITE(61, 71,0,WRITE_Center,RPort_PTR,4,PText[532]);
+    WRITE(61, 93,0,WRITE_Center,RPort_PTR,4,PText[533]);
+    WRITE(61,115,8,WRITE_Center,RPort_PTR,4,PText[534]);
 
     do
     {

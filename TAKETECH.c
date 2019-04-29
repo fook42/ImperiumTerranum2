@@ -40,8 +40,8 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
                 strcat(s, _PT_uebernehmen_Technologie);
                 strcat(s, ":");
 
-                WRITEWIN(171,22,CivFlag1,(1|WRITE_Center),RPort_PTR,4, s);
-                WRITEWIN(171,42,      12,(1|WRITE_Center),RPort_PTR,4, TechnologyL.data[TechID]);
+                WRITE(171,22,CivFlag1,(1|WRITE_Center),RPort_PTR,4, s);
+                WRITE(171,42,      12,(1|WRITE_Center),RPort_PTR,4, TechnologyL.data[TechID]);
                 if (Save.PlayMySelf)
                 {
                     delay(PAUSE);

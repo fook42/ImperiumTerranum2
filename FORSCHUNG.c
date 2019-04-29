@@ -24,7 +24,7 @@ void FORSCHUNG()
     MAKEWINBORDER(RPort_PTR,0,331,510,400,12,6,1);
     MAKEWINBORDER(RPort_PTR,0,401,510,511,12,6,1);
 
-    WRITEWIN(255,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[737]);
+    WRITE(255,10,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[737]);
     posx = 10;
     for (i = 0; i < 2; ++i)
     {
@@ -37,7 +37,7 @@ void FORSCHUNG()
             {
                 haveTechColor = 12;
             }
-            WRITEWIN(posx, posy, haveTechColor, 0, RPort_PTR, 3, TechnologyL.data[offset]);
+            WRITE(posx, posy, haveTechColor, 0, RPort_PTR, 3, TechnologyL.data[offset]);
             posy += 14;
         }
         posx += 245;
@@ -51,22 +51,22 @@ void FORSCHUNG()
         _s = dez2out((Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, s+i);
         *_s++=' ';
         strcpy(_s, _PT_Jahre);
-        WRITEWIN(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,4,s);
+        WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,4,s);
 
         MAKEWINBORDER(RPort_PTR,20,365,492,390,6,12,0);
         l = Save.TechCosts[ActPlayer-1].data[Save.ActTech[0]];
         if (l < 0) { l = 0; }
         RECTWIN(RPort_PTR,8,22,367,490-it_round(468.0*l/Save.TechCosts[ActPlayer-1].data[42]),388);
     } else {
-        WRITEWIN(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[173]);
+        WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,4,PText[173]);
     }
 
     /* ShipData:    MaxLoad,MaxShield,MaxMove,WeaponPower */
-    WRITEWIN( 10,410,12,0,RPort_PTR,3,PText[740]);
-    WRITEWIN(110,410,12,0,RPort_PTR,3,PText[741]);
-    WRITEWIN(210,410,12,0,RPort_PTR,3,PText[742]);
-    WRITEWIN(310,410,12,0,RPort_PTR,3,PText[743]);
-    WRITEWIN(410,410,12,0,RPort_PTR,3,PText[744]);
+    WRITE( 10,410,12,0,RPort_PTR,3,PText[740]);
+    WRITE(110,410,12,0,RPort_PTR,3,PText[741]);
+    WRITE(210,410,12,0,RPort_PTR,3,PText[742]);
+    WRITE(310,410,12,0,RPort_PTR,3,PText[743]);
+    WRITE(410,410,12,0,RPort_PTR,3,PText[744]);
     l = 0;
     for (i = 24; (i>=8) && (l<4); i--)
     {
@@ -76,11 +76,11 @@ void FORSCHUNG()
             {
                 l++;
                 posy=415+l*18;
-                WRITEWIN(10, posy, ActPlayerFlag, 0, RPort_PTR, 3, Project.data[i]);
-                (void)dez2out(ShipData(i).MaxLoad,0,s);     WRITEWIN(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
-                (void)dez2out(ShipData(i).MaxMove,0,s);     WRITEWIN(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
-                (void)dez2out(ShipData(i).MaxShield,0,s);   WRITEWIN(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
-                (void)dez2out(ShipData(i).WeaponPower,0,s); WRITEWIN(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR, 3, Project.data[i]);
+                (void)dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                (void)dez2out(ShipData(i).MaxMove,0,s);     WRITE(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                (void)dez2out(ShipData(i).MaxShield,0,s);   WRITE(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
+                (void)dez2out(ShipData(i).WeaponPower,0,s); WRITE(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,3,s);
             }
         }
     }

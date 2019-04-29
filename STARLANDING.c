@@ -347,7 +347,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
             custom.dmacon = BITCLR | DMAF_AUDIO;
         }
         SetRGB32(MyVPort_PTR[0],0,0xFF000000,0xFF000000,0xFF000000);
-        RECT(MyScreen[0],0,0,0,255,255);
+        RECTWIN(MyRPort_PTR[0],0,0,0,255,255);
         PLAYSOUND(2,1000);
         if (Audio_enable)
         {
@@ -554,7 +554,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s++='%';
     *_s++=')';
     *_s  =0;
-    WRITE(22,40,29,0,MyScreen[AScr],1,s);
+    WRITE(22,40,29,0,MyRPort_PTR[AScr],1,s);
 
     slen=strlen(PText[152]);
     memcpy(s, PText[152], slen);
@@ -570,7 +570,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     _s = dez2out((MyPlanetHeader->Infrastruktur >>1), 0, _s);
     *_s++='%';
     *_s  =0;
-    WRITE(22,55,29,0,MyScreen[AScr],1,s);
+    WRITE(22,55,29,0,MyRPort_PTR[AScr],1,s);
 
     slen=strlen(PText[149]);
     memcpy(s, PText[149], slen);
@@ -586,7 +586,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     _s = dez2out((MyPlanetHeader->Industrie >>1), 0, _s);
     *_s++='%';
     *_s  =0;
-    WRITE(22,70,29,0,MyScreen[AScr],1,s);
+    WRITE(22,70,29,0,MyRPort_PTR[AScr],1,s);
 
     slen=strlen(PText[151]);
     memcpy(s, PText[151], slen);
@@ -602,7 +602,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     _s = dez2out((MyPlanetHeader->Biosphaere >>1), 0, _s);
     *_s++='%';
     *_s  =0;
-    WRITE(22,85,29,0,MyScreen[AScr],1,s);
+    WRITE(22,85,29,0,MyRPort_PTR[AScr],1,s);
 
     slen=strlen(PText[413]);
     memcpy(s, PText[413], slen);
@@ -611,7 +611,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     _s = dez2out(Save.ImperatorState[ActPlayer-1], 0, s+slen);
     *_s++=' ';
     strcpy(_s, PText[414]);
-    WRITE(22,120,29,0,MyScreen[AScr],1,s);
+    WRITE(22,120,29,0,MyRPort_PTR[AScr],1,s);
     ScreenToFront(MyScreen[AScr]);
     WAITLOOP(false);
 }

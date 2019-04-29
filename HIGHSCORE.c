@@ -59,7 +59,7 @@ void HIGHSCORE()
 
     SWITCHDISPLAY();
     INITSCREEN(SCREEN_HISCORE);
-    WRITEWIN(210,60,127,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[1],5,"Imperium Terranum Highscores");
+    WRITE(210,60,127,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[1],5,"Imperium Terranum Highscores");
     strcpy(s, PathStr[4]);
     strcat(s, "HiScore.dat");
     FHandle = OPENSMOOTH(s,MODE_OLDFILE);
@@ -77,8 +77,8 @@ void HIGHSCORE()
         {
             col = GETCOLOR(HiScore.CivVar[i]);
             (void) dez2out( HiScore.Points[i], 0, s);
-            WRITEWIN(115,ypos,col,(WRITE_Right|WRITE_Shadow), MyRPort_PTR[1], 5, s);
-            WRITEWIN(135,ypos,col,             WRITE_Shadow , MyRPort_PTR[1], 5, HiScore.Player[i]);
+            WRITE(115,ypos,col,(WRITE_Right|WRITE_Shadow), MyRPort_PTR[1], 5, s);
+            WRITE(135,ypos,col,             WRITE_Shadow , MyRPort_PTR[1], 5, HiScore.Player[i]);
             ypos += 30;
         }
         ScreenToFront(MyScreen[1]);

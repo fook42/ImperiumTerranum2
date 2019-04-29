@@ -28,7 +28,7 @@ void CHECKGADS(uint8 GadID)
         RECTWIN(MyRPort_PTR[1],0,542,141,568,310);
         txt[0]=Player+'0';
         txt[1]=0;
-        WRITEWIN(555,(5-Player)*38+142,40,WRITE_Center,MyRPort_PTR[1],4,txt);
+        WRITE(555,(5-Player)*38+142,40,WRITE_Center,MyRPort_PTR[1],4,txt);
         if (7 == GadID) { return; }
     }
     if ((0 == GadID) || (6 == GadID))
@@ -44,8 +44,8 @@ void CHECKGADS(uint8 GadID)
             txt[1]=(Level%10)+'0';
             txt[2]=0;
         }
-        WRITEWIN(460,(10-Level)*17+142,40,WRITE_Center,MyRPort_PTR[1],4, txt);
-        WRITEWIN(460,              343,40,WRITE_Center,MyRPort_PTR[1],4, PText[Level+491]);
+        WRITE(460,(10-Level)*17+142,40,WRITE_Center,MyRPort_PTR[1],4, txt);
+        WRITE(460,              343,40,WRITE_Center,MyRPort_PTR[1],4, PText[Level+491]);
         if (6 == GadID) { return; }
     }
     if (0 == GadID)
@@ -64,10 +64,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.PlayMySelf)
         {
             DRAWGAD(80,1);
-            WRITEWIN(240,115,40,1,MyRPort_PTR[1],4,PText[505]);
+            WRITE(240,115,40,1,MyRPort_PTR[1],4,PText[505]);
         } else {
             DRAWGAD(80,2);
-            WRITEWIN(240,115,40,1,MyRPort_PTR[1],4,PText[506]);
+            WRITE(240,115,40,1,MyRPort_PTR[1],4,PText[506]);
         }
     }
     if ((0 == GadID) || (2 == GadID))
@@ -75,10 +75,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.SmallFight)
         {
             DRAWGAD(160,1);
-            WRITEWIN(240,195,40,1,MyRPort_PTR[1],4,_PT_aus);
+            WRITE(240,195,40,1,MyRPort_PTR[1],4,_PT_aus);
         } else {
             DRAWGAD(160,2);
-            WRITEWIN(240,195,40,1,MyRPort_PTR[1],4,_PT_ein);
+            WRITE(240,195,40,1,MyRPort_PTR[1],4,_PT_ein);
         }
     }
     if ((0 == GadID) || (3 == GadID))
@@ -86,10 +86,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.SmallLand)
         {
             DRAWGAD(240,1);
-            WRITEWIN(240,275,40,1,MyRPort_PTR[1],4,PText[505]);
+            WRITE(240,275,40,1,MyRPort_PTR[1],4,PText[505]);
         } else {
             DRAWGAD(240,2);
-            WRITEWIN(240,275,40,1,MyRPort_PTR[1],4,"Player");
+            WRITE(240,275,40,1,MyRPort_PTR[1],4,"Player");
         }
     }
     if ((0 == GadID) || (4 == GadID))
@@ -97,10 +97,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.NoWorm)
         {
             DRAWGAD(320,1);
-            WRITEWIN(240,355,40,1,MyRPort_PTR[1],4,PText[505]);
+            WRITE(240,355,40,1,MyRPort_PTR[1],4,PText[505]);
         } else {
             DRAWGAD(320,2);
-            WRITEWIN(240,355,40,1,MyRPort_PTR[1],4,"Player");
+            WRITE(240,355,40,1,MyRPort_PTR[1],4,"Player");
         }
     }
     if ((0 == GadID) || (5 == GadID))
@@ -108,10 +108,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.FastMove)
         {
             DRAWGAD(400,1);
-            WRITEWIN(240,435,40,1,MyRPort_PTR[1],4,PText[510]);
+            WRITE(240,435,40,1,MyRPort_PTR[1],4,PText[510]);
         } else {
             DRAWGAD(400,2);
-            WRITEWIN(240,435,40,1,MyRPort_PTR[1],4,PText[511]);
+            WRITE(240,435,40,1,MyRPort_PTR[1],4,PText[511]);
         }
     }
 }
@@ -138,7 +138,7 @@ void OPTIONMENU(uint8 Mode)
             Player++;
         }
     }
-    WRITEWIN(320,55,40,WRITE_Center,MyRPort_PTR[1],4,PText[513]);
+    WRITE(320,55,40,WRITE_Center,MyRPort_PTR[1],4,PText[513]);
     y = 111;
     for (i = 0; i < 5; ++i)
     {
@@ -148,47 +148,47 @@ void OPTIONMENU(uint8 Mode)
 
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,384,128,MyRPort_PTR[1], 60,80,64,64,192);
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,448,128,MyRPort_PTR[1],150,80,64,64,192);
-    WRITEWIN(240,90,40,0,MyRPort_PTR[1],4,"Player");
+    WRITE(240,90,40,0,MyRPort_PTR[1],4,"Player");
 
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,384,128,MyRPort_PTR[1], 60,160,64,64,192);
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,512,128,MyRPort_PTR[1],150,160,64,64,192);
-    WRITEWIN(240,170,40,0,MyRPort_PTR[1],4,PText[514]);
+    WRITE(240,170,40,0,MyRPort_PTR[1],4,PText[514]);
 
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,384,128,MyRPort_PTR[1], 60,240,64,64,192);
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,448,128,MyRPort_PTR[1],150,240,64,64,192);
-    WRITEWIN(240,250,40,0,MyRPort_PTR[1],4,PText[515]);
+    WRITE(240,250,40,0,MyRPort_PTR[1],4,PText[515]);
 
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,384,128,MyRPort_PTR[1], 60,320,64,64,192);
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,448,128,MyRPort_PTR[1],150,320,64,64,192);
-    WRITEWIN(240,330,40,0,MyRPort_PTR[1],4,PText[516]);
+    WRITE(240,330,40,0,MyRPort_PTR[1],4,PText[516]);
 
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,576,128,MyRPort_PTR[1], 60,400,64,64,192);
     BltBitMapRastPort((struct BitMap *) &ImgBitMap8,512,128,MyRPort_PTR[1],150,400,64,64,192);
-    WRITEWIN(240,410,40,0,MyRPort_PTR[1],4,PText[517]);
+    WRITE(240,410,40,0,MyRPort_PTR[1],4,PText[517]);
 
-    WRITEWIN(460,100,40,WRITE_Center,MyRPort_PTR[1],4,"Level");
+    WRITE(460,100,40,WRITE_Center,MyRPort_PTR[1],4,"Level");
     if (1 == Mode)
     {
-        WRITEWIN(455,120,40,0,MyRPort_PTR[1],2,"I");
-        WRITEWIN(455,320,40,0,MyRPort_PTR[1],2,"J");
+        WRITE(455,120,40,0,MyRPort_PTR[1],2,"I");
+        WRITE(455,320,40,0,MyRPort_PTR[1],2,"J");
     }
     MAKEWINBORDER(MyRPort_PTR[1],445,139,475,312,14,40,1);
     MAKEWINBORDER(MyRPort_PTR[1],410,339,510,362,14,40,1);
 
-    WRITEWIN(555,100,40,WRITE_Center,MyRPort_PTR[1],4,"Player");
+    WRITE(555,100,40,WRITE_Center,MyRPort_PTR[1],4,"Player");
     if (1 == Mode)
     {
-        WRITEWIN(550,120,40,0,MyRPort_PTR[1],2,"I");
-        WRITEWIN(550,320,40,0,MyRPort_PTR[1],2,"J");
+        WRITE(550,120,40,0,MyRPort_PTR[1],2,"I");
+        WRITE(550,320,40,0,MyRPort_PTR[1],2,"J");
     }
     MAKEWINBORDER(MyRPort_PTR[1],540,139,570,312,14,40,1);
 
     // new .. audio-option!!!
-    WRITEWIN(507,410,40,WRITE_Center,MyRPort_PTR[1],4,"Audio");
+    WRITE(507,410,40,WRITE_Center,MyRPort_PTR[1],4,"Audio");
     RECTWIN(MyRPort_PTR[1],0,442,431,504,454);
-    WRITEWIN(473,435,40,WRITE_Center,MyRPort_PTR[1],4,_PT_ein);
+    WRITE(473,435,40,WRITE_Center,MyRPort_PTR[1],4,_PT_ein);
     RECTWIN(MyRPort_PTR[1],0,510,431,572,454);
-    WRITEWIN(541,435,40,WRITE_Center,MyRPort_PTR[1],4,_PT_aus);
+    WRITE(541,435,40,WRITE_Center,MyRPort_PTR[1],4,_PT_aus);
     // ----
 
     CHECKGADS(0);
@@ -290,7 +290,7 @@ void OPTIONMENU(uint8 Mode)
                 stringlen = strlen(s);
                 s[stringlen-2] = i + '0';
                 strcpy(s+stringlen, PText[520]);
-                WRITEWIN(320,50,40,WRITE_Center,MyRPort_PTR[1],4,s);
+                WRITE(320,50,40,WRITE_Center,MyRPort_PTR[1],4,s);
                 if (i == 1)
                 {
                     btx = 1;
@@ -311,7 +311,7 @@ void OPTIONMENU(uint8 Mode)
                         s[strlen(s)-1] = Save.CivPlayer[j]+'0';
                         _s = s;
                     }
-                    WRITEWIN(320, y+8,40,WRITE_Center,MyRPort_PTR[1],4, _s);
+                    WRITE(320, y+8,40,WRITE_Center,MyRPort_PTR[1],4, _s);
                     y += 50;
                 }
 
@@ -329,7 +329,7 @@ void OPTIONMENU(uint8 Mode)
                             {
                                 b = true;
                                 Save.CivPlayer[j] = i;
-                                CLICKRECTWIN(MyRPort_PTR[1], 100, y, 540, y+30, 40);
+                                CLICKRECT(MyRPort_PTR[1], 100, y, 540, y+30, 40);
                                 PLAYERJINGLE(j+1);
                             }
                             y += 50;
@@ -349,14 +349,14 @@ void OPTIONMENU(uint8 Mode)
             // pick the number of home-planets (1..5) **************
             SWITCHDISPLAY();
             INITMENU();
-            WRITEWIN(320,100,40,WRITE_Center,MyRPort_PTR[1],4,PText[521]);
+            WRITE(320,100,40,WRITE_Center,MyRPort_PTR[1],4,PText[521]);
             y = 123;
             for (i = 0; i < 5; ++i)
             {
                 MAKEWINBORDER(MyRPort_PTR[1], y, 200, y+40, 240,14,40,0);
                 s[0] = i+'1';
                 s[1] = 0;
-                WRITEWIN(y+20,213,40,WRITE_Center,MyRPort_PTR[1],4,s);
+                WRITE(y+20,213,40,WRITE_Center,MyRPort_PTR[1],4,s);
                 y += 88;
             }
 
@@ -372,7 +372,7 @@ void OPTIONMENU(uint8 Mode)
             }
             while ((1 > HomePlanets) || (5 < HomePlanets));
 
-            CLICKRECTWIN(MyRPort_PTR[1],HomePlanets*88+35,200,HomePlanets*88+75,240,40);
+            CLICKRECT(MyRPort_PTR[1],HomePlanets*88+35,200,HomePlanets*88+75,240,40);
 
             delay(20);
             SWITCHDISPLAY();

@@ -6,7 +6,7 @@
 void DOINFLATION(uint8 DI_ActPlayer)
 {
     int j;
-    for(j = 1; j<=42; j++)
+    for(j = 1; j<43; j++)
     {
         Save.ProjectCosts[DI_ActPlayer].data[j] = it_round(Save.ProjectCosts[DI_ActPlayer].data[j]*INFLATION);
         Save.TechCosts[   DI_ActPlayer].data[j] = it_round(Save.TechCosts[   DI_ActPlayer].data[j]*INFLATION);

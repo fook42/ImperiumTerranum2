@@ -10,7 +10,7 @@ void PRINTGLOBALINFOS(uint8 PGI_ActPlayer)
     (void) dez2out(Year, 0, s);
     // clean the area before...
     RECTWIN(MyRPort_PTR[0],0,519,132,632,149);
-    WRITEWIN(575,134,109,(1|WRITE_Center),MyRPort_PTR[0],2,s);
+    WRITE(575,134,109,(1|WRITE_Center),MyRPort_PTR[0],2,s);
 
     if ((true == Valid) && ((0 != Save.CivPlayer[PGI_ActPlayer]) || (!Save.PlayMySelf)))
     {
@@ -23,7 +23,7 @@ void PRINTGLOBALINFOS(uint8 PGI_ActPlayer)
         }
         // clean the area before...
         RECTWIN(MyRPort_PTR[0],0,519,183,632,200);
-        WRITEWIN(640,185,109,(1|WRITE_Right),MyRPort_PTR[0],2,s);
+        WRITE(640,185,109,(1|WRITE_Right),MyRPort_PTR[0],2,s);
 
         if ((0 != Save.CivPlayer[PGI_ActPlayer]) && (Informed))
         {
@@ -34,6 +34,6 @@ void PRINTGLOBALINFOS(uint8 PGI_ActPlayer)
         }
         // clean the area before...
         RECTWIN(MyRPort_PTR[0],0,519,234,632,251);
-        WRITEWIN(640,236,109,(1|WRITE_Right),MyRPort_PTR[0],2,s);
+        WRITE(640,236,109,(1|WRITE_Right),MyRPort_PTR[0],2,s);
     }
 }

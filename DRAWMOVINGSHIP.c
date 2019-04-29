@@ -6,48 +6,48 @@
 void FASTREFRESH(sint16 OldX, sint16 OldY, r_ShipHeader* XCludeShip)
 {
     int     x,y,i;
+    int     locDisplay = Display-1;
     r_ShipHeader*   OtherShipPtr;
     r_PlanetHeader* PlanetHeader;
     r_ShipHeader*   UseShipPtr;
     
-    OtherShipPtr = &SystemHeader[Display-1].FirstShip;
-    do
+    OtherShipPtr = &SystemHeader[locDisplay].FirstShip;
+    while (OtherShipPtr != NULL)
     {
-        if ((OtherShipPtr->PosX>=(OldX-1)) && (OtherShipPtr->PosX<=(OldX+1))
-         && (OtherShipPtr->PosY>=(OldY-1)) && (OtherShipPtr->PosY<=(OldY+1)))
+        if ((OtherShipPtr->PosX > (OldX-2)) && (OtherShipPtr->PosX < (OldX+2))
+         && (OtherShipPtr->PosY > (OldY-2)) && (OtherShipPtr->PosY < (OldY+2)))
         {
-            if (((OtherShipPtr != XCludeShip) && (OtherShipPtr->Owner>0) && (OtherShipPtr->Moving >= 0))
-             || (OtherShipPtr->SType == TARGET_STARGATE))
+            if (((XCludeShip != OtherShipPtr) && (0 < OtherShipPtr->Owner) && (0 <= OtherShipPtr->Moving))
+             || (TARGET_STARGATE == OtherShipPtr->SType))
             {
-                x = 256+((OtherShipPtr->PosX+OffsetX)*32);
-                y = 256+((OtherShipPtr->PosY+OffsetY)*32);
-                if (OtherShipPtr->SType == SHIPTYPE_FLEET)
+                x = 256+((OtherShipPtr->PosX + OffsetX)*32);
+                y = 256+((OtherShipPtr->PosY + OffsetY)*32);
+                if (SHIPTYPE_FLEET == OtherShipPtr->SType)
                 {
                     UseShipPtr = OtherShipPtr->TargetShip;
                 } else {
                     UseShipPtr = OtherShipPtr;
                 }
-                if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
+                if ((x>=0) && (x<481) && (y>=0) && (y<481))
                 {
-                    BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32+1,33,&(MyScreen[0]->RastPort),x+1,y+1,30,30,192);
+                    BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32+1,33,MyRPort_PTR[0],x+1,y+1,30,30,192);
                 }
             }
         }
         OtherShipPtr = OtherShipPtr->NextShip;
     }
-    while (OtherShipPtr != NULL);
 
-    for(i = 0; i < SystemHeader[Display-1].Planets; i++)
+    for(i = 0; i < SystemHeader[locDisplay].Planets; ++i)
     {
-        PlanetHeader = &(SystemHeader[Display-1].PlanetMemA[i]);
-        if ((it_round(PlanetHeader->PosX)>= (OldX-1)) && (it_round(PlanetHeader->PosX)<=(OldX+1))
-          &&(it_round(PlanetHeader->PosY)>= (OldY-1)) && (it_round(PlanetHeader->PosY)<=(OldY+1)))
+        PlanetHeader = &(SystemHeader[locDisplay].PlanetMemA[i]);
+        if ((it_round(PlanetHeader->PosX) > (OldX-2)) && (it_round(PlanetHeader->PosX) < (OldX+2))
+          &&(it_round(PlanetHeader->PosY) > (OldY-2)) && (it_round(PlanetHeader->PosY) < (OldY+2)))
         {
-            x = 256+((it_round(PlanetHeader->PosX)+OffsetX)*32);
-            y = 256+((it_round(PlanetHeader->PosY)+OffsetY)*32);
-            if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
+            x = 256+((it_round(PlanetHeader->PosX) + OffsetX)*32);
+            y = 256+((it_round(PlanetHeader->PosY) + OffsetY)*32);
+            if ((x>=0) && (x<481) && (y>=0) && (y<481))
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,PlanetHeader->Class*32,0,&(MyScreen[0]->RastPort),x,y,32,32,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,PlanetHeader->Class*32,0,MyRPort_PTR[0],x,y,32,32,192);
             }
         }
     }
@@ -56,11 +56,10 @@ void FASTREFRESH(sint16 OldX, sint16 OldY, r_ShipHeader* XCludeShip)
 void DRAWMOVINGSHIP(r_ShipHeader* MyShipPtr, uint8 ActSys)
 {
     bool b;
-
     uint8   Step;
-    r_ShipHeader*   UseShipPtr;    
-    
-    if (Display == 0)
+    r_ShipHeader*   UseShipPtr;
+
+    if (0 == Display)
     {
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     }
@@ -77,10 +76,10 @@ void DRAWMOVINGSHIP(r_ShipHeader* MyShipPtr, uint8 ActSys)
     }
     do
     {
-        if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
+        if ((MOVESHIP_x>=0) && (MOVESHIP_x<481) && (MOVESHIP_y>=0) && (MOVESHIP_y<481))
         {
             FASTREFRESH(MOVESHIP_FromX,MOVESHIP_FromY,MyShipPtr);
-            RECT(MyScreen[0],0,MOVESHIP_x,MOVESHIP_y,MOVESHIP_x+31,MOVESHIP_y+31);
+            RECTWIN(MyRPort_PTR[0],0,MOVESHIP_x,MOVESHIP_y,MOVESHIP_x+31,MOVESHIP_y+31);
         }
         if (MOVESHIP_ToX < MOVESHIP_x)
         {
@@ -96,18 +95,17 @@ void DRAWMOVINGSHIP(r_ShipHeader* MyShipPtr, uint8 ActSys)
         {
             MOVESHIP_y += Step;
         }
-        if (MyShipPtr->SType == SHIPTYPE_FLEET)
+        if (SHIPTYPE_FLEET == MyShipPtr->SType)
         {
             UseShipPtr = MyShipPtr->TargetShip;
         } else {
             UseShipPtr = MyShipPtr;
         }
-        if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
+        if ((MOVESHIP_x>=0) && (MOVESHIP_x<481) && (MOVESHIP_y>=0) && (MOVESHIP_y<481))
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32,32,&(MyScreen[0]->RastPort),MOVESHIP_x,MOVESHIP_y,31,31,192);
-            SetAPen(&(MyScreen[0]->RastPort),UseShipPtr->Owner);
-            DRAWRECT(MOVESHIP_x,MOVESHIP_y,MyShipPtr);
-            if (MyShipPtr->Owner != FLAG_OTHER)
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32,32,MyRPort_PTR[0],MOVESHIP_x,MOVESHIP_y,31,31,192);
+            DRAWRECT(MOVESHIP_x,MOVESHIP_y, MyShipPtr, UseShipPtr->Owner);
+            if (FLAG_OTHER != MyShipPtr->Owner)
             {
                 WaitBlit();
                 WaitBlit();

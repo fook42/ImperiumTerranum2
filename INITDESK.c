@@ -17,9 +17,9 @@ bool INITDESK(uint8 Mode)
     strcpy(s+slen, "Desk.img");
     if (!DISPLAYIMAGE( s, 512, 0, 128, 512, 7, MyScreen[0], 0)) {  return false; }
     SETWORLDCOLORS();
-    WRITEWIN(576,156,45,WRITE_Center, MyRPort_PTR[0], 4, _PT_Jahr);
-    WRITEWIN(576,207,45,WRITE_Center, MyRPort_PTR[0], 4, PText[146]);
-    WRITEWIN(576,258,45,WRITE_Center, MyRPort_PTR[0], 4, PText[147]);
+    WRITE(576,156,45,WRITE_Center, MyRPort_PTR[0], 4, _PT_Jahr);
+    WRITE(576,207,45,WRITE_Center, MyRPort_PTR[0], 4, PText[146]);
+    WRITE(576,258,45,WRITE_Center, MyRPort_PTR[0], 4, PText[147]);
 
     slen = strlen(PathStr[5]);
     memcpy(s, PathStr[5], slen+1);

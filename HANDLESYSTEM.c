@@ -36,7 +36,7 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     if (36 == z)
                     {
                         // LastSys = i;
-                        WRITEWIN(100,497,12,0,MyRPort_PTR[0],3, _Txt_nextPage);
+                        WRITE(100,497,12,0,MyRPort_PTR[0],3, _Txt_nextPage);
                         return i;
                     }
                     ShipPos[z] = MyShipPtr;
@@ -44,23 +44,23 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
 
                     if (SHIPTYPE_FLEET == MyShipPtr->SType)
                     {
-                        WRITEWIN(40,y,ActPlayerFlag,0,MyRPort_PTR[0],3, _PT_Flotte);
+                        WRITE(40,y,ActPlayerFlag,0,MyRPort_PTR[0],3, _PT_Flotte);
                     } else {
-                        WRITEWIN(40,y,ActPlayerFlag,0,MyRPort_PTR[0],3, Project.data[MyShipPtr->SType]);
+                        WRITE(40,y,ActPlayerFlag,0,MyRPort_PTR[0],3, Project.data[MyShipPtr->SType]);
 
                         len = strlen(PText[455]);
                         memcpy(s, PText[455], len);
                         s[len++]=':';
                         s[len++]=' ';
                         (void) dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 0, s+len);
-                        WRITEWIN(135,y,12,0,MyRPort_PTR[0],3,s);
+                        WRITE(135,y,12,0,MyRPort_PTR[0],3,s);
 
                         len = strlen(PText[456]);
                         memcpy(s, PText[456], len);
                         s[len++]=':';
                         s[len++]=' ';
                         (void) dez2out(MyShipPtr->Ladung & MASK_LTRUPPS, 0, s+len);
-                        WRITEWIN(230,y,12,0,MyRPort_PTR[0],3,s);
+                        WRITE(230,y,12,0,MyRPort_PTR[0],3,s);
 
                         len = strlen(PText[458]);
                         memcpy(s, PText[458], len);
@@ -70,7 +70,7 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                         *_s++=' ';
                         *_s++='%';
                         *_s = 0;
-                        WRITEWIN(365,y,12,0,MyRPort_PTR[0],3,s);
+                        WRITE(365,y,12,0,MyRPort_PTR[0],3,s);
                     }
                     y = y+14;
                 }
@@ -79,7 +79,7 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
         }
     }
     //    LastSys = 1;
-    WRITEWIN(100,497,12,0,MyRPort_PTR[0],3,_Txt_nextPage);
+    WRITE(100,497,12,0,MyRPort_PTR[0],3,_Txt_nextPage);
     return 1;
 }
 
@@ -112,14 +112,14 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                     ++z;
                     if (36 == z)
                     {
-                        WRITEWIN(100,497,12,0,MyRPort_PTR[0], 3, _Txt_nextPage);
+                        WRITE(100,497,12,0,MyRPort_PTR[0], 3, _Txt_nextPage);
                         return (i+1);
                     }
                     PSys[z] = i+1;
                     PNum[z] = j+1;
                     PCol[z] = MyPlanet->PFlags & FLAG_CIV_MASK;
                     if (PCol[z] == 0) { PCol[z] = 1; }
-                    WRITEWIN(50,y,PCol[z],0,MyRPort_PTR[0],3,MyPlanet->PName);
+                    WRITE(50,y,PCol[z],0,MyRPort_PTR[0],3,MyPlanet->PName);
                     if (CivFlag == ActPlayerFlag)
                     {
                         switch (MyPlanet->ProjectID) {
@@ -129,23 +129,23 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                             case  0: _s = _Txt_Separator; break;
                             default: _s = Project.data[MyPlanet->ProjectID];
                         }
-                        WRITEWIN(170,y,12,0,MyRPort_PTR[0],3, _s);
+                        WRITE(170,y,12,0,MyRPort_PTR[0],3, _s);
 
                         _s = dez2out(MyPlanet->Population, 0, s);
                         strcpy(_s, " Mio");
-                        WRITEWIN(465,y,12,WRITE_Right,MyRPort_PTR[0],3,s);
+                        WRITE(465,y,12,WRITE_Right,MyRPort_PTR[0],3,s);
                     } else {
                         strcpy(s, _PT_Groesse);
                         strcat(s, ": ");
                         (void) float2out( (MyPlanet->Size/10.0), 0, 2, s+strlen(s));
-                        WRITEWIN(170,y,12,0,MyRPort_PTR[0],3,s);
+                        WRITE(170,y,12,0,MyRPort_PTR[0],3,s);
 
                         if (MyPlanet->Ethno == ActPlayerFlag)
                         {
                             strcpy(s, GETCIVADJ(ActPlayer));
                             strcat(s, " ");
                             strcat(s, PText[182]);
-                            WRITEWIN(350,y,12,0,MyRPort_PTR[0],3,s);
+                            WRITE(350,y,12,0,MyRPort_PTR[0],3,s);
                         }
                     }
                     y = y+14;
@@ -153,7 +153,7 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
             }
         }
     }
-    WRITEWIN(100,497,12,0,MyRPort_PTR[0],3,_Txt_nextPage);
+    WRITE(100,497,12,0,MyRPort_PTR[0],3,_Txt_nextPage);
     return 1;
 }
 
@@ -169,6 +169,7 @@ void SEARCHOBJECT(uint8* ActSys)
     r_PlanetHeader* MyPlanet;
     char*   _s;
     int     i;
+    int     ypos;
     struct Window*   SEO_Window;
     struct RastPort* RPort_PTR;
 
@@ -182,18 +183,20 @@ void SEARCHOBJECT(uint8* ActSys)
     RPort_PTR = SEO_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,122,135,12,6,1);
 
+    ypos = 3;
     for(i = 0; i < 5; i++)
     {
+        ypos += 22;
         if (2 == i) { continue; }
-        DrawImage(RPort_PTR, &GadImg1, 4, 25+i*22);
+        DrawImage(RPort_PTR, &GadImg1, 4, ypos);
     }
-    WRITEWIN(61,  5,12,WRITE_Center,RPort_PTR,4,_PT_Planeten);
-    WRITEWIN(61, 27, 0,WRITE_Center,RPort_PTR,4,_PT_eigene);
-    WRITEWIN(61, 49, 0,WRITE_Center,RPort_PTR,4,_PT_fremde);
+    WRITE(61,  5,12,WRITE_Center,RPort_PTR,4,_PT_Planeten);
+    WRITE(61, 27, 0,WRITE_Center,RPort_PTR,4,_PT_eigene);
+    WRITE(61, 49, 0,WRITE_Center,RPort_PTR,4,_PT_fremde);
 
-    WRITEWIN(61, 71,12,WRITE_Center,RPort_PTR,4,_PT_Schiffe);
-    WRITEWIN(61, 93, 0,WRITE_Center,RPort_PTR,4,_PT_Position);
-    WRITEWIN(61,115, 0,WRITE_Center,RPort_PTR,4,_PT_Bewaessern);
+    WRITE(61, 71,12,WRITE_Center,RPort_PTR,4,_PT_Schiffe);
+    WRITE(61, 93, 0,WRITE_Center,RPort_PTR,4,_PT_Position);
+    WRITE(61,115, 0,WRITE_Center,RPort_PTR,4,_PT_Bewaessern);
 
     while (LMB_PRESSED) { };
 
@@ -263,9 +266,9 @@ void SEARCHOBJECT(uint8* ActSys)
                             } else {
                                 _s = Project.data[MyShipPtr->SType];
                             }
-                            WRITE(40,(LastP-1)*14,ActPlayerFlag,1,MyScreen[0],3, _s);
+                            WRITE(40,(LastP-1)*14,ActPlayerFlag,1,MyRPort_PTR[0],3, _s);
                         } else {
-                            WRITE(100,497,12,1,MyScreen[0],3,_Txt_nextPage);
+                            WRITE(100,497,12,1,MyRPort_PTR[0],3,_Txt_nextPage);
                         }
                         if (ThisP<36)
                         {
@@ -276,9 +279,9 @@ void SEARCHOBJECT(uint8* ActSys)
                             } else {
                                 _s = Project.data[MyShipPtr->SType];
                             }
-                            WRITE(40,(ThisP-1)*14,ActPlayerFlag,5,MyScreen[0],3, _s);
+                            WRITE(40,(ThisP-1)*14,ActPlayerFlag,5,MyRPort_PTR[0],3, _s);
                         } else {
-                            WRITE(100,497,12,5,MyScreen[0],3,_Txt_nextPage);
+                            WRITE(100,497,12,5,MyRPort_PTR[0],3,_Txt_nextPage);
                         }
                         LastP = ThisP;
                     } else {
@@ -326,16 +329,16 @@ void SEARCHOBJECT(uint8* ActSys)
                         if ((36 > LastP) && (0 != PSys[LastP]))
                         {
                             MyPlanet = &(SystemHeader[PSys[LastP]-1].PlanetMemA[PNum[LastP]-1]);
-                            WRITE(50,(LastP-1)*14,PCol[LastP],1,MyScreen[0],3,MyPlanet->PName);
+                            WRITE(50,(LastP-1)*14,PCol[LastP],1,MyRPort_PTR[0],3,MyPlanet->PName);
                         } else {
-                            WRITE(100,497,12,1,MyScreen[0],3,_Txt_nextPage);
+                            WRITE(100,497,12,1,MyRPort_PTR[0],3,_Txt_nextPage);
                         }
                         if (36 > ThisP)
                         {
                             MyPlanet = &(SystemHeader[PSys[ThisP]-1].PlanetMemA[PNum[ThisP]-1]);
-                            WRITE(50,(ThisP-1)*14,PCol[ThisP],5,MyScreen[0],3,MyPlanet->PName);
+                            WRITE(50,(ThisP-1)*14,PCol[ThisP],5,MyRPort_PTR[0],3,MyPlanet->PName);
                         } else {
-                            WRITE(100,497,12,5,MyScreen[0],3,_Txt_nextPage);
+                            WRITE(100,497,12,5,MyRPort_PTR[0],3,_Txt_nextPage);
                         }
                         LastP = ThisP;
                     } else {
@@ -380,7 +383,6 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
     char    s[60];
     uint8   RawCode;
 
-    // Printf("## HANDLESYSTEM >>>> ##\n");
     OffsetX = 0;
     OffsetY = 0;
     if (Display != *ActSys)
@@ -493,15 +495,15 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
         }
         CLEARINTUITION();
     }
-    while ((Display != 0) && ((SystemFlags[ActPlayer-1][*ActSys-1] & FLAG_KNOWN) != 0)
+    while ((0 != Display) && (0 != (SystemFlags[ActPlayer-1][*ActSys-1] & FLAG_KNOWN))
         && (LMB_NOTPRESSED || (MouseX(0)<518) || (MouseX(0)>634)
                            || (MouseY(0)<444) || (MouseY(0)>464))
         && (!Save.PlayMySelf));
 
-    if (Display != 0)
+    if (0 != Display)
     {
-        KLICKGAD(518,444);
-        RECT(MyScreen[0],0,522,9,629,117);
+        KLICKWINGAD(MyRPort_PTR[0],518,444);
+        RECTWIN(MyRPort_PTR[0],0,522,9,629,117);
         DRAWSTARS(MODE_REDRAW,ActPlayer);
     }
     // Printf("## HANDLESYSTEM <<<< ##\n");

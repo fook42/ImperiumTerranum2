@@ -45,6 +45,8 @@
 #define _PT_hoch_entwickelt             PText[241]
 #define _PT_hoechste_Entwicklungsstufe  PText[242]
 
+#define _PT_Annehmen                PText[245]
+#define _PT_Ablehnen                PText[246]
 
 #define _PT_Der_Spieler_wurde       PText[395]
 
@@ -60,6 +62,9 @@
 
 #define _PT_aus                     PText[507]
 #define _PT_ein                     PText[508]
+
+#define _PT_ENDE                    PText[534]
+
 
 #define _PT_weiter                  PText[571]
 #define _PT_Umlaufbahn_kollabiert   PText[575]

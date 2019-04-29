@@ -19,18 +19,18 @@ void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove)
         {
             LastSystem = (i+1);
             RECTWIN(MyRPort_PTR[0],0,522,9,629,116);      // clear Minimap
-            WRITEWIN(528,12,12,0,MyRPort_PTR[0],4,Save.SystemName.data[i]);
+            WRITE(528,12,12,0,MyRPort_PTR[0],4,Save.SystemName.data[i]);
             if ((0 != Save.CivPlayer[ActPlayer-1])
              && (0 != (SystemFlags[ActPlayer-1][i] & FLAG_KNOWN)))
             {
                 _s = dez2out(SystemHeader[i].Planets, 0, s);
                 *_s++=' ';
                 strcpy(_s, _PT_Planeten);
-                WRITEWIN(528,29,12,0,MyRPort_PTR[0],4, s);
+                WRITE(528,29,12,0,MyRPort_PTR[0],4, s);
                 _s = GETCIVNAME(GETCIVVAR(SystemFlags[0][i] & FLAG_CIV_MASK));
-                WRITEWIN(528,46,SystemFlags[0][i] & FLAG_CIV_MASK,0,MyRPort_PTR[0],4, _s);
+                WRITE(528,46,SystemFlags[0][i] & FLAG_CIV_MASK,0,MyRPort_PTR[0],4, _s);
             } else {
-                WRITEWIN(528,29,12,0,MyRPort_PTR[0],4, _PT_Unbekannt);
+                WRITE(528,29,12,0,MyRPort_PTR[0],4, _PT_Unbekannt);
             }
             if (0 != ActSys)
             {
@@ -41,11 +41,11 @@ void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove)
                 distance = abs(SystemX[ActSys-1]-SystemX[i]) + abs(SystemY[ActSys-1]-SystemY[i]);
                 distance = (uint32) (distance / ShipMaxMove);
                 (void) dez2out(distance, 4, s);
-                WRITEWIN(547,70,8,0,MyRPort_PTR[0],2,s);
-                WRITEWIN(550,87,12,0,MyRPort_PTR[0],4, _PT_Jahre);
+                WRITE(547,70,8,0,MyRPort_PTR[0],2,s);
+                WRITE(550,87,12,0,MyRPort_PTR[0],4, _PT_Jahre);
             } else if (TARGET_STARGATE == SystemHeader[i].FirstShip.SType)
             {
-                WRITEWIN(528,77,12,0,MyRPort_PTR[0],4,"Stargate");
+                WRITE(528,77,12,0,MyRPort_PTR[0],4,"Stargate");
             }
         }
     }

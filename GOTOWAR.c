@@ -37,9 +37,9 @@ void GOTOWAR(uint8 CivFlag1, uint8 CivFlag2)
     }
     RPort_PTR = GTW_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
-    WRITEWIN(171,11,CivFlag1,(1|WRITE_Center),RPort_PTR,4, GETCIVNAME(CivVar1));
-    WRITEWIN(171,31,      12,(1|WRITE_Center),RPort_PTR,4, _PT_beginnenKrieggegen);
-    WRITEWIN(171,51,CivFlag2,(1|WRITE_Center),RPort_PTR,4, GETCIVNAME(CivVar2));
+    WRITE(171,11,CivFlag1,(1|WRITE_Center),RPort_PTR,4, GETCIVNAME(CivVar1));
+    WRITE(171,31,      12,(1|WRITE_Center),RPort_PTR,4, _PT_beginnenKrieggegen);
+    WRITE(171,51,CivFlag2,(1|WRITE_Center),RPort_PTR,4, GETCIVNAME(CivVar2));
     if (Save.PlayMySelf) { delay(PAUSE); }
     WAITLOOP(Save.PlayMySelf);
     CloseWindow(GTW_Window);

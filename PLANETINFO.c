@@ -38,7 +38,7 @@ typedef struct SArr6 {
         }
         pos = float2out( ((double)PlanetHeader->Size/10.0), 0, 2, s);
         strcpy(pos, PText[171]);
-        WRITEWIN(89,33,j,0,RPort_PTR,4,s);
+        WRITE(89,33,j,0,RPort_PTR,4,s);
 
         stringlen=strlen(_PT_Klasse);
         memcpy(s, _PT_Klasse, stringlen);
@@ -58,10 +58,10 @@ typedef struct SArr6 {
         }
         *pos++='-';
         strcpy(pos, _PT_Planet);
-        WRITEWIN(89,53,j,0,RPort_PTR,4,s);
+        WRITE(89,53,j,0,RPort_PTR,4,s);
         i = it_round((double) (abs(PlanetHeader->PosX)+abs(PlanetHeader->PosY))/3.4f);
         l = ((sint32) (13-i)*(13-i)*(13-i) / 3) -270;
-        WRITEWIN(89,13,j,0,RPort_PTR,4,PlanetHeader->PName);
+        WRITE(89,13,j,0,RPort_PTR,4,PlanetHeader->PName);
         if ((PlanetHeader->Class==CLASS_SATURN) || (PlanetHeader->Class==CLASS_GAS))
         {
             strcpy(s, PText[332]);
@@ -132,7 +132,7 @@ typedef struct SArr6 {
         j = 0;
         for(i = 0; i < 6; ++i)
         {
-            WRITEWIN(9,j+87,12,0,RPort_PTR,3,SA6.data[i]);
+            WRITE(9,j+87,12,0,RPort_PTR,3,SA6.data[i]);
             j += 17;
         }
 

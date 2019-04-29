@@ -296,12 +296,12 @@ void MAIN_FNC()
                         }
 
                         // OpenWin
-                        MAKEBORDER(MyScreen[0],40,100,470,190,12,6,0);
-                        WRITE(256,113,ActPlayerFlag,WRITE_Center,MyScreen[0],4,PText[834]);
-                        WRITE(256,137,ActPlayerFlag,WRITE_Center,MyScreen[0],4,PText[835]);
-                        WRITE(256,161,ActPlayerFlag,WRITE_Center,MyScreen[0],4,PText[836]);
+                        MAKEWINBORDER(MyRPort_PTR[0],40,100,470,190,12,6,0);
+                        WRITE(256,113,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],4,PText[834]);
+                        WRITE(256,137,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],4,PText[835]);
+                        WRITE(256,161,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],4,PText[836]);
                         WAITLOOP(Save.PlayMySelf);
-                        RECT(MyScreen[0],0,40,100,470,190);
+                        RECTWIN(MyRPort_PTR[0],0,40,100,470,190);
                         REFRESHDISPLAY();
                         // CloseWin
 

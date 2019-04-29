@@ -229,7 +229,7 @@ void TRAVEL()
             if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255)
               &&((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
             {
-                BOXWIN(MyRPort_PTR[AScr], X[j]-S[j], Y[j]-S[j], X[j]+S[j], Y[j]+S[j]);
+                BOX(MyRPort_PTR[AScr], X[j]-S[j], Y[j]-S[j], X[j]+S[j], Y[j]+S[j]);
             }
         }
         if ((X[5]<120) || (X[5]>200) || (Y[5]<90) || (Y[5]>165))
@@ -317,7 +317,7 @@ void TRAVEL()
         }
 
         SetAPen(MyRPort_PTR[AScr], RectCol);
-        BOXWIN(MyRPort_PTR[AScr],60,35,250,220);
+        BOX(MyRPort_PTR[AScr],60,35,250,220);
 
         if (Audio_enable)
         {
@@ -468,7 +468,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     delay(7);
     for (i = 15; i>=0; i--)
     {
-        BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,&(MyScreen[0]->RastPort),MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
+        BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
         WaitTOF();
         delay(4);
     }
@@ -479,13 +479,13 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
         Offset = 260;
     }
     SysID = (rand()%Save.Systems);  // shifted by -1 for the arrays
-    MAKEBORDER(MyScreen[0],70,Offset,440,Offset+85,12,6,0);
-    WRITE(256,Offset+13,ActPlayerFlag,WRITE_Center,MyScreen[0],4,PText[467]);
-    WRITE(256,Offset+35,ActPlayerFlag,WRITE_Center,MyScreen[0],4,PText[468]);
+    MAKEWINBORDER(MyRPort_PTR[0],70,Offset,440,Offset+85,12,6,0);
+    WRITE(256,Offset+13,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],4,PText[467]);
+    WRITE(256,Offset+35,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],4,PText[468]);
     strcpy(s, PText[469]);
     strcat(s, " ");
     strcat(s, Save.SystemName.data[SysID]);
-    WRITE(256,Offset+57,ActPlayerFlag,WRITE_Center,MyScreen[0],4,s);
+    WRITE(256,Offset+57,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],4,s);
     if (0 == SystemHeader[SysID].Planets)
     {
         CREATENEWSYSTEM(SysID,ActPlayer);
@@ -501,18 +501,18 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
         && ((MyShipPtr->PosX<-3) || (MyShipPtr->PosX>3)) && ((MyShipPtr->PosY<-3) || (MyShipPtr->PosY>3)));
 
     WAITLOOP(false);
-    RECT(MyScreen[0],0,70,Offset,440,Offset+85);
+    RECTWIN(MyRPort_PTR[0],0,70,Offset,440,Offset+85);
     REFRESHDISPLAY();
 
     PLAYSOUND(3,250);
     delay(7);
     for(i = 0; i < 16; ++i)
     {
-        BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,&(MyScreen[0]->RastPort),MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
+        BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
         WaitTOF();
         delay(4);
     }
-    RECT(MyScreen[0],0,MOVESHIP_ToX,MOVESHIP_ToY,MOVESHIP_ToX+31,MOVESHIP_ToY+31);
+    RECTWIN(MyRPort_PTR[0],0,MOVESHIP_ToX,MOVESHIP_ToY,MOVESHIP_ToX+31,MOVESHIP_ToY+31);
     delay(20);
     if (WORMFLIGHT(MyShipPtr, ActSys))
     {

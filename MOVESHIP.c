@@ -25,7 +25,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     l = 0;
     MyShipPtr = ShipPtr;
     CivVar = GETCIVVAR(MyShipPtr->Owner);
-    if ((0 == CivVar) || (MyShipPtr->Moving <= 0))
+    if ((CIVVAR_NONE == CivVar) || (0 >= MyShipPtr->Moving))
     {
         return;
     }
@@ -49,16 +49,19 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     {
         RECT(MyScreen[0],0,520,291,632,308);
     }
-    if ((Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1] == 0)
-     || (MyShipPtr->Flags == SHIPFLAG_WATER) || (Save.PlayMySelf))
+    if ((0 == Save.CivPlayer[CivVar-1])
+     || (SHIPFLAG_WATER == MyShipPtr->Flags) || (Save.PlayMySelf))
     {
-        if ((MyShipPtr->Moving == 1) && ((Year % 2) == 0)) { MyShipPtr->Moving++; }
+        if ((1 == MyShipPtr->Moving) && (0 == (Year % 2)))
+        {
+            MyShipPtr->Moving++;
+        }
         delay(2);
         do
         {
             MOVESHIP_FromX = MyShipPtr->PosX;
             MOVESHIP_FromY = MyShipPtr->PosY;
-            if ((MyShipPtr->SType == SHIPTYPE_STARGATE) && (SystemHeader[ActSys-1].FirstShip.SType != TARGET_STARGATE))
+            if ((SHIPTYPE_STARGATE == MyShipPtr->SType) && (TARGET_STARGATE != SystemHeader[ActSys-1].FirstShip.SType))
             {
                 /**** STARGATE INSTALLIEREN ****/
                 if (sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))<10)
@@ -79,19 +82,19 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     }
                     return;
                 }
-                if (0<MyShipPtr->PosX)
+                if (0 < MyShipPtr->PosX)
                 {
-                    MyShipPtr->PosX--;
-                } else if (0>MyShipPtr->PosX)
+                    --MyShipPtr->PosX;
+                } else if (0 > MyShipPtr->PosX)
                 {
-                    MyShipPtr->PosX++;
+                    ++MyShipPtr->PosX;
                 }
-                if (0<MyShipPtr->PosY)
+                if (0 < MyShipPtr->PosY)
                 {
-                    MyShipPtr->PosY--;
-                } else if (0>MyShipPtr->PosY)
+                    --MyShipPtr->PosY;
+                } else if (0 > MyShipPtr->PosY)
                 {
-                    MyShipPtr->PosY++;
+                    ++MyShipPtr->PosY;
                 }
             } else if (MyShipPtr->Target == TARGET_ENEMY_SHIP)
             {
@@ -309,7 +312,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     MOVESHIP_SMALLANDING(MyPlanetHeader,MyShipPtr,ActSys);
                                                     return;
                                                 }
-                                                if ((Save.WorldFlag == WFLAG_CEBORC) && (CivVar == 8))
+                                                if ((Save.WorldFlag == WFLAG_CEBORC) && (CIVVAR_OTHER == CivVar))
                                                 {
                                                     MyPlanetHeader->PFlags        = 0;
                                                     MyPlanetHeader->Ethno         = 0;
@@ -332,7 +335,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         delay(20);
                                                     }
                                                     return;
-                                                } else if (CivVar == 9)
+                                                } else if (CIVVAR_MAQUES == CivVar)
                                                 {
                                                     MyPlanetHeader->Population    = it_round(MyPlanetHeader->Population*0.99);
                                                     MyPlanetHeader->Biosphaere    = it_round(MyPlanetHeader->Biosphaere*0.97);
@@ -459,7 +462,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         if ((MyShipPtr->PosX>=(MyWormHole[i].PosX[j]-10)) && (MyShipPtr->PosX<=(MyWormHole[i].PosX[j]+10))
                           &&(MyShipPtr->PosY>=(MyWormHole[i].PosY[j]-10)) && (MyShipPtr->PosY<=(MyWormHole[i].PosY[j]+10)))
                         {
-                            if (GETCIVVAR(MyShipPtr->Owner)>0)
+                            if (CIVVAR_NONE != GETCIVVAR(MyShipPtr->Owner))
                             {
                                 MyWormHole[i].CivKnowledge[GETCIVVAR(MyShipPtr->Owner)-1] = FLAG_KNOWN;
                             }
@@ -477,7 +480,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     *_s++='-';
                     _s = dez2out(it_round((MyShipPtr->Shield+MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, _s);
                     *_s++='%'; *_s=0;
-                    WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyScreen[0],2,s);
+                    WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyRPort_PTR[0],2,s);
                     OldMoving = MyShipPtr->Moving;
                 }
             }
@@ -492,13 +495,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         delay(1);
         MOVESHIP_FromX = MyShipPtr->PosX;
         MOVESHIP_FromY = MyShipPtr->PosY;
-        blink++;
+        ++blink;
         if (15 == blink)
         {
-            SetAPen(&(MyScreen[0]->RastPort),0);
             if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
             {
-                DRAWRECT(MOVESHIP_x,MOVESHIP_y,MyShipPtr);
+                DRAWRECT(MOVESHIP_x,MOVESHIP_y,MyShipPtr, 0);
             }
 
             if ((MOVESHIP_x>=0) && (MOVESHIP_x<=505) && (MOVESHIP_y>=0) && (MOVESHIP_y<=512) && (MyShipPtr->SType != SHIPTYPE_FLEET))
@@ -515,14 +517,13 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     slen = _s - s;
                 }
                 s[slen]=0;
-                WRITE(MOVESHIP_x+2,MOVESHIP_y+21,MyShipPtr->Owner,0,MyScreen[0],1,s);
+                WRITE(MOVESHIP_x+2,MOVESHIP_y+21,MyShipPtr->Owner,0,MyRPort_PTR[0],1,s);
             }
         } else if (30 == blink)
         {
-            SetAPen(&(MyScreen[0]->RastPort),MyShipPtr->Owner);
             if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
             {
-                DRAWRECT(MOVESHIP_x,MOVESHIP_y,MyShipPtr);
+                DRAWRECT(MOVESHIP_x,MOVESHIP_y, MyShipPtr, MyShipPtr->Owner);
             }
             blink = 0;
         }
@@ -532,7 +533,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         if ((LMB_PRESSED) || ((RawCode>=29) && (RawCode<=31)) || (RawCode==45) || (RawCode==47)
             || ((RawCode>=61) && (RawCode<=63)) || ((RawCode>=76) && (RawCode<=79)))
         {
-            if (((MouseX(0)>=0) && (MouseX(0)<=512))
+            if (((MouseX(0)>=0) && (MouseX(0)<513))
                 || ((RawCode>=29) && (RawCode<=31)) || (RawCode==45) || (RawCode==47)
                 || ((RawCode>=61) && (RawCode<=63)) || ((RawCode>=76) && (RawCode<=79)))
             {
@@ -797,12 +798,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 *_s++='%'; *_s=0;
             }
             OldMoving = MyShipPtr->Moving;
-            WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyScreen[0],2,s);
+            WRITE(521,293,GETCIVFLAG(ActPlayer),1,MyRPort_PTR[0],2,s);
         }
         MOVESHIP_x = 256+((MyShipPtr->PosX+OffsetX)*32);
         MOVESHIP_y = 256+((MyShipPtr->PosY+OffsetY)*32);
         CLEARINTUITION();
     }
     while ((MyShipPtr->Moving > 0) && (MyShipPtr->Target != TARGET_POSITION) && (MyShipPtr->Owner != 0));
-    RECT(MyScreen[0],0,520,291,632,308);
+    RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
 }

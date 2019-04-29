@@ -5,7 +5,7 @@
 
 uint8 GOTONEXTPLANET(uint8 ActSys, r_ShipHeader* MyShipPtr)
 {
-    uint8           k,btx;
+    uint8           k, btx;
 //    uint8           CivVar,CivFlag;
     r_PlanetHeader* MyPlanetHeader;
     r_ShipHeader*   OtherShipPtr;
@@ -22,14 +22,14 @@ uint8 GOTONEXTPLANET(uint8 ActSys, r_ShipHeader* MyShipPtr)
     {
         MyPlanetHeader = &(SystemHeader[ActSys-1].PlanetMemA[k]);
         OtherShipPtr = MyPlanetHeader->FirstShip.NextShip;
-        while ((OtherShipPtr != NULL) && (OtherShipPtr->Owner == 0))
+        while ((NULL != OtherShipPtr) && (0 == OtherShipPtr->Owner))
         {
             OtherShipPtr = OtherShipPtr->NextShip;
         }
         if (((MyPlanetHeader->Class == CLASS_DESERT) || (MyPlanetHeader->Class == CLASS_HALFEARTH)
-           ||(MyPlanetHeader->Class == CLASS_EARTH)  || (MyPlanetHeader->Class == CLASS_ICE)
-           ||(MyPlanetHeader->Class == CLASS_STONES) || (MyPlanetHeader->Class == CLASS_WATER))
-          && (MyPlanetHeader->PFlags == 0) && (OtherShipPtr == NULL))
+           ||(MyPlanetHeader->Class == CLASS_EARTH ) || (MyPlanetHeader->Class == CLASS_ICE      )
+           ||(MyPlanetHeader->Class == CLASS_STONES) || (MyPlanetHeader->Class == CLASS_WATER    ))
+          && (0 == MyPlanetHeader->PFlags) && (NULL == OtherShipPtr))
         {
             DistNew = it_round(abs(MyPlanetHeader->PosX - MyShipPtr->PosX));
             if (it_round(abs(MyPlanetHeader->PosY - MyShipPtr->PosY))>DistNew)
@@ -40,12 +40,12 @@ uint8 GOTONEXTPLANET(uint8 ActSys, r_ShipHeader* MyShipPtr)
             {
                 DistOld = DistNew;
                 btx = k+1;
-                MyShipPtr->Target = k+1;
+                MyShipPtr->Target = btx;
                 MyShipPtr->Source = ActSys;
             }
         }
     }
-    if (btx != 0 )
+    if (0 != btx)
     {
         LINKSHIP(MyShipPtr, &SystemHeader[ActSys-1].FirstShip,1);
     } else {

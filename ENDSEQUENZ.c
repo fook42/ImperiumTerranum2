@@ -15,6 +15,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     char    s[70];
     char    s2[70];
     char*   _s;
+    struct RastPort* RPort_PTR;
 
     ScreenToFront(XScreen);
     SMALLGAMEEXIT();
@@ -36,6 +37,8 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     {
         return;
     }
+
+    RPort_PTR = &(MyScreen[0]->RastPort);
 
     slen = strlen(PathStr[4]);
     memcpy(s, PathStr[4], slen);
@@ -186,13 +189,13 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     ypos = 105;
     for (i = 0; i < t; ++i)
     {
-        WRITE(320,ypos,255,(WRITE_Center|WRITE_Shadow),MyScreen[0],5,SA13.data[i]);
+        WRITE(320,ypos,255,(WRITE_Center|WRITE_Shadow),RPort_PTR,5,SA13.data[i]);
         ypos += 25;
         delay(50);
     }
     if (-2 == Mode)
     {
-        WRITE(320,340,255,WRITE_Center,MyScreen[0],1,"(Womit bewiesen wäre, daß unser Universum geschlossen ist!)");
+        WRITE(320,340,255,WRITE_Center,RPort_PTR,1,"(Womit bewiesen wäre, daß unser Universum geschlossen ist!)");
     }
     WAITLOOP(false);
     if (NULL != SndModulePtr)
@@ -202,5 +205,5 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     }
 
     SWITCHDISPLAY();
-    RECT(MyScreen[0],0,0,75,639,434);
+    RECTWIN(RPort_PTR,0,0,75,639,434);
 }

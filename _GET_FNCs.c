@@ -7,7 +7,7 @@ char Error_Text[] = "ERROR\0";
 /* -------------------------------------------------------- */
 
 const uint8 CIVFLAGs[]={0,           FLAG_TERRA,  FLAG_KLEGAN, FLAG_REMALO, FLAG_CARDAC,
-                  FLAG_FERAGI, FLAG_BAROJA, FLAG_VOLKAN, FLAG_OTHER,  FLAG_MAQUES};
+                        FLAG_FERAGI, FLAG_BAROJA, FLAG_VOLKAN, FLAG_OTHER,  FLAG_MAQUES};
 
 const uint8 CIVADJs[] ={0, 115, 116, 117, 118, 119, 120, 121};
 const uint8 CIVADJs8[]={122, 123};
@@ -29,16 +29,16 @@ uint8 GETCIVVAR(uint8 CivFlag)
     uint8 Result;
 
     switch (CivFlag & FLAG_CIV_MASK) {
-        case FLAG_TERRA:   Result = 1; break;
-        case FLAG_KLEGAN:  Result = 2; break;
-        case FLAG_REMALO:  Result = 3; break;
-        case FLAG_CARDAC:  Result = 4; break;
-        case FLAG_FERAGI:  Result = 5; break;
-        case FLAG_BAROJA:  Result = 6; break;
-        case FLAG_VOLKAN:  Result = 7; break;
-        case FLAG_OTHER:   Result = 8; break;
-        case FLAG_MAQUES:  Result = 9; break;
-        default:           Result = 0;
+        case FLAG_TERRA:   Result = CIVVAR_TERRA;  break;
+        case FLAG_KLEGAN:  Result = CIVVAR_KLEGAN; break;
+        case FLAG_REMALO:  Result = CIVVAR_REMALO; break;
+        case FLAG_CARDAC:  Result = CIVVAR_CARDAC; break;
+        case FLAG_FERAGI:  Result = CIVVAR_FERAGI; break;
+        case FLAG_BAROJA:  Result = CIVVAR_BAROJA; break;
+        case FLAG_VOLKAN:  Result = CIVVAR_VOLKAN; break;
+        case FLAG_OTHER:   Result = CIVVAR_OTHER;  break;
+        case FLAG_MAQUES:  Result = CIVVAR_MAQUES; break;
+        default:           Result = CIVVAR_NONE;
     }
     return Result;
 }
@@ -46,7 +46,6 @@ uint8 GETCIVVAR(uint8 CivFlag)
 
 char* GETCIVADJ(uint8 CivVar)
 {
-
     if (0 < CivVar)
     {
         if ((sizeof(CIVADJs)/sizeof(CIVADJs[0])) > CivVar)

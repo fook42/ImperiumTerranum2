@@ -53,7 +53,7 @@ void AUTOVERHANDLUNG(uint8 CivFlag1, uint8 CivFlag2, uint8 ActSys, uint8 Mode)
     if ((7 == CivVar1) && (WFLAG_JAHADR == Save.WorldFlag)
         && (Save.WarPower[7] > (Save.WarPower[CivVar2]*2)))
     {
-        if ((Save.JSteuer[CivVar2] >= 1) && (Save.JSteuer[CivVar2] <= 99))
+        if ((Save.JSteuer[CivVar2] > 0) && (Save.JSteuer[CivVar2] < 100))
         {
             ++(Save.JSteuer[CivVar2]);
         } else {
@@ -67,7 +67,7 @@ void AUTOVERHANDLUNG(uint8 CivFlag1, uint8 CivFlag2, uint8 ActSys, uint8 Mode)
     }
     return;
     /* TODO ... we "return" in either case .. so dead code below this line??? */
-    if (Save.WarPower[CivVar1] > (Save.WarPower[CivVar2]*5))
+/*    if (Save.WarPower[CivVar1] > (Save.WarPower[CivVar2]*5))
     {
         return;
     }
@@ -85,4 +85,5 @@ void AUTOVERHANDLUNG(uint8 CivFlag1, uint8 CivFlag2, uint8 ActSys, uint8 Mode)
         Save.Staatstopf[CivVar2] -= abs(Year*10);
         GOTOPEACE(CivVar1,CivVar2);
     }
+*/
 }

@@ -39,7 +39,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         PLAYSOUND(3,280);
         for (i = 15; i>=0; i--)
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,&(MyScreen[0]->RastPort),MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
             WaitTOF();
             delay(4);
         }
@@ -64,11 +64,11 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
     {
         for(i = 0; i <= 15; i++)
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,&(MyScreen[0]->RastPort),MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
             WaitTOF();
             delay(4);
         }
-        RECT(MyScreen[0], 0, MOVESHIP_ToX, MOVESHIP_ToY, MOVESHIP_ToX+31, MOVESHIP_ToY+31);
+        RECTWIN(MyRPort_PTR[0], 0, MOVESHIP_ToX, MOVESHIP_ToY, MOVESHIP_ToX+31, MOVESHIP_ToY+31);
         REFRESHDISPLAY();
     }
     MyShipPtr->Moving--;

@@ -24,7 +24,7 @@ void MAKEWINBORDER(struct RastPort* RPort, uint16 LEdge, uint16 TEdge, uint16 RE
 
 struct Window* MAKEWINDOW(uint16 LEdge, uint16 TEdge, uint16 SizeX, uint16 SizeY, struct Screen* onScreen)
 {
-    struct NewWindow MK_NeuWindow = {LEdge,TEdge,SizeX,SizeY,0,0,RAWKEY,SMART_REFRESH+BORDERLESS, NULL,NULL,NULL,onScreen,NULL,SizeX,SizeY,SizeX,SizeY,CUSTOMSCREEN};
+    struct NewWindow MK_NeuWindow = {LEdge,TEdge,SizeX,SizeY,0,0,RAWKEY,SMART_REFRESH+BORDERLESS,NULL,NULL,NULL,onScreen,NULL,0,0,0,0,CUSTOMSCREEN};
 
     return( OpenWindow( &MK_NeuWindow ) );
 }

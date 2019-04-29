@@ -29,16 +29,16 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
     SetRGB4(MyVPort_PTR[1],1,15,15,15);
     SetRGB4(MyVPort_PTR[1],2,3,3,15);
     SetRGB4(MyVPort_PTR[1],3,9,9,9);
-    WRITEWIN(320,100,1,WRITE_Center,RPort_PTR,4,PText[160]);
+    WRITE(320,100,1,WRITE_Center,RPort_PTR,4,PText[160]);
     if (!MultiPlayer)
     {
-        WRITEWIN(320,150,2,WRITE_Center,RPort_PTR,4,PText[161]);
+        WRITE(320,150,2,WRITE_Center,RPort_PTR,4,PText[161]);
     } else {
         strcpy(s, "Player 0");
         PName_len = strlen(s);
         s[PName_len-1] = Save.CivPlayer[GPN_ActPlayer]+'0';
         strcpy(s+PName_len, PText[162]);
-        WRITEWIN(320,150,2,WRITE_Center,RPort_PTR,4,s);
+        WRITE(320,150,2,WRITE_Center,RPort_PTR,4,s);
     }
     MAKEWINBORDER(RPort_PTR,100,200,540,230,1,3,1);
     PName[0] = 0;
@@ -66,7 +66,7 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
             PName[PName_len++] = VKey;
             PName[PName_len] = 0;
         }
-        WRITEWIN(320,208,2,(1|WRITE_Center),RPort_PTR,4,PName);
+        WRITE(320,208,2,(1|WRITE_Center),RPort_PTR,4,PName);
     }
     while (13 != VKey);
     CloseWindow(GPN_Window);

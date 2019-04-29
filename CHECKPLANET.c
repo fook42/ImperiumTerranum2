@@ -46,21 +46,21 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                             {
                                 RPort_PTR = CHP_Window->RPort;
                                 MAKEWINBORDER(RPort_PTR,0,0,350,130,12,6,1);
-                                WRITEWIN(176,16,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,PText[208]);
+                                WRITE(176,16,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,PText[208]);
                                 strcpy(s, GETCIVNAME(HomeWorld));
                                 l=strlen(s);
                                 s[l++]=' ';
                                 strcpy(s+l, PText[209]);
-                                WRITEWIN(176,36,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,s);
-                                WRITEWIN(176,56,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,PText[210]);
-                                WRITEWIN(176,76,           SplitWorld,(1|WRITE_Center),RPort_PTR,4,PText[211]);
+                                WRITE(176,36,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,s);
+                                WRITE(176,56,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,4,PText[210]);
+                                WRITE(176,76,           SplitWorld,(1|WRITE_Center),RPort_PTR,4,PText[211]);
                                 strcpy(s, GETCIVADJ(GETCIVVAR(SplitWorld)));
                                 l=strlen(s);
                                 strcpy(s+l, PText[212]);
                                 l=strlen(s);
                                 s[l++]='!';
                                 s[l]=0;
-                                WRITEWIN(176,96,           SplitWorld,(1|WRITE_Center),RPort_PTR,4,s);
+                                WRITE(176,96,           SplitWorld,(1|WRITE_Center),RPort_PTR,4,s);
                                 if (Save.PlayMySelf)
                                 {
                                     delay(PAUSE);

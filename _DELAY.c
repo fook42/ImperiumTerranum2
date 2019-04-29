@@ -15,18 +15,18 @@ int it_round(double x)
     return (int) (x+0.5f);
 }
 
-char* dez2out(long int value, uint8 digits, char* dest)
+char* dez2out(sint32 value, uint8 digits, char* dest)
 {
-    const long int _dez[]={1,10,100,1000,10000,100000,1000000,10000000};
-    unsigned char c;
-    bool show = true;
+    const sint32 _dez[]={1,10,100,1000,10000,100000,1000000,10000000};
+    uint8        c;
+    bool         show = true;
 
     if (0 == digits)
     {
-        digits=8;
+        digits = 8;
         show = false;
     }
-    if (value<0)
+    if (0 > value)
     {
         *dest++='-';
         value=-value;
@@ -48,19 +48,20 @@ char* dez2out(long int value, uint8 digits, char* dest)
 char* float2out(double fvalue, uint8 dezdigits, uint8 flodigits, char* dest)
 {
     char* _ftemp;
-    long int temp = (long int) fvalue;
+    sint32 temp = (sint32) fvalue;
+
     _ftemp = dez2out(temp, dezdigits, dest);
     *_ftemp++='.';
-    return dez2out(it_round((fvalue-temp)*pow(10.0f,flodigits)), flodigits, _ftemp);    
+    return dez2out(it_round((fvalue-temp)*pow(10.0f,flodigits)), flodigits, _ftemp);
 }
 
-char* hex2out(long int dez, uint8 digits, char* dest)
+char* hex2out(sint32 dez, uint8 digits, char* dest)
 {
-    unsigned char c;
+    uint8 c;
     bool show = true;
     if (0 == digits)
     {
-        digits=8;
+        digits = 8;
         show = false;
     }
     while (digits--)
@@ -79,8 +80,11 @@ char* hex2out(long int dez, uint8 digits, char* dest)
 
 bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint8 Depth)
 {
-    int i;
-    ITBMap->MemL = BytesPerRow*Rows*Depth;
+    PLANEPTR PlaneMemA;
+    uint32   BPRows= BytesPerRow*Rows;
+    uint8    i;
+
+    ITBMap->MemL = BPRows*Depth;
     ITBMap->MemA = AllocMem(ITBMap->MemL, MEMF_CHIP+MEMF_CLEAR);
     if (NULL != ITBMap->MemA)
     {
@@ -89,12 +93,13 @@ bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint
         ITBMap->Flags        = 1;
         ITBMap->Depth        = Depth;
         ITBMap->pad = 0;
-
-        for (i=0; i<Depth; i++)
+        PlaneMemA = (PLANEPTR) ITBMap->MemA;
+        for (i=0; i<Depth; ++i)
         {
-            ITBMap->PPtr[i] = (PLANEPTR) (ITBMap->MemA + (i*BytesPerRow*Rows));
+            ITBMap->PPtr[i] = PlaneMemA;
+            PlaneMemA += BPRows;
         }
-        for (;i<8; i++)
+        for (;i<8; ++i)
         {
             ITBMap->PPtr[i] = NULL;
         }

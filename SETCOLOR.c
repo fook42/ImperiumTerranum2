@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-uint8 SETCOLOR(struct Screen* XScreen, char* FName)
+uint8 SETCOLOR(struct Screen* SC_Screen, char* FName)
 {
     uint32  AddrX, AddrEnd, l, ISize;
     int     i;
@@ -26,9 +26,9 @@ uint8 SETCOLOR(struct Screen* XScreen, char* FName)
             ColorID = (uint32*) AddrX;
             AddrX = AddrX+4;
         }
-        while ((AddrX < AddrEnd) && (_COLOR_CMAP_TEXT_ != *ColorID));
+        while ((AddrX < AddrEnd) && (_COLOR_CMAP_TEXT_ != (*ColorID)));
 
-        if (_COLOR_CMAP_TEXT_ == *ColorID)
+        if (_COLOR_CMAP_TEXT_ == (*ColorID))
         {
             AddrX = AddrX+4;
             i = 0;
@@ -36,7 +36,7 @@ uint8 SETCOLOR(struct Screen* XScreen, char* FName)
             {
                 Col = (r_Col*) AddrX;
                 AddrX = AddrX+3;
-                SetRGB32(&(XScreen->ViewPort), i, (Col->r)<<24, (Col->g)<<24, (Col->b)<<24);
+                SetRGB32(&(SC_Screen->ViewPort), i, (Col->r)<<24, (Col->g)<<24, (Col->b)<<24);
                 i++;
             }
             while (AddrX < AddrEnd);

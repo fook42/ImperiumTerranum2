@@ -13,10 +13,10 @@ void STATISTIK()
     char*   _s;
     uint8   i, j;
     uint16  posy;
-    
+
     struct Window* STA_Window;
     struct RastPort* RPort_PTR;
-    STA_Window=MAKEWINDOW(10,30,491,361,MyScreen[0]);
+    STA_Window = MAKEWINDOW(10,30,491,361,MyScreen[0]);
     if (NULL == STA_Window)
     {
         return;
@@ -36,7 +36,7 @@ void STATISTIK()
 
     for (i = 0; i < Save.Systems; ++i)
     {
-        if ((SystemFlags[ActPlayer-1][i] & FLAG_KNOWN) == FLAG_KNOWN)
+        if (SystemFlags[ActPlayer-1][i] & FLAG_KNOWN)
         {
             for (j = 0; j < SystemHeader[i].Planets; ++j)
             {
@@ -67,63 +67,60 @@ void STATISTIK()
         }
     }
 
-    posy = 0;
-    for (i = 0; i < 9; i++)
+    posy = 20;
+    for (i = 0; i < 9; ++i)
     {
+        WRITE(20,posy,12,0,RPort_PTR,4, PText[700 + i]);
         posy += 20;
-        WRITEWIN(20,posy,12,0,RPort_PTR,4, PText[700 + i]);
     }
+    WRITE(20,210,ActPlayerFlag,0,RPort_PTR,4,_PT_Status);
+    WRITE(50,230,ActPlayerFlag,0,RPort_PTR,4,PText[710]);
+    WRITE(50,250,ActPlayerFlag,0,RPort_PTR,4,PText[711]);
 
-    if (Planeten>0)
+    if (0 < Planeten)
     {
         _s = float2out( ((double)(20*Kreativitaet)/Planeten), 0, 2, s);
         *_s++='%';
         *_s  =0;
-        WRITEWIN(355,20,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(355,20,8,WRITE_Right,RPort_PTR,2,s);
 
         _s = float2out( ((double)(20*Produktivitaet)/Planeten), 0, 2, s);
         *_s++='%';
         *_s  =0;
-        WRITEWIN(355,40,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(355,40,8,WRITE_Right,RPort_PTR,2,s);
 
         _s = float2out( ((double)Bio/Planeten/2.0f), 0, 2, s);
         *_s++='%';
         *_s  =0;
-        WRITEWIN(355,60,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(355,60,8,WRITE_Right,RPort_PTR,2,s);
 
         _s = float2out( ((double)Infra/Planeten/2.0f), 0, 2, s);
         *_s++='%';
         *_s  =0;
-        WRITEWIN(355,80,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(355,80,8,WRITE_Right,RPort_PTR,2,s);
 
         _s = float2out( ((double)Ind/2.0f/Planeten), 0, 2, s);
         *_s++='%';
         *_s  =0;
-        WRITEWIN(355,100,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(355,100,8,WRITE_Right,RPort_PTR,2,s);
 
         (void)dez2out(it_round(Save.Bevoelkerung[ActPlayer-1]/(double) Planeten), 0, s);
-        WRITEWIN(340,120,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(340,120,8,WRITE_Right,RPort_PTR,2,s);
 
         (void)dez2out(it_round((double)Groesse/(double)Planeten/10.0f), 0, s);
-        WRITEWIN(340,140,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(340,140,8,WRITE_Right,RPort_PTR,2,s);
 
         _s = float2out( ((double)Eth/Planeten*100.0), 0, 2, s);
         *_s++='%';
         *_s  =0;
-        WRITEWIN(355,160,8,WRITE_Right,RPort_PTR,2,s);
-    }
+        WRITE(355,160,8,WRITE_Right,RPort_PTR,2,s);
 
-    WRITEWIN(20,210,ActPlayerFlag,0,RPort_PTR,4,_PT_Status);
-    WRITEWIN(50,230,ActPlayerFlag,0,RPort_PTR,4,PText[710]);
-    WRITEWIN(50,250,ActPlayerFlag,0,RPort_PTR,4,PText[711]);
-
-    if (0 < Planeten)
-    {
         l = it_round((Buildings/Planeten*10.0)+(Bio/Planeten/2.0)+(Infra/Planeten/2.0));
         _s = float2out( ((double)l/3.1), 0, 2, s);
         *_s++='%';
         *_s  =0;
-        WRITEWIN(375,230,8,WRITE_Right,RPort_PTR,2,s);
+        WRITE(375,230,8,WRITE_Right,RPort_PTR,2,s);
+
         switch (it_round(l/31.0))
         {
             case 0:  _s = PText[712]; break;
@@ -137,7 +134,7 @@ void STATISTIK()
             case 8:  _s = PText[720]; break;
             default: _s = PText[711];
         }
-        WRITEWIN(270,250,ActPlayerFlag,0,RPort_PTR,4, _s);
+        WRITE(270,250,ActPlayerFlag,0,RPort_PTR,4, _s);
 
         l = (uint32) (l / 3.0);
         if       (l<10)             { _s = PText[723]; }
@@ -150,7 +147,7 @@ void STATISTIK()
         else if ((l>=70) && (l<80)) { _s = PText[730]; }
         else if ((l>=80) && (l<90)) { _s = PText[731]; }
         else if  (l>=90)            { _s = PText[732]; }
-        WRITEWIN(250,180,12,0,RPort_PTR,4, _s);
+        WRITE(250,180,12,0,RPort_PTR,4, _s);
     }
 
     l=strlen(PText[735]);
@@ -158,7 +155,7 @@ void STATISTIK()
     s[l++]=':';
     s[l++]=' ';
     (void)dez2out(Militaerausgaben[ActPlayer-1], 0, s+l);
-    WRITEWIN(20,280,12,0,RPort_PTR,4,s);
+    WRITE(20,280,12,0,RPort_PTR,4,s);
 
     l=strlen(PText[736]);
     memcpy(s, PText[736], l);
@@ -167,7 +164,7 @@ void STATISTIK()
     _s=dez2out((sint32) (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, s+l);
     *_s++=' ';
     strcpy(_s, _PT_Jahre);
-    WRITEWIN(20,300,12,0,RPort_PTR,4,s);
+    WRITE(20,300,12,0,RPort_PTR,4,s);
 
     l=strlen(PText[674]);
     memcpy(s, PText[674], l);
@@ -176,14 +173,13 @@ void STATISTIK()
     _s=dez2out(Save.ImperatorState[ActPlayer-1], 0, s+l);
     *_s++=' ';
     strcpy(_s, PText[414]);
-    WRITEWIN(20,320,12,0,RPort_PTR,4,s);
-
+    WRITE(20,320,12,0,RPort_PTR,4,s);
 
     // TODO ... debug-display???
     _s=dez2out(MaquesShips, 0, s);
     *_s++=' ';
     (void)dez2out(Save.WarPower[8], 0, _s);
-    WRITEWIN( 3, 2,12,0,RPort_PTR,1,s);
+    WRITE( 3, 2,12,0,RPort_PTR,1,s);
     WAITLOOP(false);
 
     CloseWindow(STA_Window);

@@ -39,9 +39,9 @@ BPTR OPENSMOOTH(char* FName, uint32 FMode)
             SetRGB32(&(OS_XScreen->ViewPort), 1, 0xBB000000, 0xBB000000, 0xFF000000);
             ScreenToBack(OS_XScreen);
 
-            WRITE(140, 0,1,WRITE_Center,OS_XScreen,4, "Bitte Disk");
+            WRITE(140, 0,1,WRITE_Center,&(OS_XScreen->RastPort),4, "Bitte Disk");
             strcpy(DName+i, " einlegen!");
-            WRITE(140,20,1,WRITE_Center,OS_XScreen,4, DName);
+            WRITE(140,20,1,WRITE_Center,&(OS_XScreen->RastPort),4, DName);
 
             i = 0;
             while ((0 == FHandle) && (3 > i))

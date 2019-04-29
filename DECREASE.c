@@ -24,13 +24,13 @@ void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
         strcpy(s, _PT_System);
         strcat(s, ": ");
         strcat(s, Save.SystemName.data[ActSys-1]);
-        WRITEWIN(176, 7,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
+        WRITE(176, 7,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
         strcpy(s, _PT_Planet);
         strcat(s, ": ");
         strcat(s, MyPlanetHeader->PName);
-        WRITEWIN(176,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
-        WRITEWIN(176,50,12,WRITE_Center,RPort_PTR,4,PText[572]);
-        WRITEWIN(176,70,12,WRITE_Center,RPort_PTR,4,PText[573]);
+        WRITE(176,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,4,s);
+        WRITE(176,50,12,WRITE_Center,RPort_PTR,4,PText[572]);
+        WRITE(176,70,12,WRITE_Center,RPort_PTR,4,PText[573]);
         if (Save.PlayMySelf)
         {
             delay(PAUSE);

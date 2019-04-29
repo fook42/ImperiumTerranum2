@@ -3,13 +3,13 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void LINKSHIP(r_ShipHeader* SPtr, r_ShipHeader* TPtr, uint8 Mode)
+void LINKSHIP(r_ShipHeader* SourcePtr, r_ShipHeader* TargetPtr, uint8 Mode)
 {
-    r_ShipHeader*   SourcePtr;
-    r_ShipHeader*   TargetPtr;
+//    r_ShipHeader*   SourcePtr;
+//    r_ShipHeader*   TargetPtr;
 
-    SourcePtr = SPtr;
-    TargetPtr = TPtr;
+//    SourcePtr = SPtr;
+//    TargetPtr = TPtr;
     if (1 == Mode)
     {
         SourcePtr->BeforeShip->NextShip = SourcePtr->NextShip;
