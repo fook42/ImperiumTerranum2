@@ -89,8 +89,8 @@ _EXTERN_  StrArr42          TechnologyL, Project;
 
 _EXTERN_  UWORD*        SoundMemA[SOUNDS]; // new range 0..SOUNDS-1
 _EXTERN_  UWORD         SoundSize[SOUNDS]; // new range 0..SOUNDS-1
-_EXTERN_  APTR          CacheMemA[CACHES+1];
-_EXTERN_  uint32        CacheMemL[CACHES+1];
+_EXTERN_  APTR          CacheMemA[CACHES];
+_EXTERN_  uint32        CacheMemL[CACHES];
 _EXTERN_  APTR          LogoMemA[MAXCIVS-1];
 _EXTERN_  APTR          LogoSMemA[MAXCIVS-1];
 _EXTERN_  uint32        LogoSMemL[MAXCIVS-1];

@@ -7,6 +7,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
 {
     char    FName[80];
     BPTR    FHandle;
+    uint8   realCacheNum=0;
     uint16  CNum, i;
     uint16  CNum3;
     uint32  ISize, l=0, Addr;
@@ -15,9 +16,10 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
     r_Col*  RGB;
     bool    ImageIsValid = false;
 
-    if (0 < CacheNum)
+    if (0 != CacheNum)
     {
-        if (NULL != CacheMemA[CacheNum])
+        realCacheNum = CacheNum-1;
+        if (NULL != CacheMemA[realCacheNum])
         {
             ImageIsValid = true;
         }
@@ -41,19 +43,19 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
 
     if (true == ImageIsValid)
     {
-        memcpy(IMemA[0], (CacheMemA[CacheNum]+CNum3+8), (CacheMemL[CacheNum]-CNum3-8));
+        memcpy(IMemA[0], CacheMemA[realCacheNum]+CNum3+8, CacheMemL[realCacheNum]-CNum3-8);
     }
     struct Image DI_Img = {0, 0, Width, Height, Depth, IMemA[0], CNum-1, 0, NULL};
     DrawImage(&(DI_Screen->RastPort), &DI_Img, LEdge, TEdge);
 
-    if ((0 < CacheNum) && (false == ImageIsValid))
+    if ((0 != CacheNum) && (false == ImageIsValid))
     {
-        CacheMemL[CacheNum] = l+CNum3+8;
-        CacheMemA[CacheNum] = AllocMem(CacheMemL[CacheNum], MEMF_FAST);
+        CacheMemL[realCacheNum] = l+CNum3+8;
+        CacheMemA[realCacheNum] = AllocMem(CacheMemL[realCacheNum], MEMF_FAST);
 
-        if (NULL != CacheMemA[CacheNum])
+        if (NULL != CacheMemA[realCacheNum])
         {
-            Addr = (uint32) CacheMemA[CacheNum];
+            Addr = (uint32) CacheMemA[realCacheNum];
             Size = (uint32*) Addr;
             *Size= l;
             Addr += 4;
@@ -80,7 +82,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
     }
     if (true == ImageIsValid)
     {
-        Addr = (uint32) CacheMemA[CacheNum];
+        Addr = (uint32) CacheMemA[realCacheNum];
         Addr += 4;
         Colors = (uint16*) Addr;
         Addr += 4;

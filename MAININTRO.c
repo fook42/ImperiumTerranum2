@@ -1125,7 +1125,7 @@ void MAININTRO()
         Factor     *= 1.018;
         SizeFactor *= 1.0137;
     }
-    while ((Factor<=3.2) && (SizeFactor<=3.2) && LMB_NOTPRESSED);
+    while ((Factor<3.2) && (SizeFactor<3.2) && LMB_NOTPRESSED);
     if (LMB_PRESSED)
         { goto leave_intro; }
 

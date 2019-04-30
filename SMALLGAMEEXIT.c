@@ -31,7 +31,7 @@ void SMALLGAMEEXIT()
             FreeMem(ModMemA[i], ModMemL[i]);       ModMemA[i] = NULL;
         }
     }
-    for (i = 1; i<=CACHES; i++)
+    for (i = 0; i< CACHES; i++)
     {
         if (NULL != CacheMemA[i])
         {
