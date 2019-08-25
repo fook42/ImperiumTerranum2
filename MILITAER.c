@@ -3,6 +3,8 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+#define _BIG_CROSS_ "|"
+
 void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 {
     uint8   i, btx;
@@ -30,7 +32,7 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
         {
             XState += i+1;
             Fight  += 8;
-            WRITE(24, ypos, 12, 1, RPort,3,"|");
+            WRITE(24, ypos, 12, 1, RPort,3, _BIG_CROSS_);
         } else {
             RectFill(RPort, 24, ypos, 40, ypos+15);
         }

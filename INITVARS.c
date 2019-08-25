@@ -64,10 +64,10 @@ void INITVARS()
 
     memset(&Pens, 0, sizeof(PenArr));
 
-    for (i = 0; i< SOUNDS;  i++ ) { SoundMemA[i] = NULL; }
-    for (i = 0; i<=IMAGES;  i++ ) { IMemA[i]     = NULL; }
-    for (i = 0; i< MODULES; i++ ) { ModMemA[i]   = NULL; }
-    for (i = 0; i< CACHES;  i++ ) { CacheMemA[i] = NULL; }
+    for (i = 0; i< SOUNDS;  ++i ) { SoundMemA[i] = NULL; }
+    for (i = 0; i< IMAGES;  ++i ) { IMemA[i]     = NULL; }
+    for (i = 0; i< MODULES; ++i ) { ModMemA[i]   = NULL; }
+    for (i = 0; i< CACHES;  ++i ) { CacheMemA[i] = NULL; }
 
     memset(&ImgBitMap4, 0, sizeof(ITBitMap));
     memset(&ImgBitMap7, 0, sizeof(ITBitMap));
@@ -96,23 +96,23 @@ void INITVARS()
     Save.WorldFlag  = 0;
     Save.CivilWar   = 0;
 
-    for (i = 1;  i<=25; i++ ) { strcpy(Save.SystemName.data[i-1], PText[i] ); }
+    for (i = 1;  i<26; ++i ) { strcpy(Save.SystemName.data[i-1], PText[i] ); }
 
     memcpy(&Save.TechCosts[0],    &techcosts, sizeof(LongArr42));
     memcpy(&Save.ProjectCosts[0], &projcosts, sizeof(LongArr42));
 
-    for (i = 1;  i<43; i++ ) { strncpy(TechnologyL.data[i], PText[29+i], 30); }
+    for (i = 1;  i<43; ++i ) { strncpy(TechnologyL.data[i], PText[29+i], 30); }
 
-    for (i = 1;  i<8;  i++ ) { strncpy(Project.data[i], PText[i+74], 30); }
-    for (i = 8;  i<25; i++ ) { strcpy (Project.data[i], ProjectShips[i-8]); }
-    for (i = 25; i<43; i++ ) { strncpy(Project.data[i], PText[i+60], 30); }
+    for (i = 1;  i<8;  ++i ) { strncpy(Project.data[i], PText[i+74], 30); }
+    for (i = 8;  i<25; ++i ) { strcpy (Project.data[i], ProjectShips[i-8]); }
+    for (i = 25; i<43; ++i ) { strncpy(Project.data[i], PText[i+60], 30); }
 
-    for (i = 1; i<= MAXCIVS; i++)   // TODO ... arrays should also be shifted..
+    for (i = 1; i<= MAXCIVS; ++i)   // TODO ... arrays should also be shifted..
     {
         Warnung[i] = 0;
         LastDisplay[i] = 0;
     }
-    for (i = 0; i < MAXCIVS; i++)        // TODO ... added due to shift of Save-array
+    for (i = 0; i < MAXCIVS; ++i)        // TODO ... added due to shift of Save-array
     {
         AllCreative[i] = 1;
         Verschrottung[i] = 0;
@@ -135,7 +135,7 @@ void INITVARS()
         Save.GSteuer[i] = 10;
         Save.JSteuer[i] = 0;
         Save.stProject[i] = 0;
-        for (j = 0; j < MAXCIVS; j++)
+        for (j = 0; j < MAXCIVS; ++j)
         {
             Save.SSMoney[i][j] = 0;
             Save.WarState[i][j] = LEVEL_UNKNOWN;
@@ -148,7 +148,7 @@ void INITVARS()
     Save.CivPlayer[0] = 1;
 
     Save.Systems = MAXSYSTEMS;
-    for (i = 0; i < MAXSYSTEMS; i++)
+    for (i = 0; i < MAXSYSTEMS; ++i)
     {
         SystemHeader[i].PlanetMemA = NULL;
     }
@@ -173,17 +173,17 @@ void INITVARS()
     ShipData(24) = (r_ShipData) {33,160,24,20};   /* Starburner,  36*/
     /* Maximal:                  --,---,27,-                    */
 
-    for (i = 0; i<(MAXCIVS-1); i++)
+    for (i = 0; i<(MAXCIVS-1); ++i)
     {
         LogoMemA[i] = NULL;
         LogoSMemA[i] = NULL;
         LogoSMemL[i] = 0;
-        for (j = 0; j<11; j++)
+        for (j = 0; j<11; ++j)
         {
             strcpy(PNames[i].data[j], PName_def[i][j]);
         }
     }
-    for (i = 0; i<9; i++) { strcpy( PNames[1].data[i], PText[105+i]); }
+    for (i = 0; i<9; ++i) { strcpy( PNames[1].data[i], PText[105+i]); }
 
     OffsetX = 0;
     OffsetY = 0;

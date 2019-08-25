@@ -293,9 +293,9 @@ bool DISKMENU(uint8 Autoselect)
         delay(RDELAY);
         if (LMB_PRESSED || (DISKMENU_PROMPT != Autoselect))
         {
-            if (((DIS_Window->MouseX>=4) && (DIS_Window->MouseX<=120)) || (DISKMENU_PROMPT != Autoselect))
+            if (((DIS_Window->MouseX>3) && (DIS_Window->MouseX<121)) || (DISKMENU_PROMPT != Autoselect))
             {
-                if (((DIS_Window->MouseY>=3) && (DIS_Window->MouseY<=23)) || (DISKMENU_LOADGAME == Autoselect))
+                if (((DIS_Window->MouseY>2) && (DIS_Window->MouseY<24)) || (DISKMENU_LOADGAME == Autoselect))
                 {
                 /* ----------------- load an old savegame */
                     KLICKWINGAD(RPort_PTR,4,3);

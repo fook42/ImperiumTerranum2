@@ -8,7 +8,7 @@ void GAMEEXIT()
     uint8   i;
 
     SMALLGAMEEXIT();
-    for (i = 0; i <= IMAGES; ++i)
+    for (i = 0; i < IMAGES; ++i)
     {
         if (NULL != IMemA[i])
                            { FreeMem(IMemA[i], IMemL[i]); IMemA[i] = NULL; }

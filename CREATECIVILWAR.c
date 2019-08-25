@@ -26,7 +26,8 @@ void CREATECIVILWAR(uint8 CivVar)
         len = strlen(s);
         s[len++]=' ';
         strcpy(s+len, PText[386]);
-        if (0 != Save.CivPlayer[CivVar-1])
+        --CivVar; // to shift the arrays ...
+        if (0 != Save.CivPlayer[CivVar])
         {
             ModC = GETTHESOUND(1);
             ModL = ModMemL[1];
@@ -37,15 +38,16 @@ void CREATECIVILWAR(uint8 CivVar)
             Save.WarState[i][7] = LEVEL_PEACE;
             Save.WarState[7][i] = LEVEL_PEACE;
         }
-        Save.WarState[CivVar-1][7] = LEVEL_WAR;
-        Save.WarState[7][CivVar-1] = LEVEL_WAR;
+        Save.WarState[CivVar][7] = LEVEL_WAR;
+        Save.WarState[7][CivVar] = LEVEL_WAR;
         Save.GSteuer[7] = 0;
         Save.Staatstopf[7] = -5000;
         for(i = 1; i < 43; ++i)
         {
-            Save.TechCosts[7].data[i]    = Save.TechCosts[CivVar-1].data[i];
-            Save.ProjectCosts[7].data[i] = Save.ProjectCosts[CivVar-1].data[i];
+            Save.TechCosts[   7].data[i] = Save.TechCosts[   CivVar].data[i];
+            Save.ProjectCosts[7].data[i] = Save.ProjectCosts[CivVar].data[i];
         }
+        ++CivVar; // to shift the arrays ...
     }
     Save.WorldFlag = CivFlag;
     Save.CivilWar = CivVar;
@@ -59,16 +61,12 @@ void CREATECIVILWAR(uint8 CivVar)
             {
                 MyPlanetHeader->PFlags = FLAG_OTHER;
                 Save.Bevoelkerung[7] += MyPlanetHeader->Population;
-                if (NULL != MyPlanetHeader->FirstShip.NextShip)
+                MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
+                while (NULL != MyShipPtr)
                 {
-                    MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
-                    do
-                    {
-                        MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
-                        Save.WarPower[7] += it_round((double) ShipData(MyShipPtr->SType).WeaponPower * (MyShipPtr->Weapon/10.0+1));
-                        MyShipPtr = MyShipPtr->NextShip;
-                    }
-                    while (NULL != MyShipPtr);
+                    MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
+                    Save.WarPower[7] += it_round((double) ShipData(MyShipPtr->SType).WeaponPower * (MyShipPtr->Weapon/10.0+1));
+                    MyShipPtr = MyShipPtr->NextShip;
                 }
             }
         }
@@ -78,7 +76,7 @@ void CREATECIVILWAR(uint8 CivVar)
         StopPlayer();
         FreeMem(ModC, ModL);
     }
-    if ((Save.WarPower[7]*3) < (Save.WarPower[CivVar-1]-Save.WarPower[7]))
+    if ((Save.WarPower[7]*4) < Save.WarPower[CivVar-1])
     {
         CREATECIVILWAR(CivVar);
     }

@@ -8,7 +8,7 @@ void CLOSEMYSCREENS()
     uint8   i;
     ScreenToFront(XScreen);
     SWITCHDISPLAY();
-    for (i = 0; i < 2; i++)
+    for (i = 0; i < 2; ++i)
     {
         if (NULL != MyScreen[i])
         {

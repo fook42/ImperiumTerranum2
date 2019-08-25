@@ -3,14 +3,23 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-#define FactorSin  ( 0.03998933418663416089) // sin( 0.04);
-#define FactorCos  ( 0.99955003374898754309) // cos( 0.03);
-#define FactorMSin (-0.04997916927067833082) // sin(-0.05);
-#define FactorMCos ( 0.99980000666657775632) // cos(-0.02);
+//#define FactorSin  ( 0.03998933418663416089) // sin( 0.04);
+//#define FactorCos  ( 0.99955003374898754309) // cos( 0.03);
+//#define FactorMSin (-0.04997916927067833082) // sin(-0.05);
+//#define FactorMCos ( 0.99980000666657775632) // cos(-0.02);
+
+#define FactorSin  ( 0.03998933418663416) // sin( 0.04);
+#define FactorCos  ( 0.99920010666097794) // cos( 0.04);
+#define FactorMSin (-0.03998933418663416) // sin(-0.04);
+#define FactorMCos ( 0.99920010666097794) // cos(-0.04);
 
 // will be global variables... waste of memory - maybe we can move them to the heap? ...
 uint8       AScr;
-VectorObj   VObj[13];
+
+#define NUM_VECTOROBJ (13)
+APTR            IntroMemA = NULL;
+uint32          IntroMemL = 0;
+VectorObj_t*    VObj[NUM_VECTOROBJ];
 
 // ------------------------------
 
@@ -79,6 +88,10 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
             MyVPort_PTR[i] = NULL;
         }
     }
+    if (NULL != IntroMemA)
+    {
+        FreeMem(IntroMemA, IntroMemL);
+    }
     for (i = 0; i<3; ++i)
     {
         if (NULL != SMemA[i])
@@ -95,7 +108,6 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
             IMemA[i] = NULL;
         }
     }
-
     if (NULL != module)
     {
         StopPlayer();
@@ -107,144 +119,144 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
 
 
 // - ROTATE- subroutines -------------------------------------
-void ROTATEpX(uint8 k)
+void ROTATEpX(VectorObj_t* actObject)
 {
     int     i;
     double  store;
-    for (i = 0; i<VObj[k].Size1; ++i)
+    for (i = 0; i<actObject->Size1; ++i)
     {
-        store = VObj[k].Y1[i];
-        VObj[k].Y1[i] = store*FactorCos - VObj[k].Z1[i]*FactorSin;
-        VObj[k].Z1[i] = store*FactorSin + VObj[k].Z1[i]*FactorCos;
+        store = actObject->Y1[i];
+        actObject->Y1[i] = store*FactorCos - actObject->Z1[i]*FactorSin;
+        actObject->Z1[i] = store*FactorSin + actObject->Z1[i]*FactorCos;
     }
-    for (i = 0; i<VObj[k].Size2; ++i)
+    for (i = 0; i<actObject->Size2; ++i)
     {
-        store = VObj[k].Y2[i];
-        VObj[k].Y2[i] = store*FactorCos - VObj[k].Z2[i]*FactorSin;
-        VObj[k].Z2[i] = store*FactorSin + VObj[k].Z2[i]*FactorCos;
+        store = actObject->Y2[i];
+        actObject->Y2[i] = store*FactorCos - actObject->Z2[i]*FactorSin;
+        actObject->Z2[i] = store*FactorSin + actObject->Z2[i]*FactorCos;
     }
 }
 
-void ROTATEpY(uint8 k)
+void ROTATEpY(VectorObj_t* actObject)
 {
     int     i;
     double  store;
-    for (i = 0; i<VObj[k].Size1; ++i)
+    for (i = 0; i<actObject->Size1; ++i)
     {
-        store = VObj[k].X1[i];
-        VObj[k].X1[i] = store*FactorCos - VObj[k].Z1[i]*FactorSin;
-        VObj[k].Z1[i] = store*FactorSin + VObj[k].Z1[i]*FactorCos;
+        store = actObject->X1[i];
+        actObject->X1[i] = store*FactorCos - actObject->Z1[i]*FactorSin;
+        actObject->Z1[i] = store*FactorSin + actObject->Z1[i]*FactorCos;
     }
-    for (i = 0; i<VObj[k].Size2; ++i)
+    for (i = 0; i<actObject->Size2; ++i)
     {
-        store = VObj[k].X2[i];
-        VObj[k].X2[i] = store*FactorCos - VObj[k].Z2[i]*FactorSin;
-        VObj[k].Z2[i] = store*FactorSin + VObj[k].Z2[i]*FactorCos;
+        store = actObject->X2[i];
+        actObject->X2[i] = store*FactorCos - actObject->Z2[i]*FactorSin;
+        actObject->Z2[i] = store*FactorSin + actObject->Z2[i]*FactorCos;
     }
 }
 
-void ROTATEpZ(uint8 k)
+void ROTATEpZ(VectorObj_t* actObject)
 {
     int     i;
     double  store;
-    for (i = 0; i<VObj[k].Size1; ++i)
+    for (i = 0; i<actObject->Size1; ++i)
     {
-        store = VObj[k].X1[i];
-        VObj[k].X1[i] = store*FactorCos - VObj[k].Y1[i]*FactorSin;
-        VObj[k].Y1[i] = store*FactorSin + VObj[k].Y1[i]*FactorCos;
+        store = actObject->X1[i];
+        actObject->X1[i] = store*FactorCos - actObject->Y1[i]*FactorSin;
+        actObject->Y1[i] = store*FactorSin + actObject->Y1[i]*FactorCos;
     }
-    for (i = 0; i<VObj[k].Size2; ++i)
+    for (i = 0; i<actObject->Size2; ++i)
     {
-        store = VObj[k].X2[i];
-        VObj[k].X2[i] = store*FactorCos - VObj[k].Y2[i]*FactorSin;
-        VObj[k].Y2[i] = store*FactorSin + VObj[k].Y2[i]*FactorCos;
+        store = actObject->X2[i];
+        actObject->X2[i] = store*FactorCos - actObject->Y2[i]*FactorSin;
+        actObject->Y2[i] = store*FactorSin + actObject->Y2[i]*FactorCos;
     }
 }
 
-void ROTATEnX(uint8 k)
+void ROTATEnX(VectorObj_t* actObject)
 {
     int     i;
     double  store;
-    for (i = 0; i<VObj[k].Size1; ++i)
+    for (i = 0; i<actObject->Size1; ++i)
     {
-        store = VObj[k].Y1[i];
-        VObj[k].Y1[i] = store*FactorMCos - VObj[k].Z1[i]*FactorMSin;
-        VObj[k].Z1[i] = store*FactorMSin + VObj[k].Z1[i]*FactorMCos;
+        store = actObject->Y1[i];
+        actObject->Y1[i] = store*FactorMCos - actObject->Z1[i]*FactorMSin;
+        actObject->Z1[i] = store*FactorMSin + actObject->Z1[i]*FactorMCos;
     }
-    for (i = 0; i<VObj[k].Size2; ++i)
+    for (i = 0; i<actObject->Size2; ++i)
     {
-        store = VObj[k].Y2[i];
-        VObj[k].Y2[i] = store*FactorMCos - VObj[k].Z2[i]*FactorMSin;
-        VObj[k].Z2[i] = store*FactorMSin + VObj[k].Z2[i]*FactorMCos;
+        store = actObject->Y2[i];
+        actObject->Y2[i] = store*FactorMCos - actObject->Z2[i]*FactorMSin;
+        actObject->Z2[i] = store*FactorMSin + actObject->Z2[i]*FactorMCos;
     }
 }
 
-void ROTATEnY(uint8 k)
+void ROTATEnY(VectorObj_t* actObject)
 {
     int     i;
     double  store;
-    for (i = 0; i<VObj[k].Size1; ++i)
+    for (i = 0; i<actObject->Size1; ++i)
     {
-        store = VObj[k].X1[i];
-        VObj[k].X1[i] = store*FactorMCos - VObj[k].Z1[i]*FactorMSin;
-        VObj[k].Z1[i] = store*FactorMSin + VObj[k].Z1[i]*FactorMCos;
+        store = actObject->X1[i];
+        actObject->X1[i] = store*FactorMCos - actObject->Z1[i]*FactorMSin;
+        actObject->Z1[i] = store*FactorMSin + actObject->Z1[i]*FactorMCos;
     }
-    for (i = 0; i<VObj[k].Size2; ++i)
+    for (i = 0; i<actObject->Size2; ++i)
     {
-        store = VObj[k].X2[i];
-        VObj[k].X2[i] = store*FactorMCos - VObj[k].Z2[i]*FactorMSin;
-        VObj[k].Z2[i] = store*FactorMSin + VObj[k].Z2[i]*FactorMCos;
+        store = actObject->X2[i];
+        actObject->X2[i] = store*FactorMCos - actObject->Z2[i]*FactorMSin;
+        actObject->Z2[i] = store*FactorMSin + actObject->Z2[i]*FactorMCos;
     }
 }
 
-void ROTATEnZ(uint8 k)
+void ROTATEnZ(VectorObj_t* actObject)
 {
     int     i;
     double  store;
-    for (i = 0; i<VObj[k].Size1; ++i)
+    for (i = 0; i<actObject->Size1; ++i)
     {
-        store = VObj[k].X1[i];
-        VObj[k].X1[i] = store*FactorMCos - VObj[k].Y1[i]*FactorMSin;
-        VObj[k].Y1[i] = store*FactorMSin + VObj[k].Y1[i]*FactorMCos;
+        store = actObject->X1[i];
+        actObject->X1[i] = store*FactorMCos - actObject->Y1[i]*FactorMSin;
+        actObject->Y1[i] = store*FactorMSin + actObject->Y1[i]*FactorMCos;
     }
-    for (i = 0; i<VObj[k].Size2; ++i)
+    for (i = 0; i<actObject->Size2; ++i)
     {
-        store = VObj[k].X2[i];
-        VObj[k].X2[i] = store*FactorMCos - VObj[k].Y2[i]*FactorMSin;
-        VObj[k].Y2[i] = store*FactorMSin + VObj[k].Y2[i]*FactorMCos;
+        store = actObject->X2[i];
+        actObject->X2[i] = store*FactorMCos - actObject->Y2[i]*FactorMSin;
+        actObject->Y2[i] = store*FactorMSin + actObject->Y2[i]*FactorMCos;
     }
 }
 // -----------------------------------------------------------
 
 
-void FLY(uint8 k, double Factor)
+void FLY(VectorObj_t* actObject, double Factor)
 {
     int     i;
     sint16  VPosX, VPosY;
-    VPosX = VObj[k].PosX;
-    VPosY = VObj[k].PosY;
-    for (i = 0; i<VObj[k].Size1; ++i)
+    VPosX = actObject->PosX;
+    VPosY = actObject->PosY;
+    for (i = 0; i < actObject->Size1; ++i)
     {
-        VObj[k].X1[i] = VObj[k].X1[i]*Factor;
-        VObj[k].Y1[i] = VObj[k].Y1[i]*Factor;
-        VObj[k].Z1[i] = VObj[k].Z1[i]*Factor;
-        if (((VPosX-it_round(VObj[k].X1[i]))<0)  || ((VPosX-it_round(VObj[k].X1[i]))>639)
-         || ((VPosY-it_round(VObj[k].Y1[i]))<75) || ((VPosY-it_round(VObj[k].Y1[i]))>434))
+        actObject->X1[i] = actObject->X1[i]*Factor;
+        actObject->Y1[i] = actObject->Y1[i]*Factor;
+        actObject->Z1[i] = actObject->Z1[i]*Factor;
+        if (((VPosX-it_round(actObject->X1[i]))<0)  || ((VPosX-it_round(actObject->X1[i]))>639)
+         || ((VPosY-it_round(actObject->Y1[i]))<75) || ((VPosY-it_round(actObject->Y1[i]))>434))
         {
-            VObj[k].Size1 = 0;
+            actObject->Size1 = 0;
             return;
         }
     }
-    for (i = 0; i<VObj[k].Size2; ++i)
+    for (i = 0; i<actObject->Size2; ++i)
     {
-        VObj[k].X2[i] = VObj[k].X2[i]*Factor;
-        VObj[k].Y2[i] = VObj[k].Y2[i]*Factor;
-        VObj[k].Z2[i] = VObj[k].Z2[i]*Factor;
-        if (((VPosX-it_round(VObj[k].X2[i]))<0)  || ((VPosX-it_round(VObj[k].X2[i]))>639)
-         || ((VPosY-it_round(VObj[k].Y2[i]))<75) || ((VPosY-it_round(VObj[k].Y2[i]))>434))
+        actObject->X2[i] = actObject->X2[i]*Factor;
+        actObject->Y2[i] = actObject->Y2[i]*Factor;
+        actObject->Z2[i] = actObject->Z2[i]*Factor;
+        if (((VPosX-it_round(actObject->X2[i]))<0)  || ((VPosX-it_round(actObject->X2[i]))>639)
+         || ((VPosY-it_round(actObject->Y2[i]))<75) || ((VPosY-it_round(actObject->Y2[i]))>434))
         {
-            VObj[k].Size1 = 0;
-            VObj[k].Size2 = 0;
+            actObject->Size1 = 0;
+            actObject->Size2 = 0;
             return;
         }
     }
@@ -252,79 +264,82 @@ void FLY(uint8 k, double Factor)
 
 void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
 {
-    uint8  Ctr;
+    uint8  Ctr, actFlag;
     int i, j, k;
     double  Factor;
     sint16  VPosX, VPosY;
+    VectorObj_t* actObject = NULL;
+    struct RastPort* RPort_PTR;
 
     WaitTOF();
     Factor = 0.0f;
-    Ctr = 0;
-    do
+    for (Ctr = 0; Ctr < 50; ++Ctr)
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        Factor += 0.02f;
-        ++Ctr;
+        Factor = Factor + 0.02f;
         for (i = 1; i < 32; ++i)
         {
             SetRGB32(MyVPort_PTR[AScr],i,it_round(Colors[i].r*Factor)<<24,
                                          it_round(Colors[i].g*Factor)<<24,
                                          it_round(Colors[i].b*Factor)<<24);
         }
-        if (11 == Ctr)
+        if (10 == Ctr)
         {
             SPAddrC   = SMemA[1]+(SMemL[1]/2); SPVolC = 64; SPFreqC = 380; SPLengthC = (SMemL[1]/4);
             SPAddrD   = SMemA[1];              SPVolD = 64; SPFreqD = 380; SPLengthD = (SMemL[1]/4);
 
             custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
-        } else if (12 == Ctr)
+        } else if (11 == Ctr)
         {
             SPLengthC = 1;
             SPLengthD = 1;
         }
     }
-    while (Factor < 1.0f);
+
     ScreenToFront(MyScreen[AScr]);
     SetRGB4(MyVPort_PTR[AScr],0,8,8,10);
     WaitTOF();
     WaitTOF();
     SetRGB4(MyVPort_PTR[AScr],0,0,0,0);
-    for (i = 1; i < 32; i++)
+    for (i = 1; i < 32; ++i)
     {
-        SetRGB32(MyVPort_PTR[AScr],i,Colors[i].r<<24,Colors[i].g<<24,Colors[i].b<<24);
+        SetRGB32(MyVPort_PTR[AScr],i, Colors[i].r<<24,
+                                      Colors[i].g<<24,
+                                      Colors[i].b<<24);
     }
     delay(50);
-    do
+    for (Ctr = 0; Ctr < 50; ++Ctr)
     {
         AScr = 1-AScr;
-        Factor = Factor-0.02;
+        Factor = Factor - 0.02f;
         SetRGB32(MyVPort_PTR[AScr],31,it_round(Colors[31].r*Factor)<<24,
                                       it_round(Colors[31].g*Factor)<<24,
                                       it_round(Colors[31].b*Factor)<<24);
         ScreenToFront(MyScreen[AScr]);
     }
-    while (0 < Factor);
+
     for (i = 0; i < Objects; ++i)
     {
-        for (j = 0; j<VObj[i].Size1; ++j)
+        actObject = VObj[i];
+        for (j = 0; j < actObject->Size1; ++j)
         {
-            VObj[i].PosX += VObj[i].X1[j];
-            VObj[i].PosY += VObj[i].Y1[j];
+            actObject->PosX += actObject->X1[j];
+            actObject->PosY += actObject->Y1[j];
         }
-        VObj[i].PosX =     it_round(VObj[i].PosX / (double) VObj[i].Size1);
-        VObj[i].PosY = 235+it_round(VObj[i].PosY / (double) VObj[i].Size1);
-        for (j = 0; j<VObj[i].Size1; ++j)
+        actObject->PosX =     it_round(actObject->PosX / (double) actObject->Size1);
+        actObject->PosY = 235+it_round(actObject->PosY / (double) actObject->Size1);
+        for (j = 0; j < actObject->Size1; ++j)
         {
-            VObj[i].X1[j] = (VObj[i].PosX+1)-VObj[i].X1[j];
-            VObj[i].Y1[j] = (VObj[i].PosY+1)-VObj[i].Y1[j]-235;
+            actObject->X1[j] = (actObject->PosX+1)-actObject->X1[j];
+            actObject->Y1[j] = (actObject->PosY+1)-actObject->Y1[j]-235;
         }
-        if (0 < VObj[i].Size2)
+        if (0 < actObject->Size2)
         {
-            for (j = 0; j<VObj[i].Size2; ++j)
+            for (j = 0; j < actObject->Size2; ++j)
             {
-                VObj[i].X2[j] = (VObj[i].PosX+1)-VObj[i].X2[j];
-                VObj[i].Y2[j] = (VObj[i].PosY+1)-VObj[i].Y2[j]-235;
+                actObject->X2[j] = (actObject->PosX+1)-actObject->X2[j];
+                actObject->Y2[j] = (actObject->PosY+1)-actObject->Y2[j]-235;
             }
         }
     }
@@ -336,66 +351,69 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
     Factor = 1.0025;
     for (i = 1; (i < 30) && LMB_NOTPRESSED; ++i)
     {
-        Factor = Factor+0.004;
+        RPort_PTR = MyRPort_PTR[AScr];
+        Factor = Factor+0.004f;
         if (1 < i)
         {
-            SetAPen(MyRPort_PTR[AScr],0);
-            RectFill(MyRPort_PTR[AScr],0,150,639,330);    /*75..434*/
+            SetAPen(RPort_PTR,0);
+            RectFill(RPort_PTR,0,150,639,330);    /*75..434*/
         } else {
             for (j = 2; j < 31; ++j)
             {
-                SetRGB32(MyVPort_PTR[AScr], j, (Colors[j].r*0xA)<<20,
-                                               (Colors[j].g*0xA)<<20,
-                                               (Colors[j].b*0xA)<<20);
+                SetRGB32(MyVPort_PTR[AScr], j, ((Colors[j].r<<2)+Colors[j].r)<<21,
+                                               ((Colors[j].g<<2)+Colors[j].g)<<21,
+                                               ((Colors[j].b<<2)+Colors[j].b)<<21);
             }
         }
-        if (i>16) { VObj[rand()%13].Size1 = 0; }
+        if (i>16) { VObj[rand()%13]->Size1 = 0; }
 
-        SetAPen(MyRPort_PTR[AScr],1);
+        SetAPen(RPort_PTR,1);
         for (j = 0; j < Objects; ++j)
         {
-            if (0 < VObj[j].Size1)
+            actObject = VObj[j];
+            if (0 < actObject->Size1)
             {
-                VPosX = VObj[j].PosX;
-                VPosY = VObj[j].PosY;
+                VPosX = actObject->PosX;
+                VPosY = actObject->PosY;
                 if (1 < j)
                 {
-                    SetAPen(MyRPort_PTR[AScr],0);
-                    if (4 < VObj[j].Size2)
+                    SetAPen(RPort_PTR,0);
+                    if (4 < actObject->Size2)
                     {
-                        AreaMove(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X2[3]),VPosY-it_round(VObj[j].Y2[3]));
-                        AreaDraw(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X2[4]),VPosY-it_round(VObj[j].Y2[4]));
-                        AreaDraw(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X2[5]),VPosY-it_round(VObj[j].Y2[5]));
+                        AreaMove(RPort_PTR,VPosX-it_round(actObject->X2[3]),VPosY-it_round(actObject->Y2[3]));
+                        AreaDraw(RPort_PTR,VPosX-it_round(actObject->X2[4]),VPosY-it_round(actObject->Y2[4]));
+                        AreaDraw(RPort_PTR,VPosX-it_round(actObject->X2[5]),VPosY-it_round(actObject->Y2[5]));
                     }
-                    AreaMove(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X1[3]),VPosY-it_round(VObj[j].Y1[3]));
-                    AreaDraw(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X1[4]),VPosY-it_round(VObj[j].Y1[4]));
-                    AreaDraw(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X1[5]),VPosY-it_round(VObj[j].Y1[5]));
+                    AreaMove(RPort_PTR,VPosX-it_round(actObject->X1[3]),VPosY-it_round(actObject->Y1[3]));
+                    AreaDraw(RPort_PTR,VPosX-it_round(actObject->X1[4]),VPosY-it_round(actObject->Y1[4]));
+                    AreaDraw(RPort_PTR,VPosX-it_round(actObject->X1[5]),VPosY-it_round(actObject->Y1[5]));
 
-                    AreaEnd(MyRPort_PTR[AScr]);
-                    SetAPen(MyRPort_PTR[AScr],1);
+                    AreaEnd(RPort_PTR);
+                    SetAPen(RPort_PTR,1);
                 }
-                AreaMove(    MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X1[0]),VPosY-it_round(VObj[j].Y1[0]));
-                for (k = 1; k<VObj[j].Size1; ++k)
+                AreaMove(    RPort_PTR,VPosX-it_round(actObject->X1[0]),VPosY-it_round(actObject->Y1[0]));
+                for (k = 1; k<actObject->Size1; ++k)
                 {
-                    AreaDraw(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X1[k]),VPosY-it_round(VObj[j].Y1[k]));
+                    AreaDraw(RPort_PTR,VPosX-it_round(actObject->X1[k]),VPosY-it_round(actObject->Y1[k]));
                 }
-                AreaEnd(MyRPort_PTR[AScr]);
-                if (0 < VObj[j].Size2)
+                AreaEnd(RPort_PTR);
+                if (0 < actObject->Size2)
                 {
-                    AreaMove(    MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X2[0]),VPosY-it_round(VObj[j].Y2[0]));
-                    for (k = 1; k<VObj[j].Size2; ++k)
+                    AreaMove(    RPort_PTR,VPosX-it_round(actObject->X2[0]),VPosY-it_round(actObject->Y2[0]));
+                    for (k = 1; k<actObject->Size2; ++k)
                     {
-                        AreaDraw(MyRPort_PTR[AScr],VPosX-it_round(VObj[j].X2[k]),VPosY-it_round(VObj[j].Y2[k]));
+                        AreaDraw(RPort_PTR,VPosX-it_round(actObject->X2[k]),VPosY-it_round(actObject->Y2[k]));
                     }
-                    AreaEnd(MyRPort_PTR[AScr]);
+                    AreaEnd(RPort_PTR);
                 }
-                if ((VObj[j].Flag & ROTATE_PX) != 0) { ROTATEpX(j); }
-                if ((VObj[j].Flag & ROTATE_PY) != 0) { ROTATEpY(j); }
-                if ((VObj[j].Flag & ROTATE_PZ) != 0) { ROTATEpZ(j); }
-                if ((VObj[j].Flag & ROTATE_NX) != 0) { ROTATEnX(j); }
-                if ((VObj[j].Flag & ROTATE_NY) != 0) { ROTATEnY(j); }
-                if ((VObj[j].Flag & ROTATE_NZ) != 0) { ROTATEnZ(j); }
-                FLY(j, Factor);
+                actFlag = actObject->Flag;
+                if (actFlag & ROTATE_PX) { ROTATEpX(actObject); }
+                if (actFlag & ROTATE_PY) { ROTATEpY(actObject); }
+                if (actFlag & ROTATE_PZ) { ROTATEpZ(actObject); }
+                if (actFlag & ROTATE_NX) { ROTATEnX(actObject); }
+                if (actFlag & ROTATE_NY) { ROTATEnY(actObject); }
+                if (actFlag & ROTATE_NZ) { ROTATEnZ(actObject); }
+                FLY(actObject, Factor);
             }
         }
         ScreenToFront(MyScreen[AScr]);
@@ -458,6 +476,7 @@ void MAININTRO()
     struct AreaInfo     MyAI;
     struct MMD0 *SndModulePtr = NULL;
     struct ITBitMap     IntroBitMap;
+    struct RastPort*    actRastPort;
 
     const char* SArr[] = {"",
         "Software & Design",            "Oxygenic",
@@ -466,15 +485,14 @@ void MAININTRO()
         "Special Effects",              "Oxygenic",
         "Credits go to",                "Adam Benjamin   Rikard Cederlund",
         "Jakob Gaardsted   Andy Jones", "George Moore",
-        "Surround-Sounds created with", "WaveTracer DS®",
-        "Colors in Technicolor®",       "Panaflex® Camera and Lenses by Panavision®"};
+        "Surround-Sounds created with", "WaveTracer DSï¿½",
+        "Colors in Technicolorï¿½",       "Panaflexï¿½ Camera and Lenses by Panavisionï¿½"};
 //  const uint8 FArr[] = {0, 4,5, 4,5, 4,5, 4,5, 4,5, 5,5, 4,5, 4,4};
     const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3};
 
-
-    r_Coords ShipX = {{ 390, 264,252,186,186,192,256,290,354,360,360,294,282, 252, 256, 290,294, 282,294,294, 258,265,273,281,288, 185,185,190,190, 356,356,361,361,0,0,0,0,0,0,0,0}};
-    r_Coords ShipY = {{ 315, 174,275,250,188,225,234,234,225,188,250,275,174, 275, 243, 243,275, 174,275,275, 269,342,269,342,269, 187,172,172,187, 187,172,172,187,0,0,0,0,0,0,0,0}};
-    r_Coords ShipZ = {{-2.5,  -5, -1, -5, -5, -5, -1, -1, -5, -5, -5, -1, -5,  -1,-1.1,-1.1, -1,  -5, -8, -1,  -2, -2, -2, -2, -2,  -5, -5, -5, -5,  -5, -5, -5, -5,0,0,0,0,0,0,0,0}};
+    r_Coords_t* ShipX;
+    r_Coords_t* ShipY;
+    r_Coords_t* ShipZ;
 
     sint16      LEdge[2], TEdge[2];
     uint32      l, ISize;
@@ -488,8 +506,8 @@ void MAININTRO()
 
     //    i = SetTaskPri(FindTask(NULL),120);
     AScr = 0;
-    for (i = 0; i<2; i++) { MyScreen[i] = NULL; IMemA[i] = NULL; MyRPort_PTR[i] = NULL; MyVPort_PTR[i] = NULL; }
-    for (i = 0; i<3; i++) { SMemA[i] = NULL; SMemL[i] = 0; }
+    for (i = 0; i<2; ++i) { MyScreen[i] = NULL; IMemA[i] = NULL; MyRPort_PTR[i] = NULL; MyVPort_PTR[i] = NULL; }
+    for (i = 0; i<3; ++i) { SMemA[i] = NULL; SMemL[i] = 0; }
 
     pathname_len = strlen(PathStr[7]);
     memcpy(s, PathStr[7], pathname_len+1);
@@ -621,6 +639,19 @@ void MAININTRO()
     MyScreen[0]->RastPort.AreaInfo = &MyAI;
     MyScreen[1]->RastPort.AreaInfo = &MyAI;
 
+/**** new .. alloc mem for vectorObj .. free this later ***/
+    IntroMemL = sizeof(VectorObj_t)*NUM_VECTOROBJ;
+    IntroMemA = AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
+    if (NULL == IntroMemA)
+    {
+        goto leave_intro;
+    }
+    for (i = 0; i<NUM_VECTOROBJ; ++i)
+    {
+        VObj[i] = (VectorObj_t*) (IntroMemA + i*sizeof(VectorObj_t));
+    }
+/**** new .. */
+
     /*****************************************************************************/
     /* TOUCHBYTE SOFTWARE PRESENTS */
     strcpy(s+pathname_len, "Frame1.pal");
@@ -631,55 +662,55 @@ void MAININTRO()
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,75,192);
 
     /* T */
-    VObj[0] = (VectorObj){0,0,ROTATE_PY|ROTATE_PX,
+    *VObj[0] = (VectorObj_t){0,0,ROTATE_PY|ROTATE_PX,
         6,4,{38, 9, 9, 9, 9,38},{ 2, 2,10,10, 2, 2},{1,1,1,3,3,3},
         {18,18,18,18, 0, 0},{11,36,36,11, 0, 0},{1,1,3,3,0,0}};
     /* U */
-    VObj[1] = (VectorObj){0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[1] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PZ,
         6,6,{91,80,80,80,80,91},{1,1,26,26,1,1},{1,1,1,3,3,3},
         {111,100,100,100,100,111},{1,1,24,24,1,1},{1,1,1,3,3,3}};
     /* H */
-    VObj[2] = (VectorObj){0,0,ROTATE_PY|ROTATE_NZ,
+    *VObj[2] = (VectorObj_t){0,0,ROTATE_PY|ROTATE_NZ,
         6,6,{163,152,152,152,152,163},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {184,173,173,173,173,184},{2,2,12,12,2,2},{1,1,1,3,3,3}};
     /* B */
-    VObj[3] = (VectorObj){0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[3] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{209,187,187,187,187,209},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {205,187,187,187,187,205},{15,15,36,36,15,15},{1,1,1,3,3,3}};
     /* Y */
-    VObj[4] = (VectorObj){0,0,ROTATE_PZ|ROTATE_NX,
+    *VObj[4] = (VectorObj_t){0,0,ROTATE_PZ|ROTATE_NX,
         6,6,{229,217,229,229,217,229},{2,2,19,19,2,2},{1,1,1,3,3,3},
         {254,242,236,236,242,254},{2,2,12,12,2,2},{1,1,1,3,3,3}};
     /* T */
-    VObj[5] = (VectorObj){0,0,ROTATE_NX|ROTATE_NY,
+    *VObj[5] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_NY,
         6,4,{285,256,256,256,256,285},{2,2,9,9,1,1},{1,1,1,3,3,3},
         {266,266,266,266,0,0},{11,36,36,11,0,0},{1,1,3,3,0,0}};
     /* E */
-    VObj[6] = (VectorObj){0,0,ROTATE_PX|ROTATE_PY,
+    *VObj[6] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PY,
         6,6,{318,289,289,289,289,318},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {315,289,289,289,289,315},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* F */
-    VObj[7] = (VectorObj){0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[7] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{440,410,410,410,410,440},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {437,410,410,410,410,437},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* T */
-    VObj[8] = (VectorObj){0,0,ROTATE_NZ|ROTATE_NY,
+    *VObj[8] = (VectorObj_t){0,0,ROTATE_NZ|ROTATE_NY,
         6,4,{472,443,443,443,443,472},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {452,452,452,452,0,0},{11,36,36,11,0,0},{1,1,3,3,0,0}};
     /* W */
-    VObj[9] = (VectorObj){0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[9] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PZ,
         6,6,{486,475,486,486,475,486},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {506,497,492,492,497,506},{2,2,16,16,2,2},{1,1,1,3,3,3}};
     /* A */
-    VObj[10] = (VectorObj){0,0,ROTATE_PX|ROTATE_PY,
+    *VObj[10] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PY,
         6,0,{547,536,521,521,536,547},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* R */
-    VObj[11] = (VectorObj){0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[11] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PZ,
         6,6,{589,565,565,565,565,589},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {576,565,565,565,565,576},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* E */
-    VObj[12] = (VectorObj){0,0,ROTATE_NX|ROTATE_NY,
+    *VObj[12] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_NY,
         6,6,{630,601,601,601,601,630},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {627,601,601,601,601,627},{14,14,36,36,14,14},{1,1,1,3,3,3}};
 
@@ -698,47 +729,47 @@ void MAININTRO()
     ClipBlit(MyRPort_PTR[AScr],0,200,MyRPort_PTR[1-AScr],0,200,640,100,192);
 
     /* V */
-    VObj[0] = (VectorObj) {0,0,ROTATE_PY|ROTATE_PX,
+    *VObj[0] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_PX,
         6,6,{98,86,101,101,86,98},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {126,114,106,106,114,126},{2,2,23,23,2,2},{1,1,1,3,3,3}};
     /* I */
-    VObj[1] = (VectorObj) {0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[1] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
         6,0,{140,129,129,129,129,140},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* R */
-    VObj[2] = (VectorObj) {0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[2] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{167,143,143,143,143,167},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {154,143,143,143,143,154},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* T */
-    VObj[3] = (VectorObj) {0,0,ROTATE_PY|ROTATE_NZ,
+    *VObj[3] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_NZ,
         6,4,{206,177,177,177,177,206},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {186,186,186,186,0,0},{11,36,36,11,0,0},{1,1,3,3,0,0}};
     /* U */
-    VObj[4] = (VectorObj) {0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[4] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{220,209,209,209,209,220},{2,2,27,27,2,2},{1,1,1,3,3,3},
         {240,229,229,229,229,240},{2,2,25,25,2,2},{1,1,1,3,3,3}};
     /* A */
-    VObj[5] = (VectorObj) {0,0,ROTATE_PZ|ROTATE_NX,
+    *VObj[5] = (VectorObj_t) {0,0,ROTATE_PZ|ROTATE_NX,
         6,0,{266,255,240,240,255,266},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* L */
-    VObj[6] = (VectorObj) {0,0,ROTATE_NX|ROTATE_NY,
+    *VObj[6] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_NY,
         6,4,{295,284,284,284,284,295},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {311,296,296,311,0,0},{26,26,26,26,0,0},{1,1,3,3,0,0}};
     /* W */
-    VObj[7] = (VectorObj) {0,0,ROTATE_PX|ROTATE_PY,
+    *VObj[7] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PY,
         6,6,{335,324,335,335,324,335},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {355,346,341,341,346,355},{2,2,16,16,2,2},{1,1,1,3,3,3}};
     /* R */
-    VObj[8] = (VectorObj) {0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[8] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{441,417,417,417,417,441},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {428,417,417,417,417,428},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* L */
-    VObj[9] = (VectorObj) {0,0,ROTATE_NZ|ROTATE_NY,
+    *VObj[9] = (VectorObj_t) {0,0,ROTATE_NZ|ROTATE_NY,
         6,4,{464,453,453,453,453,464},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {480,465,465,480,0,0},{26,26,26,26,0,0},{1,1,3,3,0,0}};
     /* D */
-    VObj[10] = (VectorObj) {0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[10] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
         6,0,{505,483,483,483,483,505},{3,2,36,36,2,3},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
 
@@ -755,51 +786,51 @@ void MAININTRO()
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,37,192);
 
     /* I */
-    VObj[0] = (VectorObj) {0,0,ROTATE_PY|ROTATE_PX,
+    *VObj[0] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_PX,
         6,6,{48,37,37,37,37,48},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {95,84,73,73,84,95},{2,2,18,18,2,2},{1,1,1,3,3,3}};
     /* M */
-    VObj[1] = (VectorObj) {0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[1] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
         6,0,{62,51,51,51,51,62},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* E */
-    VObj[2] = (VectorObj) {0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[2] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{161,132,132,132,132,161},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {158,132,132,132,132,158},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* I */
-    VObj[3] = (VectorObj) {0,0,ROTATE_PY|ROTATE_NZ,
+    *VObj[3] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_NZ,
         6,0,{211,200,200,200,200,211},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* U */
-    VObj[4] = (VectorObj) {0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[4] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{225,214,214,214,214,225},{2,2,27,27,2,2},{1,1,1,3,3,3},
         {245,234,234,234,234,245},{2,2,25,25,2,2},{1,1,1,3,3,3}};
     /* M */
-    VObj[5] = (VectorObj) {0,0,ROTATE_PZ|ROTATE_NX,
+    *VObj[5] = (VectorObj_t) {0,0,ROTATE_PZ|ROTATE_NX,
         6,6,{259,248,248,248,248,259},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {292,281,270,270,281,292},{2,2,18,18,2,2},{1,1,1,3,3,3}};
     /* T */
-    VObj[6] = (VectorObj) {0,0,ROTATE_NX|ROTATE_NY,
+    *VObj[6] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_NY,
         6,4,{338,309,309,309,309,338},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {318,318,318,318,0,0},{21,36,36,11,0,0},{1,1,3,3,0,0}};
     /* E */
-    VObj[7] = (VectorObj) {0,0,ROTATE_PX|ROTATE_PY,
+    *VObj[7] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PY,
         6,6,{370,341,341,341,341,370},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {367,341,341,341,341,367},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* R */
-    VObj[8] = (VectorObj) {0,0,ROTATE_NX|ROTATE_PZ,
+    *VObj[8] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
         6,6,{433,409,409,409,409,433},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {420,409,409,409,409,420},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* A */
-    VObj[9] = (VectorObj) {0,0,ROTATE_NZ|ROTATE_NY,
+    *VObj[9] = (VectorObj_t) {0,0,ROTATE_NZ|ROTATE_NY,
         6,0,{471,460,445,445,460,471},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* N */
-    VObj[10] = (VectorObj) {0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[10] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
         6,6,{500,489,489,489,489,500},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {521,510,510,510,510,521},{2,2,17,17,2,2},{1,1,1,3,3,3}};
     /* M */
-    VObj[11] = (VectorObj) {0,0,ROTATE_PX|ROTATE_PZ,
+    *VObj[11] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
         6,6,{569,558,558,558,558,569},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {602,591,580,580,591,602},{2,2,18,18,2,2},{1,1,1,3,3,3}};
 
@@ -811,6 +842,12 @@ void MAININTRO()
     // cleanup...
     FreeRaster(MyRastPtr,640,360);
     MyRastPtr = NULL;
+
+    if (NULL != IntroMemA)
+    {
+        FreeMem(IntroMemA, IntroMemL);
+    }
+
     if (NULL != IMemA[0])
     {
         FreeMem(IMemA[0], IMemL[0]);
@@ -834,7 +871,7 @@ void MAININTRO()
     // prepare next effect...
     IMemL[0] = 201856;
     IMemL[1] = 21000;
-    for (i = 0; i<2; i++)
+    for (i = 0; i<2; ++i)
     {
         IMemA[i] = AllocMem(IMemL[i],MEMF_CHIP);
         if (NULL == IMemA[i])
@@ -932,8 +969,9 @@ void MAININTRO()
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        ScrollRaster(MyRPort_PTR[AScr],0,-8,0,75,639,434);
-        ClipBlit(MyRPort_PTR[AScr],0,270,MyRPort_PTR[AScr],0,75,640,8,192);
+        actRastPort = MyRPort_PTR[AScr];
+        ScrollRaster(actRastPort,0,-8,0,75,639,434);
+        ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
         if (LMB_PRESSED)
             { goto leave_intro; }
     }
@@ -942,25 +980,28 @@ void MAININTRO()
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        ScrollRaster(MyRPort_PTR[AScr],0,-8,0,75,639,434);
-        ClipBlit(MyRPort_PTR[AScr],0,270,MyRPort_PTR[AScr],0,75,640,8,192);
-        BltBitMapRastPort(&MyBitMap,0,136-i*4,MyRPort_PTR[AScr],380,75,160,8,192);
+        actRastPort = MyRPort_PTR[AScr];
+        ScrollRaster(actRastPort,0,-8,0,75,639,434);
+        ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
+        BltBitMapRastPort(&MyBitMap,0,136-i*4,actRastPort,380,75,160,8,192);
         if (LMB_PRESSED)
             { goto leave_intro; }
     }
 
     ScreenToFront(MyScreen[AScr]);
     AScr = 1-AScr;
-    ScrollRaster(MyRPort_PTR[AScr],0,-8,0,75,639,434);
-    ClipBlit(MyRPort_PTR[AScr],0,270,MyRPort_PTR[AScr],0,75,640,8,192);
-    BltBitMapRastPort(&MyBitMap,0,0,MyRPort_PTR[AScr],380,79,160,4,192);
+    actRastPort = MyRPort_PTR[AScr];
+    ScrollRaster(actRastPort,0,-8,0,75,639,434);
+    ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
+    BltBitMapRastPort(&MyBitMap,0,0,actRastPort,380,79,160,4,192);
 
     for (i = 0; i<14; ++i)
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        ScrollRaster(MyRPort_PTR[AScr],0,-8,0,75,639,434);
-        ClipBlit(MyRPort_PTR[AScr],0,270,MyRPort_PTR[AScr],0,75,640,8,192);
+        actRastPort = MyRPort_PTR[AScr];
+        ScrollRaster(actRastPort,0,-8,0,75,639,434);
+        ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
         if (LMB_PRESSED)
             { goto leave_intro; }
     }
@@ -969,10 +1010,11 @@ void MAININTRO()
     if (LMB_PRESSED)
         { goto leave_intro; }
 
-    RECTWIN(MyRPort_PTR[AScr],0,0,75,639,434);
+    RECTWIN(actRastPort,0,0,75,639,434);
     ScreenToFront(MyScreen[AScr]);
     AScr = 1-AScr;
-    RECTWIN(MyRPort_PTR[AScr],0,0,75,639,434);
+    actRastPort = MyRPort_PTR[AScr];
+    RECTWIN(actRastPort,0,0,75,639,434);
 
     strcpy(s+pathname_len, "Frame6.pal");
     (void) SETCOLOR(MyScreen[  AScr],s);
@@ -1003,10 +1045,26 @@ void MAININTRO()
     MyScreen[0]->RastPort.AreaInfo = &MyAI;
     MyScreen[1]->RastPort.AreaInfo = &MyAI;
 
+/**** new .. alloc mem for r_Coords .. free this later ***/
+    IntroMemL = sizeof(r_Coords_t)*3;
+    IntroMemA = AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
+    if (NULL == IntroMemA)
+    {
+        goto leave_intro;
+    }
+    ShipX = (r_Coords_t*) (IntroMemA);
+    ShipY = (r_Coords_t*) (IntroMemA+sizeof(r_Coords_t));
+    ShipZ = (r_Coords_t*) (IntroMemA+2*sizeof(r_Coords_t));
+
+    *ShipX = (r_Coords_t) {{ 390, 264,252,186,186,192,256,290,354,360,360,294,282, 252, 256, 290,294, 282,294,294, 258,265,273,281,288, 185,185,190,190, 356,356,361,361,0,0,0,0,0,0,0,0}};
+    *ShipY = (r_Coords_t) {{ 315, 174,275,250,188,225,234,234,225,188,250,275,174, 275, 243, 243,275, 174,275,275, 269,342,269,342,269, 187,172,172,187, 187,172,172,187,0,0,0,0,0,0,0,0}};
+    *ShipZ = (r_Coords_t) {{-2.5,  -5, -1, -5, -5, -5, -1, -1, -5, -5, -5, -1, -5,  -1,-1.1,-1.1, -1,  -5, -8, -1,  -2, -2, -2, -2, -2,  -5, -5, -5, -5,  -5, -5, -5, -5,0,0,0,0,0,0,0,0}};
+/**** new .. */
+
     for (i = 1; i<41; ++i)
     {
-        ShipX.data[i] = 273-ShipX.data[i];
-        ShipY.data[i] = 257-ShipY.data[i];
+        ShipX->data[i] = 273-ShipX->data[i];
+        ShipY->data[i] = 257-ShipY->data[i];
     }
 
     // rotate around x-axis
@@ -1014,9 +1072,9 @@ void MAININTRO()
     FacCos = cos(1.35);
     for (i = 1; i<41; ++i)
     {
-        store = ShipY.data[i];
-        ShipY.data[i] = store*FacCos - ShipZ.data[i]*FacSin;
-        ShipZ.data[i] = store*FacSin + ShipZ.data[i]*FacCos;
+        store = ShipY->data[i];
+        ShipY->data[i] = store*FacCos - ShipZ->data[i]*FacSin;
+        ShipZ->data[i] = store*FacSin + ShipZ->data[i]*FacCos;
     }
 
     // rotate around y-axis
@@ -1024,9 +1082,9 @@ void MAININTRO()
     FacCos = cos(-0.44);
     for (i = 1; i<41; ++i)
     {
-        store = ShipX.data[i];
-        ShipX.data[i] = store*FacCos - ShipZ.data[i]*FacSin;
-        ShipZ.data[i] = store*FacSin + ShipZ.data[i]*FacCos;
+        store = ShipX->data[i];
+        ShipX->data[i] = store*FacCos - ShipZ->data[i]*FacSin;
+        ShipZ->data[i] = store*FacSin + ShipZ->data[i]*FacCos;
     }
 
     // rotate around z-axis
@@ -1034,9 +1092,9 @@ void MAININTRO()
     FacCos = cos(-0.08);
     for (i = 1; i<41; ++i)
     {
-        store = ShipX.data[i];
-        ShipX.data[i] = store*FacCos - ShipY.data[i]*FacSin;
-        ShipY.data[i] = store*FacSin + ShipY.data[i]*FacCos;
+        store = ShipX->data[i];
+        ShipX->data[i] = store*FacCos - ShipY->data[i]*FacSin;
+        ShipY->data[i] = store*FacSin + ShipY->data[i]*FacCos;
     }
     if (LMB_PRESSED)
         { goto leave_intro; }
@@ -1053,13 +1111,14 @@ void MAININTRO()
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        ShipX.data[0] = ShipX.data[0]-Factor-Factor-0.22;
-        ShipY.data[0] = ShipY.data[0]-Factor;
-        SXdata0int = it_round(ShipX.data[0]);
-        SYdata0int = it_round(ShipY.data[0]);
+        actRastPort = MyRPort_PTR[AScr];
+        ShipX->data[0] = ShipX->data[0]-Factor-Factor-0.22;
+        ShipY->data[0] = ShipY->data[0]-Factor;
+        SXdata0int = it_round(ShipX->data[0]);
+        SYdata0int = it_round(ShipY->data[0]);
 
-        BltBitMapRastPort(&MyBitMap,LEdge[AScr],TEdge[AScr]-75,MyRPort_PTR[AScr],LEdge[AScr],TEdge[AScr],160,80,192);
-        BltBitMapRastPort(&MyBitMap,20,145,MyRPort_PTR[AScr],20,220,600,55,192);
+        BltBitMapRastPort(&MyBitMap,LEdge[AScr],TEdge[AScr]-75,actRastPort,LEdge[AScr],TEdge[AScr],160,80,192);
+        BltBitMapRastPort(&MyBitMap,20,145,actRastPort,20,220,600,55,192);
 
         LEdge[AScr] = SXdata0int-90;
         if (LEdge[AScr]<0) { LEdge[AScr] = 0; }
@@ -1067,54 +1126,55 @@ void MAININTRO()
         TEdge[AScr] = SYdata0int-60;
         if (TEdge[AScr]<75) { TEdge[AScr] = 75; }
 
+        store = ShipX->data[0];
         for (i = 1; i<41; ++i)
         {
-            if (ShipX.data[0] < (ShipX.data[i]*SizeFactor))
+            if (store < (ShipX->data[i]*SizeFactor))
             {
-                FacSin = 1+ ((abs(ShipX.data[0]-ShipX.data[i]*SizeFactor))/ShipX.data[0]);
-                ShipX.data[i] = ShipX.data[0]/SizeFactor;
-                ShipY.data[i] = ShipY.data[i]/FacSin;
+                FacSin = 1+ ((abs(store-ShipX->data[i]*SizeFactor))/store);
+                ShipX->data[i] = store/SizeFactor;
+                ShipY->data[i] = ShipY->data[i]/FacSin;
             }
         }
 
-        SetAPen(MyRPort_PTR[AScr],124);
+        SetAPen(actRastPort,124);
         /*** Antrieb ***/
-        AreaMove(MyRPort_PTR[AScr],SXdata0int-it_round(ShipX.data[20]*SizeFactor),SYdata0int-it_round(ShipY.data[20]*SizeFactor));
-        for (k = 21; k<25; ++k) { AreaDraw(MyRPort_PTR[AScr],SXdata0int-it_round(ShipX.data[k]*SizeFactor),SYdata0int-it_round(ShipY.data[k]*SizeFactor)); }
-        AreaEnd(MyRPort_PTR[AScr]);
+        AreaMove(actRastPort,SXdata0int-it_round(ShipX->data[20]*SizeFactor),SYdata0int-it_round(ShipY->data[20]*SizeFactor));
+        for (k = 21; k<25; ++k) { AreaDraw(actRastPort,SXdata0int-it_round(ShipX->data[k]*SizeFactor),SYdata0int-it_round(ShipY->data[k]*SizeFactor)); }
+        AreaEnd(actRastPort);
 
-        SetAPen(MyRPort_PTR[AScr],126);
+        SetAPen(actRastPort,126);
         /*** BodenPlatte hell ***/
-        AreaMove(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[13]*SizeFactor),SYdata0int -it_round(ShipY.data[13]*SizeFactor));
-        for (k = 14; k<17; ++k) { AreaDraw(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[k]*SizeFactor),SYdata0int -it_round(ShipY.data[k]*SizeFactor)); }
-        AreaEnd(MyRPort_PTR[AScr]);
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[13]*SizeFactor),SYdata0int -it_round(ShipY->data[13]*SizeFactor));
+        for (k = 14; k<17; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaEnd(actRastPort);
 
         /*** Seitenwand ***/
-        AreaMove(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[17]*SizeFactor),SYdata0int -it_round(ShipY.data[17]*SizeFactor));
-        for (k = 18; k<20; ++k) { AreaDraw(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[k]*SizeFactor),SYdata0int -it_round(ShipY.data[k]*SizeFactor)); }
-        AreaEnd(MyRPort_PTR[AScr]);
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[17]*SizeFactor),SYdata0int -it_round(ShipY->data[17]*SizeFactor));
+        for (k = 18; k<20; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaEnd(actRastPort);
 
-        SetAPen(MyRPort_PTR[AScr],127);
+        SetAPen(actRastPort,127);
         /*** BodenPlatte ***/
-        AreaMove(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[1]*SizeFactor),SYdata0int -it_round(ShipY.data[1]*SizeFactor));
-        for (k = 2; k<13; ++k) { AreaDraw(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[k]*SizeFactor),SYdata0int -it_round(ShipY.data[k]*SizeFactor)); }
-        AreaEnd(MyRPort_PTR[AScr]);
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[1]*SizeFactor),SYdata0int -it_round(ShipY->data[1]*SizeFactor));
+        for (k = 2; k<13; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaEnd(actRastPort);
 
-        SetAPen(MyRPort_PTR[AScr],125);
+        SetAPen(actRastPort,125);
         /*** Waffen ***/
-        AreaMove(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[25]*SizeFactor),SYdata0int -it_round(ShipY.data[25]*SizeFactor));
-        for (k = 26; k<29; ++k) { AreaDraw(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[k]*SizeFactor),SYdata0int -it_round(ShipY.data[k]*SizeFactor)); }
-        AreaEnd(MyRPort_PTR[AScr]);
-        AreaMove(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[29]*SizeFactor),SYdata0int -it_round(ShipY.data[29]*SizeFactor));
-        for (k = 30; k<33; ++k) { AreaDraw(MyRPort_PTR[AScr],SXdata0int -it_round(ShipX.data[k]*SizeFactor),SYdata0int -it_round(ShipY.data[k]*SizeFactor)); }
-        AreaEnd(MyRPort_PTR[AScr]);
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[25]*SizeFactor),SYdata0int -it_round(ShipY->data[25]*SizeFactor));
+        for (k = 26; k<29; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaEnd(actRastPort);
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[29]*SizeFactor),SYdata0int -it_round(ShipY->data[29]*SizeFactor));
+        for (k = 30; k<33; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaEnd(actRastPort);
 
-        SetAPen(MyRPort_PTR[AScr],0);
-        RectFill(MyRPort_PTR[AScr],0,75,0,200);
+        SetAPen(actRastPort,0);
+        RectFill(actRastPort,0,75,0,200);
         if (1 < ISize)
         {
-            WRITE(320,220,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l  ],SArr[l  ]);
-            WRITE(320,245,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l+1],SArr[l+1]);
+            WRITE(320,220,123,WRITE_Center,actRastPort,FArr[l  ],SArr[l  ]);
+            WRITE(320,245,123,WRITE_Center,actRastPort,FArr[l+1],SArr[l+1]);
         }
         ++ISize;
         if (55 < ISize)
@@ -1129,7 +1189,7 @@ void MAININTRO()
     if (LMB_PRESSED)
         { goto leave_intro; }
 
-    if (l<16)
+    if (16 > l)
     {
         do
         {
@@ -1148,7 +1208,7 @@ void MAININTRO()
                 ISize = 0;
             }
         }
-        while ((l<=16) && LMB_NOTPRESSED);
+        while ((17 > l) && LMB_NOTPRESSED);
     }
 
 leave_intro:

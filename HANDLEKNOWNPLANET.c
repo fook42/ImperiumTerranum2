@@ -51,6 +51,7 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
 void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 {
     uint8  i, y;
+    uint16 xpos;
     char   s[8];
 
 
@@ -67,10 +68,12 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     if (y < 5)
     {
         y = 5-y;
+        xpos = 59;
         for(i = 0; i < y; ++i)
         {
             // draw skulls ...
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,174,MyRPort_PTR[1],59+i*22,102,19,18,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,174,MyRPort_PTR[1],xpos,102,19,18,192);
+            xpos += 22;
         }
     }
 
@@ -96,10 +99,12 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 
     if (y > 0)
     {
+        xpos = 56;
         for(i = 0; i < y; ++i)
         {
             // draw lightbulbs ...
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,128,MyRPort_PTR[1],56+i*25,308,22,22,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,128,MyRPort_PTR[1],xpos,308,22,22,192);
+            xpos += 25;
         }
     }
 
@@ -112,10 +117,12 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     RECTWIN(MyRPort_PTR[1],0,56,354,178,376);
     if (y > 0)
     {
+        xpos = 56;
         for(i = 0; i < y; ++i)
         {
             // draw coins ...
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,151,MyRPort_PTR[1],56+i*25,354,22,22,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,320,151,MyRPort_PTR[1],xpos,354,22,22,192);
+            xpos += 25;
         }
     }
 }
@@ -152,14 +159,14 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
         }
     }
 
-    for(i = 25; i <= 42; ++i)
+    for(i = 25; i < 43; ++i)
     {
         if ((ActPProjects->data[i]>0) || ((i == 39) && (Save.ProjectCosts[ActPlayer-1].data[i] <= 0)))
         {
-            if        ((i>=25) && (i<=27))
+            if        ((i>24) && (i<28))
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-18)*64,  0,MyRPort_PTR[1],362+x,94+y,64,64,192);
-            } else if ((i>=28) && (i<=37))
+            } else if ((i>27) && (i<38))
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-28)*64, 64,MyRPort_PTR[1],362+x,94+y,64,64,192);
             } else
@@ -322,8 +329,8 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
 
         if (LMB_PRESSED)
         {
-            if ((MouseX(1) >=  56) && (MouseX(1) <= 187)
-              &&(MouseY(1) >= 455) && (MouseY(1) <= 480))
+            if ((MouseX(1) >  55) && (MouseX(1) < 188)
+              &&(MouseY(1) > 454) && (MouseY(1) < 481))
             {
                 CLICKRECT(MyRPort_PTR[1],55,455,186,481,2);
                 Mode = 0;
@@ -353,7 +360,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     j++;
                 }
                 Ships = 0;
-                for (i = 42; i>=1; i--)
+                for (i = 42; i>0; --i)
                 {
                     DoIt = false;
                     /* Technologie vorhanden */
@@ -362,18 +369,18 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         || (Save.ProjectCosts[ActPlayer-1].data[ProjectNeedsProject[i]] <= 0)))
                     {
                         /* nötiges Projekt vorhanden */
-                        if ((((i>=1) && (i<=7)) || (i==39)) && (Save.ProjectCosts[ActPlayer-1].data[i]>0))
+                        if ((((0 < i) && (8 > i)) || (39 == i)) && (Save.ProjectCosts[ActPlayer-1].data[i]>0))
                         {
                             DoIt = true;
                         }
                         /* Großprojekt noch nicht gebaut */
-                        if (((i==25) || ((i>=28) && (i<=38)) || ((i>=40) && (i<=42)))
-                            && (ActPProjects->data[i] == 0))
+                        if (((25 == i) || ((27 < i) && (39 > i)) || ((39 < i) && (43 > i)))
+                            && (0 == ActPProjects->data[i]))
                         {
                             DoIt = true;
                         }
                         /* Projekt noch nicht gebaut */
-                        if (((i>=8) && (i<=24)) || (i==26) || (i==27))
+                        if (((7 < i) && (25 > i)) || (26 == i) || (27 == i))
                         {
                             DoIt = true;
                         }
@@ -384,22 +391,22 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         ProjectRounds[j] = Save.ProjectCosts[ActPlayer-1].data[i];
                         strcpy(NewProject[j], Project.data[i]);
                         ProjectNum[j] = i;
-                        if ((i>=8) && (i<=24))
+                        if ((7 < i) && (25 > i))
                         {
-                            if (Ships>3)
+                            if (3 < Ships)
                             {
-                                j--;
+                                --j;
                             } else {
-                               Ships++;
-                               ProjectType[j] = 3;
-                               ProjectRounds[j] += it_round(ProjectRounds[j]*(Save.Military[ActPlayer-1]/100.0));
+                                ++Ships;
+                                ProjectType[j] = 3;
+                                ProjectRounds[j] += it_round(ProjectRounds[j]*(Save.Military[ActPlayer-1]/100.0));
                             }
                         }
-                        if ((i>=1) && (i<=7))
+                        if ((0 < i) && (8 > i))
                         {
                             ProjectType[j] = 2;
                         }
-                        if (i > 24)
+                        if (24 < i)
                         {
                             ProjectType[j] = 4;
                         }
@@ -411,17 +418,17 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 // clear right project-area to print the list of available Projects to build
                 RECTWIN(MyRPort_PTR[1],0,360,92,639,511);
                 WRITE(365,474,4,1,MyRPort_PTR[1],3,PText[177]);
-                for(i = 1; i <= j; i++)
+                for(i = 1; i <= j; ++i)
                 {
                     WRITE(365,78+i*16,ProjectType[i],1,MyRPort_PTR[1],2,NewProject[i]);
-                    if (ProjectNum[i]>0)
+                    if (0 < ProjectNum[i])
                     {
                         l = ProjectRounds[i]-MyPlanetHeader->XProjectPayed;
                     } else {
                         l = ProjectRounds[i];
                     }
                     l = (l / PMoney ) +1;
-                    if (l <= 0) { l = 1; }
+                    if (1 > l) { l = 1; }
                     (void) dez2out(l, 7 ,s);
                     WRITE(575,78+i*16,ProjectType[i],1,MyRPort_PTR[1],2,s);
                 }

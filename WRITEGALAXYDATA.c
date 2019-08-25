@@ -11,10 +11,10 @@ void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove)
     char    s[20];
     char*   _s;
 
-    for(i = 0; i < Save.Systems; i++)
+    for(i = 0; i < Save.Systems; ++i)
     {
-        if ((MouseX(0) >= (SystemX[i]-20)) && (MouseX(0) <= (SystemX[i]+20))
-         && (MouseY(0) >= (SystemY[i]-5))  && (MouseY(0) <= (SystemY[i]+5))
+        if ((MouseX(0) > (SystemX[i]-21)) && (MouseX(0) < (SystemX[i]+21))
+         && (MouseY(0) > (SystemY[i]-6))  && (MouseY(0) < (SystemY[i]+6))
          && (LastSystem != (i+1)))
         {
             LastSystem = (i+1);

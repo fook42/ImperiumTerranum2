@@ -13,27 +13,23 @@ void SYSINFO(uint8 SysID, uint8 ThePlayerFlag)
     char    s[80];
     char*   _s;
 
+    if (0 == SysID) { return; }
+    --SysID; // to shift the arrays
     RECTWIN(MyRPort_PTR[0],0,30,250,480,360);
-    if (0 == SysID)
-    {
-        return;
-    }
     SysPop = 0;
     MyPlanets = 0;
     Buildings = 0;
-    SysID--; // to shift the arrays
-    for(i = 0; i < SystemHeader[SysID].Planets; i++)
+    for(i = 0; i < SystemHeader[SysID].Planets; ++i)
     {
         MyPlanetHeader = &(SystemHeader[SysID].PlanetMemA[i]);
         if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ThePlayerFlag)
         {
             SysPop += MyPlanetHeader->Population;
-            MyPlanets++;
+            ++MyPlanets;
             ActPProject = MyPlanetHeader->ProjectPtr;
-            for(j = 1; j <= 42; j++)
+            for(j = 1; j < 43; ++j)
             {
-                if (ActPProject->data[j]>0)
-                { Buildings++; }
+                if (0 < ActPProject->data[j]) { ++Buildings; }
             }
         }
     }
@@ -65,11 +61,11 @@ void SYSINFO(uint8 SysID, uint8 ThePlayerFlag)
         WRITE(256,310,ThePlayerFlag,WRITE_Center,MyRPort_PTR[0],3,s);
 
         Buildings = (Buildings / MyPlanets) +1;
-        if      (Buildings<3)   { _s = _PT_praktisch_nicht_entwickelt; }
-        else if (Buildings<5)   { _s = _PT_geringe_Entwicklungsstufe; }
-        else if (Buildings<10)  { _s = _PT_maessig_hoch_entwickelt; }
-        else if (Buildings<18)  { _s = _PT_hoch_entwickelt; }
-        else if (Buildings>=34) { _s = _PT_hoechste_Entwicklungsstufe; }
+        if      (3  > Buildings) { _s = _PT_praktisch_nicht_entwickelt; }
+        else if (5  > Buildings) { _s = _PT_geringe_Entwicklungsstufe; }
+        else if (10 > Buildings) { _s = _PT_maessig_hoch_entwickelt; }
+        else if (18 > Buildings) { _s = _PT_hoch_entwickelt; }
+        else if (33 < Buildings) { _s = _PT_hoechste_Entwicklungsstufe; }
         WRITE(256,330,ThePlayerFlag,WRITE_Center,MyRPort_PTR[0],3, _s);
     }
 }

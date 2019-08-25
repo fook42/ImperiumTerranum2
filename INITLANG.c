@@ -43,7 +43,7 @@ bool INITLANG()
     do
     {
         c = *Char_PTR;
-        if ( (33 <= c) && (59 != c) && (255 >= c) && (!WordSet) )
+        if ( (32 < c) && (59 != c) && (!WordSet) )
         {
             PText[i] = Char_PTR;
             ++i;

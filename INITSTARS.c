@@ -77,7 +77,7 @@ bool INITSTARS()
     SystemHeader[0].SysOwner = FLAG_TERRA;
 
     HomePlanetProd = 0;
-    if (HomePlanets > 1)
+    if (1 < HomePlanets)
     {
         l = HomePlanets;
         for (j = 0; j < SystemHeader[0].Planets; ++j)
@@ -157,7 +157,7 @@ bool INITSTARS()
             SystemFlags[j][i] = FLAG_UNKNOWN;
         }
     }
-    for(k = 2; k < (MAXCIVS-1); k++)
+    for(k = 2; k < (MAXCIVS-1); ++k)
     {
         do
         {
@@ -168,7 +168,7 @@ bool INITSTARS()
         SystemFlags[k-1][i] = FLAG_KNOWN;
         CREATENEWSYSTEM(i, k);
 
-        for(j = 0; j < SystemHeader[i].Planets; j++)
+        for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             SystemHeader[i].FirstShip.Owner = GETCIVFLAG(k);
             PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
@@ -185,18 +185,18 @@ bool INITSTARS()
         SystemFlags[k-1][i] += FLAG_KNOWN;
         SystemHeader[i].SysOwner = GETCIVFLAG(k);
 
-        if (HomePlanets>1)
+        if (1 < HomePlanets)
         {
             HomePlanetProd = 0;
             l = HomePlanets;
-            for(j = 0; j <= SystemHeader[i].Planets; j++)
+            for(j = 0; j <= SystemHeader[i].Planets; ++j)
             {
                 PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                if (   (PlanetHeader->Class==CLASS_DESERT) || (PlanetHeader->Class==CLASS_HALFEARTH)
-                    || (PlanetHeader->Class==CLASS_EARTH)  || (PlanetHeader->Class==CLASS_WATER)
-                    || (PlanetHeader->Class==CLASS_STONES) || (PlanetHeader->Class==CLASS_ICE))
+                if (   (CLASS_DESERT==PlanetHeader->Class) || (CLASS_HALFEARTH==PlanetHeader->Class)
+                    || (CLASS_EARTH ==PlanetHeader->Class) || (CLASS_WATER    ==PlanetHeader->Class)
+                    || (CLASS_STONES==PlanetHeader->Class) || (CLASS_ICE      ==PlanetHeader->Class))
                 {
-                    if ((l>0) && ((l>1) || (j>1)))
+                    if ((0 < l) && ((1 < l) || (1 < j)))
                     {
                         PlanetHeader->PFlags = GETCIVFLAG(k);
                         PlanetHeader->Ethno  = PlanetHeader->PFlags;
@@ -208,15 +208,15 @@ bool INITSTARS()
                         PlanetHeader->Infrastruktur = 165;
                         PlanetHeader->Industrie     = 160;
                         PlanetHeader->ProjectPtr    = (ByteArr42*) PMemA[k][l];
-                        l--;
+                        --l;
                         HomePlanetProd += PlanetHeader->Size;
                     }
                 }
             }
             Save.ImperatorState[k-1] -= (HomePlanetProd*3);
-            if ((HomePlanetProd/15)>1)
+            if (15 < HomePlanetProd)
             {
-                for(i = 1; i <= 42; i++)
+                for(i = 1; i < 43; ++i)
                 {
                     Save.TechCosts[k-1].data[i] = it_round(Save.TechCosts[k-1].data[i]*(HomePlanetProd/15.0));
                 }

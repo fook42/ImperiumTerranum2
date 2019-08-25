@@ -23,7 +23,7 @@ void CREATEJAHADR(uint8 CJ_ActPlayer)
         Save.WarState[7][i] = LEVEL_UNKNOWN;
     }
     Save.CivPlayer[7] = 0;
-    if (Year>2050) { Save.Staatstopf[7] += abs(Year)*120; }
+    if (2050 < Year) { Save.Staatstopf[7] += abs(Year)*120; }
     Save.TechCosts[7].data[15] = 0;
     Save.TechCosts[7].data[16] = 0;
     Save.GSteuer[7] = 0;

@@ -26,46 +26,46 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
 
     ActPProjects = MyPlanetHeader->ProjectPtr;
     TheProject = 0;
-    if (((Year % 10) == 0) && (((Year / 10)&1) == (PlanetNum&1)))
+    if ((0 == (Year % 10)) && (((Year / 10)&1) == (PlanetNum&1)))
     {
         _s1 = PText[559];
-        if (ActPProjects->data[41] == 0)
+        if (0 == ActPProjects->data[41])
         {
-            if (ActPProjects->data[30] == 0)
+            if (0 == ActPProjects->data[30])
             {
                 /* RECYCLINGANLAGE */
-                if ((MyPlanetHeader->Population>5500) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[30]] <= 0)
-                        && (MyPlanetHeader->ProjectID != 30))
+                if ((5500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[30]] <= 0)
+                        && (30 != MyPlanetHeader->ProjectID))
                 {
                     TheProject = 30;
                     _s1 = PText[560];
                 } else {
                     return;
                 }
-            } else if (ActPProjects->data[32] == 0)
+            } else if (0 == ActPProjects->data[32])
             {
                 /* HYDROKRAFTWERK */
-                if ((MyPlanetHeader->Population>7000) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[32]] <= 0)
-                        && (MyPlanetHeader->ProjectID != 32))
+                if ((7000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[32]] <= 0)
+                        && (32 != MyPlanetHeader->ProjectID))
                 {
                     TheProject = 32;
                 } else {
                     return;
                 }
-            } else if (ActPProjects->data[31] == 0)
+            } else if (0 == ActPProjects->data[31])
             {
                 /* FUSIONSKRAFTWERK */
-                if ((MyPlanetHeader->Population>9000) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[31]] <= 0)
-                        && (MyPlanetHeader->ProjectID != 31))
+                if ((9000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[31]] <= 0)
+                        && (31 != MyPlanetHeader->ProjectID))
                 {
                     TheProject = 31;
                 } else {
                     return;
                 }
-            } else if (ActPProjects->data[42] == 0)
+            } else if (0 == ActPProjects->data[42])
             {
-                if ((MyPlanetHeader->Population>11500) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[42]] <= 0)
-                        && (MyPlanetHeader->ProjectID != 42))
+                if ((11500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[42]] <= 0)
+                        && (42 != MyPlanetHeader->ProjectID))
                 {
                     TheProject = 42;
                     _s1 = PText[561];
@@ -82,12 +82,12 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         ModC = GETTHESOUND(3);
         ModL = ModMemL[3];
     } else {
-        if (((rand()%80) != 0) && (Warnung[ActPlayer] == 0)) { return; }
+        if ((0 != (rand()%80)) && (0 == Warnung[ActPlayer])) { return; }
         MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*0.895);
-        if (Warnung[ActPlayer] != 0)
+        if (0 != Warnung[ActPlayer])
         {
             i = rand()%20;
-            if ((i==2) || (i==3))
+            if ((2 == i) || (3 == i))
             {
                 i = 0;
             }
@@ -95,7 +95,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             i = rand()%10;
         }
         switch (i) {
-        case 0: if (ActPProjects->data[28] == 0)
+        case 0: if (0 == ActPProjects->data[28])
             {   /*kontinentale Union*/
                 TheProject = 28;
                 _s1 = PText[562];
@@ -103,7 +103,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 return;
             }; break;
 
-        case 1: if (ActPProjects->data[29] == 0)
+        case 1: if (0 == ActPProjects->data[29])
             {   /*globale Union*/
                 TheProject = 29;
                 _s1 = PText[563];
@@ -111,7 +111,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 return;
             }; break;
 
-        case 2: if (Save.ProjectCosts[ActPlayer-1].data[4] != 0)
+        case 2: if (0 != Save.ProjectCosts[ActPlayer-1].data[4])
             {
                 _s1 = PText[564];
             } else {
@@ -134,7 +134,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 {
                     _s2 = PText[567];
                 }
-                for(i = 0; i < (MAXCIVS-1); i++)
+                for(i = 0; i < (MAXCIVS-1); ++i)
                 {
                     if (Save.WarState[i][GETCIVVAR(MyPlanetHeader->Ethno)-1] == LEVEL_DIED)
                     {
@@ -151,10 +151,13 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                     _s2 = PText[568];
                 }
                 PlanetLose = true;
-            } else if (((Warnung[ActPlayer] == 1) || (Warnung[ActPlayer] == 2)) && ((rand()%22) == 0))
+            } else if (((1 == Warnung[ActPlayer])
+                     || (2 == Warnung[ActPlayer]))
+                     && (0 == (rand()%22)))
             {
                 if (!SETNEWPLANETOWNER(MyPlanetHeader, &OldPlanet, &TheProject, ActSys, &_s1, &_s2, &PlanetLose)) { return; }
-            } else if ((Warnung[ActPlayer] == 2) && ((rand()%10) == 0))
+            } else if ((2 == Warnung[ActPlayer])
+                     && (0 == (rand()%10)))
             {
                 if (!SETNEWPLANETOWNER(MyPlanetHeader, &OldPlanet, &TheProject, ActSys, &_s1, &_s2, &PlanetLose)) { return; }
             } else {
@@ -165,7 +168,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
 
 //    l = GETCIVVAR(MyPlanetHeader->PFlags); // ... todo .. nonsense call ???
 
-    if ((Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1] != 0) || (TheProject == -1))
+    if ((0 != Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1]) || (-1 == TheProject))
     {
         INFORMUSER();
         if ((-1 == TheProject) ||
@@ -205,7 +208,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,2, _s2);
         }
 
-        if ((Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1] != 0)
+        if ((0 != Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1])
                 && (ActPlayer == GETCIVVAR(MyPlanetHeader->PFlags)))
         {
             CPA2_Window=MAKEWINDOW(85,208,341,41,MyScreen[0]);
@@ -228,16 +231,16 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 do
                 {
                     delay(RDELAY);
-                    if (LMB_PRESSED && (CPA2_Window->MouseY >= 10) && (CPA2_Window->MouseY <= 30))
+                    if (LMB_PRESSED && (9 < CPA2_Window->MouseY) && (31 > CPA2_Window->MouseY))
                     {
-                        if ((CPA2_Window->MouseX>=55) && (CPA2_Window->MouseX<=171))
+                        if ((54 < CPA2_Window->MouseX) && (172 > CPA2_Window->MouseX))
                         {
-                            KLICKWINGAD(RPort2_PTR, 55,10);
+                            KLICKWINGAD(RPort2_PTR,  55, 10);
                             b = true;
                             HANDLEKNOWNPLANET(ActSys,0,MyPlanetHeader);
-                        } else if ((CPA2_Window->MouseX >= 195) && (CPA2_Window->MouseX <= 311))
+                        } else if ((194 < CPA2_Window->MouseX) && (312 > CPA2_Window->MouseX))
                         {
-                            KLICKWINGAD(RPort2_PTR,195,10);
+                            KLICKWINGAD(RPort2_PTR, 195, 10);
                             b = true;
                         }
                     }

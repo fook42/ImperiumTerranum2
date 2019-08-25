@@ -45,7 +45,7 @@ void DOHUMANITY()
         Save.Staatstopf[Smallest]    += Save.WarPower[Biggest]*25;
     }
     i = GETCIVVAR(Save.WorldFlag);
-    if ((i>=1) && (i<=7))
+    if ((0 < i) && (8 > i))
     {
         if (Save.Bevoelkerung[Biggest] > (Save.Bevoelkerung[i-1]*3))
         {

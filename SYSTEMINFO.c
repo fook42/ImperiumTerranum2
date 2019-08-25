@@ -17,11 +17,11 @@ void SYSTEMINFO(uint8 ActSys)
     struct RastPort* RPort_PTR;
 
     b = false;
-    MyShipPtr = (r_ShipHeader*) ObjPtr;
-    if (NULL == MyShipPtr)
+    if (NULL == ObjPtr)
     {
         return;
     }
+    MyShipPtr = (r_ShipHeader*) ObjPtr;
     if (0 == Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1])
     {
         return;
@@ -69,9 +69,9 @@ void SYSTEMINFO(uint8 ActSys)
         delay(RDELAY);
         if (LMB_PRESSED)
         {
-            if ((SYS_Window->MouseX>=0) && (SYS_Window->MouseX<=122))
+            if ((-1 < SYS_Window->MouseX) && (123 > SYS_Window->MouseX))
             {
-                if ((SYS_Window->MouseY>=3) && (SYS_Window->MouseY<=23))
+                if ((2 < SYS_Window->MouseY) && (24 > SYS_Window->MouseY))
                 {
                     // travel to different system ...
                     KLICKWINGAD(RPort_PTR,4,3);
@@ -117,7 +117,7 @@ void SYSTEMINFO(uint8 ActSys)
                     }
 
                     DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
-                } else if ((SYS_Window->MouseY>=25) && (SYS_Window->MouseY<=45))
+                } else if ((24 < SYS_Window->MouseY) && (46 > SYS_Window->MouseY))
                 {
                     // destroy ship ...
                     KLICKWINGAD(RPort_PTR,4,25);
@@ -129,7 +129,7 @@ void SYSTEMINFO(uint8 ActSys)
                     y = 256+(UseShipPtr->PosY+OffsetY)*32;
                     PLAYSOUND(2,1100);
                     // show explosion-animation
-                    if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
+                    if ((x>=0) && (x<481) && (y>=0) && (y<481))
                     {
                         RECTWIN(MyRPort_PTR[0],0,x,y,x+31,y+31);
                         for(i = 0; i < 16; ++i)
@@ -154,7 +154,7 @@ void SYSTEMINFO(uint8 ActSys)
                         while (NULL != MyShipPtr);
                     }
                     custom.dmacon = BITCLR | DMAF_AUD0 | DMAF_AUD1; // 0x0003
-                } else if ((SYS_Window->MouseY>=47) && (SYS_Window->MouseY<=67))
+                } else if ((46 < SYS_Window->MouseY) && (68 > SYS_Window->MouseY))
                 {
                     // free/stick to position ...
                     KLICKWINGAD(RPort_PTR,4,47);
@@ -172,7 +172,7 @@ void SYSTEMINFO(uint8 ActSys)
                     } else {
                         UseShipPtr->Target = TARGET_POSITION;
                     }
-                } else if ((SYS_Window->MouseY>=69) && (SYS_Window->MouseY<=89))
+                } else if ((68 < SYS_Window->MouseY) && (90 > SYS_Window->MouseY))
                 {
                     // watering / turn to stargate ...
                     KLICKWINGAD(RPort_PTR,4,69);

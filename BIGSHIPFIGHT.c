@@ -188,7 +188,7 @@ void STARFLY(uint8 Ship)
         da = 448;
     }
 
-    if (Rotation == 0)
+    if (0 == Rotation)
     {
         StepCtr = 0;
         if ((x[Ship]<15) || (x[Ship]>592))
@@ -199,7 +199,7 @@ void STARFLY(uint8 Ship)
         {
             StepCtr++;
         }
-        if (StepCtr>1)
+        if (1 < StepCtr)
         {
             Angle[Ship] += 32;
         } else if ( ((y[Ship]<40)  && (Angle[Ship] >= 0)   && (Angle[Ship] <= 128) && (Ship == 1)) ||
@@ -225,7 +225,7 @@ void STARFLY(uint8 Ship)
         } else if ((x[Ship] >= (x[1-Ship]-130)) && (x[Ship] <= (x[1-Ship]+130))
                 && (y[Ship] >= (y[1-Ship]-130)) && (y[Ship] <= (y[1-Ship]+130)))
         {
-            if (Ship == 0)
+            if (0 == Ship)
             {
                 Angle[Ship] += 32;
             } else {
@@ -234,7 +234,7 @@ void STARFLY(uint8 Ship)
         }
         else if ((Angle[Ship] != da) && ((x[Ship] < 200) || (x[Ship] > 440))
                                      && ((y[Ship] < 150) || (y[Ship] > 350))
-            && ((x[Ship] >= 25) && (x[Ship] <= 582) && (y[Ship] >= 25) && (y[Ship] <= 452)))
+            && ((x[Ship] > 24) && (x[Ship] < 583) && (y[Ship] > 24) && (y[Ship] < 453)))
         {
             if (((da      >= (Angle[Ship]-224)) && (da       <= Angle[Ship]))
              ||(((da-512) >= (Angle[Ship]-228)) && ((da-512) <= Angle[Ship])))
@@ -245,7 +245,7 @@ void STARFLY(uint8 Ship)
             }
         }
         if (((Angle[Ship] < (da-32)) || (Angle[Ship] > (da+32)))
-         && (x[Ship] >= 50) && (x[Ship] <= 590) && (y[Ship] >= 50) && (y[Ship] <= 462))
+         && (x[Ship] > 49) && (x[Ship] < 591) && (y[Ship] > 49) && (y[Ship] < 463))
         {
             switch (rand()%20) {
                 case 0: x[Ship]++; break;
@@ -261,10 +261,12 @@ void STARFLY(uint8 Ship)
         {
             Angle[Ship] += 512;
         }
-        while (Angle[Ship] >= 512)
+        Angle[Ship] &= 511;
+/*        while (Angle[Ship] > 511)
         {
             Angle[Ship] -= 512;
         }
+*/
     }
 
     SetAPen(MyRPort_PTR[AScr],0);
@@ -277,9 +279,9 @@ void STARFLY(uint8 Ship)
 
     BltBitMapRastPort((struct BitMap*) &ImgBitMap4,Angle[Ship],(Ship+1)*32,MyRPort_PTR[AScr],x[Ship],y[Ship],32,32,192);
 
-    if ((Angle[Ship] >= (da-32)) && (Angle[Ship] <= (da+32))
-     && (x[Ship] >= (x[1-Ship]-150)) && (x[Ship] <= (x[1-Ship]+150))
-     && (y[Ship] >= (y[1-Ship]-150)) && (y[Ship] <= (y[1-Ship]+150)))
+    if ((Angle[Ship] > (da-33)) && (Angle[Ship] < (da+33))
+     && (x[Ship] > (x[1-Ship]-151)) && (x[Ship] < (x[1-Ship]+151))
+     && (y[Ship] > (y[1-Ship]-151)) && (y[Ship] < (y[1-Ship]+151)))
     {
         sx1[Ship][AScr] = x[Ship]+16;
         sy1[Ship][AScr] = y[Ship]+16;
@@ -307,25 +309,25 @@ void STARFLY(uint8 Ship)
 void DRAWFIRE()
 {
     uint8   Ship;
+    sint16  ShieldValue;
 
     // draw shield-bars at the bottom...
     RECTWIN(MyRPort_PTR[AScr],7,0,500,639,511);
-    if (SSHeader[0].ShieldS > 318)
+    ShieldValue = SSHeader[0].ShieldS;
+    if (ShieldValue > 319)
     {
-        RECTWIN(MyRPort_PTR[AScr],14,0,501,319,510);
-    } else {
-        RECTWIN(MyRPort_PTR[AScr],14,0,501,SSHeader[0].ShieldS,510);
+        ShieldValue = 319;
     }
-    if (SSHeader[1].ShieldS > 318)
+    RECTWIN(MyRPort_PTR[AScr],14,0,501,ShieldValue,510);
+    ShieldValue = SSHeader[1].ShieldS;
+    if (ShieldValue > 319)
     {
-        RECTWIN(MyRPort_PTR[AScr],15,319,501,639,510);
-    } else {
-        RECTWIN(MyRPort_PTR[AScr],15,319,501,319+SSHeader[1].ShieldS,510);
+        ShieldValue = 319;
     }
-
+    RECTWIN(MyRPort_PTR[AScr],15,319,501,319+ShieldValue,510);
     for(Ship = 0; Ship < 2; ++Ship)
     {
-        if (sx1[Ship][AScr] > 0)
+        if (0 < sx1[Ship][AScr])
         {
             if (Audio_enable)
             {
@@ -343,8 +345,8 @@ void DRAWFIRE()
             SetAPen(MyRPort_PTR[AScr],14+Ship);
             Move(MyRPort_PTR[AScr],sx1[Ship][AScr],sy1[Ship][AScr]);
             Draw(MyRPort_PTR[AScr],sx2[Ship][AScr],sy2[Ship][AScr]);
-            if ((sx2[Ship][AScr] >= x[1-Ship]) && (sx2[Ship][AScr] <= (x[1-Ship]+32))
-             && (sy2[Ship][AScr] >= y[1-Ship]) && (sy2[Ship][AScr] <= (y[1-Ship]+32)))
+            if ((sx2[Ship][AScr] >= x[1-Ship]) && (sx2[Ship][AScr] < (x[1-Ship]+33))
+             && (sy2[Ship][AScr] >= y[1-Ship]) && (sy2[Ship][AScr] < (y[1-Ship]+33)))
             {
                 SSHeader[1-Ship].ShieldS -= SSHeader[Ship].WeaponS;
                 if (Audio_enable)
@@ -494,13 +496,13 @@ uint8 SMALLSHIPFIGHT(r_ShipHeader* ShipPtr1, r_ShipHeader* ShipPtr2, r_ShipHeade
     int     Fire1,Fire2;
     time_t  t;
 
+    srand((unsigned) time(&t));
     Shield1 = ShipPtr1->Shield + ShipPtr1->ShieldBonus + ShipPtr1->Tactical*3;
     do
     {
         Shield2 = ShipPtr2->Shield + ShipPtr2->ShieldBonus + ShipPtr2->Tactical*3;
-        Fire1 = it_round((double) (ShipPtr1->Weapon/10.0+1) * ShipData(ShipPtr1->SType).WeaponPower - ShipPtr1->Tactical);
-        Fire2 = it_round((double) (ShipPtr2->Weapon/10.0+1) * ShipData(ShipPtr2->SType).WeaponPower - ShipPtr2->Tactical);
-        srand((unsigned) time(&t));
+        Fire1 = it_round((double) (ShipPtr1->Weapon/10.0+1) * ShipData(ShipPtr1->SType).WeaponPower) - ShipPtr1->Tactical;
+        Fire2 = it_round((double) (ShipPtr2->Weapon/10.0+1) * ShipData(ShipPtr2->SType).WeaponPower) - ShipPtr2->Tactical;
         do
         {
             if (rand()&1)
@@ -510,10 +512,10 @@ uint8 SMALLSHIPFIGHT(r_ShipHeader* ShipPtr1, r_ShipHeader* ShipPtr2, r_ShipHeade
                 Shield2 -= Fire1;
             }
         }
-        while ((Shield1 > 0) && (Shield2 > 0));
-        if (Shield1 <= 0)
+        while ((0 < Shield1) && (0 < Shield2));
+        if (1 > Shield1)
         {
-            if ((Shield2 - ShipPtr2->ShieldBonus - ShipPtr2->Tactical*3) > 0)
+            if (0 < (Shield2 - ShipPtr2->ShieldBonus - ShipPtr2->Tactical*3))
             {
                 ShipPtr2->Shield = Shield2 - ShipPtr2->ShieldBonus - ShipPtr2->Tactical*3;
             } else {
@@ -523,13 +525,13 @@ uint8 SMALLSHIPFIGHT(r_ShipHeader* ShipPtr1, r_ShipHeader* ShipPtr2, r_ShipHeade
             {
                 ShipPtr2->ShieldBonus += (ShipPtr1->SType - ShipPtr2->SType);
             } else {
-                ShipPtr2->ShieldBonus++;
+                ++(ShipPtr2->ShieldBonus);
             }
             ShipPtr1->Owner = 0;
             return 1;
 
         } else {
-            if ((Shield1 - ShipPtr1->ShieldBonus - ShipPtr1->Tactical*3) > 0)
+            if (0 < (Shield1 - ShipPtr1->ShieldBonus - ShipPtr1->Tactical*3))
             {
                 ShipPtr1->Shield = Shield1 - ShipPtr1->ShieldBonus - ShipPtr1->Tactical*3;
             } else {
@@ -539,18 +541,19 @@ uint8 SMALLSHIPFIGHT(r_ShipHeader* ShipPtr1, r_ShipHeader* ShipPtr2, r_ShipHeade
             {
                 ShipPtr1->ShieldBonus += (ShipPtr2->SType - ShipPtr1->SType);
             } else {
-                ShipPtr1->ShieldBonus++;
+                ++(ShipPtr1->ShieldBonus);
             }
             ShipPtr1->PosX = MOVESHIP_FromX;
             ShipPtr1->PosY = MOVESHIP_FromY;
 
             ShipPtr2->Owner = 0;
-            if ((Mode == MODE_ALL) || (Mode == MODE_FLEET))
+            if ((MODE_ALL == Mode) || (MODE_FLEET == Mode))
             {
-                if (((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) != 0)
-                        || (ShipPtr1->Owner == ActPlayerFlag) || (ShipPtr2->Owner == ActPlayerFlag))
+                if ((0 != (SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN))
+                        || (ShipPtr1->Owner == ActPlayerFlag)
+                        || (ShipPtr2->Owner == ActPlayerFlag))
                 {
-                    if (Mode == MODE_ALL)
+                    if (MODE_ALL == Mode)
                     {
                         if (Visible) { PLAYSOUND(2,900); }
                         delay(20);
@@ -699,9 +702,9 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
     do
     {
         SSHeader[0] = (r_SmallShipHeader) {(ShipPtr1->Shield + ShipPtr1->ShieldBonus + ShipPtr1->Tactical*3)*2,
-                                            it_round((double)(ShipPtr1->Weapon/10.0+1.0)*ShipData(ShipPtr1->SType).WeaponPower-ShipPtr1->Tactical)};
+                                            it_round((double)(ShipPtr1->Weapon/10.0+1.0)*ShipData(ShipPtr1->SType).WeaponPower)-ShipPtr1->Tactical};
         SSHeader[1] = (r_SmallShipHeader) {(ShipPtr2->Shield + ShipPtr2->ShieldBonus + ShipPtr2->Tactical*3)*2,
-                                            it_round((double)(ShipPtr2->Weapon/10.0+1.0)*ShipData(ShipPtr2->SType).WeaponPower-ShipPtr2->Tactical)};
+                                            it_round((double)(ShipPtr2->Weapon/10.0+1.0)*ShipData(ShipPtr2->SType).WeaponPower)-ShipPtr2->Tactical};
         for(i = 0; i < 2; ++i)
         {
             switch (ShipPtr1->Owner) {
@@ -742,7 +745,7 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
             {
                 ShipPtr2->ShieldBonus += (ShipPtr1->SType - ShipPtr2->SType);
             } else {
-                ShipPtr2->ShieldBonus++;
+                ++(ShipPtr2->ShieldBonus);
             }
             ShipPtr1->Owner = 0;
         } else {
@@ -758,7 +761,7 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
             {
                 ShipPtr1->ShieldBonus += (ShipPtr2->SType - ShipPtr1->SType);
             } else {
-                ShipPtr1->ShieldBonus++;
+                ++(ShipPtr1->ShieldBonus);
             }
             ShipPtr1->PosX = MOVESHIP_FromX;
             ShipPtr1->PosY = MOVESHIP_FromY;

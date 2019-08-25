@@ -39,7 +39,7 @@ enum { CIVVAR_NONE  = 0,
 #define MASK_SIEDLER    0xf0
 
 #define LOGOSIZE        14500
-#define LOGOMEMSIZE     (128*128*7/8)
+#define LOGOMEMSIZE     (int)(128*128*7/8)
 
 #define RDELAY          1
 #define PAUSE           10 //85
@@ -119,7 +119,7 @@ enum {  SCREEN_PLANET = 1,
 
 #define SOUNDS          4
 #define CACHES          4
-#define IMAGES          2
+#define IMAGES          3
 #define GADGETS         3
 #define FONTS           5
 

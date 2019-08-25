@@ -108,7 +108,8 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 memcpy(s, PText[266], len1);
                 s[len1++]=' ';
                 _s = dez2out(i,0,s+len1);
-                *_s++='%'; *_s++=' ';
+                *_s++='%';
+                *_s++=' ';
                 strcpy(_s, PText[267]);
                 _s = s;
             } else {
@@ -128,10 +129,10 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             {
                 KLICKGAD(60,200);
                 RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
-                if ((Save.JSteuer[ActPlayer-1]>=1) &&
-                    (Save.JSteuer[ActPlayer-1]<=99))
+                if ((0   < Save.JSteuer[ActPlayer-1]) &&
+                    (100 > Save.JSteuer[ActPlayer-1]))
                 {
-                    ++Save.JSteuer[ActPlayer-1];
+                    ++(Save.JSteuer[ActPlayer-1]);
                 } else {
                     Save.JSteuer[ActPlayer-1] = i;
                 }
@@ -171,7 +172,8 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 memcpy(s, PText[278], len1);
                 s[len1++]=' ';
                 _s = dez2out(i, 0, s+len1);
-                *_s++='%'; *_s++=' ';
+                *_s++='%';
+                *_s++=' ';
                 strcpy(_s, PText[279]);
 
                 WRITE(256,170,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
@@ -182,7 +184,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                       || (((MouseX(0)<60)  || (MouseX(0)>176))
                                        && ((MouseX(0)<330) || (MouseX(0)>446))));
-                if ((MouseX(0)>=60) && (MouseX(0)<=176))
+                if ((MouseX(0)>59) && (MouseX(0)<177))
                 {
                     KLICKGAD(60,200);
                     RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
@@ -242,7 +244,8 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 memcpy(s, PText[290], len1);
                 s[len1++] = ' ';
                 _s = dez2out(XCosts, 0, s+len1);
-                *_s++=','; *_s++=' ';
+                *_s++=',';
+                *_s++=' ';
                 strcpy(_s, PText[291]);
 
                 len1 = strlen(PText[292]);
@@ -297,7 +300,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                                   || (((MouseX(0)<60) || (MouseX(0)>176))
                                    && ((MouseX(0)<330)|| (MouseX(0)>446))));
             SYSINFO(0,0);
-            if ((MouseX(0)>=60) && (MouseX(0)<=176))
+            if ((MouseX(0)>59) && (MouseX(0)<177))
             {
                 KLICKGAD(60,200);
                 RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
@@ -401,7 +404,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                                   || (((MouseX(0)<60)  || (MouseX(0)>176))
                                    && ((MouseX(0)<330) || (MouseX(0)>446))));
             SYSINFO(0,0);
-            if ((MouseX(0)>=60) && (MouseX(0)<=176))
+            if ((MouseX(0)>59) && (MouseX(0)<177))
             {
                 KLICKGAD(60,200);
                 RECTWIN(MyRPort_PTR[0],0,30,80,480,230);

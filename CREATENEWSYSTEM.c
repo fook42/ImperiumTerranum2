@@ -15,7 +15,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
     srand((unsigned) time(&t));
 
     Save.ImperatorState[CivVar-1] += 50;
-    SystemHeader[ActSys].Planets = (rand()%(MAXPLANETS-3))+4;
+    SystemHeader[ActSys].Planets    = (rand()%(MAXPLANETS-3))+4;
     SystemHeader[ActSys].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[ActSys].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
     if (NULL == SystemHeader[ActSys].PlanetMemA)
     {
@@ -23,14 +23,15 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
         return;
     }
     life_possible = false;
-    for (i = 0; i < SystemHeader[ActSys].Planets; i++)
+    for (i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
         MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
 
         MyPlanetHeader->Class = rand()%CLASS_MAX_TYPES;
-        if ( (CLASS_DESERT == MyPlanetHeader->Class) || (CLASS_HALFEARTH == MyPlanetHeader->Class)
+        if ( (false == life_possible ) &&
+            ((CLASS_DESERT == MyPlanetHeader->Class) || (CLASS_HALFEARTH == MyPlanetHeader->Class)
           || (CLASS_EARTH  == MyPlanetHeader->Class) || (CLASS_ICE       == MyPlanetHeader->Class)
-          || (CLASS_STONES == MyPlanetHeader->Class) || (CLASS_WATER     == MyPlanetHeader->Class))
+          || (CLASS_STONES == MyPlanetHeader->Class) || (CLASS_WATER     == MyPlanetHeader->Class)))
         {
             life_possible = true;
         }
@@ -49,7 +50,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
         strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
         strcat(MyPlanetHeader->PName, Romanum[i]);
 
-        MyPlanetHeader->PosX = (i*3.0)+4.0;
+        MyPlanetHeader->PosX = (float) (i+i+i+4);
         MyPlanetHeader->PosY = MyPlanetHeader->PosX;
         if (((CLASS_EARTH == MyPlanetHeader->Class) || (CLASS_WATER == MyPlanetHeader->Class)) && (0 == (rand()%10)))
         {
@@ -90,7 +91,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
         {
             MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[j]);
 
-            d = 1.0/((3.0+j*3.0)+1.0);
+            d = 1.0/((float) (j+j+j+4));
             sin_rot = sin(d);
             cos_rot = cos(d);
             d = MyPlanetHeader->PosX;

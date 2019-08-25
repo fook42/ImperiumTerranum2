@@ -17,7 +17,7 @@ char* SHIPINFO_MAKETEXT(char* s, char* text_PTR)
 
 void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
 {
-    sint16  w1,w2,Col1,Col2;
+    sint16  w1,w2,Col1,Col2,ColX;
     uint8   c1,c2,i;
     double  Step;
     sint16  TactStep;
@@ -30,10 +30,13 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
     WRITE(443-TactStep,297,1,1,MyRPort_PTR[1],1,"#");
 
     Step = (MyShipPtr->Shield / 3);
-    if (0 == it_round(Step)) { Step = 1.0f; }
-    Col1 = it_round( (MyShipPtr->Tactical+Step)*(255/Step));
-    Col2 = it_round(-(MyShipPtr->Tactical-Step)*(255/Step));
-    for(i = 0; i < 8; i++)
+    if (2 > MyShipPtr->Shield) { Step = 1.0f; }
+    ColX = it_round(255*(MyShipPtr->Tactical/Step));
+    Col1 = 255+ColX;
+    Col1 = 255-ColX;
+//    Col1 = it_round( (MyShipPtr->Tactical+Step)*(255/Step));
+//    Col2 = it_round(-(MyShipPtr->Tactical-Step)*(255/Step));
+    for(i = 0; i < 8; ++i)
     {
         if (0 > Col1)      { c1 = 0; }
         else if (255<Col1) { c1 = 255; }
@@ -158,7 +161,7 @@ void SHIPINFO(uint8 ActSys)
     WRITE(290,202,1,0,MyRPort_PTR[1],2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[199]);
-    if (MyShipPtr->Age<200)
+    if (200 > MyShipPtr->Age)
     {
         (void)dez2out(Year-(MyShipPtr->Age), 0, _s);
     } else {
@@ -175,36 +178,39 @@ void SHIPINFO(uint8 ActSys)
         if (LMB_PRESSED)
         {
             PLAYSOUND(1,300);
-            if ((MouseY(1)>=455) && (MouseY(1)<=480))
+            if ((454<MouseY(1)) && (481>MouseY(1)))
             {
-                if ((MouseX(1)>=380) && (MouseX(1)<=410)
+                if ((379<MouseX(1)) && (411>MouseX(1))
                         && (MyShipPtr->Repair < ShipData(MyShipPtr->SType).MaxMove))
                 {
                     ++(MyShipPtr->Repair);
                 }
-                if ((MouseX(1)>=490) && (MouseX(1)<=525)
+                else if ((489<MouseX(1)) && (526>MouseX(1))
                         && (MyShipPtr->Repair > 0))
                 {
                     --(MyShipPtr->Repair);
                 }
                 SHIPINFO_WRITEDATA(MyShipPtr);
             }
-            if ((MouseY(1)>=315) && (MouseY(1)<=345))
+            else if ((314<MouseY(1)) && (346>MouseY(1)))
             {
-                if ((MouseX(1)>=380) && (MouseX(1)<=410)
-                        && (MyShipPtr->Tactical < (ShipData(MyShipPtr->SType).WeaponPower-2))
+                if ((379<MouseX(1)) && (411>MouseX(1))
+                        && (   MyShipPtr->Tactical  < (ShipData(MyShipPtr->SType).WeaponPower-2))
                         && ((3*MyShipPtr->Tactical) < (MyShipPtr->Shield-2)))
                 {
                     ++(MyShipPtr->Tactical);
                 }
-                if ((MouseX(1)>=490) && (MouseX(1)<=525)
-                        && ((-3*MyShipPtr->Tactical) < (MyShipPtr->Shield-2))
-                        && ((-MyShipPtr->Tactical) < (ShipData(MyShipPtr->SType).WeaponPower-2)))
+                else if ((489<MouseX(1)) && (526>MouseX(1))
+                        && (   MyShipPtr->Tactical  > -(ShipData(MyShipPtr->SType).WeaponPower-2))
+                        && ((3*MyShipPtr->Tactical) > -(MyShipPtr->Shield-2)))
+
                 {
                     --(MyShipPtr->Tactical);
                 }
                 SHIPINFO_WRITEDATA(MyShipPtr);
             }
+            while (LMB_PRESSED)
+            { };
         }
     }
     while (RMB_NOTPRESSED);

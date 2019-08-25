@@ -14,7 +14,7 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
     CivVar1 = GETCIVVAR(CivFlag1);
     CivVar2 = GETCIVVAR(CivFlag2);
     TechID = 0;
-    for (i = 41; i>=1; i--)
+    for (i = 41; i>0; i--)
     {
         if ((0 <  Save.TechCosts[CivVar1-1].data[i]) &&
             (0 >= Save.TechCosts[CivVar2-1].data[i]))

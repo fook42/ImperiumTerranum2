@@ -344,7 +344,7 @@ void DIPLOMACY()
                                 if (0 != Opts)
                                 {
                                     Answer = GETOPTION(Opts, OptArr, CivFlag);
-                                    if (Answer == 0)
+                                    if (0 == Answer)
                                     {
                                         return;
                                     }

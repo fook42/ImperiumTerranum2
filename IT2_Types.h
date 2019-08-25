@@ -43,7 +43,7 @@ typedef struct ByteArr42 { uint8    data[43]; } ByteArr42; // range 0..42
 
 typedef struct LongArr42 { sint32   data[43]; } LongArr42;
 
-typedef struct r_Coords { double    data[41]; } r_Coords;
+typedef struct r_Coords { double    data[41]; } r_Coords_t;
 
 typedef struct ITBitMap {
     uint16          BytesPerRow, Rows;
@@ -151,6 +151,6 @@ typedef struct VectorObj {
     sint16  PosX, PosY;
     uint8   Flag, Size1, Size2;
     double  X1[6],Y1[6],Z1[6],X2[6],Y2[6],Z2[6];
-} VectorObj;
+} VectorObj_t;
 
 #endif

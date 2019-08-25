@@ -16,7 +16,7 @@ void CLOCK()
     Stunde = (uint8) (ds->ds_Minute/60);
     Minute = (uint8) (ds->ds_Minute%60);
 
-    if (((Stunde<9) || (Stunde>21)) && (!DoClock))
+    if (((9 > Stunde) || (21 < Stunde)) && (!DoClock))
     {
         DoClock = true;
         MAKEWINBORDER(MyRPort_PTR[0],537,350,614,372,29,12,0);

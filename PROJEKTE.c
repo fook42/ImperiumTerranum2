@@ -6,7 +6,7 @@
 void PROJEKTE()
 {
     uint8   i,k,CivVar;
-    uint16  j;
+    uint16  j, xpos;
     uint16  YPos[8];
     r_PlanetHeader* MyPlanetHeader;
 	struct Window* PRJ_Window;
@@ -20,30 +20,34 @@ void PROJEKTE()
 	RPort_PTR = PRJ_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,511,510,12,6,1);
 
-    for (i = 1; i<4; i++)
+    xpos = 172;
+    for (i = 1; i<4; ++i)
     {
-        WRITE(i*167+5,14,12,WRITE_Right,RPort_PTR,0,Project.data[i]);
+        WRITE(xpos,14,12,WRITE_Right,RPort_PTR,0,Project.data[i]);
+        xpos += 167;
         YPos[i] = 40;
     }
-    for (i = 0; i < Save.Systems; i++)
+    for (i = 0; i < Save.Systems; ++i)
     {
         if (NULL != SystemHeader[i].PlanetMemA)
         {
-            for (j = 0; j<SystemHeader[i].Planets; j++)
+            for (j = 0; j<SystemHeader[i].Planets; ++j)
             {
                 MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) != 0)
+                if (0 != (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
                 {
                     CivVar = GETCIVVAR(MyPlanetHeader->PFlags);
-                    if ((Save.SSMoney[ActPlayer-1][CivVar-1] > Save.WarPower[CivVar-1]*39) || (CivVar == ActPlayer))
+                    if ((Save.SSMoney[ActPlayer-1][CivVar-1] > (Save.WarPower[CivVar-1]*39)) || (CivVar == ActPlayer))
                     {
-                        for (k = 1; k<4; k++)
+                        xpos = 172;
+                        for (k = 1; k<4; ++k)
                         {
-                            if ((MyPlanetHeader->ProjectPtr->data[k] != 0) && (YPos[k]<500))
+                            if (0 != (MyPlanetHeader->ProjectPtr->data[k]) && (500 > YPos[k]))
                             {
-                                WRITE(k*167+5,YPos[k],GETCIVFLAG(CivVar),WRITE_Right,RPort_PTR,0,MyPlanetHeader->PName);
+                                WRITE(xpos,YPos[k],GETCIVFLAG(CivVar),WRITE_Right,RPort_PTR,0,MyPlanetHeader->PName);
                                 YPos[k] += 11;
                             }
+                            xpos += 167;
                         }
                     }
                 }
@@ -51,7 +55,7 @@ void PROJEKTE()
         }
     }
     j = 0;
-    for (i = 1; i<4; i++)
+    for (i = 1; i<4; ++i)
     {
         if (YPos[i]>j)
         {
@@ -59,40 +63,45 @@ void PROJEKTE()
         }
     }
     j += 15;
-    if (j<500)
+    if (500 > j)
     {
-        for (i = 1; i<8; i++)
+        SetAPen(RPort_PTR,12);
+        Move(RPort_PTR, 10,j-10);
+        Draw(RPort_PTR,500,j-10);
+
+        for (i = 1; i<8; ++i)
         {
             YPos[i] = j;
         }
-        SetAPen(RPort_PTR,12);
-        Move(RPort_PTR, 10,YPos[1]-10);
-        Draw(RPort_PTR,500,YPos[1]-10);
-        for (i = 4; i<8; i++)
+        xpos = 130;
+        for (i = 4; i<8; ++i)
         {
-            WRITE((i-3)*125+5,YPos[i],12,WRITE_Right,RPort_PTR,0,Project.data[i]);
+            WRITE(xpos,YPos[i],12,WRITE_Right,RPort_PTR,0,Project.data[i]);
+            xpos += 125;
             YPos[i] += 15;
         }
 
-        for (i = 0; i < Save.Systems; i++)
+        for (i = 0; i < Save.Systems; ++i)
         {
             if (NULL != SystemHeader[i].PlanetMemA)
             {
-                for (j = 0; j<SystemHeader[i].Planets; j++)
+                for (j = 0; j<SystemHeader[i].Planets; ++j)
                 {
                     MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                    if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) != 0)
+                    if (0 != (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
                     {
                         CivVar = GETCIVVAR(MyPlanetHeader->PFlags);
-                        if ((Save.SSMoney[ActPlayer-1][CivVar-1]>Save.WarPower[CivVar-1]*39) || (CivVar == ActPlayer))
+                        if ((Save.SSMoney[ActPlayer-1][CivVar-1] > (Save.WarPower[CivVar-1]*39)) || (CivVar == ActPlayer))
                         {
-                            for (k = 4; k<=7; k++)
+                            xpos = 130;
+                            for (k = 4; k<8; ++k)
                             {
-                                if ((MyPlanetHeader->ProjectPtr->data[k] != 0) && (YPos[k]<500))
+                                if ((0 != MyPlanetHeader->ProjectPtr->data[k]) && (500 > YPos[k]))
                                 {
-                                    WRITE((k-3)*125+5,YPos[k],GETCIVFLAG(CivVar),WRITE_Right,RPort_PTR,0,MyPlanetHeader->PName);
+                                    WRITE(xpos,YPos[k],GETCIVFLAG(CivVar),WRITE_Right,RPort_PTR,0,MyPlanetHeader->PName);
                                     YPos[k] += 11;
                                 }
+                                xpos += 125;
                             }
                         }
                     }
@@ -101,7 +110,7 @@ void PROJEKTE()
         }
     }
     j = 0;
-    for (i = 1; i<8; i++)
+    for (i = 1; i<8; ++i)
     {
         if (YPos[i]>j)
         {
@@ -109,32 +118,33 @@ void PROJEKTE()
         }
     }
     j += 30;
-    if (j<500)
+    if (500 > j)
     {
-        for (i = 4; i<8; i++)
+        SetAPen(RPort_PTR,12);
+        Move(RPort_PTR, 10,j-25);
+        Draw(RPort_PTR,500,j-25);
+        WRITE(255,j-15,12,WRITE_Center,RPort_PTR,0,PText[698]);
+        for (i = 4; i<8; ++i)
         {
             YPos[i] = j;
         }
-        SetAPen(RPort_PTR,12);
-        Move(RPort_PTR, 10,YPos[4]-25);
-        Draw(RPort_PTR,500,YPos[4]-25);
-        WRITE(255,YPos[4]-15,12,WRITE_Center,RPort_PTR,0,PText[698]);
-        for (i = 0; i < Save.Systems; i++)
+        for (i = 0; i < Save.Systems; ++i)
         {
             if (NULL != SystemHeader[i].PlanetMemA)
             {
-                for (j = 0; j<SystemHeader[i].Planets; j++)
+                for (j = 0; j<SystemHeader[i].Planets; ++j)
                 {
                     MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                    if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) != 0)
+                    if (0 != (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
                     {
                         CivVar = GETCIVVAR(MyPlanetHeader->PFlags);
-                        if ((Save.SSMoney[ActPlayer-1][CivVar-1]>Save.WarPower[CivVar-1]*39) || (CivVar == ActPlayer))
+                        if ((Save.SSMoney[ActPlayer-1][CivVar-1] > (Save.WarPower[CivVar-1]*39)) || (CivVar == ActPlayer))
                         {
-                            if ((MyPlanetHeader->ProjectID>=4) && (MyPlanetHeader->ProjectID<=7) && (YPos[MyPlanetHeader->ProjectID]<500))
+                            k = MyPlanetHeader->ProjectID;
+                            if ((3 < k) && (8 > k) && (500 > YPos[k]))
                             {
-                                WRITE((MyPlanetHeader->ProjectID-3)*125+5,YPos[MyPlanetHeader->ProjectID],GETCIVFLAG(CivVar),WRITE_Right,RPort_PTR,0,MyPlanetHeader->PName);
-                                YPos[MyPlanetHeader->ProjectID] += 11;
+                                WRITE((k-4)*125+130,YPos[k],GETCIVFLAG(CivVar),WRITE_Right,RPort_PTR,0,MyPlanetHeader->PName);
+                                YPos[k] += 11;
                             }
                         }
                     }

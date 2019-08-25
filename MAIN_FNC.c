@@ -19,7 +19,7 @@ void MAIN_FNC()
     if (!INITLANG()) { return; }
     INITVARS();
 
-    for (i = 0; i<FONTS; i++)
+    for (i = 0; i<FONTS; ++i)
     {
         if (OpenDiskFont(&(CustomTA[i])) == NULL)
         {
@@ -57,8 +57,6 @@ void MAIN_FNC()
     CREATEPATHS();
 
     /************************************/
-
-
     HelpID = 0xA0000;
     INITSTDTAGS();
     XScreen = OpenScreenTagList(&NeuScreen, Tags);
