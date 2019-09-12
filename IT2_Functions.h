@@ -139,6 +139,7 @@ void SETDARKCOLOR(char* FName, r_Col* Colors);
 void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMemL);
 // bool LOADSOUNDS();
 bool LOADSOUNDS(char* path, uint16 pathlen, APTR* SMemA, uint32* SMemL);
+int ff_round(long int value);
 void ROTATEpX(VectorObj_t* actObject);
 void ROTATEpY(VectorObj_t* actObject);
 void ROTATEpZ(VectorObj_t* actObject);

@@ -149,8 +149,8 @@ end;
 */
 typedef struct VectorObj {
     sint16  PosX, PosY;
-    uint8   Flag, Size1, Size2;
-    double  X1[6],Y1[6],Z1[6],X2[6],Y2[6],Z2[6];
+    uint8   Flag, Size1, Size2, __spare;    // spare added to align the structure
+    sint32  X1[6],Y1[6],Z1[6],X2[6],Y2[6],Z2[6];
 } VectorObj_t;
 
 #endif

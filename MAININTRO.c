@@ -13,6 +13,11 @@
 #define FactorMSin (-0.03998933418663416) // sin(-0.04);
 #define FactorMCos ( 0.99920010666097794) // cos(-0.04);
 
+#define intFactorSin  ( 41 )   // =~ 1024*sin( 0.04);
+#define intFactorCos  ( 1023 ) // =~ 1024*cos( 0.04);
+#define intFactorMSin (-41)    // =~ 1024*sin(-0.04);
+#define intFactorMCos ( 1023 ) // =~ 1024*cos(-0.04);
+
 // will be global variables... waste of memory - maybe we can move them to the heap? ...
 uint8       AScr;
 
@@ -57,7 +62,7 @@ void SETDARKCOLOR(char* FName, r_Col* Colors)
 
                 Colors[i] = *((r_Col*) AddrX);
                 AddrX += 3;
-                i++;
+                ++i;
             }
             while (AddrX < AddrEnd);
         }
@@ -81,7 +86,7 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
     {
         if (NULL != MyScreen[i])
         {
-            RECTWIN(MyRPort_PTR[i],0,0,75,639,434);
+//            RECTWIN(MyRPort_PTR[i],0,0,75,639,434);
             CloseScreen(MyScreen[i]);
             MyScreen[i] = NULL;
             MyRPort_PTR[i] = NULL;
@@ -117,113 +122,119 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
     custom.dmacon = BITCLR | DMAF_AUDIO; // 0x000F
 }
 
+// ... fixfloat-round ----------
+
+int ff_round(long int value)
+{
+    return (((value>>9)+1)>>1);
+}
 
 // - ROTATE- subroutines -------------------------------------
 void ROTATEpX(VectorObj_t* actObject)
 {
     int     i;
-    double  store;
+    sint32  store;
     for (i = 0; i<actObject->Size1; ++i)
     {
         store = actObject->Y1[i];
-        actObject->Y1[i] = store*FactorCos - actObject->Z1[i]*FactorSin;
-        actObject->Z1[i] = store*FactorSin + actObject->Z1[i]*FactorCos;
+        actObject->Y1[i] = (store*intFactorCos - actObject->Z1[i]*intFactorSin)>>10;
+        actObject->Z1[i] = (store*intFactorSin + actObject->Z1[i]*intFactorCos)>>10;
     }
     for (i = 0; i<actObject->Size2; ++i)
     {
         store = actObject->Y2[i];
-        actObject->Y2[i] = store*FactorCos - actObject->Z2[i]*FactorSin;
-        actObject->Z2[i] = store*FactorSin + actObject->Z2[i]*FactorCos;
+        actObject->Y2[i] = (store*intFactorCos - actObject->Z2[i]*intFactorSin)>>10;
+        actObject->Z2[i] = (store*intFactorSin + actObject->Z2[i]*intFactorCos)>>10;
     }
 }
 
 void ROTATEpY(VectorObj_t* actObject)
 {
     int     i;
-    double  store;
+    sint32  store;
     for (i = 0; i<actObject->Size1; ++i)
     {
         store = actObject->X1[i];
-        actObject->X1[i] = store*FactorCos - actObject->Z1[i]*FactorSin;
-        actObject->Z1[i] = store*FactorSin + actObject->Z1[i]*FactorCos;
+        actObject->X1[i] = (store*intFactorCos - actObject->Z1[i]*intFactorSin)>>10;
+        actObject->Z1[i] = (store*intFactorSin + actObject->Z1[i]*intFactorCos)>>10;
     }
     for (i = 0; i<actObject->Size2; ++i)
     {
         store = actObject->X2[i];
-        actObject->X2[i] = store*FactorCos - actObject->Z2[i]*FactorSin;
-        actObject->Z2[i] = store*FactorSin + actObject->Z2[i]*FactorCos;
+        actObject->X2[i] = (store*intFactorCos - actObject->Z2[i]*intFactorSin)>>10;
+        actObject->Z2[i] = (store*intFactorSin + actObject->Z2[i]*intFactorCos)>>10;
     }
 }
 
 void ROTATEpZ(VectorObj_t* actObject)
 {
     int     i;
-    double  store;
+    sint32  store;
     for (i = 0; i<actObject->Size1; ++i)
     {
         store = actObject->X1[i];
-        actObject->X1[i] = store*FactorCos - actObject->Y1[i]*FactorSin;
-        actObject->Y1[i] = store*FactorSin + actObject->Y1[i]*FactorCos;
+        actObject->X1[i] = (store*intFactorCos - actObject->Y1[i]*intFactorSin)>>10;
+        actObject->Y1[i] = (store*intFactorSin + actObject->Y1[i]*intFactorCos)>>10;
     }
     for (i = 0; i<actObject->Size2; ++i)
     {
         store = actObject->X2[i];
-        actObject->X2[i] = store*FactorCos - actObject->Y2[i]*FactorSin;
-        actObject->Y2[i] = store*FactorSin + actObject->Y2[i]*FactorCos;
+        actObject->X2[i] = (store*intFactorCos - actObject->Y2[i]*intFactorSin)>>10;
+        actObject->Y2[i] = (store*intFactorSin + actObject->Y2[i]*intFactorCos)>>10;
     }
 }
 
 void ROTATEnX(VectorObj_t* actObject)
 {
     int     i;
-    double  store;
+    sint32  store;
     for (i = 0; i<actObject->Size1; ++i)
     {
         store = actObject->Y1[i];
-        actObject->Y1[i] = store*FactorMCos - actObject->Z1[i]*FactorMSin;
-        actObject->Z1[i] = store*FactorMSin + actObject->Z1[i]*FactorMCos;
+        actObject->Y1[i] = (store*intFactorMCos - actObject->Z1[i]*intFactorMSin)>>10;
+        actObject->Z1[i] = (store*intFactorMSin + actObject->Z1[i]*intFactorMCos)>>10;
     }
     for (i = 0; i<actObject->Size2; ++i)
     {
         store = actObject->Y2[i];
-        actObject->Y2[i] = store*FactorMCos - actObject->Z2[i]*FactorMSin;
-        actObject->Z2[i] = store*FactorMSin + actObject->Z2[i]*FactorMCos;
+        actObject->Y2[i] = (store*intFactorMCos - actObject->Z2[i]*intFactorMSin)>>10;
+        actObject->Z2[i] = (store*intFactorMSin + actObject->Z2[i]*intFactorMCos)>>10;
     }
 }
 
 void ROTATEnY(VectorObj_t* actObject)
 {
     int     i;
-    double  store;
+    sint32  store;
     for (i = 0; i<actObject->Size1; ++i)
     {
         store = actObject->X1[i];
-        actObject->X1[i] = store*FactorMCos - actObject->Z1[i]*FactorMSin;
-        actObject->Z1[i] = store*FactorMSin + actObject->Z1[i]*FactorMCos;
+        actObject->X1[i] = (store*intFactorMCos - actObject->Z1[i]*intFactorMSin)>>10;
+        actObject->Z1[i] = (store*intFactorMSin + actObject->Z1[i]*intFactorMCos)>>10;
     }
     for (i = 0; i<actObject->Size2; ++i)
     {
         store = actObject->X2[i];
-        actObject->X2[i] = store*FactorMCos - actObject->Z2[i]*FactorMSin;
-        actObject->Z2[i] = store*FactorMSin + actObject->Z2[i]*FactorMCos;
+        actObject->X2[i] = (store*intFactorMCos - actObject->Z2[i]*intFactorMSin)>>10;
+        actObject->Z2[i] = (store*intFactorMSin + actObject->Z2[i]*intFactorMCos)>>10;
     }
 }
 
 void ROTATEnZ(VectorObj_t* actObject)
 {
     int     i;
-    double  store;
+    sint32  store;
     for (i = 0; i<actObject->Size1; ++i)
     {
         store = actObject->X1[i];
-        actObject->X1[i] = store*FactorMCos - actObject->Y1[i]*FactorMSin;
-        actObject->Y1[i] = store*FactorMSin + actObject->Y1[i]*FactorMCos;
+        actObject->X1[i] = (store*intFactorMCos - actObject->Y1[i]*intFactorMSin)>>10;
+        actObject->Y1[i] = (store*intFactorMSin + actObject->Y1[i]*intFactorMCos)>>10;
     }
     for (i = 0; i<actObject->Size2; ++i)
     {
         store = actObject->X2[i];
-        actObject->X2[i] = store*FactorMCos - actObject->Y2[i]*FactorMSin;
-        actObject->Y2[i] = store*FactorMSin + actObject->Y2[i]*FactorMCos;
+        actObject->X2[i] = (store*intFactorMCos - actObject->Y2[i]*intFactorMSin)>>10;
+        actObject->Y2[i] = (store*intFactorMSin + actObject->Y2[i]*intFactorMCos)>>10;
     }
 }
 // -----------------------------------------------------------
@@ -240,8 +251,8 @@ void FLY(VectorObj_t* actObject, double Factor)
         actObject->X1[i] = actObject->X1[i]*Factor;
         actObject->Y1[i] = actObject->Y1[i]*Factor;
         actObject->Z1[i] = actObject->Z1[i]*Factor;
-        if (((VPosX-it_round(actObject->X1[i]))<0)  || ((VPosX-it_round(actObject->X1[i]))>639)
-         || ((VPosY-it_round(actObject->Y1[i]))<75) || ((VPosY-it_round(actObject->Y1[i]))>434))
+        if (((VPosX-ff_round(actObject->X1[i]))<0)  || ((VPosX-ff_round(actObject->X1[i]))>639)
+         || ((VPosY-ff_round(actObject->Y1[i]))<75) || ((VPosY-ff_round(actObject->Y1[i]))>434))
         {
             actObject->Size1 = 0;
             return;
@@ -252,8 +263,8 @@ void FLY(VectorObj_t* actObject, double Factor)
         actObject->X2[i] = actObject->X2[i]*Factor;
         actObject->Y2[i] = actObject->Y2[i]*Factor;
         actObject->Z2[i] = actObject->Z2[i]*Factor;
-        if (((VPosX-it_round(actObject->X2[i]))<0)  || ((VPosX-it_round(actObject->X2[i]))>639)
-         || ((VPosY-it_round(actObject->Y2[i]))<75) || ((VPosY-it_round(actObject->Y2[i]))>434))
+        if (((VPosX-ff_round(actObject->X2[i]))<0)  || ((VPosX-ff_round(actObject->X2[i]))>639)
+         || ((VPosY-ff_round(actObject->Y2[i]))<75) || ((VPosY-ff_round(actObject->Y2[i]))>434))
         {
             actObject->Size1 = 0;
             actObject->Size2 = 0;
@@ -333,6 +344,9 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
         {
             actObject->X1[j] = (actObject->PosX+1)-actObject->X1[j];
             actObject->Y1[j] = (actObject->PosY+1)-actObject->Y1[j]-235;
+            actObject->X1[j] = (actObject->X1[j])<<10;
+            actObject->Y1[j] = (actObject->Y1[j])<<10;
+            actObject->Z1[j] = (actObject->Z1[j])<<10;
         }
         if (0 < actObject->Size2)
         {
@@ -340,6 +354,9 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
             {
                 actObject->X2[j] = (actObject->PosX+1)-actObject->X2[j];
                 actObject->Y2[j] = (actObject->PosY+1)-actObject->Y2[j]-235;
+                actObject->X2[j] = (actObject->X2[j])<<10;
+                actObject->Y2[j] = (actObject->Y2[j])<<10;
+                actObject->Z2[j] = (actObject->Z2[j])<<10;
             }
         }
     }
@@ -380,29 +397,29 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
                     SetAPen(RPort_PTR,0);
                     if (4 < actObject->Size2)
                     {
-                        AreaMove(RPort_PTR,VPosX-it_round(actObject->X2[3]),VPosY-it_round(actObject->Y2[3]));
-                        AreaDraw(RPort_PTR,VPosX-it_round(actObject->X2[4]),VPosY-it_round(actObject->Y2[4]));
-                        AreaDraw(RPort_PTR,VPosX-it_round(actObject->X2[5]),VPosY-it_round(actObject->Y2[5]));
+                        AreaMove(RPort_PTR,VPosX-ff_round(actObject->X2[3]),VPosY-ff_round(actObject->Y2[3]));
+                        AreaDraw(RPort_PTR,VPosX-ff_round(actObject->X2[4]),VPosY-ff_round(actObject->Y2[4]));
+                        AreaDraw(RPort_PTR,VPosX-ff_round(actObject->X2[5]),VPosY-ff_round(actObject->Y2[5]));
                     }
-                    AreaMove(RPort_PTR,VPosX-it_round(actObject->X1[3]),VPosY-it_round(actObject->Y1[3]));
-                    AreaDraw(RPort_PTR,VPosX-it_round(actObject->X1[4]),VPosY-it_round(actObject->Y1[4]));
-                    AreaDraw(RPort_PTR,VPosX-it_round(actObject->X1[5]),VPosY-it_round(actObject->Y1[5]));
+                    AreaMove(RPort_PTR,VPosX-ff_round(actObject->X1[3]),VPosY-ff_round(actObject->Y1[3]));
+                    AreaDraw(RPort_PTR,VPosX-ff_round(actObject->X1[4]),VPosY-ff_round(actObject->Y1[4]));
+                    AreaDraw(RPort_PTR,VPosX-ff_round(actObject->X1[5]),VPosY-ff_round(actObject->Y1[5]));
 
                     AreaEnd(RPort_PTR);
                     SetAPen(RPort_PTR,1);
                 }
-                AreaMove(    RPort_PTR,VPosX-it_round(actObject->X1[0]),VPosY-it_round(actObject->Y1[0]));
+                AreaMove(    RPort_PTR,VPosX-ff_round(actObject->X1[0]),VPosY-ff_round(actObject->Y1[0]));
                 for (k = 1; k<actObject->Size1; ++k)
                 {
-                    AreaDraw(RPort_PTR,VPosX-it_round(actObject->X1[k]),VPosY-it_round(actObject->Y1[k]));
+                    AreaDraw(RPort_PTR,VPosX-ff_round(actObject->X1[k]),VPosY-ff_round(actObject->Y1[k]));
                 }
                 AreaEnd(RPort_PTR);
                 if (0 < actObject->Size2)
                 {
-                    AreaMove(    RPort_PTR,VPosX-it_round(actObject->X2[0]),VPosY-it_round(actObject->Y2[0]));
+                    AreaMove(    RPort_PTR,VPosX-ff_round(actObject->X2[0]),VPosY-ff_round(actObject->Y2[0]));
                     for (k = 1; k<actObject->Size2; ++k)
                     {
-                        AreaDraw(RPort_PTR,VPosX-it_round(actObject->X2[k]),VPosY-it_round(actObject->Y2[k]));
+                        AreaDraw(RPort_PTR,VPosX-ff_round(actObject->X2[k]),VPosY-ff_round(actObject->Y2[k]));
                     }
                     AreaEnd(RPort_PTR);
                 }
@@ -663,55 +680,55 @@ void MAININTRO()
 
     /* T */
     *VObj[0] = (VectorObj_t){0,0,ROTATE_PY|ROTATE_PX,
-        6,4,{38, 9, 9, 9, 9,38},{ 2, 2,10,10, 2, 2},{1,1,1,3,3,3},
+        6,4,0,{38, 9, 9, 9, 9,38},{ 2, 2,10,10, 2, 2},{1,1,1,3,3,3},
         {18,18,18,18, 0, 0},{11,36,36,11, 0, 0},{1,1,3,3,0,0}};
     /* U */
     *VObj[1] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PZ,
-        6,6,{91,80,80,80,80,91},{1,1,26,26,1,1},{1,1,1,3,3,3},
+        6,6,0,{91,80,80,80,80,91},{1,1,26,26,1,1},{1,1,1,3,3,3},
         {111,100,100,100,100,111},{1,1,24,24,1,1},{1,1,1,3,3,3}};
     /* H */
     *VObj[2] = (VectorObj_t){0,0,ROTATE_PY|ROTATE_NZ,
-        6,6,{163,152,152,152,152,163},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{163,152,152,152,152,163},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {184,173,173,173,173,184},{2,2,12,12,2,2},{1,1,1,3,3,3}};
     /* B */
     *VObj[3] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{209,187,187,187,187,209},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,6,0,{209,187,187,187,187,209},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {205,187,187,187,187,205},{15,15,36,36,15,15},{1,1,1,3,3,3}};
     /* Y */
     *VObj[4] = (VectorObj_t){0,0,ROTATE_PZ|ROTATE_NX,
-        6,6,{229,217,229,229,217,229},{2,2,19,19,2,2},{1,1,1,3,3,3},
+        6,6,0,{229,217,229,229,217,229},{2,2,19,19,2,2},{1,1,1,3,3,3},
         {254,242,236,236,242,254},{2,2,12,12,2,2},{1,1,1,3,3,3}};
     /* T */
     *VObj[5] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_NY,
-        6,4,{285,256,256,256,256,285},{2,2,9,9,1,1},{1,1,1,3,3,3},
+        6,4,0,{285,256,256,256,256,285},{2,2,9,9,1,1},{1,1,1,3,3,3},
         {266,266,266,266,0,0},{11,36,36,11,0,0},{1,1,3,3,0,0}};
     /* E */
     *VObj[6] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PY,
-        6,6,{318,289,289,289,289,318},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,6,0,{318,289,289,289,289,318},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {315,289,289,289,289,315},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* F */
     *VObj[7] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{440,410,410,410,410,440},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,6,0,{440,410,410,410,410,440},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {437,410,410,410,410,437},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* T */
     *VObj[8] = (VectorObj_t){0,0,ROTATE_NZ|ROTATE_NY,
-        6,4,{472,443,443,443,443,472},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,4,0,{472,443,443,443,443,472},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {452,452,452,452,0,0},{11,36,36,11,0,0},{1,1,3,3,0,0}};
     /* W */
     *VObj[9] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PZ,
-        6,6,{486,475,486,486,475,486},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{486,475,486,486,475,486},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {506,497,492,492,497,506},{2,2,16,16,2,2},{1,1,1,3,3,3}};
     /* A */
     *VObj[10] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PY,
-        6,0,{547,536,521,521,536,547},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,0,0,{547,536,521,521,536,547},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* R */
     *VObj[11] = (VectorObj_t){0,0,ROTATE_PX|ROTATE_PZ,
-        6,6,{589,565,565,565,565,589},{3,2,10,10,2,3},{1,1,1,3,3,3},
+        6,6,0,{589,565,565,565,565,589},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {576,565,565,565,565,576},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* E */
     *VObj[12] = (VectorObj_t){0,0,ROTATE_NX|ROTATE_NY,
-        6,6,{630,601,601,601,601,630},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,6,0,{630,601,601,601,601,630},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {627,601,601,601,601,627},{14,14,36,36,14,14},{1,1,1,3,3,3}};
 
     if (LMB_PRESSED) { goto leave_intro; }
@@ -730,47 +747,47 @@ void MAININTRO()
 
     /* V */
     *VObj[0] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_PX,
-        6,6,{98,86,101,101,86,98},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{98,86,101,101,86,98},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {126,114,106,106,114,126},{2,2,23,23,2,2},{1,1,1,3,3,3}};
     /* I */
     *VObj[1] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
-        6,0,{140,129,129,129,129,140},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,0,0,{140,129,129,129,129,140},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* R */
     *VObj[2] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{167,143,143,143,143,167},{3,2,10,10,2,3},{1,1,1,3,3,3},
+        6,6,0,{167,143,143,143,143,167},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {154,143,143,143,143,154},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* T */
     *VObj[3] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_NZ,
-        6,4,{206,177,177,177,177,206},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,4,0,{206,177,177,177,177,206},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {186,186,186,186,0,0},{11,36,36,11,0,0},{1,1,3,3,0,0}};
     /* U */
     *VObj[4] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{220,209,209,209,209,220},{2,2,27,27,2,2},{1,1,1,3,3,3},
+        6,6,0,{220,209,209,209,209,220},{2,2,27,27,2,2},{1,1,1,3,3,3},
         {240,229,229,229,229,240},{2,2,25,25,2,2},{1,1,1,3,3,3}};
     /* A */
     *VObj[5] = (VectorObj_t) {0,0,ROTATE_PZ|ROTATE_NX,
-        6,0,{266,255,240,240,255,266},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,0,0,{266,255,240,240,255,266},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* L */
     *VObj[6] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_NY,
-        6,4,{295,284,284,284,284,295},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,4,0,{295,284,284,284,284,295},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {311,296,296,311,0,0},{26,26,26,26,0,0},{1,1,3,3,0,0}};
     /* W */
     *VObj[7] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PY,
-        6,6,{335,324,335,335,324,335},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{335,324,335,335,324,335},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {355,346,341,341,346,355},{2,2,16,16,2,2},{1,1,1,3,3,3}};
     /* R */
     *VObj[8] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{441,417,417,417,417,441},{3,2,10,10,2,3},{1,1,1,3,3,3},
+        6,6,0,{441,417,417,417,417,441},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {428,417,417,417,417,428},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* L */
     *VObj[9] = (VectorObj_t) {0,0,ROTATE_NZ|ROTATE_NY,
-        6,4,{464,453,453,453,453,464},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,4,0,{464,453,453,453,453,464},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {480,465,465,480,0,0},{26,26,26,26,0,0},{1,1,3,3,0,0}};
     /* D */
     *VObj[10] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
-        6,0,{505,483,483,483,483,505},{3,2,36,36,2,3},{1,1,1,3,3,3},
+        6,0,0,{505,483,483,483,483,505},{3,2,36,36,2,3},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
 
     if (LMB_PRESSED) { goto leave_intro; }
@@ -787,51 +804,51 @@ void MAININTRO()
 
     /* I */
     *VObj[0] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_PX,
-        6,6,{48,37,37,37,37,48},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{48,37,37,37,37,48},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {95,84,73,73,84,95},{2,2,18,18,2,2},{1,1,1,3,3,3}};
     /* M */
     *VObj[1] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
-        6,0,{62,51,51,51,51,62},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,0,0,{62,51,51,51,51,62},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* E */
     *VObj[2] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{161,132,132,132,132,161},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,6,0,{161,132,132,132,132,161},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {158,132,132,132,132,158},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* I */
     *VObj[3] = (VectorObj_t) {0,0,ROTATE_PY|ROTATE_NZ,
-        6,0,{211,200,200,200,200,211},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,0,0,{211,200,200,200,200,211},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* U */
     *VObj[4] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{225,214,214,214,214,225},{2,2,27,27,2,2},{1,1,1,3,3,3},
+        6,6,0,{225,214,214,214,214,225},{2,2,27,27,2,2},{1,1,1,3,3,3},
         {245,234,234,234,234,245},{2,2,25,25,2,2},{1,1,1,3,3,3}};
     /* M */
     *VObj[5] = (VectorObj_t) {0,0,ROTATE_PZ|ROTATE_NX,
-        6,6,{259,248,248,248,248,259},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{259,248,248,248,248,259},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {292,281,270,270,281,292},{2,2,18,18,2,2},{1,1,1,3,3,3}};
     /* T */
     *VObj[6] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_NY,
-        6,4,{338,309,309,309,309,338},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,4,0,{338,309,309,309,309,338},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {318,318,318,318,0,0},{21,36,36,11,0,0},{1,1,3,3,0,0}};
     /* E */
     *VObj[7] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PY,
-        6,6,{370,341,341,341,341,370},{2,2,10,10,2,2},{1,1,1,3,3,3},
+        6,6,0,{370,341,341,341,341,370},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {367,341,341,341,341,367},{14,14,36,36,14,14},{1,1,1,3,3,3}};
     /* R */
     *VObj[8] = (VectorObj_t) {0,0,ROTATE_NX|ROTATE_PZ,
-        6,6,{433,409,409,409,409,433},{3,2,10,10,2,3},{1,1,1,3,3,3},
+        6,6,0,{433,409,409,409,409,433},{3,2,10,10,2,3},{1,1,1,3,3,3},
         {420,409,409,409,409,420},{16,16,36,36,16,16},{1,1,1,3,3,3}};
     /* A */
     *VObj[9] = (VectorObj_t) {0,0,ROTATE_NZ|ROTATE_NY,
-        6,0,{471,460,445,445,460,471},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,0,0,{471,460,445,445,460,471},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
     /* N */
     *VObj[10] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
-        6,6,{500,489,489,489,489,500},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{500,489,489,489,489,500},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {521,510,510,510,510,521},{2,2,17,17,2,2},{1,1,1,3,3,3}};
     /* M */
     *VObj[11] = (VectorObj_t) {0,0,ROTATE_PX|ROTATE_PZ,
-        6,6,{569,558,558,558,558,569},{2,2,36,36,2,2},{1,1,1,3,3,3},
+        6,6,0,{569,558,558,558,558,569},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {602,591,580,580,591,602},{2,2,18,18,2,2},{1,1,1,3,3,3}};
 
     if (LMB_PRESSED) { goto leave_intro; }
