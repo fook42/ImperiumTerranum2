@@ -17,7 +17,9 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, uint8 SysID, uint8 Mode)
     do
     {
         CivVar = GETCIVVAR(ActShipPtr->Owner);
-        while ((((ActShipPtr->SType<8) || (ActShipPtr->SType>24)) && (ActShipPtr->SType!=SHIPTYPE_FLEET) && (ActShipPtr->SType!=TARGET_STARGATE))
+        while ((((ActShipPtr->SType<8) || (ActShipPtr->SType>24))
+            && (ActShipPtr->SType != SHIPTYPE_FLEET)
+            && (ActShipPtr->SType != TARGET_STARGATE))
             || (CivVar<1) || (CivVar>MAXCIVS) || (ActShipPtr->Owner == 0)
             || ((ActShipPtr->Age >= 200) && (ActShipPtr->Fracht == 0) && (ActShipPtr->Ladung == 0)
                 && (ActShipPtr->SType != SHIPTYPE_FLEET)))

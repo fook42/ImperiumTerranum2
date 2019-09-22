@@ -5,6 +5,8 @@
 
 bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys)
 {
+    bool return_value = false;
+
     if ((CLASS_STONES  != MyPlanetHeader->Class)
      && (CLASS_GAS     != MyPlanetHeader->Class)
      && (CLASS_SATURN  != MyPlanetHeader->Class)
@@ -12,38 +14,38 @@ bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr,
     {
         if (0 == MyShipPtr->Fracht)
         {
-            if ((MyPlanetHeader->Water / MyPlanetHeader->Size) > 56)
+            if (56 < (MyPlanetHeader->Water / MyPlanetHeader->Size))
             {
-                while ((MyShipPtr->Fracht < ShipData(MyShipPtr->SType).MaxLoad)
-                        && (((MyPlanetHeader->Water-5) / MyPlanetHeader->Size) > 56))
+                while ((ShipData(MyShipPtr->SType).MaxLoad > MyShipPtr->Fracht)
+                        && (56 < ((MyPlanetHeader->Water-5) / MyPlanetHeader->Size)))
                 {
                     ++(MyShipPtr->Fracht);
                     MyPlanetHeader->Water -= 5;
                 }
                 (void) FINDNEXTPLANET(ActSys, MyShipPtr);
-                if (MyShipPtr->Moving > 0)
+                if (0 < MyShipPtr->Moving)
                 {
                     MyShipPtr->Moving = 0;
                 }
-                return true;
+                return_value = true;
             }
         } else {
-            if ((MyPlanetHeader->Water / MyPlanetHeader->Size) < 55)
+            if (55 > (MyPlanetHeader->Water / MyPlanetHeader->Size))
             {
-                while ((MyShipPtr->Fracht > 0)
-                        && ((MyPlanetHeader->Water / MyPlanetHeader->Size) < 55))
+                while ((0 < MyShipPtr->Fracht)
+                        && (55 > (MyPlanetHeader->Water / MyPlanetHeader->Size)))
                 {
                     --(MyShipPtr->Fracht);
                     MyPlanetHeader->Water += 5;
                 }
                 (void) FINDNEXTPLANET(ActSys, MyShipPtr);
-                if (MyShipPtr->Moving > 0)
+                if (0 < MyShipPtr->Moving)
                 {
                     MyShipPtr->Moving = 0;
                 }
-                return true;
+                return_value = true;
             }
         }
     }
-    return false;
+    return return_value;
 }
