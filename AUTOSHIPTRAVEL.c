@@ -40,7 +40,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                 do
                 {
                     CivVar = GETCIVVAR(MyShipPtr->Owner);
-                    if ((0 == CivVar) || (MAXCIVS < CivVar))
+                    if ((CIVVAR_NONE == CivVar) || (MAXCIVS < CivVar))
                     {
                         if (SHIPTYPE_FLEET == MyShipPtr->SType)
                         {
@@ -94,15 +94,16 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
 
                         if ((NULL != MyShipPtr->TargetShip) && (SHIPTYPE_FLEET != MyShipPtr->SType))
                         {
-                            if ((GETCIVVAR(MyShipPtr->TargetShip->Owner)>=1)
-                                && (GETCIVVAR(MyShipPtr->TargetShip->Owner)<=MAXCIVS)
-                                && (Save.CivPlayer[GETCIVVAR(MyShipPtr->TargetShip->Owner)-1] != 0))
+                            CivVar2 = GETCIVVAR(MyShipPtr->TargetShip->Owner);
+                            if ((CIVVAR_NONE != CivVar2)
+                                && (MAXCIVS >= CivVar2)
+                                && (Save.CivPlayer[CivVar2-1] != 0))
                             {
-                                if ((GETCIVVAR(MyShipPtr->TargetShip->Owner) == ActPlayer)
+                                if ((CivVar2 == ActPlayer)
                                     && (Save.CivPlayer[CivVar-1] == 0))
                                 {
                                     b = true;
-                                    if (Save.CivPlayer[GETCIVVAR(MyShipPtr->TargetShip->Owner)-1] != 0)
+                                    if (Save.CivPlayer[CivVar2-1] != 0)
                                     {
                                         Visible = true;
                                     }
@@ -112,10 +113,11 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                             }
                         }
                         /**** ComputerShip erreicht PlayerSystem ****/
-                        if ((0 < GETCIVVAR(SystemFlags[0][i-1])) && (GETCIVVAR(SystemFlags[0][i-1]) <= MAXCIVS))
+                        CivVar2 = GETCIVVAR(SystemFlags[0][i-1]);
+                        if ((CIVVAR_NONE != CivVar2) && (MAXCIVS >= CivVar2))
                         {
-                            if ((0 != Save.CivPlayer[GETCIVVAR(SystemFlags[0][i-1])-1])
-                                && (0 == Save.CivPlayer[CivVar-1]) && (GETCIVVAR(SystemFlags[0][i-1]) == ActPlayer))
+                            if ((0 != Save.CivPlayer[CivVar2-1])
+                                && (0 == Save.CivPlayer[CivVar-1]) && (CivVar2 == ActPlayer))
                             {
                                 b = true;
                                 Visible = true;
@@ -169,7 +171,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                     }
                                 }
                                 CivVar2 = GETCIVVAR(SystemFlags[0][i-1]);
-                                if (0 < CivVar2)
+                                if (CIVVAR_NONE != CivVar2)
                                 {
                                     if (Save.WarState[CivVar-1][CivVar2-1] == LEVEL_UNKNOWN)
                                       { Save.WarState[CivVar-1][CivVar2-1] = LEVEL_PEACE; }
@@ -183,7 +185,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                 if (0 == MyShipPtr->Moving)
                                 {
                                     CivVar2 = GETCIVVAR(SystemFlags[0][i-1]);
-                                    if (0 < CivVar2)
+                                    if (CIVVAR_NONE != CivVar2)
                                     {
                                         if (Save.WarState[CivVar-1][CivVar2-1] == LEVEL_UNKNOWN)
                                         {

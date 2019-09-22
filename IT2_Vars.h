@@ -69,7 +69,6 @@ _EXTERN_  struct Screen*    XScreen;
 _EXTERN_  struct RastPort*  MyRPort_PTR[2];
 _EXTERN_  struct ViewPort*  MyVPort_PTR[2];
 
-
 _EXTERN_  struct ITBitMap   ImgBitMap4, ImgBitMap7, ImgBitMap8;
 
 // _EXTERN_  struct IntuitionBase* IBase;
@@ -137,7 +136,11 @@ _EXTERN_  char*         PText[MAXSTR+1];
 _EXTERN_  r_Save        Save;
 
 // added ...
-_EXTERN_  sint16        MOVESHIP_ToX, MOVESHIP_ToY, MOVESHIP_FromX, MOVESHIP_FromY;
-_EXTERN_  sint16        MOVESHIP_x, MOVESHIP_y;
+_EXTERN_  sint16        MOVESHIP_x;
+_EXTERN_  sint16        MOVESHIP_y;
+_EXTERN_  sint16        MOVESHIP_ToX;
+_EXTERN_  sint16        MOVESHIP_ToY;
+_EXTERN_  sint16        MOVESHIP_FromX;
+_EXTERN_  sint16        MOVESHIP_FromY;
 
 extern struct Custom custom;

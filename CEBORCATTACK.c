@@ -5,8 +5,8 @@
 
 void CEBORCATTACK(uint8 CA_ActPlayerFlag)
 {
-    int     i,j,random_wert;
-    uint8   l;
+    int     i,j;
+    uint8   l,random_wert;
     r_ShipHeader*   CA_MyShipPtr;
 
     if ((0            != Save.WorldFlag)
@@ -42,17 +42,16 @@ void CEBORCATTACK(uint8 CA_ActPlayerFlag)
         Save.WarState[7][i] = LEVEL_COLDWAR;
     }
     random_wert = (rand()%11)+6;
-    for(i = 0; i < random_wert; i++)
+    for(i = 0; i < random_wert; ++i)
     {
-        Save.Bevoelkerung[7]++;
+        ++(Save.Bevoelkerung[7]);
         CA_MyShipPtr = (r_ShipHeader*) AllocMem(sizeof(r_ShipHeader), MEMF_CLEAR);
         if (NULL != CA_MyShipPtr)
         {
-            if ((rand()%100)<40)
+            l = 23;
+            if (40 > (rand()%100))
             {
                 l = 20;
-            } else {
-                l = 23;
             }
             *CA_MyShipPtr = (r_ShipHeader) {0,l,FLAG_OTHER,0,100,1,0,(rand()%20)-40,(rand()%20)-40,
                                             ShipData(l).MaxShield,WEAPON_PTORPEDO,1,

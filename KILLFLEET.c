@@ -15,6 +15,7 @@ void KILLFLEET(r_ShipHeader* MyShipPtr)
         MyShipPtr->Owner = LastShipPtr->Owner;
         MyShipPtr = MyShipPtr->NextShip;
     }
+    // problem: MyShipPtr == NULL .. at this point... NULL->NextShip is not defined!!! Illegal Access
     MyShipPtr->NextShip = LastShipPtr->NextShip;
     if (NULL != LastShipPtr->NextShip)
     {

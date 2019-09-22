@@ -8,9 +8,9 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
     uint8   j,WormID,PosID,NewSys=1;
     int     i;
 
-    for(i = 0; i < MAXHOLES; i++)
+    for(i = 0; i < MAXHOLES; ++i)
     {
-        for(j = 0; j < 2; j++)
+        for(j = 0; j < 2; ++j)
         {
             if ((MyWormHole[i].System[j] == ActSys)
                 && (MyWormHole[i].PosX[j] == MyShipPtr->PosX)
@@ -37,7 +37,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
             DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
         }
         PLAYSOUND(3,280);
-        for (i = 15; i>=0; i--)
+        for (i = 15; i>=0; --i)
         {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
             WaitTOF();
@@ -62,7 +62,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         && ((MyShipPtr->PosX<-3) || (MyShipPtr->PosX>3)) && ((MyShipPtr->PosY<-3) || (MyShipPtr->PosY>3)));
     if (Visible)
     {
-        for(i = 0; i <= 15; i++)
+        for(i = 0; i < 16; ++i)
         {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
             WaitTOF();
@@ -71,13 +71,13 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         RECTWIN(MyRPort_PTR[0], 0, MOVESHIP_ToX, MOVESHIP_ToY, MOVESHIP_ToX+31, MOVESHIP_ToY+31);
         REFRESHDISPLAY();
     }
-    MyShipPtr->Moving--;
+    --(MyShipPtr->Moving);
     AUTOSHIPTRAVEL(NewSys+1,MODE_SHIPS,MyShipPtr);
     if (Visible)
     {
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     }
-    if (MyShipPtr->Moving == 0)
+    if (0 == MyShipPtr->Moving)
     {
         MyShipPtr->Moving = 1;
     }
