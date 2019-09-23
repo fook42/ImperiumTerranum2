@@ -10,16 +10,11 @@ typedef struct r_SmallShipHeader {
     sint16  WeaponS;
 } r_SmallShipHeader;
 
-typedef struct SArr15 {
-    sint8  data[16];
-} SArr15;
-
-
 r_SmallShipHeader   SSHeader[2];
 
 uint8           AScr;
-APTR            BSFSoundMemA[3]; // 2..4 => 0..2
-uint16          BSFSoundSize[3]; // 2..4 => 0..2
+uint16*         BSFSoundMemA[3]; // 2..4 => 0..2
+uint32          BSFSoundSize[3]; // 2..4 => 0..2
 r_ShipHeader*   ShipPtr1;
 r_ShipHeader*   ShipPtr2;
 bool            Visible;
@@ -31,7 +26,9 @@ sint16  x[2],y[2];
 sint16  Angle[2];
 int     sx1[2][2], sy1[2][2], sx2[2][2], sy2[2][2];
 uint16  StepCtr;
-SArr15  mx, my;
+
+const sint8 mx[] = {0,1,2,2,2,2,2,1,0,-1,-2,-2,-2,-2,-2,-1};
+const sint8 my[] = {-2,-2,-2,-1,0,1,2,2,2,2,2,1,0,-1,-2,-2};
 
 uint8   Rotation;
 
@@ -48,8 +45,8 @@ bool LOADSAMPLE(char* FName, uint8 SID)
     }
     (void) Seek(FHandle, 0, OFFSET_END);
     size = Seek(FHandle, 0, OFFSET_BEGINNING);
-    BSFSoundSize[SID] = (uint16)(size >> 1);
-    (void) Read(FHandle, BSFSoundMemA[SID], BSFSoundSize[SID]*2);
+    BSFSoundSize[SID] = (size >> 1);
+    (void) Read(FHandle, (APTR) BSFSoundMemA[SID], size);
     Close(FHandle);
     return true;
 }
@@ -85,15 +82,15 @@ bool INITIMAGES()
     strcat(s, ".img");
     if (!RAWLOADIMAGE(s,0,64,512,32,4, &ImgBitMap4)) { return false; }
 
-    BSFSoundMemA[0] = IMemA[0];
+    BSFSoundMemA[0] = (uint16*) IMemA[0];
     INITSOUNDNAMES(ShipPtr1->Weapon, s);
     if (!LOADSAMPLE(s,0)) { return false; }
 
-    BSFSoundMemA[1] = BSFSoundMemA[0] + (BSFSoundSize[0]*2);
+    BSFSoundMemA[1] = BSFSoundMemA[0] + BSFSoundSize[0];
     INITSOUNDNAMES(ShipPtr2->Weapon, s);
     if (!LOADSAMPLE(s,1)) { return false; }
 
-    BSFSoundMemA[2] = BSFSoundMemA[1] + (BSFSoundSize[1]*2);
+    BSFSoundMemA[2] = BSFSoundMemA[1] + BSFSoundSize[1];
     strcpy(s, PathStr[6]);      /* SFX/ */
     strcat(s, "FightSoundDS.RAW");
     if (!LOADSAMPLE(s,2)) { return false; }
@@ -109,56 +106,15 @@ void STARFLY(uint8 Ship)
     uint16  FireFactor;
     sint16  dx,dy,da = 0;
 
-    Rotation++;
-    if (Rotation>2)
+    ++Rotation;
+    if (2 < Rotation)
     {
         Rotation = 0;
     }
     RectFill(MyRPort_PTR[AScr],x[Ship]-4,y[Ship]-4,x[Ship]+36,y[Ship]+36);
 
-    switch (Angle[Ship]) {
-       case 0:      y[Ship] -= 2; break;
-       case 32: {
-                    x[Ship]++;      y[Ship] -= 2;
-                } break;
-       case 64: {
-                    x[Ship] += 2;   y[Ship] -= 2;
-                } break;
-       case 96: {
-                    x[Ship] += 2;   y[Ship]--;
-                } break;
-       case 128:    x[Ship] += 2; break;
-       case 160: {
-                    x[Ship] += 2;   y[Ship]++;
-                } break;
-       case 192: {
-                    x[Ship] += 2;   y[Ship] += 2;
-                } break;
-       case 224: {
-                    x[Ship]++;      y[Ship] += 2;
-                } break;
-       case 256:    y[Ship] += 2; break;
-       case 288: {
-                    x[Ship]--;      y[Ship] += 2;
-                } break;
-       case 320: {
-                    x[Ship] -= 2;   y[Ship] += 2;
-                } break;
-       case 352: {
-                    x[Ship] -= 2;   y[Ship]++;
-                } break;
-       case 384:    x[Ship] -= 2; break;
-       case 416: {
-                    x[Ship] -= 2;   y[Ship]--;
-                } break;
-       case 448: {
-                    x[Ship] -= 2;   y[Ship] -= 2;
-                } break;
-       case 480: {
-                    x[Ship]--;      y[Ship] -= 2;
-                } break;
-       default: { }
-    }
+    x[Ship] += mx[Angle[Ship] >> 5];
+    y[Ship] += my[Angle[Ship] >> 5];
 
     dx = (x[1-Ship]-x[Ship]);
     dy = (y[1-Ship]-y[Ship]);
@@ -286,12 +242,12 @@ void STARFLY(uint8 Ship)
         sx1[Ship][AScr] = x[Ship]+16;
         sy1[Ship][AScr] = y[Ship]+16;
         FireFactor = ( abs( sx1[Ship][AScr]-x[1-Ship]+16 ) + abs( sy1[Ship][AScr]-y[1-Ship]+16 ) ) / 3;
-        if (FireFactor>75)
+        if (75 < FireFactor)
         {
             FireFactor = 75;
         }
-        sx2[Ship][AScr] = sx1[Ship][AScr]+ FireFactor*mx.data[Angle[Ship] / 32];
-        sy2[Ship][AScr] = sy1[Ship][AScr]+ FireFactor*my.data[Angle[Ship] / 32];
+        sx2[Ship][AScr] = sx1[Ship][AScr]+ FireFactor * mx[Angle[Ship] >> 5];
+        sy2[Ship][AScr] = sy1[Ship][AScr]+ FireFactor * my[Angle[Ship] >> 5];
         if ((sx2[Ship][AScr]<1) || (sx2[Ship][AScr]>639) || (sy2[Ship][AScr]<1) || (sy2[Ship][AScr]>511))
         {
             sx1[Ship][AScr] = 0;
@@ -405,8 +361,6 @@ void XTRAROUND()
         StarX[i] = ((rand()%(639 / STARS))+1)*STARS;
         StarY[i] = ((rand()%(505 / STARS))+1)*STARS;
     }
-    mx = (SArr15) {{0,1,2,2,2,2,2,1,0,-1,-2,-2,-2,-2,-2,-1}};
-    my = (SArr15) {{-2,-2,-2,-1,0,1,2,2,2,2,2,1,0,-1,-2,-2}};
     sx1[0][0] = 0;
     sx1[1][0] = 0;
     sx1[0][1] = 0;
@@ -419,8 +373,8 @@ void XTRAROUND()
     if (Audio_enable)
     {
         custom.dmacon = BITCLR | DMAF_AUDIO;
-        SPAddrA = BSFSoundMemA[2];                     SPFreqA = 450; SPLengthA = BSFSoundSize[2]; SPVolA = 40;
-        SPAddrB = BSFSoundMemA[2]+(BSFSoundSize[2]*2); SPFreqB = 450; SPLengthB = BSFSoundSize[2]; SPVolB = 40;
+        SPAddrA = BSFSoundMemA[2];                 SPFreqA = 450; SPLengthA = BSFSoundSize[2]; SPVolA = 40;
+        SPAddrB = BSFSoundMemA[2]+BSFSoundSize[2]; SPFreqB = 450; SPLengthB = BSFSoundSize[2]; SPVolB = 40;
         custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1;
     }
     // lets fight .. until one of the shields is <0

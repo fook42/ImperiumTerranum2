@@ -22,7 +22,7 @@
 uint8       AScr;
 
 #define NUM_VECTOROBJ (13)
-APTR            IntroMemA = NULL;
+uint8*          IntroMemA = NULL;
 uint32          IntroMemL = 0;
 VectorObj_t*    VObj[NUM_VECTOROBJ];
 
@@ -40,7 +40,7 @@ void SETDARKCOLOR(char* FName, r_Col* Colors)
     {
         (void)  Seek(FHandle, 0, OFFSET_END);
         ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
-        (void) Read(FHandle, IMemA[0], ISize);
+        (void) Read(FHandle, (APTR) IMemA[0], ISize);
         Close(FHandle);
         AddrX = (uint32) IMemA[0];
         AddrEnd = AddrX + ISize;
@@ -72,7 +72,7 @@ void SETDARKCOLOR(char* FName, r_Col* Colors)
     }
 }
 
-void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMemL)
+void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL)
 {
     uint8   i;
 
@@ -86,7 +86,7 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
     {
         if (NULL != MyScreen[i])
         {
-//            RECTWIN(MyRPort_PTR[i],0,0,75,639,434);
+           //  RECTWIN(MyRPort_PTR[i],0,0,75,639,434);
             CloseScreen(MyScreen[i]);
             MyScreen[i] = NULL;
             MyRPort_PTR[i] = NULL;
@@ -95,13 +95,13 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
     }
     if (NULL != IntroMemA)
     {
-        FreeMem(IntroMemA, IntroMemL);
+        FreeMem((APTR) IntroMemA, IntroMemL);
     }
     for (i = 0; i<3; ++i)
     {
         if (NULL != SMemA[i])
         {
-            FreeMem(SMemA[i], SMemL[i]);
+            FreeMem((APTR) SMemA[i], SMemL[i]);
             SMemA[i] = NULL;
         }
     }
@@ -109,7 +109,7 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, APTR* SMemA, uint32* SMe
     {
         if (NULL != IMemA[i])
         {
-            FreeMem(IMemA[i], IMemL[i]);
+            FreeMem((APTR) IMemA[i], IMemL[i]);
             IMemA[i] = NULL;
         }
     }
@@ -273,7 +273,7 @@ void FLY(VectorObj_t* actObject, double Factor)
     }
 }
 
-void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
+void GREATEFFECT(uint8 Objects, r_Col* Colors, uint16** SMemA, uint32* SMemL)
 {
     uint8  Ctr, actFlag;
     int i, j, k;
@@ -451,7 +451,7 @@ void GREATEFFECT(uint8 Objects, r_Col* Colors, APTR* SMemA, uint32* SMemL)
     custom.dmacon = BITCLR | DMAF_AUD2 | DMAF_AUD3; // 0x000C
 }
 
-bool LOADSOUNDS(char* path, uint16 pathlen, APTR* SMemA, uint32* SMemL)
+bool LOADSOUNDS(char* path, uint16 pathlen, uint16** SMemA, uint32* SMemL)
 {
     uint8   i;
     uint32  ssize;
@@ -460,7 +460,7 @@ bool LOADSOUNDS(char* path, uint16 pathlen, APTR* SMemA, uint32* SMemL)
     //    INITCHANNELS();
     strcpy(path+pathlen, "Snd0.RAW");
     pathlen+=3;
-    for (i = 0; i<3; i++)
+    for (i = 0; i<3; ++i)
     {
         path[pathlen] = i+'1';
         FHandle = OPENSMOOTH(path,MODE_OLDFILE);
@@ -469,9 +469,9 @@ bool LOADSOUNDS(char* path, uint16 pathlen, APTR* SMemA, uint32* SMemL)
             (void)  Seek(FHandle, 0, OFFSET_END);
             ssize = Seek(FHandle, 0, OFFSET_BEGINNING);
             SMemL[i] = ssize;
-            SMemA[i] = AllocMem(ssize, MEMF_CHIP+MEMF_CLEAR);
+            SMemA[i] = (uint16*) AllocMem(ssize, MEMF_CHIP | MEMF_CLEAR);
             if (NULL == SMemA[i]) { return false; }
-            (void) Read(FHandle, SMemA[i], SMemL[i]);
+            (void) Read(FHandle, (APTR) SMemA[i], SMemL[i]);
             Close(FHandle);
         } else {
             return false;
@@ -482,7 +482,7 @@ bool LOADSOUNDS(char* path, uint16 pathlen, APTR* SMemA, uint32* SMemL)
 
 void MAININTRO()
 {
-    APTR        SMemA[3];
+    uint16*     SMemA[3];
     uint32      SMemL[3];
     char        s[40];
     BPTR        FHandle;
@@ -658,7 +658,7 @@ void MAININTRO()
 
 /**** new .. alloc mem for vectorObj .. free this later ***/
     IntroMemL = sizeof(VectorObj_t)*NUM_VECTOROBJ;
-    IntroMemA = AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
+    IntroMemA = (uint8*) AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
     if (NULL == IntroMemA)
     {
         goto leave_intro;
@@ -862,12 +862,12 @@ void MAININTRO()
 
     if (NULL != IntroMemA)
     {
-        FreeMem(IntroMemA, IntroMemL);
+        FreeMem((APTR) IntroMemA, IntroMemL);
     }
 
     if (NULL != IMemA[0])
     {
-        FreeMem(IMemA[0], IMemL[0]);
+        FreeMem((APTR) IMemA[0], IMemL[0]);
         IMemA[0] = NULL;
     }
     for (i = 0; i<2; i++)
@@ -890,7 +890,7 @@ void MAININTRO()
     IMemL[1] = 21000;
     for (i = 0; i<2; ++i)
     {
-        IMemA[i] = AllocMem(IMemL[i],MEMF_CHIP);
+        IMemA[i] = (uint8*) AllocMem(IMemL[i], MEMF_CHIP);
         if (NULL == IMemA[i])
         {
             goto leave_intro;
@@ -966,7 +966,7 @@ void MAININTRO()
         ScreenToFront(MyScreen[AScr]);
         AScr=1-AScr;
         Factor += 0.05;
-        for (i = 1; i<128; i++)
+        for (i = 1; i<128; ++i)
         {
             SetRGB32(MyVPort_PTR[AScr], i, it_round(Colors[i].r*Factor)<<24,
                                            it_round(Colors[i].g*Factor)<<24,
@@ -1064,7 +1064,7 @@ void MAININTRO()
 
 /**** new .. alloc mem for r_Coords .. free this later ***/
     IntroMemL = sizeof(r_Coords_t)*3;
-    IntroMemA = AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
+    IntroMemA = (uint8*) AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
     if (NULL == IntroMemA)
     {
         goto leave_intro;

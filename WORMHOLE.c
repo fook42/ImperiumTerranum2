@@ -8,7 +8,7 @@
 sint32  WORMHOLE_ShipShield;
 
 ITBitMap ImgBitMapW4;
-APTR    WHSoundMemA[2]; // 0..1
+uint16* WHSoundMemA[2]; // 0..1
 uint32  WHSoundMemL[2]; // 0..1
 bool    Error;
 
@@ -27,10 +27,10 @@ void WORMHOLE_LOADSOUND(char* FName, uint8 SID)
         {
             WHSoundMemL[SID] += STEPS*3;
         }
-        WHSoundMemA[SID] = AllocMem(WHSoundMemL[SID]<<1, MEMF_CHIP+MEMF_CLEAR);
+        WHSoundMemA[SID] = (uint16*) AllocMem(WHSoundMemL[SID]<<1, MEMF_CHIP | MEMF_CLEAR);
         if (NULL != WHSoundMemA[SID])
         {
-            (void) Read(FHandle, WHSoundMemA[SID], WHSoundMemL[SID]<<1);
+            (void) Read(FHandle, (APTR) WHSoundMemA[SID], WHSoundMemL[SID]<<1);
         }
         Close(FHandle);
     }
@@ -364,7 +364,7 @@ bool WORMEXIT(bool _WORMEXIT, r_ShipHeader* MyShipPtr, uint8 ActSys)
     {
         if (NULL != WHSoundMemA[i])
         {
-            FreeMem(WHSoundMemA[i], WHSoundMemL[i]*2);
+            FreeMem((APTR) WHSoundMemA[i], WHSoundMemL[i]<<1);
             WHSoundMemA[i] = NULL;
         }
     }
@@ -418,7 +418,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
         return _WORMFLIGHT;
     }
 
-    memcpy( Tags, newTags, 7*sizeof(struct TagItem));
+    CopyMem( (APTR) newTags, (APTR) Tags, (ULONG) (7*sizeof(struct TagItem)));
     for(i = 0; i < 2; ++i)
     {
         MyScreen[i] = OpenScreenTagList(&WH_NeuScreen, Tags);

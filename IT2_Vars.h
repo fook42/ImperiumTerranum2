@@ -88,15 +88,15 @@ _EXTERN_  StrArr42          TechnologyL, Project;
 
 _EXTERN_  UWORD*        SoundMemA[SOUNDS]; // new range 0..SOUNDS-1
 _EXTERN_  UWORD         SoundSize[SOUNDS]; // new range 0..SOUNDS-1
-_EXTERN_  APTR          CacheMemA[CACHES];
+_EXTERN_  uint8*        CacheMemA[CACHES];
 _EXTERN_  uint32        CacheMemL[CACHES];
-_EXTERN_  APTR          LogoMemA[MAXCIVS-1];
-_EXTERN_  APTR          LogoSMemA[MAXCIVS-1];
+_EXTERN_  uint8*        LogoMemA[MAXCIVS-1];
+_EXTERN_  uint8*        LogoSMemA[MAXCIVS-1];
 _EXTERN_  uint32        LogoSMemL[MAXCIVS-1];
 _EXTERN_  UWORD*        ZeroSound;
-_EXTERN_  APTR          IMemA[IMAGES];
+_EXTERN_  uint8*        IMemA[IMAGES];
 _EXTERN_  uint32        IMemL[IMAGES];
-_EXTERN_  APTR          ModMemA[MODULES];
+_EXTERN_  uint8*        ModMemA[MODULES];
 _EXTERN_  uint32        ModMemL[MODULES];
 _EXTERN_  char*         PathStr[PATHS];
 
@@ -107,7 +107,8 @@ _EXTERN_  uint32        Militaerausgaben[MAXCIVS];
 _EXTERN_  uint32        Verschrottung[MAXCIVS];
 _EXTERN_  uint8         LastDisplay[MAXCIVS+1];
 _EXTERN_  uint8         Warnung[MAXCIVS+1];
-_EXTERN_  APTR          TextMemA, PathMemA;
+_EXTERN_  uint8*        TextMemA;
+_EXTERN_  uint8*        PathMemA;
 _EXTERN_  uint32        TextMemL, PathMemL, HelpID, MaquesShips;
 _EXTERN_  sint32        Year;
 _EXTERN_  sint16        OffsetX, OffsetY, OldX, OldY;

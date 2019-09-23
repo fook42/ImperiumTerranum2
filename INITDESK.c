@@ -39,7 +39,7 @@ bool INITDESK(uint8 Mode)
         if (!RAWLOADIMAGE(s,0,0,640,192,8,&ImgBitMap8)) { return false; }
 
         IMemL[1] = 4480;
-        IMemA[1] = AllocMem( IMemL[1], MEMF_CHIP+MEMF_CLEAR );
+        IMemA[1] = AllocMem( IMemL[1], MEMF_CHIP | MEMF_CLEAR );
         if (NULL == IMemA[1]) { return false; }
 
         strcpy(s+slen, "DeskGads.img");
@@ -52,8 +52,8 @@ bool INITDESK(uint8 Mode)
         }
         (void) Read( FHandle, IMemA[1], IMemL[1]);
         Close( FHandle );
-        GadImg1.ImageData = IMemA[1];
-        GadImg2.ImageData = IMemA[1]+2240;
+        GadImg1.ImageData = (UWORD*)  IMemA[1];
+        GadImg2.ImageData = (UWORD*) (IMemA[1] + 2240);
 
         slen = strlen(PathStr[4]);
         memcpy(s, PathStr[4], slen+1);
@@ -68,7 +68,7 @@ bool INITDESK(uint8 Mode)
         LOADMOD( s, 3 );
 
         slen = strlen(PathStr[7]);
-        memcpy(s, PathStr[7], slen+1);
+        CopyMem((APTR) PathStr[7], (APTR) s, (ULONG) (slen+1));
 
         strcpy(s+slen, "Worm.img");
         if (!RAWLOADIMAGE(s,0,32,512,32,7,&ImgBitMap7)) { return false; }

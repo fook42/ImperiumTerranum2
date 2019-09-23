@@ -22,10 +22,10 @@ bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
             (void) Read(FHandle, (IMemA[0]+IMemL[0]-ISize-250), ISize);
             piclen = (Width*Height*Depth)>>3;
 
-            UNPACK(IMemA[0], IMemA[0]+IMemL[0]-ISize-250, piclen, 0);
+            UNPACK(IMemA[0], (IMemA[0]+IMemL[0]-ISize-250), piclen, 0);
             if ((piclen == (DestBitMap->MemL)) && (4 == Depth))
             {
-                CopyMemQuick(IMemA[0], DestBitMap->MemA, piclen);
+                CopyMemQuick((APTR) IMemA[0], DestBitMap->MemA, piclen);
                 _RAWLOADIMAGE = true;
             }
             else
