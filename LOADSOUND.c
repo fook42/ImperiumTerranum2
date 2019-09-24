@@ -14,7 +14,7 @@ void LOADSOUND(char* FName, uint8 SID)
     (void) Seek(FHandle, 0, OFFSET_END);
     l = Seek(FHandle, 0, OFFSET_BEGINNING);
     SoundSize[SID] = l / 2;
-    SoundMemA[SID] = AllocMem(l, MEMF_CHIP+MEMF_CLEAR);
+    SoundMemA[SID] = (UWORD*) AllocMem(l, MEMF_CHIP+MEMF_CLEAR);
     if (NULL == SoundMemA[SID])
     {
         Close( FHandle );

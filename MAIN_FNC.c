@@ -44,7 +44,7 @@ void MAIN_FNC()
     }
     (void)     Seek(FHandle, 0, OFFSET_END);
     PathMemL = Seek(FHandle, 0, OFFSET_BEGINNING);
-    PathMemA = AllocMem(PathMemL, MEMF_CLEAR);
+    PathMemA = (uint8*) AllocMem(PathMemL, MEMF_CLEAR);
     if (NULL == PathMemA)
     {
         puts("Nicht genug Speicher vorhanden!\n");
@@ -98,7 +98,7 @@ void MAIN_FNC()
     }
 
     IMemL[0] = 287000;
-    IMemA[0] = AllocMem(IMemL[0], MEMF_CHIP+MEMF_CLEAR);
+    IMemA[0] = (uint8*) AllocMem(IMemL[0], MEMF_CHIP | MEMF_CLEAR);
     if (NULL == IMemA[0])
     {
         puts(Txt_notEnoughMem);
@@ -106,7 +106,7 @@ void MAIN_FNC()
         return;
     }
 
-    ZeroSound = AllocMem(8, MEMF_CHIP+MEMF_CLEAR);
+    ZeroSound = (UWORD*) AllocMem(8, MEMF_CHIP | MEMF_CLEAR);
     if (NULL == ZeroSound)
     {
         puts(Txt_notEnoughMem);

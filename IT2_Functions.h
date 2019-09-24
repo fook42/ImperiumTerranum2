@@ -134,7 +134,7 @@ LONG GETMIDIPLAYER(struct MMD0 *module);
 void LOADSOUND(char* FName, uint8 SID);
 // >>> MAININTRO
 void MAININTRO();
-void SETDARKCOLOR(char* FName, r_Col* Colors);
+void SETDARKCOLOR(char* FName, r_Col_t* Colors);
 // void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module);
 void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL);
 // bool LOADSOUNDS();
@@ -147,8 +147,8 @@ void ROTATEnX(VectorObj_t* actObject);
 void ROTATEnY(VectorObj_t* actObject);
 void ROTATEnZ(VectorObj_t* actObject);
 void FLY(VectorObj_t* actObject, double Factor);
-// void GREATEFFECT(uint8 Objects, r_Col* Colors);
-void GREATEFFECT(uint8 Objects, r_Col* Colors, uint16** SMemA, uint32* SMemL);
+// void GREATEFFECT(uint8 Objects, r_Col_t* Colors);
+void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL);
 // <<<
 /*void INTROEXIT(struct MMD0 *module, APTR* SMemA, uint32* SMemL);
 uint8 MAININTRO_PT1(APTR* SMemA, uint32* SMemL);

@@ -8,7 +8,7 @@ uint8 SETCOLOR(struct Screen* SC_Screen, char* FName)
     uint32  AddrX, AddrEnd, l, ISize;
     int     i;
     uint32* ColorID;
-    r_Col*  Col;
+    r_Col_t*  Col;
     BPTR    FHandle;
     uint8   _SETCOLOR = 0;
 
@@ -34,8 +34,8 @@ uint8 SETCOLOR(struct Screen* SC_Screen, char* FName)
             i = 0;
             do
             {
-                Col = (r_Col*) AddrX;
-                AddrX = AddrX+3;
+                Col = (r_Col_t*) AddrX;
+                AddrX = AddrX+sizeof(r_Col_t);
                 SetRGB32(&(SC_Screen->ViewPort), i, (Col->r)<<24, (Col->g)<<24, (Col->b)<<24);
                 i++;
             }

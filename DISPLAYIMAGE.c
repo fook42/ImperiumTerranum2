@@ -13,7 +13,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
     uint32  ISize, l=0, Addr;
     uint32* Size;
     uint16* Colors;
-    r_Col*  RGB;
+    r_Col_t*  RGB;
     bool    ImageIsValid = false;
 
     if (0 != CacheNum)
@@ -88,8 +88,8 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
         Addr += 4;
         for (i = 0; i < (*Colors); ++i)
         {
-            RGB  = (r_Col*) Addr;
-            Addr += 3;
+            RGB  = (r_Col_t*) Addr;
+            Addr += sizeof(r_Col_t);
             SetRGB32(&(DI_Screen->ViewPort), i, (RGB->r)<<24, (RGB->g)<<24, (RGB->b)<<24);
         }
     }

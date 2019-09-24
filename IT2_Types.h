@@ -102,7 +102,7 @@ typedef struct r_WormHole {
 
 typedef struct r_Col {
     uint8   r, g, b;
-} r_Col;
+} r_Col_t;
 
 typedef struct worldcolors_t {
     uint32  r, g, b;

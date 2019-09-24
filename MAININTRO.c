@@ -28,7 +28,7 @@ VectorObj_t*    VObj[NUM_VECTOROBJ];
 
 // ------------------------------
 
-void SETDARKCOLOR(char* FName, r_Col* Colors)
+void SETDARKCOLOR(char* FName, r_Col_t* Colors)
 {
     uint32  AddrX, AddrEnd, ISize;
     uint8   i;
@@ -60,8 +60,8 @@ void SETDARKCOLOR(char* FName, r_Col* Colors)
                 SetRGB32(MyVPort_PTR[0],i,0,0,0);
                 SetRGB32(MyVPort_PTR[1],i,0,0,0);
 
-                Colors[i] = *((r_Col*) AddrX);
-                AddrX += 3;
+                Colors[i] = *((r_Col_t*) AddrX);
+                AddrX += sizeof(r_Col_t);
                 ++i;
             }
             while (AddrX < AddrEnd);
@@ -273,7 +273,7 @@ void FLY(VectorObj_t* actObject, double Factor)
     }
 }
 
-void GREATEFFECT(uint8 Objects, r_Col* Colors, uint16** SMemA, uint32* SMemL)
+void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
 {
     uint8  Ctr, actFlag;
     int i, j, k;
@@ -487,7 +487,7 @@ void MAININTRO()
     char        s[40];
     BPTR        FHandle;
     uint16      pathname_len;
-    r_Col       Colors[128];
+    r_Col_t     Colors[128];
     PLANEPTR    MyRastPtr = NULL;
     struct TmpRas       MyTmpRas;
     struct AreaInfo     MyAI;
@@ -550,7 +550,7 @@ void MAININTRO()
         goto leave_intro;
     }
     IMemL[0] = IntroBitMap.MemL;
-    IMemA[0] = IntroBitMap.MemA;
+    IMemA[0] = (uint8*) IntroBitMap.MemA;
 
     strcpy(s+pathname_len, "Frame0.pal");
 
@@ -650,7 +650,7 @@ void MAININTRO()
         goto leave_intro;
     }
     InitTmpRas(&MyTmpRas, MyRastPtr, 21000);
-    InitArea(&MyAI, IMemA[0], 200);
+    InitArea(&MyAI, (APTR) IMemA[0], 200);
     MyScreen[0]->RastPort.TmpRas = &MyTmpRas;
     MyScreen[1]->RastPort.TmpRas = &MyTmpRas;
     MyScreen[0]->RastPort.AreaInfo = &MyAI;
@@ -1056,7 +1056,7 @@ void MAININTRO()
         goto leave_intro;
     }
     InitTmpRas(&MyTmpRas,MyRastPtr,21000);
-    InitArea(&MyAI, IMemA[1], 200);
+    InitArea(&MyAI, (APTR) IMemA[1], 200);
     MyScreen[0]->RastPort.TmpRas = &MyTmpRas;
     MyScreen[1]->RastPort.TmpRas = &MyTmpRas;
     MyScreen[0]->RastPort.AreaInfo = &MyAI;

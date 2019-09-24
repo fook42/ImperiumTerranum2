@@ -20,7 +20,7 @@ void PLAYERJINGLE(uint8 JingleID)
         if (0 == FHandle) { return; }
         (void) Seek(FHandle, 0, OFFSET_END);
         LogoSMemL[JingleID] = Seek(FHandle, 0, OFFSET_BEGINNING);
-        LogoSMemA[JingleID] = AllocMem(LogoSMemL[JingleID], MEMF_FAST+MEMF_CLEAR);
+        LogoSMemA[JingleID] = (uint8*) AllocMem(LogoSMemL[JingleID], MEMF_FAST | MEMF_CLEAR);
         if (NULL == LogoSMemA[JingleID])
         {
             Close(FHandle);
@@ -33,7 +33,7 @@ void PLAYERJINGLE(uint8 JingleID)
     {
         if (0 != SoundSize[3]) { FreeMem(SoundMemA[3],SoundSize[3]*2); }
         SoundSize[3] = LogoSMemL[JingleID] / 2;
-        SoundMemA[3] = AllocMem(LogoSMemL[JingleID], MEMF_CHIP+MEMF_CLEAR);
+        SoundMemA[3] = (UWORD*) AllocMem(LogoSMemL[JingleID], MEMF_CHIP | MEMF_CLEAR);
         if (NULL == SoundMemA[3]) { return; }
     }
     CopyMemQuick(LogoSMemA[JingleID], SoundMemA[3], LogoSMemL[JingleID]);

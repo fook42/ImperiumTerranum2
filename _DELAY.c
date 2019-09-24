@@ -85,7 +85,7 @@ bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint
     uint8    i;
 
     ITBMap->MemL = BPRows*Depth;
-    ITBMap->MemA = AllocMem(ITBMap->MemL, MEMF_CHIP+MEMF_CLEAR);
+    ITBMap->MemA = AllocMem(ITBMap->MemL, MEMF_CHIP | MEMF_CLEAR);
     if (NULL != ITBMap->MemA)
     {
         ITBMap->BytesPerRow  = BytesPerRow;
