@@ -53,7 +53,7 @@ void CHECKGADS(uint8 GadID)
         y = 113;
         for (i = 0; i < 5; ++i)
         {
-            RECTWIN(MyRPort_PTR[1],0, 238, y, 388, y+21);
+            RECTWIN(MyRPort_PTR[1],0, 238, y, 388, y+19);
             y += 80;
         }
     } else {
