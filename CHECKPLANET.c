@@ -63,8 +63,8 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                                 WRITE(176,96,           SplitWorld,(1|WRITE_Center),RPort_PTR,3,s);
                                 if (Save.PlayMySelf)
                                 {
-                                    delay(PAUSE);
-                                    delay(PAUSE);
+                                    Delay(PAUSE);
+                                    Delay(PAUSE);
                                 }
                                 WAITLOOP(Save.PlayMySelf);
                                 CloseWindow(CHP_Window);

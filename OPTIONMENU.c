@@ -196,7 +196,7 @@ void OPTIONMENU(uint8 Mode)
     ScreenToFront(MyScreen[1]);
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         if (LMB_PRESSED)
         {
             PLAYSOUND(1,300);
@@ -254,7 +254,7 @@ void OPTIONMENU(uint8 Mode)
                     CHECKGADS(5);
                 }
             }
-//            delay(10);
+//            Delay(10);
             while(LMB_PRESSED) {};
         }
     }
@@ -319,7 +319,7 @@ void OPTIONMENU(uint8 Mode)
                 ScreenToFront(MyScreen[1]);
                 do
                 {
-                    delay(RDELAY);
+                    Delay(RDELAY);
                     if (LMB_PRESSED && (MouseX(1)>=100) && (MouseX(1)<=540))
                     {
                         y = 100;
@@ -343,7 +343,7 @@ void OPTIONMENU(uint8 Mode)
                     {
                         Save.CivPlayer[j] = 0;
                     }
-                    delay(20);
+                    Delay(20);
                 }
             }
             // pick the number of home-planets (1..5) **************
@@ -364,7 +364,7 @@ void OPTIONMENU(uint8 Mode)
             HomePlanets = 0;
             do
             {
-                delay(RDELAY);
+                Delay(RDELAY);
                 if (LMB_PRESSED && (MouseY(1)>=200) && (MouseY(1)<=240)) 
                 {
                     HomePlanets = (uint8) ((MouseX(1)-35) / 88);
@@ -374,7 +374,7 @@ void OPTIONMENU(uint8 Mode)
 
             CLICKRECT(MyRPort_PTR[1],HomePlanets*88+35,200,HomePlanets*88+75,240,40);
 
-            delay(20);
+            Delay(20);
             SWITCHDISPLAY();
 
             if (5 >= Level)

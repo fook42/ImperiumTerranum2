@@ -269,9 +269,9 @@ void TRAVEL()
                 {
                     PLAYSOUND(2,1100);
                     SetRGB4(MyVPort_PTR[1-AScr],0,8,8,15);
-                    delay(3);
+                    Delay(3);
                     SetRGB4(MyVPort_PTR[1-AScr],0,0,0,3);
-                    delay(3);
+                    Delay(3);
                 }
                 return;
             }
@@ -465,12 +465,12 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     }
     PLAYSOUND(3,250);
-    delay(7);
+    Delay(7);
     for (i = 15; i>=0; i--)
     {
         BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
         WaitTOF();
-        delay(4);
+        Delay(4);
     }
     if (MOVESHIP_ToY>210)
     {
@@ -505,15 +505,15 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     REFRESHDISPLAY();
 
     PLAYSOUND(3,250);
-    delay(7);
+    Delay(7);
     for(i = 0; i < 16; ++i)
     {
         BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
         WaitTOF();
-        delay(4);
+        Delay(4);
     }
     RECTWIN(MyRPort_PTR[0],0,MOVESHIP_ToX,MOVESHIP_ToY,MOVESHIP_ToX+31,MOVESHIP_ToY+31);
-    delay(20);
+    Delay(20);
     if (WORMFLIGHT(MyShipPtr, ActSys))
     {
         _WORMHOLE = true;

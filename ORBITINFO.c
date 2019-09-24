@@ -106,7 +106,7 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     SelShip = 1;
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         if ((MouseX(0)>=60) && (MouseX(0)<=370))
         {
             k = (MouseY(0)-35) >> 5;

@@ -119,7 +119,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             while (LMB_PRESSED) { };
             do
             {
-                delay(RDELAY);
+                Delay(RDELAY);
             }
             while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                   || (((MouseX(0)<60)  || (MouseX(0)>176))
@@ -179,7 +179,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 WRITE(256,170,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
                 do
                 {
-                    delay(RDELAY);
+                    Delay(RDELAY);
                 }
                 while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                       || (((MouseX(0)<60)  || (MouseX(0)>176))
@@ -294,7 +294,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             }
             do
             {
-                delay(RDELAY);
+                Delay(RDELAY);
             }
             while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                   || (((MouseX(0)<60) || (MouseX(0)>176))
@@ -343,7 +343,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             WRITE(256,130,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[309]);
             do
             {
-                delay(RDELAY);
+                Delay(RDELAY);
             }
             while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                   || (((MouseX(0)<60)  || (MouseX(0)>176))
@@ -398,7 +398,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             SYSINFO(XSystem,ActPlayerFlag);
             do
             {
-                delay(RDELAY);
+                Delay(RDELAY);
             }
             while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                   || (((MouseX(0)<60)  || (MouseX(0)>176))
