@@ -12,7 +12,6 @@ typedef struct r_SmallShipHeader {
 
 r_SmallShipHeader   SSHeader[2];
 
-uint8           AScr;
 uint16*         BSFSoundMemA[3]; // 2..4 => 0..2
 uint32          BSFSoundSize[3]; // 2..4 => 0..2
 r_ShipHeader*   ShipPtr1;

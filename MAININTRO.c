@@ -19,8 +19,6 @@
 #define intFactorMCos ( 1023 ) // =~ 1024*cos(-0.04);
 
 // will be global variables... waste of memory - maybe we can move them to the heap? ...
-uint8       AScr;
-
 #define NUM_VECTOROBJ (13)
 uint8*          IntroMemA = NULL;
 uint32          IntroMemL = 0;

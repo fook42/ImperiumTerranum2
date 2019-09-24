@@ -24,7 +24,7 @@ ITBitMap    ImgBitMap5;
 APTR        SLSoundMemA;
 uint32      SLSoundSize;
 sint16      ShipShield, ShipWeapon, GroundWeapon;
-uint8       AScr, DefaultColor;
+uint8       DefaultColor;
 
 int         Moved[2];
 sint16      LandID[8][8];
@@ -543,7 +543,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s++='>';
     *_s++=' ';
     MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*Percs);
-    if ((Percs>0) && (MyPlanetHeader->Population <= 0))
+    if ((Percs>0) && (MyPlanetHeader->Population == 0))
     {
         MyPlanetHeader->Population = 1;
     }

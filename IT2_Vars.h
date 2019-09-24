@@ -113,6 +113,7 @@ _EXTERN_  uint32        TextMemL, PathMemL, HelpID, MaquesShips;
 _EXTERN_  sint32        Year;
 _EXTERN_  sint16        OffsetX, OffsetY, OldX, OldY;
 
+_EXTERN_  uint8         AScr;
 _EXTERN_  uint8         Screen2, LastSystem, Level;
 
 _EXTERN_  uint8         ActPlayer, ActPlayerFlag, Display;
