@@ -53,13 +53,13 @@ void DISPLAYSTATE()
     ScreenToFront(MyScreen[1]);
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
     }
     while (LMB_NOTPRESSED && RMB_NOTPRESSED);
     PLAYSOUND(1,300);
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
     }
     while ((LMB_PRESSED || RMB_PRESSED) && (!Bool_var));
 }

@@ -36,7 +36,7 @@ void REGIERUNG()
 
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         if (LMB_PRESSED)
         {
             if ((1 < REG_Window->MouseX) && (119 > REG_Window->MouseX))

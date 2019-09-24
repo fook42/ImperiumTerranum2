@@ -56,7 +56,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         {
             MyShipPtr->Moving++;
         }
-        delay(2);
+        Delay(2);
         do
         {
             MOVESHIP_FromX = MyShipPtr->PosX;
@@ -76,7 +76,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         {
                             REFRESHDISPLAY();
                         }
-                        delay(20);
+                        Delay(20);
                     } else {
                         MyShipPtr->Moving = 0;
                     }
@@ -188,13 +188,13 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                 MyShipPtr->Moving = 0;
                                                 if (OtherShipPtr->Owner != MyShipPtr->Owner)
                                                 {
-                                                    delay(20);
+                                                    Delay(20);
                                                     if (BIGSHIPFIGHT(MyShipPtr,OtherShipPtr,MODE_ALL,ActSys) == 1)
                                                     {
                                                         return;
                                                     }
                                                     REFRESHDISPLAY();
-                                                    delay(10);
+                                                    Delay(10);
                                                     AUTOVERHANDLUNG(MyShipPtr->Owner,MyPlanetHeader->PFlags,ActSys,0);
                                                     return;
                                                 }
@@ -274,7 +274,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                 if ((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) != 0)
                                                 {
                                                     REFRESHDISPLAY();
-                                                    delay(10);
+                                                    Delay(10);
                                                 }
                                                 MyShipPtr->Moving = 0;
                                                 return;
@@ -332,7 +332,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     {
                                                         PLAYSOUND(2,1300);
                                                         REFRESHDISPLAY();
-                                                        delay(20);
+                                                        Delay(20);
                                                     }
                                                     return;
                                                 } else if (CIVVAR_MAQUES == CivVar)
@@ -377,7 +377,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     if ((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) != 0)
                                                     {
                                                         REFRESHDISPLAY();
-                                                        delay(10);
+                                                        Delay(10);
                                                     }
                                                     return;
                                                 } else {
@@ -423,7 +423,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                 }
                                                 MyShipPtr->PosX = MOVESHIP_FromX;
                                                 MyShipPtr->PosY = MOVESHIP_FromY;
-                                                delay(20);
+                                                Delay(20);
                                                 if (BIGSHIPFIGHT(MyShipPtr,OtherShipPtr,MODE_ONCE,ActSys) == 1)
                                                 {
                                                     MyShipPtr->Moving = 0;
@@ -492,7 +492,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     do
     {
         CLOCK();
-        delay(1);
+        Delay(1);
         MOVESHIP_FromX = MyShipPtr->PosX;
         MOVESHIP_FromY = MyShipPtr->PosY;
         ++blink;
@@ -667,7 +667,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         SysID = 0;
                                                         do
                                                         {
-                                                            delay(RDELAY);
+                                                            Delay(RDELAY);
                                                             if (LMB_PRESSED)
                                                             {
                                                                 if (LastSystem != 0)

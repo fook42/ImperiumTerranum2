@@ -202,7 +202,7 @@ void SEARCHOBJECT(uint8* ActSys)
 
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         if (LMB_PRESSED)
         {
             if ((SEO_Window->MouseX>=4) && (SEO_Window->MouseX<=120))
@@ -245,14 +245,14 @@ void SEARCHOBJECT(uint8* ActSys)
         // search ships ---
         do
         {
-            delay(RDELAY);
+            Delay(RDELAY);
             LastSys = HANDLESYSTEM_DRAWSHIPS(Mode, 1, PSys, ShipPos);
             do
             {
-                delay(RDELAY);
+                Delay(RDELAY);
                 do
                 {
-                    delay(RDELAY);
+                    Delay(RDELAY);
                     ThisP = (MouseY(0) / 14)+1;
                     if ((PSys[ThisP] != 0) && (ThisP != LastP)
                         && (MouseX(0)>=0) && (MouseX(0)<=511))
@@ -314,14 +314,14 @@ void SEARCHOBJECT(uint8* ActSys)
         // search planets ---
 //        do
 //        {
-            delay(RDELAY);
+            Delay(RDELAY);
             LastSys = DRAWPLANETS(Mode, 1, PSys, PNum, PCol);
             do
             {
-                delay(RDELAY);
+                Delay(RDELAY);
                 do
                 {
-                    delay(RDELAY);
+                    Delay(RDELAY);
                     ThisP = (MouseY(0) / 14)+1;
                     if ((0 != PSys[ThisP]) && (ThisP != LastP)
                         && (MouseX(0)>=0) && (MouseX(0)<=511))
@@ -392,7 +392,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
 
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         ScreenToFront(MyScreen[0]);
         CLOCK();
         RawCode = GETRAWCODE();
@@ -401,7 +401,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
         {
             STARTROTATEPLANETS();
         } else {
-            if (LMB_PRESSED || RMB_PRESSED) { delay(3); }
+            if (LMB_PRESSED || RMB_PRESSED) { Delay(3); }
             if ((LMB_PRESSED && (MouseX(0)>=518) && (MouseX(0)<=634)
                              && (MouseY(0)>=472) && (MouseY(0)<=492))
              || (LMB_PRESSED && RMB_PRESSED) || (64 == RawCode) || (67 == RawCode) || (68 == RawCode))

@@ -18,7 +18,7 @@ BPTR OPENSMOOTH(char* FName, uint32 FMode)
         // if the file-open was NOT successful, we need to access the right disk!
         do
         {
-            delay(RDELAY);
+            Delay(RDELAY);
         }
         while (LMB_PRESSED);
 
@@ -61,7 +61,7 @@ BPTR OPENSMOOTH(char* FName, uint32 FMode)
                 //  stop when the file was opened successfully or left mouse button clicked
                 do
                 {
-                    delay(6);
+                    Delay(6);
                     FHandle = Open((CONST_STRPTR) FName, FMode);
                 }
                 while ((LMB_NOTPRESSED) && (0 == FHandle));
@@ -70,7 +70,7 @@ BPTR OPENSMOOTH(char* FName, uint32 FMode)
                 // wait to release the left mouse button
                 do
                 {
-                    delay(6);
+                    Delay(6);
                 }
                 while (LMB_PRESSED);
                 if (0 == FHandle)

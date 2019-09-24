@@ -77,7 +77,7 @@ void FINANZEN()
     FINANZEN_WRITEDATA(RPort_PTR, 0, ActPlayer);
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         if (LMB_PRESSED)
         {
             PLAYSOUND(1,300);
@@ -124,7 +124,7 @@ void FINANZEN()
                    Save.JSteuer[ActPlayer]--;
                    FINANZEN_WRITEDATA(RPort_PTR, 1, ActPlayer);
                    PLAYSOUND(1,300);
-                   delay(10);
+                   Delay(10);
                 }
                 ActPlayer++;    // TODO ... due to shifted Save-array...
                 CloseWindow(FIN_Window);

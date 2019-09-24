@@ -42,7 +42,7 @@ enum { CIVVAR_NONE  = 0,
 #define LOGOMEMSIZE     (int)(128*128*7/8)
 
 #define RDELAY          1
-#define PAUSE           10 //85
+#define PAUSE           85
 
 #define GFLAG_EXPLORE   1
 #define GFLAG_ATTACK    2

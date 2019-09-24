@@ -8,7 +8,7 @@ void WAITLOOP(bool no_wait)
     uint8 RawCode;
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         RawCode = GETRAWCODE();
     }
     while ((64 != RawCode) && (67 != RawCode) && (68 != RawCode) && LMB_NOTPRESSED && RMB_NOTPRESSED && (!no_wait));
@@ -17,7 +17,7 @@ void WAITLOOP(bool no_wait)
 
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
     }
     while ((LMB_PRESSED || RMB_PRESSED) && (!no_wait));
     CLEARINTUITION();

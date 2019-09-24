@@ -13,7 +13,7 @@ void REQUEST(char* s1, char* s2, uint8 c1, uint8 c2)
 
         WRITE(221,20,c1,WRITE_Center,REQ_Window->RPort,3,s1);
         WRITE(221,45,c2,WRITE_Center,REQ_Window->RPort,3,s2);
-        if (Save.PlayMySelf) { delay(PAUSE); }
+        if (Save.PlayMySelf) { Delay(PAUSE); }
         WAITLOOP(Save.PlayMySelf);
         CloseWindow(REQ_Window);
     }

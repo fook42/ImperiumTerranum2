@@ -5,11 +5,6 @@
 #include "IT2_Defines.h"
 #include "IT2_Types.h"
 
-void delay(uint16 time)
-{
-    (void) usleep(time*10000);
-}
-
 int it_round(double x)
 {
     return (int) (x+0.5f);

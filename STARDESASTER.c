@@ -68,11 +68,11 @@ void FUCKSYSTEM(uint8 ActSys)
     {
         SetRGB32(&(MyScreen[0]->ViewPort),0,0xFF000000,0xFF000000,0xFF000000);
         PLAYSOUND(2,1200+rand()%250);
-        delay((rand()%10)+1);
+        Delay((rand()%10)+1);
         SetRGB32(&(MyScreen[0]->ViewPort),0,0,0,0);
-        delay((rand()%10)+1);
+        Delay((rand()%10)+1);
     }
-    delay(100);
+    Delay(100);
 }
 
 

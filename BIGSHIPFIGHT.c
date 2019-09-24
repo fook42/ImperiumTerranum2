@@ -509,7 +509,7 @@ uint8 SMALLSHIPFIGHT(r_ShipHeader* ShipPtr1, r_ShipHeader* ShipPtr2, r_ShipHeade
                     if (MODE_ALL == Mode)
                     {
                         if (Visible) { PLAYSOUND(2,900); }
-                        delay(20);
+                        Delay(20);
                     } else {
                         ShipPtr2->PosX = ShipPtr02->PosX;
                         ShipPtr2->PosY = ShipPtr02->PosY;

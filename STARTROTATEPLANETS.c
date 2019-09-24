@@ -234,7 +234,7 @@ void STARTROTATEPLANETS()
 
     if (18 < j)
     {
-        if (Save.PlayMySelf) { delay(PAUSE); }
+        if (Save.PlayMySelf) { Delay(PAUSE); }
         WAITLOOP(Save.PlayMySelf);
         if (NULL != SRP_Window)
         {
