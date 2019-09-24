@@ -204,8 +204,6 @@ void ROTATEPLANETS(uint8 ActSys)
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.009); }
                             if (PlanetHeader->Population<3000)
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.005); }
-                            if (PlanetHeader->Population<0)
-                                { PlanetHeader->Population = 0; }
                         }
                         Save.Bevoelkerung[CivVar-1] += PlanetHeader->Population;
                     } else if (NULL == PlanetHeader->ProjectPtr)
