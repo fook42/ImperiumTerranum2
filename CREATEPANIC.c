@@ -127,7 +127,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 if ((0 != Warnung[ActPlayer]) && (0 != (rand()%10))) { return; }
                 GetPlanet[   GETCIVVAR(MyPlanetHeader->Ethno)-1] = MyPlanetHeader;
                 GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1] = ActSys;
-                CopyMem(MyPlanetHeader, &OldPlanet, sizeof(r_PlanetHeader));
+                memcpy(&OldPlanet, MyPlanetHeader, sizeof(r_PlanetHeader));
                 if (0 != Save.CivPlayer[ActPlayer-1]) { TheProject = -1; }
                 _s1 = PText[566];
                 if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)

@@ -68,7 +68,7 @@ bool INITDESK(uint8 Mode)
         LOADMOD( s, 3 );
 
         slen = strlen(PathStr[7]);
-        CopyMem((APTR) PathStr[7], (APTR) s, (ULONG) (slen+1));
+        memcpy(s, PathStr[7], (slen+1));
 
         strcpy(s+slen, "Worm.img");
         if (!RAWLOADIMAGE(s,0,32,512,32,7,&ImgBitMap7)) { return false; }

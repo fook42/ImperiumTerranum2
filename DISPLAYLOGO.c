@@ -29,7 +29,7 @@ void DISPLAYLOGO(uint8 DL_ActPlayer, uint16 LEdge, uint16 TEdge)
             ActMem = LogoMemA[DL_ActPlayer];
             if (NULL == ActMem) { ActMem = LogoMemA[0]; }
             l = strlen(PathStr[10]);
-            CopyMem((APTR) PathStr[10], (APTR) FName, (ULONG) l);
+            memcpy(FName, PathStr[10], l);
             FName[l] = DL_ActPlayer+'0';
             strcpy(FName+l+1, ".img");
             FHandle = OPENSMOOTH(FName, MODE_OLDFILE);

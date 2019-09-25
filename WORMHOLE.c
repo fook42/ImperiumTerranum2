@@ -418,7 +418,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
         return _WORMFLIGHT;
     }
 
-    CopyMem( (APTR) newTags, (APTR) Tags, (ULONG) (7*sizeof(struct TagItem)));
+    memcpy(Tags, newTags, (7*sizeof(struct TagItem)));
     for(i = 0; i < 2; ++i)
     {
         MyScreen[i] = OpenScreenTagList(&WH_NeuScreen, Tags);
