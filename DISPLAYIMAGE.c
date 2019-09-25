@@ -43,7 +43,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
 
     if (true == ImageIsValid)
     {
-        CopyMem((APTR) (CacheMemA[realCacheNum]+CNum3+8), (APTR) IMemA[0], (ULONG) (CacheMemL[realCacheNum]-CNum3-8));
+        memcpy(IMemA[0], (CacheMemA[realCacheNum]+CNum3+8), (CacheMemL[realCacheNum]-CNum3-8));
     }
     struct Image DI_Img = {0, 0, Width, Height, Depth, (UWORD*) IMemA[0], CNum-1, 0, NULL};
     DrawImage(&(DI_Screen->RastPort), &DI_Img, LEdge, TEdge);
@@ -74,7 +74,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
             (void) Read(FHandle, (uint8*) Addr, CNum3);
             Close(FHandle);
             Addr += CNum3;
-            CopyMem((APTR) IMemA[0], (APTR) Addr, (ULONG) (*Size));
+            memcpy((void*) Addr, IMemA[0], (*Size));
             ImageIsValid = true;
         } else {
             (void) SETCOLOR(DI_Screen, FName);
