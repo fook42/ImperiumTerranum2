@@ -54,7 +54,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     Draw(MyRPort_PTR[0],y,116);
 
 
-/*    if ((OffsetY>-9) && (OffsetY<8))     // draw the sun to the main view
+    if ((OffsetY>-9) && (OffsetY<8))     // draw the sun to the main view
     {
         if (OffsetY>-8)
         {
@@ -89,7 +89,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
             }
         }
     }
-*/
+
     if ((-9 < OffsetX) && (8 > OffsetX))
     {
     }
