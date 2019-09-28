@@ -317,7 +317,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
                                       Colors[i].g<<24,
                                       Colors[i].b<<24);
     }
-    delay(50);
+    Delay(50);
     for (Ctr = 0; Ctr < 50; ++Ctr)
     {
         AScr = 1-AScr;
@@ -604,7 +604,7 @@ void MAININTRO()
     while (xpos > 60);
 
     ClipBlit(MyRPort_PTR[AScr],10,340,MyRPort_PTR[1-AScr],10,340,150,90,192);
-    delay(5);
+    Delay(5);
     for (i = 0; i<2; i++)
     {
         AScr = 1-AScr;
@@ -612,12 +612,12 @@ void MAININTRO()
         ScreenToFront(MyScreen[AScr]);
     }
     if (LMB_PRESSED) { goto leave_intro; }
-    delay(15);
+    Delay(15);
     AScr = 1-AScr;
     BltBitMapRastPort((struct BitMap*) &IntroBitMap,0,90,MyRPort_PTR[AScr],10,337,98,91,192);
     ScreenToFront(MyScreen[AScr]);
     custom.dmacon = BITCLR | DMAF_AUDIO; // 0x000F
-    delay(15);
+    Delay(15);
 
     SPAddrA = SMemA[0];              SPVolA  = 0;  SPFreqA = 856; SPLengthA = SMemL[0]/4;
     SPAddrB = SMemA[0]+(SMemL[0]/2); SPVolB  = 0;  SPFreqB = 856; SPLengthB = SMemL[0]/4;
@@ -633,7 +633,7 @@ void MAININTRO()
         WaitTOF();
     }
 
-    delay(25);
+    Delay(25);
     for (i = 0; i<2; i++)
     {
         AScr = 1-AScr;
@@ -1021,7 +1021,7 @@ void MAININTRO()
             { goto leave_intro; }
     }
 
-    delay(10);
+    Delay(10);
     if (LMB_PRESSED)
         { goto leave_intro; }
 

@@ -311,7 +311,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     blink = 0;
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         if (1 == Mode)
         {
             blink++;
@@ -436,7 +436,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 MyPlanetHeader->ProjectID = 0;
                 do
                 {
-                    delay(RDELAY);
+                    Delay(RDELAY);
                     if (MouseX(1) > 365)
                     {
                         i = (MouseY(1)-78) / 16;
@@ -502,7 +502,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 b = false;
                 do
                 {
-                    delay(RDELAY);
+                    Delay(RDELAY);
                     if (LMB_PRESSED
                         && (HKP_Window->MouseX >=  10) && (HKP_Window->MouseX <= 131)
                         && (HKP_Window->MouseY >= 100) && (HKP_Window->MouseY <= 125))

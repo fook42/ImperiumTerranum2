@@ -158,7 +158,7 @@ void MAIN_FNC()
      *********************************************/
     do
     {
-        delay(RDELAY);
+        Delay(RDELAY);
         CLOCK();
         ScreenToFront(MyScreen[0]);
         RawCode = GETRAWCODE();
@@ -176,7 +176,7 @@ void MAIN_FNC()
         } else {
             if (LMB_PRESSED || RMB_PRESSED)
             {
-                delay(3);
+                Delay(3);
             }
             if ((LMB_PRESSED && (MouseX(0) >= 518) && (MouseX(0) <= 634)
                              && (MouseY(0) >= 472) && (MouseY(0) <= 492))

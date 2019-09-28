@@ -18,7 +18,7 @@ void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 
         {
             RECT(MyScreen[0],0,x,y,x+31,y+31);
             REFRESHDISPLAY();
-            delay(10);
+            Delay(10);
         }
     }
     MyShipPtr->PosX = 0;
