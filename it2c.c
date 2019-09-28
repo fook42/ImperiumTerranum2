@@ -15,8 +15,8 @@ const char __ver[] = "$VER: ImperiumTerranum 2.8c (10.04.2020)\0";
 #define AUTOCON "CON:20/20/500/120/mycon/auto/close/wait"
 #define _EXTERN_
 
-#define SCREENREQTITLE_High "HIGHRES (min. 640x512) screenmode"
-#define SCREENREQTITLE_Low  "LOWRES (min. 320x256) screenmode"
+#define SCREENREQTITLE_High "Please select HIGHRES (min. 640x512) screenmode"
+#define SCREENREQTITLE_Low  "Please select LOWRES (min. 320x256) screenmode"
 
 #include "IT2_Defines.h"
 #include "IT2_Types.h"
