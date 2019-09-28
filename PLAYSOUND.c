@@ -34,7 +34,7 @@ void PLAYSOUND(uint8 SID, uint16 SRate)
         }
         do
         {
-            delay(RDELAY);
+            Delay(RDELAY);
         }
         while ((LMB_PRESSED || RMB_PRESSED) && (!Save.PlayMySelf));
 

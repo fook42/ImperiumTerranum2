@@ -126,7 +126,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     WRITE(256,131,12,WRITE_Center,MyRPort_PTR[0],3, s);
                     WRITE(256,151,12,WRITE_Center,MyRPort_PTR[0],3, _PT_Umlaufbahn_kollabiert);
                     WRITE(256,171,12,WRITE_Center,MyRPort_PTR[0],3, _PT_Stargate_zerstoert);
-                    if (Save.PlayMySelf) { delay(PAUSE); }
+                    if (Save.PlayMySelf) { Delay(PAUSE); }
                     WAITLOOP(Save.PlayMySelf);
                     RECTWIN(MyRPort_PTR[0],0,85,120,425,200);
 /* CloseWindow() ---- */
@@ -308,7 +308,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             default: { }
                         }
                         WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
-                        if (Save.PlayMySelf) { delay(PAUSE); }
+                        if (Save.PlayMySelf) { Delay(PAUSE); }
                         WAITLOOP(Save.PlayMySelf);
                         CloseWindow(ROT_Window);
                     }
@@ -563,7 +563,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     }
                                     strcat(s, PText[580]); // durch
                                     WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
-                                    if (Save.PlayMySelf) { delay(PAUSE); }
+                                    if (Save.PlayMySelf) { Delay(PAUSE); }
                                     WAITLOOP(Save.PlayMySelf);
 
                                     CloseWindow(ROT_Window);
@@ -632,7 +632,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             }
                             WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
 
-                            delay(5);
+                            Delay(5);
                             if (( 8 <= PlanetHeader->ProjectID)
                              && (24 >= PlanetHeader->ProjectID) && (!Save.PlayMySelf))
                             {
@@ -650,7 +650,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                 b = false;
                                 do
                                 {
-                                    delay(RDELAY);
+                                    Delay(RDELAY);
                                     if (LMB_PRESSED)
                                     {
                                         if ((ROT_Window2->MouseY >= 10) && (ROT_Window2->MouseY <= 30))
@@ -673,7 +673,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                 while (!b);
                                 CloseWindow(ROT_Window2);
                             } else {
-                                if (Save.PlayMySelf) { delay(PAUSE); }
+                                if (Save.PlayMySelf) { Delay(PAUSE); }
                                 WAITLOOP(Save.PlayMySelf);
                             }
                             CloseWindow(ROT_Window);
@@ -1182,7 +1182,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     i = 0;
                     do
                     {
-                        delay(RDELAY);
+                        Delay(RDELAY);
                         j = (ROT_Window->MouseY-20) / 20;
                         if ((i != j) && (j>=1) && (j<=6))
                         {
@@ -1277,7 +1277,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             while (LMB_PRESSED) { };
                             do
                             {
-                               delay(RDELAY);
+                               Delay(RDELAY);
                             }
                             while (LMB_NOTPRESSED || (MouseX(0)<105) || ((MouseX(0)>221) && (MouseX(0)<290)) || (MouseX(0)>406)
                                                   || (MouseY(0)<225) || (MouseY(0)>245));
@@ -1316,7 +1316,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         strcat(s, GETCIVNAME(i+1));
                         WRITE(256,140,GETCIVFLAG(i+1),(1|WRITE_Center),MyRPort_PTR[0],3,s);
                         WRITE(256,165,12,(1|WRITE_Center),MyRPort_PTR[0],3,PText[601]);
-                        if (Save.PlayMySelf) { delay(PAUSE); }
+                        if (Save.PlayMySelf) { Delay(PAUSE); }
                         WAITLOOP(Save.PlayMySelf);
                         RECTWIN(MyRPort_PTR[0],0,85,120,425,210);
                         REFRESHDISPLAY();
@@ -1368,7 +1368,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     WRITE(348,227,8,WRITE_Center,MyRPort_PTR[0],3,_PT_Ablehnen);
                     do
                     {
-                        delay(RDELAY);
+                        Delay(RDELAY);
                     }
                     while (LMB_NOTPRESSED || (((MouseX(0)<105) || (MouseX(0)>221)) && ((MouseX(0)<290) || (MouseX(0)>406)))
                                           ||  ((MouseY(0)<225) || (MouseY(0)>245)));
@@ -1456,7 +1456,7 @@ void ROTATEPLANETS(uint8 ActSys)
             strcat(s, " ");
             strcat(s, PText[617]);
             WRITE(256,175,12,WRITE_Center,MyRPort_PTR[0],3,s);
-            if (Save.PlayMySelf) { delay(PAUSE); }
+            if (Save.PlayMySelf) { Delay(PAUSE); }
             WAITLOOP(Save.PlayMySelf);
             RECTWIN(MyRPort_PTR[0],0,35,110,475,210);
             REFRESHDISPLAY();

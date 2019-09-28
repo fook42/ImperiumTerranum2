@@ -33,7 +33,7 @@ void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
         WRITE(176,70,12,WRITE_Center,RPort_PTR,3,PText[573]);
         if (Save.PlayMySelf)
         {
-            delay(PAUSE);
+            Delay(PAUSE);
         }
         WAITLOOP(Save.PlayMySelf);
         CloseWindow(DEC_Window);

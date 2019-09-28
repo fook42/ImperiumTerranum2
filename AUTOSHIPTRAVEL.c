@@ -265,7 +265,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             } else {
                                                 BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->TargetShip->SType-8)*32,32,RPort_PTR,8,20,32,32,192);
                                             }
-                                            if (Save.PlayMySelf) { delay(PAUSE); }
+                                            if (Save.PlayMySelf) { Delay(PAUSE); }
                                             WAITLOOP(Save.PlayMySelf);
                                             CloseWindow(AST_Window);
                                         }

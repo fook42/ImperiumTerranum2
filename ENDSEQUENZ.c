@@ -62,7 +62,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
             PlayModule(SndModulePtr);
         }
     }
-    delay(5);
+    Delay(5);
 
     if (-1 == Mode)
     {
@@ -188,17 +188,17 @@ typedef struct SArr13 { char* data[11]; } SArr13;
         t = 8;
     }
     ScreenToFront(MyScreen[0]);
-    delay(200);
+    Delay(200);
     ypos = 105;
     for (i = 0; i < t; ++i)
     {
         WRITE(320,ypos,255,(WRITE_Center|WRITE_Shadow),RPort_PTR,4,SA13.data[i]);
         ypos += 25;
-        delay(50);
+        Delay(50);
     }
     if (-2 == Mode)
     {
-        WRITE(320,340,255,WRITE_Center,RPort_PTR,0,"(Womit bewiesen wäre, daß unser Universum geschlossen ist!)");
+        WRITE(320,340,255,WRITE_Center,RPort_PTR,0,"(Womit bewiesen wï¿½re, daï¿½ unser Universum geschlossen ist!)");
     }
     WAITLOOP(false);
     if (NULL != SndModulePtr)
