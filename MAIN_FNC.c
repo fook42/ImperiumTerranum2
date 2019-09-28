@@ -57,12 +57,13 @@ void MAIN_FNC()
     CREATEPATHS();
 
     /************************************/
-    HelpID = 0xA0000;
+    // HelpID = 0xA0000+0x9004;
     INITSTDTAGS();
     XScreen = OpenScreenTagList(&NeuScreen, Tags);
     if (NULL == XScreen)
     {
-        HelpID = 0x20000;
+        ScreenModeID_HighRes = 0x20000+0x9004;
+        ScreenModeID_LowRes  = 0x20000+0x1000;
         INITSTDTAGS();
         XScreen = OpenScreenTagList(&NeuScreen, Tags);
     }

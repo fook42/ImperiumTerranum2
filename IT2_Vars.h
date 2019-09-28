@@ -109,7 +109,8 @@ _EXTERN_  uint8         LastDisplay[MAXCIVS+1];
 _EXTERN_  uint8         Warnung[MAXCIVS+1];
 _EXTERN_  uint8*        TextMemA;
 _EXTERN_  uint8*        PathMemA;
-_EXTERN_  uint32        TextMemL, PathMemL, HelpID, MaquesShips;
+_EXTERN_  uint32        TextMemL, PathMemL, MaquesShips;
+_EXTERN_  uint32        ScreenModeID_HighRes, ScreenModeID_LowRes;
 _EXTERN_  sint32        Year;
 _EXTERN_  sint16        OffsetX, OffsetY, OldX, OldY;
 
