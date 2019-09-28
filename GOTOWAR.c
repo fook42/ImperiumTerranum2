@@ -40,7 +40,7 @@ void GOTOWAR(uint8 CivFlag1, uint8 CivFlag2)
     WRITE(171,11,CivFlag1,(1|WRITE_Center),RPort_PTR,3, GETCIVNAME(CivVar1));
     WRITE(171,31,      12,(1|WRITE_Center),RPort_PTR,3, _PT_beginnenKrieggegen);
     WRITE(171,51,CivFlag2,(1|WRITE_Center),RPort_PTR,3, GETCIVNAME(CivVar2));
-    if (Save.PlayMySelf) { Delay(PAUSE); }
+    if (Save.PlayMySelf) { delay(PAUSE); }
     WAITLOOP(Save.PlayMySelf);
     CloseWindow(GTW_Window);
 

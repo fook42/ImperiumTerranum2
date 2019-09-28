@@ -93,7 +93,7 @@ typedef struct SArr6 {
                                     pos = dez2out(l, 0, pos);
                                     *pos++=' '; *pos++='.'; *pos++='.'; *pos++=' ';
                                     pos = dez2out((l+(12-i)*10), 0, pos);
-                                    *pos++=' '; *pos++='ï¿½'; *pos++='C'; *pos=0;
+                                    *pos++=' '; *pos++='°'; *pos++='C'; *pos=0;
                                     SA6 = (SArr6) {{PText[352],PText[353],PText[354],PText[355],PText[356],s}};
                                     l = 3;
                                     } break;
@@ -101,7 +101,7 @@ typedef struct SArr6 {
                                     pos = dez2out(l, 0, pos);
                                     *pos++=' '; *pos++='.'; *pos++='.'; *pos++=' ';
                                     pos = dez2out((l+(12-i)*10), 0, pos);
-                                    *pos++=' '; *pos++='ï¿½'; *pos++='C'; *pos=0;
+                                    *pos++=' '; *pos++='°'; *pos++='C'; *pos=0;
                                     SA6 = (SArr6) {{PText[358],PText[359],PText[360],PText[361],PText[362],s}};
                                     l = 1;
                                     } break;
@@ -141,7 +141,7 @@ typedef struct SArr6 {
         l<<=5; // l*32
         do
         {
-            Delay(RDELAY);
+            delay(RDELAY);
             if ((x<32) && (y<32))
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x<<1)+12,(y<<1)+12,1,1,192);

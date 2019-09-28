@@ -290,7 +290,7 @@ bool DISKMENU(uint8 Autoselect)
 
     do
     {
-        Delay(RDELAY);
+        delay(RDELAY);
         if (LMB_PRESSED || (DISKMENU_PROMPT != Autoselect))
         {
             if (((DIS_Window->MouseX>3) && (DIS_Window->MouseX<121)) || (DISKMENU_PROMPT != Autoselect))

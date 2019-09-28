@@ -41,7 +41,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
             WaitTOF();
-            Delay(4);
+            delay(4);
         }
     }
     NewSys--; // to shift the arrays
@@ -66,7 +66,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
             WaitTOF();
-            Delay(4);
+            delay(4);
         }
         RECTWIN(MyRPort_PTR[0], 0, MOVESHIP_ToX, MOVESHIP_ToY, MOVESHIP_ToX+31, MOVESHIP_ToY+31);
         REFRESHDISPLAY();

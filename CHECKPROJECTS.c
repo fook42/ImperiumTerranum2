@@ -49,7 +49,7 @@ void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner)
                     WRITE(171,53,NewOwner & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
                     if (Save.PlayMySelf)
                     {
-                        Delay(PAUSE);
+                        delay(PAUSE);
                     }
                     WAITLOOP(Save.PlayMySelf);
                     CloseWindow(CPJ_Window);

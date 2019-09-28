@@ -35,10 +35,10 @@ void MOVESHIP_EXPLODE(uint8 ActSys, r_ShipHeader* MyShipPtr)
                     for(i = 0; i <= 15; i++)
                     {
                         BltBitMapRastPort((struct BitMap*) &ImgBitMap4,i*32,0,&(MyScreen[0]->RastPort),MOVESHIP_x,MOVESHIP_y,31,31,192);
-                        Delay(5);
+                        delay(5);
                     }
                     RECT(MyScreen[0],0,MOVESHIP_x,MOVESHIP_y,MOVESHIP_x+31,MOVESHIP_y+31);
-                    Delay(10);
+                    delay(10);
                     if (Audio_enable)
                     {
                         custom.dmacon = BITCLR | DMAF_AUD0 | DMAF_AUD1;
@@ -50,5 +50,5 @@ void MOVESHIP_EXPLODE(uint8 ActSys, r_ShipHeader* MyShipPtr)
         MyShipPtr->Moving = 0;
     }
     REFRESHDISPLAY();
-    Delay(10);
+    delay(10);
 }

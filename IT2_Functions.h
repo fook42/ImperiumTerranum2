@@ -9,6 +9,7 @@
 #include <proto/medplayer.h>
 #include "IT2_Types.h"
 
+void delay(uint16 time);
 int it_round(double x);
 char* dez2out(sint32 value, uint8 digits, char* dest);
 char* float2out(double fvalue, uint8 dezdigits, uint8 flodigits, char* dest);

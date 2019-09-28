@@ -71,7 +71,7 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
 
     if ((ActPProjects->data[40]>0) && (ShipShield >= 0))
     {
-        Delay(20);
+        delay(20);
         LandShield = it_round(6.4*ActPProjects->data[40]);
         do
         {
@@ -106,7 +106,7 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
         }
         MyShipPtr->ShieldBonus++;
         REFRESHDISPLAY();
-        Delay(10);
+        delay(10);
     } else {
         if (Visible)
         {

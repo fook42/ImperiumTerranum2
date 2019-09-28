@@ -15,5 +15,5 @@ void MOVESHIP_DRAWSCENE(uint8 ActSys, r_ShipHeader* MyShipPtr)
     } else {
         REFRESHDISPLAY();
     }
-    Delay(10);
+    delay(10);
 }

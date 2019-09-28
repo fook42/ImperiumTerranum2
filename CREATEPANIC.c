@@ -230,7 +230,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             {
                 do
                 {
-                    Delay(RDELAY);
+                    delay(RDELAY);
                     if (LMB_PRESSED && (9 < CPA2_Window->MouseY) && (31 > CPA2_Window->MouseY))
                     {
                         if ((54 < CPA2_Window->MouseX) && (172 > CPA2_Window->MouseX))
@@ -247,10 +247,10 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 }
                 while(!b);
             }
-            if (Save.PlayMySelf) { Delay(PAUSE); }
+            if (Save.PlayMySelf) { delay(PAUSE); }
             CloseWindow(CPA2_Window);
         } else {
-            if (Save.PlayMySelf) { Delay(PAUSE); }
+            if (Save.PlayMySelf) { delay(PAUSE); }
             WAITLOOP(Save.PlayMySelf);
         }
         CloseWindow(CPA_Window);

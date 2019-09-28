@@ -37,7 +37,7 @@ void INFORMUSER()
         PRINTGLOBALINFOS(ActPlayer-1);
         if (Save.PlayMySelf)
         {
-            Delay(PAUSE);
+            delay(PAUSE);
         }
         WAITLOOP(Save.PlayMySelf);
         if (0 == Display)

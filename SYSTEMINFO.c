@@ -66,7 +66,7 @@ void SYSTEMINFO(uint8 ActSys)
     WRITE(62,93,0,WRITE_Center,RPort_PTR,3,_PT_Warten);
     do
     {
-        Delay(RDELAY);
+        delay(RDELAY);
         if (LMB_PRESSED)
         {
             if ((-1 < SYS_Window->MouseX) && (123 > SYS_Window->MouseX))
@@ -83,7 +83,7 @@ void SYSTEMINFO(uint8 ActSys)
                     SysID = 0;
                     do
                     {
-                        Delay(RDELAY);
+                        delay(RDELAY);
                         if (LMB_PRESSED)
                         {
                             SysID = LastSystem;
@@ -135,11 +135,11 @@ void SYSTEMINFO(uint8 ActSys)
                         for(i = 0; i < 16; ++i)
                         {
                             BltBitMapRastPort((struct BitMap*) &ImgBitMap4,i*32,0,MyRPort_PTR[0],x,y,31,31,192);
-                            Delay(5);
+                            delay(5);
                         }
                         RECTWIN(MyRPort_PTR[0],0,x,y,x+31,y+31);
                     }
-                    Delay(10);
+                    delay(10);
                     // remove ship/fleet
                     UseShipPtr->Owner = 0;
                     UseShipPtr->SType = 8;
@@ -203,7 +203,7 @@ void SYSTEMINFO(uint8 ActSys)
                             MyShipPtr->Owner = 0;
 
                             REFRESHDISPLAY();
-                            Delay(15);
+                            delay(15);
                         } else {
                             // stargate is already there
                             REQUEST(PText[485],PText[486],ActPlayerFlag,ActPlayerFlag);

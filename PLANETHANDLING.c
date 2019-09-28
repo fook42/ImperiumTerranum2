@@ -90,7 +90,7 @@ uint8 GETOPTION(uint8 Opts, char (*OptArr)[40], uint8 CivFlag)
 
         do
         {
-            Delay(RDELAY);
+            delay(RDELAY);
             if ( (9           < GOP_Window->MouseY) &&
                 ((11+Opts*20) > GOP_Window->MouseY))
             {
@@ -142,7 +142,7 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
     WRITE(397, 192, 8, WRITE_Center, MyRPort_PTR[0],3, _PT_Ablehnen);
     do
     {
-        Delay(RDELAY);
+        delay(RDELAY);
     }
     while ((LMB_NOTPRESSED)
         || (((MouseX(0)<55) || (MouseX(0)>183))
@@ -556,7 +556,7 @@ void DIPLOMACY()
                             }
                             RECTWIN(MyRPort_PTR[0],0,85,120,425,200);
                             REFRESHDISPLAY();
-                            Delay(15);
+                            delay(15);
                         } break;
         default:        { }
     }
@@ -782,7 +782,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
     FIn = 0;
     do
     {
-        Delay(RDELAY);
+        delay(RDELAY);
         if (LMB_PRESSED)
         {
             if ((MouseX(0) > 197) && (MouseX(0) < 316)
@@ -868,7 +868,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                             WRITELOADDATA(LTOut);
                             do
                             {
-                                Delay(RDELAY);
+                                delay(RDELAY);
                                 if (LMB_PRESSED)
                                 {
                                     if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
@@ -935,14 +935,14 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                     {
                                         do
                                         {
-                                            Delay(RDELAY);
+                                            delay(RDELAY);
                                             if ((MouseX(0)>=342) && (MouseX(0)<=442)
                                              && (MouseY(0)>=164) && (MouseY(0)<=194)
                                              && (PLANET_MyShipPtr->Ladung == 0)
                                              && (PLANET_MyShipPtr->Fracht < ShipData(PLANET_MyShipPtr->SType).MaxLoad)
                                              && (PLANET_MyPlanetHeader->Water>10))
                                             {
-                                                Delay(7);
+                                                delay(7);
                                                 PLANET_MyShipPtr->Fracht++;
                                                 FIn++;
                                                 PLANET_MyPlanetHeader->Water -= 5;
@@ -953,7 +953,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                              && (PLANET_MyShipPtr->Fracht>0)
                                              && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<100))
                                             {
-                                                Delay(7);
+                                                delay(7);
                                                 PLANET_MyPlanetHeader->Water += 5;
                                                 FIn--;
                                                 PLANET_MyShipPtr->Fracht--;

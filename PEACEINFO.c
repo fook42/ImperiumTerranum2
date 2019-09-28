@@ -21,7 +21,7 @@ void PEACEINFO(uint8 CivVar1, uint8 CivVar2, uint8 CivFlag1, uint8 CivFlag2)
         WRITE(170,72,      12,(1|WRITE_Center),RPort_PTR,3, PText[232]);
         if (Save.PlayMySelf)
         {
-            Delay(PAUSE);
+            delay(PAUSE);
         }
         WAITLOOP(Save.PlayMySelf);
         CloseWindow(PEI_Window);

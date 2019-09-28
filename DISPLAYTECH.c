@@ -109,7 +109,7 @@ void DISPLAYTECH(uint8 TechID)
     ScreenToFront(MyScreen[1]);
     if (Save.PlayMySelf)
     {
-        Delay(PAUSE*2);
+        delay(PAUSE*2);
     }
     WAITLOOP(Save.PlayMySelf);
     if (NULL != ModC)

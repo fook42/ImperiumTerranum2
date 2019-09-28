@@ -56,7 +56,7 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 void MILITAER()
 {
     char    s[40];
-    char    Txt_notavail[]= "--- (benï¿½tigt ";
+    char    Txt_notavail[]= "--- (benötigt ";
     const int _Txt_notavail_len = (sizeof(Txt_notavail)/sizeof(Txt_notavail[0]))-1;
     char*   _s;
     int     i;
@@ -116,7 +116,7 @@ void MILITAER()
     DRAWDATA(RPort_PTR, 0);
     do
     {
-//        Delay(RDELAY);
+//        delay(RDELAY);
         if (LMB_PRESSED)
         {
             PLAYSOUND(1,300);

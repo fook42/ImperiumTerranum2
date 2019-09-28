@@ -174,7 +174,7 @@ void SHIPINFO(uint8 ActSys)
     ScreenToFront(MyScreen[1]);
     do
     {
-        Delay(RDELAY);
+        delay(RDELAY);
         if (LMB_PRESSED)
         {
             PLAYSOUND(1,300);

@@ -38,9 +38,9 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
         }
     }
     LINKSHIP(MyShipPtr, &SystemHeader[SysID-1].FirstShip, 1);
-    Delay(5);
+    delay(5);
     REFRESHDISPLAY();
-    Delay(5);
+    delay(5);
     MyShipPtr->PosX = SystemHeader[SysID-1].FirstShip.PosX;
     MyShipPtr->PosY = SystemHeader[SysID-1].FirstShip.PosY;
     OffsetX = -MyShipPtr->PosX-1;
@@ -58,7 +58,7 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
                 MyShipPtr->Moving = -1;
             }
             DRAWSYSTEM(MODE_REDRAW,SysID,NULL);
-            Delay(5);
+            delay(5);
             if ((MOVESHIP_x>=0) && (MOVESHIP_x<=478) && (MOVESHIP_y>=0) && (MOVESHIP_y<=478))
             {
                 for(i = 1; i <= 1800; i++)
@@ -71,10 +71,10 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
                     RectFill(&(MyScreen[0]->RastPort),MOVESHIP_x+Cx,MOVESHIP_y+Cy,MOVESHIP_x+Cx+1,MOVESHIP_y+Cy+1);
                 }
             }
-            Delay(5);
+            delay(5);
             MyShipPtr->Moving = -MyShipPtr->Moving;
             DRAWSYSTEM(MODE_REFRESH,SysID,NULL);
-            Delay(5);
+            delay(5);
         }
     }
     MOVESHIP_FromX = MyShipPtr->PosX;
