@@ -648,7 +648,7 @@ void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
     r_PlanetHeader* MyPlanetHeader;
     ByteArr42*      ActPProjects;
 
-    struct TagItem  newTags[] ={{SA_DisplayID,   (0x1000+HelpID)},
+    struct TagItem  newTags[] ={{SA_DisplayID,   ScreenModeID_LowRes},
                                 {SA_Interleaved, true},
                                 {SA_Draggable,   false},
                                 {SA_Colors,      (uint32) &ColSpec},

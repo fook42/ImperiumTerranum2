@@ -1,4 +1,4 @@
-char PubScreenName[] = "IT2c PubScreen 0";
+#define PUBSCREENNAME "IT2c PubScreen 0";
 
 #include "IT2_Defines.h"
 #include "IT2_Types.h"
@@ -7,13 +7,13 @@ char PubScreenName[] = "IT2c PubScreen 0";
 
 void INITSTDTAGS()
 {
-    struct TagItem newTags[] = {{SA_DisplayID,   0x9004+HelpID},
+    struct TagItem newTags[] = {{SA_DisplayID,   ScreenModeID_HighRes},
                                 {SA_Interleaved, true},
                                 {SA_Draggable,   false},
-                                {SA_Pens,        (uint32) &Pens},
-                                {SA_Colors,      (uint32) &ColSpec},
+                                {SA_Pens,        (ULONG) &Pens},
+                                {SA_Colors,      (ULONG) &ColSpec},
 #ifdef _DEBUG_
-                                {SA_PubName,     (uint32) PubScreenName},
+                                {SA_PubName,     (ULONG) PUBSCREENNAME},
 #else
                                 {TAG_DONE,0},
 #endif
