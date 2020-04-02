@@ -3,12 +3,19 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void BOX(struct RastPort* RPort, uint16 Left, uint16 Top, uint16 Right, uint16 Bottom)
+void BOX(struct RastPort* RPort, WORD Left, WORD Top, WORD Right, WORD Bottom)
 {
-    const WORD BArr[] = {Right, Top,
+
+/*    const WORD BArr[] = {Right, Top,
                          Right, Bottom,
                          Left, Bottom,
                          Left, Top};
     Move(RPort, Left, Top);
     PolyDraw(RPort, (long) 4, BArr);
+*/
+    Move(RPort, Left,  Top);
+    Draw(RPort, Right, Top);
+    Draw(RPort, Right, Bottom);
+    Draw(RPort, Left,  Bottom);
+    Draw(RPort, Left, Top);
 }

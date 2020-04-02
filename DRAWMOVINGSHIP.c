@@ -79,7 +79,7 @@ void DRAWMOVINGSHIP(r_ShipHeader* MyShipPtr, uint8 ActSys)
         if ((MOVESHIP_x>=0) && (MOVESHIP_x<481) && (MOVESHIP_y>=0) && (MOVESHIP_y<481))
         {
             FASTREFRESH(MOVESHIP_FromX,MOVESHIP_FromY,MyShipPtr);
-            RECTWIN(MyRPort_PTR[0],0,MOVESHIP_x,MOVESHIP_y,MOVESHIP_x+31,MOVESHIP_y+31);
+            RECT_RP0(0,MOVESHIP_x,MOVESHIP_y,MOVESHIP_x+31,MOVESHIP_y+31);
         }
         if (MOVESHIP_ToX < MOVESHIP_x)
         {

@@ -233,7 +233,8 @@ bool INITSTARS()
                 {
                     for(j = 1; j < 43; ++j)
                     {
-                        Save.ProjectCosts[i].data[j] = it_round(Save.ProjectCosts[i].data[j]*INFLATION);
+                        Save.ProjectCosts[i].data[j] += (Save.ProjectCosts[i].data[j]>>12) * 0x7B;
+                        // it_round(Save.ProjectCosts[i].data[j]*INFLATION);
                     }
                 }
             }

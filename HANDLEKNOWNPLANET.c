@@ -12,7 +12,7 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
     char    s[4];
     char*   _s;
 
-    RECTWIN(MyRPort_PTR[1],0,56,426,327,448);
+    RECT_RP1(0,56,426,327,448);
     l = 0;
     s[0]=0;
     if (0 != MyPlanetHeader->ProjectID)
@@ -40,12 +40,12 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
         WRITE(191,430,2,(1|WRITE_Center),MyRPort_PTR[1],3, _s);
     }
 
-    RECTWIN(MyRPort_PTR[1],0,56,399,256,418);
+    RECT_RP1(0,56,399,256,418);
     if (l > 100) { l = 100; }
     if (l < 0)   { l = 0; }
     (void) dez2out(l, 3, s);
     WRITE(278,402,4,1,MyRPort_PTR[1],1,s);
-    RECTWIN(MyRPort_PTR[1],4,56,399,56+(l*2),418);
+    RECT_RP1(4,56,399,56+(l*2),418);
 }
 
 void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
@@ -56,7 +56,7 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 
 
     // draw state of biosphere, infrastructure and industry
-    RECTWIN(MyRPort_PTR[1],4,56,101,56+MyPlanetHeader->Biosphaere,120);
+    RECT_RP1(4,56,101,56+MyPlanetHeader->Biosphaere,120);
     (void) dez2out((MyPlanetHeader->Biosphaere >> 1), 3, s);
     WRITE(278,104,4,1,MyRPort_PTR[1],1,s);
 
@@ -77,11 +77,11 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
         }
     }
 
-    RECTWIN(MyRPort_PTR[1],4,56,150,56+MyPlanetHeader->Infrastruktur,169);
+    RECT_RP1(4,56,150,56+MyPlanetHeader->Infrastruktur,169);
     (void) dez2out((MyPlanetHeader->Infrastruktur >> 1), 3, s);
     WRITE(278,153,4,1,MyRPort_PTR[1],1,s);
 
-    RECTWIN(MyRPort_PTR[1],4,56,199,56+MyPlanetHeader->Industrie,218);
+    RECT_RP1(4,56,199,56+MyPlanetHeader->Industrie,218);
     (void) dez2out((MyPlanetHeader->Industrie >> 1), 3, s);
     WRITE(278,202,4,1,MyRPort_PTR[1],1,s);
 
@@ -95,7 +95,7 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     if (ActPProjects->data[36]>0) { ++y; }
     if (ActPProjects->data[38]>0) { ++y; }
     if (ActPProjects->data[42]>0) { ++y; }
-    RECTWIN(MyRPort_PTR[1],0,56,307,178,330);
+    RECT_RP1(0,56,307,178,330);
 
     if (y > 0)
     {
@@ -114,7 +114,7 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     if (ActPProjects->data[38]>0) { ++y; }
     if (ActPProjects->data[41]>0) { ++y; }
     if (ActPProjects->data[42]>0) { ++y; }
-    RECTWIN(MyRPort_PTR[1],0,56,354,178,376);
+    RECT_RP1(0,56,354,178,376);
     if (y > 0)
     {
         xpos = 56;
@@ -134,7 +134,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
     char    s[4];
 
     // clear right project icon area
-    RECTWIN(MyRPort_PTR[1],0,359,92,639,511);
+    RECT_RP1(0,359,92,639,511);
     x = 0;
     y = 0;
     for(i = 0; i < 7; ++i)
@@ -145,7 +145,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
             // was this project invented at this planet first?
             if (ActPProjects->data[i+1]>0)
             {
-                RECTWIN(MyRPort_PTR[1],4,360+x,92+y,427+x,159+y);
+                RECT_RP1(4,360+x,92+y,427+x,159+y);
             }
             // copy project icon bitmap to screen
             BltBitMapRastPort((struct BitMap*) &ImgBitMap8,i*64,0,MyRPort_PTR[1],362+x,94+y,64,64,192);
@@ -222,9 +222,9 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     ActPProjects = MyPlanetHeader->ProjectPtr;
     for(i = 0; i < 3; ++i)
     {
-        RECTWIN(MyRPort_PTR[1],0,56,101+i*49,256,120+i*49);
+        RECT_RP1(0,56,101+i*49,256,120+i*49);
     }
-    RECTWIN(MyRPort_PTR[1],0,0,0,639,90);
+    RECT_RP1(0,0,0,639,90);
 
     strcpy(s, _PT_System);
     strcat(s, ": ");
@@ -416,7 +416,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 --j;
 //                Img = (struct Image) {0,0,384,407,7,IMemA[0],127,0,NULL};
                 // clear right project-area to print the list of available Projects to build
-                RECTWIN(MyRPort_PTR[1],0,360,92,639,511);
+                RECT_RP1(0,360,92,639,511);
                 WRITE(365,474,4,1,MyRPort_PTR[1],3,PText[177]);
                 for(i = 1; i <= j; ++i)
                 {

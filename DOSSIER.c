@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void DOSSIER(bool Cheat)
+void DOSSIER()
 {
     uint8   i, j;
     uint8   civ_color;
@@ -34,7 +34,7 @@ void DOSSIER(bool Cheat)
     // i = 1..8
     for (i = 0; i < (MAXCIVS-1); ++i)
     {
-        if (((LEVEL_UNKNOWN != Save.WarState[i][ActPlayer-1]) || (i == (ActPlayer-1)) || (Cheat))
+        if (((LEVEL_UNKNOWN != Save.WarState[i][ActPlayer-1]) || (i == (ActPlayer-1)))
          && ((7 > i) || ((0           != Save.WorldFlag) &&
                          (WFLAG_FIELD != Save.WorldFlag)) ))
         {
@@ -57,7 +57,7 @@ void DOSSIER(bool Cheat)
                 WRITE(175, posy, civ_color,WRITE_Right,RPort_PTR,2,_s);
             }
             if ((i == (ActPlayer-1)) || (Save.WarState[ActPlayer-1][i] == LEVEL_DIED)
-             || (Save.SSMoney[ActPlayer-1][i] > (Save.WarPower[i]*39)) || (Cheat))
+             || (Save.SSMoney[ActPlayer-1][i] > (Save.WarPower[i]*39)))
             {
                 _s = dez2out(Save.Bevoelkerung[i], 0, s);
                 strcpy(_s, "Mio");
@@ -73,9 +73,8 @@ void DOSSIER(bool Cheat)
                     posx2 = 38;
                     for (j = 0; j < 7; ++j)
                     {
-                        if ((   (LEVEL_DIED    != Save.WarState[i][j])
-                             && (LEVEL_UNKNOWN != Save.WarState[i][j]))
-                           || (Cheat))
+                        if (   (LEVEL_DIED    != Save.WarState[i][j])
+                            && (LEVEL_UNKNOWN != Save.WarState[i][j]))
                         {
                             if ((i != j) || (i == (GETCIVVAR(Save.WorldFlag)-1)))
                             {

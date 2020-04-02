@@ -263,7 +263,7 @@ void STARTROTATEPLANETS()
     }
     if ((0 != Save.CivPlayer[ActPlayer-1]) && (Informed))
     {
-        RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
+        RECT_RP0(0,520,291,632,308);
         WRITE(521,292,12,1,MyRPort_PTR[0],3,PText[663]);
     }
 }

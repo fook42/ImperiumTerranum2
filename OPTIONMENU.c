@@ -25,7 +25,7 @@ void CHECKGADS(uint8 GadID)
     // ----
     if ((0 == GadID) || (7 == GadID))
     {
-        RECTWIN(MyRPort_PTR[1],0,542,141,568,310);
+        RECT_RP1(0,542,141,568,310);
         txt[0]=Player+'0';
         txt[1]=0;
         WRITE(555,(5-Player)*38+142,40,WRITE_Center,MyRPort_PTR[1],3,txt);
@@ -33,8 +33,8 @@ void CHECKGADS(uint8 GadID)
     }
     if ((0 == GadID) || (6 == GadID))
     {
-        RECTWIN(MyRPort_PTR[1],0,447,141,473,310);
-        RECTWIN(MyRPort_PTR[1],0,412,341,508,360);
+        RECT_RP1(0,447,141,473,310);
+        RECT_RP1(0,412,341,508,360);
         if (Level<10)
         {
             txt[0]=Level+'0';
@@ -53,11 +53,11 @@ void CHECKGADS(uint8 GadID)
         y = 113;
         for (i = 0; i < 5; ++i)
         {
-            RECTWIN(MyRPort_PTR[1],0, 238, y, 388, y+19);
+            RECT_RP1(0, 238, y, 388, y+19);
             y += 80;
         }
     } else {
-        RECTWIN(MyRPort_PTR[1],0,238,33+GadID*80,388,52+GadID*80);
+        RECT_RP1(0,238,33+GadID*80,388,52+GadID*80);
     }
     if ((0 == GadID) || (1 == GadID))
     {
@@ -185,9 +185,9 @@ void OPTIONMENU(uint8 Mode)
 
     // new .. audio-option!!!
     WRITE(507,410,40,WRITE_Center,MyRPort_PTR[1],3,"Audio");
-    RECTWIN(MyRPort_PTR[1],0,442,431,504,454);
+    RECT_RP1(0,442,431,504,454);
     WRITE(473,435,40,WRITE_Center,MyRPort_PTR[1],3,_PT_ein);
-    RECTWIN(MyRPort_PTR[1],0,510,431,572,454);
+    RECT_RP1(0,510,431,572,454);
     WRITE(541,435,40,WRITE_Center,MyRPort_PTR[1],3,_PT_aus);
     // ----
 
@@ -306,7 +306,7 @@ void OPTIONMENU(uint8 Mode)
                         MAKEWINBORDER(MyRPort_PTR[1],100, y, 540, y+30,14,40,0);
                         _s = GETCIVNAME(j+1);
                     } else {
-                        RECTWIN(MyRPort_PTR[1],0, 100, y, 540, y+30);
+                        RECT_RP1(0, 100, y, 540, y+30);
                         strcpy(s, "Player 0");
                         s[strlen(s)-1] = Save.CivPlayer[j]+'0';
                         _s = s;
@@ -377,30 +377,31 @@ void OPTIONMENU(uint8 Mode)
             Delay(20);
             SWITCHDISPLAY();
 
-            if (5 >= Level)
+            if (5 > Level)
             {
-                Factor = 1+((Level-5)*0.055);    /* 78%..100 */
+                Factor = (Level-5)*0.055;    /* 78%..100 */
                 for (j = 0; j < MAXCIVS; ++j)
                 {
                     if (0 != Save.CivPlayer[j])
                     {
                         for (i = 1; i<43; ++i)
                         {
-                            Save.TechCosts[j].data[i]    = it_round(Save.TechCosts[j].data[i]*Factor);
-                            Save.ProjectCosts[j].data[i] = it_round(Save.ProjectCosts[j].data[i]*Factor);
+                            Save.TechCosts[j].data[i]    += it_round(Save.TechCosts[j].data[i]*Factor);
+                            Save.ProjectCosts[j].data[i] += it_round(Save.ProjectCosts[j].data[i]*Factor);
                         }
                     }
                 }
-            } else {
-                Factor = 1+((5-Level)*0.066);
+            } else if (5 < Level)
+            {
+                Factor = (Level-5)*0.066;
                 for (j = 0; j < MAXCIVS; ++j)
                 {
                     if (0 == Save.CivPlayer[j])
                     {
                         for (i = 1; i<43; ++i)
                         {
-                            Save.TechCosts[j].data[i]    = it_round(Save.TechCosts[j].data[i]*Factor);
-                            Save.ProjectCosts[j].data[i] = it_round(Save.ProjectCosts[j].data[i]*Factor);
+                            Save.TechCosts[j].data[i]    -= it_round(Save.TechCosts[j].data[i]*Factor);
+                            Save.ProjectCosts[j].data[i] -= it_round(Save.ProjectCosts[j].data[i]*Factor);
                         }
                     }
                 }

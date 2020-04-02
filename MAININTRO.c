@@ -13,10 +13,10 @@
 #define FactorMSin (-0.03998933418663416) // sin(-0.04);
 #define FactorMCos ( 0.99920010666097794) // cos(-0.04);
 
-#define intFactorSin  ( 41 )   // =~ 1024*sin( 0.04);
-#define intFactorCos  ( 1023 ) // =~ 1024*cos( 0.04);
-#define intFactorMSin (-41)    // =~ 1024*sin(-0.04);
-#define intFactorMCos ( 1023 ) // =~ 1024*cos(-0.04);
+#define intFactorSin  ((sint32) 41 )   // =~ 1024*sin( 0.04);
+#define intFactorCos  ((sint32) 1023 ) // =~ 1024*cos( 0.04);
+#define intFactorMSin ((sint32)-41)    // =~ 1024*sin(-0.04);
+#define intFactorMCos ((sint32) 1023 ) // =~ 1024*cos(-0.04);
 
 // will be global variables... waste of memory - maybe we can move them to the heap? ...
 #define NUM_VECTOROBJ (13)
@@ -237,8 +237,7 @@ void ROTATEnZ(VectorObj_t* actObject)
 }
 // -----------------------------------------------------------
 
-
-void FLY(VectorObj_t* actObject, double Factor)
+void FLY(VectorObj_t* actObject, sint32 Factor)
 {
     int     i;
     sint16  VPosX, VPosY;
@@ -246,9 +245,9 @@ void FLY(VectorObj_t* actObject, double Factor)
     VPosY = actObject->PosY;
     for (i = 0; i < actObject->Size1; ++i)
     {
-        actObject->X1[i] = actObject->X1[i]*Factor;
-        actObject->Y1[i] = actObject->Y1[i]*Factor;
-        actObject->Z1[i] = actObject->Z1[i]*Factor;
+        actObject->X1[i] += (actObject->X1[i] * Factor)>>15;
+        actObject->Y1[i] += (actObject->Y1[i] * Factor)>>15;
+        actObject->Z1[i] += (actObject->Z1[i] * Factor)>>15;
         if (((VPosX-ff_round(actObject->X1[i]))<0)  || ((VPosX-ff_round(actObject->X1[i]))>639)
          || ((VPosY-ff_round(actObject->Y1[i]))<75) || ((VPosY-ff_round(actObject->Y1[i]))>434))
         {
@@ -258,9 +257,9 @@ void FLY(VectorObj_t* actObject, double Factor)
     }
     for (i = 0; i<actObject->Size2; ++i)
     {
-        actObject->X2[i] = actObject->X2[i]*Factor;
-        actObject->Y2[i] = actObject->Y2[i]*Factor;
-        actObject->Z2[i] = actObject->Z2[i]*Factor;
+        actObject->X2[i] += (actObject->X2[i] * Factor)>>15;
+        actObject->Y2[i] += (actObject->Y2[i] * Factor)>>15;
+        actObject->Z2[i] += (actObject->Z2[i] * Factor)>>15;
         if (((VPosX-ff_round(actObject->X2[i]))<0)  || ((VPosX-ff_round(actObject->X2[i]))>639)
          || ((VPosY-ff_round(actObject->Y2[i]))<75) || ((VPosY-ff_round(actObject->Y2[i]))>434))
         {
@@ -275,23 +274,24 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
 {
     uint8  Ctr, actFlag;
     int i, j, k;
-    double  Factor;
+    sint32  Factor;
     sint16  VPosX, VPosY;
     VectorObj_t* actObject = NULL;
     struct RastPort* RPort_PTR;
 
     WaitTOF();
-    Factor = 0.0f;
+    Factor = 0;
     for (Ctr = 0; Ctr < 50; ++Ctr)
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        Factor = Factor + 0.02f;
+        Factor += 0x00000029; // 0010 1001 = 1/64 + 1/256 + 1/2048 =~~ 0,0200
+
         for (i = 1; i < 32; ++i)
         {
-            SetRGB32(MyVPort_PTR[AScr],i,it_round(Colors[i].r*Factor)<<24,
-                                         it_round(Colors[i].g*Factor)<<24,
-                                         it_round(Colors[i].b*Factor)<<24);
+            SetRGB32(MyVPort_PTR[AScr],i,   ((Colors[i].r*Factor)<<13) & 0xFF000000,
+                                            ((Colors[i].g*Factor)<<13) & 0xFF000000,
+                                            ((Colors[i].b*Factor)<<13) & 0xFF000000);
         }
         if (10 == Ctr)
         {
@@ -321,10 +321,10 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     for (Ctr = 0; Ctr < 50; ++Ctr)
     {
         AScr = 1-AScr;
-        Factor = Factor - 0.02f;
-        SetRGB32(MyVPort_PTR[AScr],31,it_round(Colors[31].r*Factor)<<24,
-                                      it_round(Colors[31].g*Factor)<<24,
-                                      it_round(Colors[31].b*Factor)<<24);
+        Factor -= 0x00000029; // 0010 1001 = 1/64 + 1/256 + 1/2048 =~~ 0,0200
+        SetRGB32(MyVPort_PTR[AScr],31,  ((Colors[31].r*Factor)<<13) & 0xFF000000,
+                                        ((Colors[31].g*Factor)<<13) & 0xFF000000,
+                                        ((Colors[31].b*Factor)<<13) & 0xFF000000);
         ScreenToFront(MyScreen[AScr]);
     }
 
@@ -363,11 +363,11 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     SPAddrD   = SMemA[2];              SPVolD = 64; SPFreqD = 550; SPLengthD = SMemL[2]/4;
 
     custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
-    Factor = 1.0025;
+    Factor = 0x00000052; // 0101 0010 = 1/512 + 1/2048 + 1/16384 =~ 0,0025
     for (i = 1; (i < 30) && LMB_NOTPRESSED; ++i)
     {
         RPort_PTR = MyRPort_PTR[AScr];
-        Factor = Factor+0.004f;
+        Factor += 0x00000083; // 1000 0011 = 1/256 + 1/16384 + 1/32768 =~ 0,004
         if (1 < i)
         {
             SetAPen(RPort_PTR,0);

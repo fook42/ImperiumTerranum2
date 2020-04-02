@@ -7,10 +7,16 @@ void REGIERUNG()
 {
     uint8   i;
     uint16  ypos;
-    bool    leave_dialog = false;
 
     struct Window* REG_Window;
     struct RastPort* RPort_PTR;
+    void (*functions[])() = { MILITAER,
+                              FINANZEN,
+                              DOSSIER,
+                              PROJEKTE,
+                              STATISTIK,
+                              FORSCHUNG,
+                              PUMPUPTHELEVEL };
 
     REG_Window=MAKEWINDOW(194,119,123,158,MyScreen[0]);
     if (NULL == REG_Window)
@@ -41,54 +47,25 @@ void REGIERUNG()
         {
             if ((1 < REG_Window->MouseX) && (119 > REG_Window->MouseX))
             {
-                if ((2 < REG_Window->MouseY) && (24 > REG_Window->MouseY))
+                ypos = 2;
+                for (i = 0; i<7; ++i)
                 {
-                    KLICKWINGAD(RPort_PTR, 4,  3);
-                    CloseWindow(REG_Window);
-                    MILITAER();
-                    leave_dialog = true;
-                } else if ((24 < REG_Window->MouseY) && (46 > REG_Window->MouseY))
-                {
-                    KLICKWINGAD(RPort_PTR, 4, 25);
-                    CloseWindow(REG_Window);
-                    FINANZEN();
-                    leave_dialog = true;
-                } else if ((46 < REG_Window->MouseY) && (68 > REG_Window->MouseY))
-                {
-                    KLICKWINGAD(RPort_PTR, 4, 47);
-                    CloseWindow(REG_Window);
-                    DOSSIER(false);
-                    leave_dialog = true;
-                } else if ((68 < REG_Window->MouseY) && (90 > REG_Window->MouseY))
-                {
-                    KLICKWINGAD(RPort_PTR, 4, 69);
-                    CloseWindow(REG_Window);
-                    PROJEKTE();
-                    leave_dialog = true;
-                } else if ((90 < REG_Window->MouseY) && (112 > REG_Window->MouseY))
-                {
-                    KLICKWINGAD(RPort_PTR, 4, 91);
-                    CloseWindow(REG_Window);
-                    STATISTIK();
-                    leave_dialog = true;
-                } else if ((112 < REG_Window->MouseY) && (134 > REG_Window->MouseY))
-                {
-                    KLICKWINGAD(RPort_PTR, 4,113);
-                    CloseWindow(REG_Window);
-                    FORSCHUNG();
-                    leave_dialog = true;
-                } else if ((134 < REG_Window->MouseY) && (156 > REG_Window->MouseY))
-                {
-                    KLICKWINGAD(RPort_PTR, 4,135);
-                    CloseWindow(REG_Window);
-                    PUMPUPTHELEVEL();
-                    leave_dialog = true;
+                    if ((ypos < REG_Window->MouseY) && ((ypos+22) > REG_Window->MouseY))
+                    {
+                        KLICKWINGAD(RPort_PTR, 4, ypos+1);
+                        CloseWindow(REG_Window);
+                        REG_Window = NULL;
+                        (*functions[i])();
+
+                        i = 99;
+                    }
+                    ypos += 22;
                 }
             }
         }
     }
-    while ((!leave_dialog) && RMB_NOTPRESSED);
-    if (!leave_dialog)
+    while ((NULL != REG_Window) && RMB_NOTPRESSED);
+    if (NULL != REG_Window)
     {
         CloseWindow(REG_Window);
     }

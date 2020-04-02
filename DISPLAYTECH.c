@@ -40,7 +40,7 @@ void DISPLAYTECH(uint8 TechID)
     }
     SWITCHDISPLAY();
     ModC = GETTHESOUND(0);
-    RECTWIN(MyRPort_PTR[1],0,0,0,639,511);        // clear the screen
+    RECT_RP1(0,0,0,639,511);        // clear the screen
 
     s[0]=0;
     if      ((TechID>= 1) && (TechID<=18)) { strcpy(s, PathStr[1]); }

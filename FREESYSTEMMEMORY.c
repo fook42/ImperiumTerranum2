@@ -21,6 +21,7 @@ void FREESYSTEMMEMORY()
                 if (NULL != MyPlanetHeader->ProjectPtr)
                 {
                     FreeMem( MyPlanetHeader->ProjectPtr, sizeof(ByteArr42));
+                    MyPlanetHeader->ProjectPtr = NULL;
                 }
                 ActShipPtr = MyPlanetHeader->FirstShip.NextShip;
                 if (NULL != ActShipPtr)
@@ -35,16 +36,19 @@ void FREESYSTEMMEMORY()
                             FreeMem( FreePointer, sizeof(r_ShipHeader) );
                         }
                     }
-                    do
+
+                    FreePointer = (APTR) ActShipPtr;
+                    while (NULL != FreePointer)
                     {
-                        FreePointer = (APTR) ActShipPtr;
                         ActShipPtr = ActShipPtr->NextShip;
                         FreeMem( FreePointer, sizeof(r_ShipHeader) );
+                        FreePointer = (APTR) ActShipPtr;
                     }
-                    while (NULL != ActShipPtr);
+                    MyPlanetHeader->FirstShip.NextShip = NULL;
                 }
             }
             FreeMem(SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
+            SystemHeader[i].PlanetMemA = NULL;
         }
     }
 }

@@ -20,12 +20,12 @@ void INFORMUSER()
     }
     LastPlayer = ActPlayer;
     Display = LastDisplay[ActPlayer];
-    RECTWIN(MyRPort_PTR[0],0,523,10,630,117);
+    RECT_RP0(0,523,10,630,117);
     if (MultiPlayer)
     {
         if (!Save.PlayMySelf)
         {
-            RECTWIN(MyRPort_PTR[0],0,0,0,511,511);
+            RECT_RP0(0,0,0,511,511);
         }
         s[strlen(s)-1]=Save.CivPlayer[ActPlayer-1]+'0';
         PLAYERJINGLE(ActPlayer);

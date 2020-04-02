@@ -10,7 +10,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     r_ShipHeader*   UseShipPtr;
     r_PlanetHeader* PlanetHeader;
     uint8           Leave, j;
-    uint8           BelongsTo;
+    uint8           BelongsTo, DrawMode;
 
 /*    OffsetX,Y = centre of current view */
     OldX = OffsetX;
@@ -138,14 +138,15 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
             {
                 BelongsTo = 12;
             }
-            if (Mode == MODE_REDRAW)
+            x = it_round(PlanetHeader->PosX);
+            y = it_round(PlanetHeader->PosY);
+            if (MODE_REDRAW == Mode)
             {
                 SetAPen(MyRPort_PTR[0],BelongsTo);
-                RectFill(MyRPort_PTR[0], 575+it_round(PlanetHeader->PosX), 62+it_round(PlanetHeader->PosY),
-                                         576+it_round(PlanetHeader->PosX), 63+it_round(PlanetHeader->PosY));
+                RectFill(MyRPort_PTR[0], 575+x, 62+y, 576+x, 63+y);
             }
-            x = 256+((it_round(PlanetHeader->PosX)+OffsetX)*32);
-            y = 256+((it_round(PlanetHeader->PosY)+OffsetY)*32);
+            x = 256+((x+OffsetX)*32);
+            y = 256+((y+OffsetY)*32);
             if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap7,PlanetHeader->Class*32,0,MyRPort_PTR[0],x,y,32,32,192);
@@ -163,6 +164,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
                         SetAPen(MyRPort_PTR[0],0);
                     }
                     DrawEllipse(MyRPort_PTR[0],x+15,y+15,24,23);
+                    DrawMode = 1;
                     if (NULL != PlanetHeader->ProjectPtr)
                     {
                         if (1 == PlanetHeader->ProjectPtr->data[25])
@@ -172,13 +174,10 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
                         if ((0 != PlanetHeader->ProjectPtr->data[34]) ||
                             (0 != PlanetHeader->ProjectPtr->data[40]))
                         {
-                            WRITE(x+15,y+32,BelongsTo,(5|WRITE_Center),MyRPort_PTR[0],0,PlanetHeader->PName);
-                        } else {
-                            WRITE(x+15,y+32,BelongsTo,(1|WRITE_Center),MyRPort_PTR[0],0,PlanetHeader->PName);
+                            DrawMode = 5;
                         }
-                    } else {
-                        WRITE(x+15,y+32,BelongsTo,(1|WRITE_Center),MyRPort_PTR[0],0,PlanetHeader->PName);
                     }
+                    WRITE(x+15,y+32,BelongsTo,(DrawMode|WRITE_Center),MyRPort_PTR[0],0,PlanetHeader->PName);
                 }
             }
         }
@@ -212,7 +211,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
                 }
                 if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
                 {
-                    RECTWIN(MyRPort_PTR[0],0,x,y,x+31,y+31);
+                    RECT_RP0(0,x,y,x+31,y+31);
                     BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32,32,MyRPort_PTR[0],x,y,31,31,192);
                 }
                 if (TARGET_STARGATE != UseShipPtr->SType)
@@ -231,13 +230,11 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
                     }
                     if (SHIPFLAG_WATER == MyShipPtr->Flags)
                     {
-                        WRITE(x+8,y+10,0,0,MyRPort_PTR[0],3,"W");
-                        WRITE(x+7,y+9,12,0,MyRPort_PTR[0],3,"W");
+                        WRITE(x+7,y+9,12,WRITE_Shadow,MyRPort_PTR[0],3,"W");
                     }
                     if (TARGET_POSITION == MyShipPtr->Target)
                     {
-                        WRITE(x+11,y+10,0,0,MyRPort_PTR[0],3,"P");
-                        WRITE(x+10,y+9,12,0,MyRPort_PTR[0],3,"P");
+                        WRITE(x+10,y+9,12,WRITE_Shadow,MyRPort_PTR[0],3,"P");
                     }
                 }
             }

@@ -15,7 +15,7 @@ void SYSINFO(uint8 SysID, uint8 ThePlayerFlag)
 
     if (0 == SysID) { return; }
     --SysID; // to shift the arrays
-    RECTWIN(MyRPort_PTR[0],0,30,250,480,360);
+    RECT_RP0(0,30,250,480,360);
     SysPop = 0;
     MyPlanets = 0;
     Buildings = 0;

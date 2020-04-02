@@ -805,5 +805,5 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         CLEARINTUITION();
     }
     while ((MyShipPtr->Moving > 0) && (MyShipPtr->Target != TARGET_POSITION) && (MyShipPtr->Owner != 0));
-    RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
+    RECT_RP0(0,520,291,632,308);
 }

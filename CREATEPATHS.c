@@ -7,24 +7,26 @@ void CREATEPATHS()
 {
     uint8*  btx;
     uint8   i = 0;
-    uint32  l, EndofPaths;
+    uint32  PathPos, EndofPaths;
 
-    l = (uint32) PathMemA;
-    EndofPaths = l+PathMemL;
+    PathPos = (uint32) PathMemA;
+    EndofPaths = PathPos+PathMemL;
     do
     {
-        PathStr[i] = (char*) l;
+        /* set PathStr[i] to current PathAddr. */
+        PathStr[i] = (char*) PathPos;
+        /* now search for 0-byte in current Path or End and select next PathStr */
         do
         {
-            btx = (uint8*) l;
-            l++;
-            if (*btx == 10)
+            btx = (uint8*) PathPos;
+            ++PathPos;
+            if (10 == *btx)
             {
                 *btx = 0;
             }
         }
-        while ((*btx != 0) && (l <= EndofPaths));
-        i++;
+        while ((0 != *btx) && (PathPos <= EndofPaths));
+        ++i;
     }
-    while ((i < PATHS) && (l < EndofPaths));
+    while ((i < PATHS) && (PathPos < EndofPaths));
 }

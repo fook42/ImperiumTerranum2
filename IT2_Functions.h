@@ -25,7 +25,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr);
 void AUTOVERHANDLUNG(uint8 CivFlag1,uint8 CivFlag2,uint8 ActSys,uint8 Mode);
 bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys);
 
-void BOX(struct RastPort* RPort, uint16 Left, uint16 Top, uint16 Right, uint16 Bottom);
+void BOX(struct RastPort* RPort, WORD Left, WORD Top, WORD Right, WORD Bottom);
 
 // >>> DISKMENU
 uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 ActSys);
@@ -63,7 +63,7 @@ void DISPLAYSTATE();
 void DISPLAYTECH(uint8 TechID);
 void DOHUMANITY();
 void DOINFLATION(uint8 DI_ActPlayer);
-void DOSSIER(bool Cheat);
+void DOSSIER();
 void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible);
 void DRAWGAD(uint16 GadID, uint16 GadSelect);
 // >>> DRAWMOVINGSHIP
@@ -145,7 +145,8 @@ void ROTATEpZ(VectorObj_t* actObject);
 void ROTATEnX(VectorObj_t* actObject);
 void ROTATEnY(VectorObj_t* actObject);
 void ROTATEnZ(VectorObj_t* actObject);
-void FLY(VectorObj_t* actObject, double Factor);
+void FLY(VectorObj_t* actObject, sint32 Factor);
+//void FLY(VectorObj_t* actObject, double Factor);
 // void GREATEFFECT(uint8 Objects, r_Col_t* Colors);
 void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL);
 // <<<
@@ -245,12 +246,11 @@ void WRITE(const uint16 IPosX, const uint16 IPosY, const uint8 Color, const uint
 void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove);
 
 //--------------------------------
-void RECTWIN(struct RastPort* RPort, uint16 Color, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge);
+void RECT_RP0(const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge);
+void RECT_RP1(const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge);
+void RECTWIN(struct RastPort* RPort, const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge);
 void MAKEWINBORDER(struct RastPort* RPort, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge, uint8 Col1, uint8 Col2, uint8 Darken);
 void KLICKWINGAD(struct RastPort* RPort, const uint16 x, const uint16 y);
 struct Window* MAKEWINDOW(uint16 LEdge, uint16 TEdge, uint16 SizeX, uint16 SizeY, struct Screen* onScreen);
-
-
-
 
 #endif

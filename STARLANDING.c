@@ -263,8 +263,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                     if (0  >  ShipShield) { ShipShield = 0; }
                     if ((0 <= ShipShield) && (255 >= ShipShield))
                     {
-                        RECTWIN(MyRPort_PTR[0],0,ShipShield,245,254,254);
-                        RECTWIN(MyRPort_PTR[1],0,ShipShield,245,254,254);
+                        RECT_RP0(0,ShipShield,245,254,254);
+                        RECT_RP1(0,ShipShield,245,254,254);
                     }
                 }
                 for (j = 6; j>=0; --j)
@@ -347,7 +347,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
             custom.dmacon = BITCLR | DMAF_AUDIO;
         }
         SetRGB32(MyVPort_PTR[0],0,0xFF000000,0xFF000000,0xFF000000);
-        RECTWIN(MyRPort_PTR[0],0,0,0,255,255);
+        RECT_RP0(0,0,0,255,255);
         PLAYSOUND(2,1000);
         if (Audio_enable)
         {

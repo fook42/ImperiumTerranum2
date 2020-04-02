@@ -367,8 +367,8 @@ void XTRAROUND()
     x[1] = 520; y[1] = 100; Angle[1] = (rand()%17)*32;
     x[0] = 120; y[0] = 412; Angle[0] = (rand()%17)*32;
     StepCtr = 1;
-    RECTWIN(MyRPort_PTR[0],0,0,0,639,511);
-    RECTWIN(MyRPort_PTR[1],0,0,0,639,511);
+    RECT_RP0(0,0,0,639,511);
+    RECT_RP1(0,0,0,639,511);
     if (Audio_enable)
     {
         custom.dmacon = BITCLR | DMAF_AUDIO;

@@ -8,7 +8,7 @@ void CLOCK()
     struct DateStamp datestamp = {0,0,0};
     struct DateStamp* ds;
     uint8   Stunde, Minute;
-    char    s[8];
+    char    clockstring[6];
     char*   pos;
 
     ds = DateStamp(&datestamp);
@@ -23,9 +23,9 @@ void CLOCK()
     }
     if (DoClock)
     {
-        pos = dez2out(Stunde, 2, s);
+        pos = dez2out(Stunde, 2, clockstring);
         *pos++=':';
         (void) dez2out(Minute, 2, pos);
-        WRITE(541,354,8,1,MyRPort_PTR[0],1,s);
+        WRITE(541,354,8,1,MyRPort_PTR[0],1,clockstring);
     }
 }

@@ -3,7 +3,19 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void RECTWIN(struct RastPort* RPort, uint16 Color, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge)
+void RECT_RP0(const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge)
+{
+    SetAPen(MyRPort_PTR[0], Color);
+    RectFill(MyRPort_PTR[0], LEdge, TEdge, REdge, BEdge);
+}
+
+void RECT_RP1(const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge)
+{
+    SetAPen(MyRPort_PTR[1], Color);
+    RectFill(MyRPort_PTR[1], LEdge, TEdge, REdge, BEdge);
+}
+
+void RECTWIN(struct RastPort* RPort, const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge)
 {
     SetAPen(RPort, Color);
     RectFill(RPort, LEdge, TEdge, REdge, BEdge);

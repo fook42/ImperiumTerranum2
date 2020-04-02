@@ -15,7 +15,7 @@ void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
     INFORMUSER();
     ModC = GETTHESOUND(3);
 
-    DEC_Window=MAKEWINDOW(80,120,351,101,MyScreen[0]);
+    DEC_Window = MAKEWINDOW(80,120,351,101,MyScreen[0]);
     if (NULL != DEC_Window)
     {
         RPort_PTR = DEC_Window->RPort;

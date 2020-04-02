@@ -17,6 +17,7 @@ clean:
 	@rm -f $(objects) || true
 
 all : clean $(objects)
+	@echo "building the target $@"
 	@$(CC) $(CFLAGS) -o $(TARGET) $(objects) $(LDFLAGS)
 	@rm -f $(objects)
 
@@ -26,7 +27,7 @@ $(TARGET): $(SRC)
 	echo "============="
 	@$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 	@$(STRIP) $@ --strip-all
-	@echo -- Link finished --
+	@echo "-- Link finished --"
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $<

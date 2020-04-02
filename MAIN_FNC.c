@@ -147,7 +147,12 @@ void MAIN_FNC()
 
     if (2 == i)
     {
-        (void) DISKMENU(DISKMENU_LOADGAME);
+        if (!DISKMENU(DISKMENU_LOADGAME))
+        {
+            puts("loadgame error\n");
+            GAMEEXIT();
+            return;
+        }
     } else {
         STARTROTATEPLANETS();
     }
@@ -299,7 +304,7 @@ void MAIN_FNC()
                         WRITE(256,137,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[835]);
                         WRITE(256,161,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[836]);
                         WAITLOOP(Save.PlayMySelf);
-                        RECTWIN(MyRPort_PTR[0],0,40,100,470,190);
+                        RECT_RP0(0,40,100,470,190);
                         REFRESHDISPLAY();
                         // CloseWin
 
@@ -392,7 +397,7 @@ void MAIN_FNC()
                     DISPLAYSTATE();
                     if (i < (MAXCIVS-2))
                     {
-                        Save.ImperatorState[i] = it_round(Save.ImperatorState[i]* (1+Level/30.0));
+                        Save.ImperatorState[i] += it_round(Save.ImperatorState[i]* (Level/30.0));
                         if (Year>0)
                         {
                             Save.ImperatorState[ActPlayer-1] -= Year;
@@ -406,7 +411,7 @@ void MAIN_FNC()
             {
                 ENDSEQUENZ(-3);
                 DISPLAYSTATE();
-                Save.ImperatorState[ActPlayer-1] = it_round(Save.ImperatorState[ActPlayer-1]* (1+Level/30.0));
+                Save.ImperatorState[ActPlayer-1] += it_round(Save.ImperatorState[ActPlayer-1]* (Level/30.0));
                 if (Year>0)
                 {
                     Save.ImperatorState[ActPlayer-1] -= Year;

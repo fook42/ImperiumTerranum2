@@ -68,7 +68,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
             WaitTOF();
             Delay(4);
         }
-        RECTWIN(MyRPort_PTR[0], 0, MOVESHIP_ToX, MOVESHIP_ToY, MOVESHIP_ToX+31, MOVESHIP_ToY+31);
+        RECT_RP0( 0, MOVESHIP_ToX, MOVESHIP_ToY, MOVESHIP_ToX+31, MOVESHIP_ToY+31);
         REFRESHDISPLAY();
     }
     --(MyShipPtr->Moving);

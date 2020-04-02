@@ -19,7 +19,7 @@ void INITSCREEN(uint8 Mode)
     }
     else if (SCREEN_PLANET == Mode)
     {
-        RECTWIN(MyRPort_PTR[1],0,0,0,639,511);
+        RECT_RP1(0,0,0,639,511);
         strcpy(s, PathStr[0]);
         strcat(s, "PlanetDesk.img");
         if (!DISPLAYIMAGE(s,0,94,384,394,8,MyScreen[1],2)) { return; }

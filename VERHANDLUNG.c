@@ -128,7 +128,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             if ((MouseX(0)>=60) && (MouseX(0)<=176))
             {
                 KLICKGAD(60,200);
-                RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+                RECT_RP0(0,30,80,480,230);
                 if ((0   < Save.JSteuer[ActPlayer-1]) &&
                     (100 > Save.JSteuer[ActPlayer-1]))
                 {
@@ -152,7 +152,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             strcat(s, PText[273]);
             WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
             WAITLOOP(false);
-            RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+            RECT_RP0(0,30,80,480,230);
             Save.JSteuer[ActPlayer-1] = 0;
             Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_WAR;
             Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_WAR;
@@ -187,7 +187,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 if ((MouseX(0)>59) && (MouseX(0)<177))
                 {
                     KLICKGAD(60,200);
-                    RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+                    RECT_RP0(0,30,80,480,230);
                     Save.JSteuer[ActPlayer-1] = i;
                     Save.WarState[7][ActPlayer-1] = LEVEL_PEACE;
                     Save.WarState[ActPlayer-1][7] = LEVEL_PEACE;
@@ -195,14 +195,14 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                     return;
                 }
                 KLICKGAD(330,200);
-                RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+                RECT_RP0(0,30,80,480,230);
                 return;
             } else if (MODE_FORCE == Mode)
             {
                 VERHANDLUNG_INIT(CivFlag, CivStr, 0);
                 WRITE(256,115,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[280]);
                 WAITLOOP(false);
-                RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+                RECT_RP0(0,30,80,480,230);
                 return;
             }
         } else if ((Save.WarPower[7]*2) > Save.WarPower[ActPlayer-1])
@@ -217,7 +217,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
         WRITE(256,130,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[283]);
         WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[284]);
         WAITLOOP(false);
-        RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+        RECT_RP0(0,30,80,480,230);
         Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_WAR;
         Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_WAR;
         return;
@@ -303,7 +303,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             if ((MouseX(0)>59) && (MouseX(0)<177))
             {
                 KLICKGAD(60,200);
-                RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+                RECT_RP0(0,30,80,480,230);
                 if ((Save.WarPower[ActPlayer-1] < (Save.WarPower[CivVar-1]*2)) && (XSystem>0))
                 {
                     SYSTEMTOENEMY(XSystem-1,CivFlag,ActPlayerFlag);
@@ -330,7 +330,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             strcat(s, PText[307]);
             WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
             WAITLOOP(false);
-            RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+            RECT_RP0(0,30,80,480,230);
             Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_WAR;
             Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_WAR;
             return;
@@ -351,14 +351,14 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             if ((MouseX(0)>=60) && (MouseX(0)<=176))
             {
                 KLICKGAD(60,200);
-                RECTWIN(MyRPort_PTR[0],0,30,80,480,250);
+                RECT_RP0(0,30,80,480,250);
                 Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_PEACE;
                 Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_PEACE;
                 PEACEINFO(ActPlayer,CivVar,ActPlayerFlag,CivFlag);
                 return;
             }
             KLICKGAD(330,200);
-            RECTWIN(MyRPort_PTR[0],0,30,80,480,250);
+            RECT_RP0(0,30,80,480,250);
         } else if (MODE_FORCE == Mode)
         {
             MAKEWINBORDER(MyRPort_PTR[0],85,120,425,200,12,6,0);
@@ -368,7 +368,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             WRITE(256,140,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
             WRITE(256,165,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[311]);
             WAITLOOP(false);
-            RECTWIN(MyRPort_PTR[0],0,85,120,425,200);
+            RECT_RP0(0,85,120,425,200);
             REFRESHDISPLAY();
         }
     } else if ((MODE_DEFENSIV    == Mode) ||
@@ -407,7 +407,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             if ((MouseX(0)>59) && (MouseX(0)<177))
             {
                 KLICKGAD(60,200);
-                RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+                RECT_RP0(0,30,80,480,230);
                 SYSTEMTOENEMY(XSystem-1,CivFlag,ActPlayerFlag);
                 Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_PEACE;
                 Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_PEACE;
@@ -420,7 +420,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 }
             } else {
                 KLICKGAD(330,200);
-                RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+                RECT_RP0(0,30,80,480,230);
                 if (LEVEL_WAR == Save.WarState[CivVar-1][ActPlayer-1])
                 {
                     return;
@@ -445,7 +445,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
             }
             WAITLOOP(false);
-            RECTWIN(MyRPort_PTR[0],0,30,80,480,230);
+            RECT_RP0(0,30,80,480,230);
             Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_WAR;
             Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_WAR;
         }

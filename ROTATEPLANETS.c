@@ -32,7 +32,7 @@ void ROTATEPLANETS(uint8 ActSys)
     struct RastPort* RPort_PTR2;
 
     if ((2000 < Year) && (1 == ActPlayer)) { DOHUMANITY(); }
-    RECTWIN(MyRPort_PTR[0],0,520,291,632,308);
+    RECT_RP0(0,520,291,632,308);
     Valid = false;
     if (1 == ActPlayer) { ++Year; }
     FreeSystem = false;
@@ -128,7 +128,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     WRITE(256,171,12,WRITE_Center,MyRPort_PTR[0],3, _PT_Stargate_zerstoert);
                     if (Save.PlayMySelf) { Delay(PAUSE); }
                     WAITLOOP(Save.PlayMySelf);
-                    RECTWIN(MyRPort_PTR[0],0,85,120,425,200);
+                    RECT_RP0(0,85,120,425,200);
 /* CloseWindow() ---- */
                     SystemHeader[i].FirstShip.SType = 0;
                 }
@@ -1296,7 +1296,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     AUTOVERHANDLUNG(i+1,ActPlayer,ActSys,MODE_BELEIDIGUNG);
                                 }
                             }
-                            RECTWIN(MyRPort_PTR[0],0,85,120,425,265);
+                            RECT_RP0(0,85,120,425,265);
                             REFRESHDISPLAY();
                         }
                     }
@@ -1318,7 +1318,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         WRITE(256,165,12,(1|WRITE_Center),MyRPort_PTR[0],3,PText[601]);
                         if (Save.PlayMySelf) { Delay(PAUSE); }
                         WAITLOOP(Save.PlayMySelf);
-                        RECTWIN(MyRPort_PTR[0],0,85,120,425,210);
+                        RECT_RP0(0,85,120,425,210);
                         REFRESHDISPLAY();
                     }
                     if (i == 7)
@@ -1387,7 +1387,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         KLICKGAD(290,225);
                         Save.WarState[7][ActPlayer-1] = LEVEL_COLDWAR;
                     }
-                    RECTWIN(MyRPort_PTR[0],0,80,120,430,265);
+                    RECT_RP0(0,80,120,430,265);
                     REFRESHDISPLAY();
                 } else if (Save.CivPlayer[i-1] == 0)
                 {
@@ -1458,7 +1458,7 @@ void ROTATEPLANETS(uint8 ActSys)
             WRITE(256,175,12,WRITE_Center,MyRPort_PTR[0],3,s);
             if (Save.PlayMySelf) { Delay(PAUSE); }
             WAITLOOP(Save.PlayMySelf);
-            RECTWIN(MyRPort_PTR[0],0,35,110,475,210);
+            RECT_RP0(0,35,110,475,210);
             REFRESHDISPLAY();
         }
     }
@@ -1477,7 +1477,7 @@ void ROTATEPLANETS(uint8 ActSys)
             Warnung[ActPlayer] = 1;
             Save.ImperatorState[ActPlayer-1] = 700;
             WAITLOOP(false);
-            RECTWIN(MyRPort_PTR[0],0,30,80,480,205);
+            RECT_RP0(0,30,80,480,205);
             REFRESHDISPLAY();
         } else if ((Save.ImperatorState[ActPlayer-1]<500) && (Warnung[ActPlayer] == 1))
         {
@@ -1489,7 +1489,7 @@ void ROTATEPLANETS(uint8 ActSys)
             WRITE(256,155,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[629]);
             Warnung[ActPlayer] = 2;
             WAITLOOP(false);
-            RECTWIN(MyRPort_PTR[0],0,30,80,480,185);
+            RECT_RP0(0,30,80,480,185);
             REFRESHDISPLAY();
         }
         if (Save.ImperatorState[ActPlayer-1] >= 1000)
@@ -1560,7 +1560,7 @@ void ROTATEPLANETS(uint8 ActSys)
             WRITE(256,160,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[632]);
             WRITE(256,180,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[633]);
             WAITLOOP(false);
-            RECTWIN(MyRPort_PTR[0],0,30,120,480,215);
+            RECT_RP0(0,30,120,480,215);
             Save.CivPlayer[ActPlayer] = 0;
             Save.Staatstopf[ActPlayer] += Year*120;
             for(i = 1; i < 8; i++)

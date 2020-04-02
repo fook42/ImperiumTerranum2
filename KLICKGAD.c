@@ -5,14 +5,12 @@
 
 void KLICKGAD(const uint16 x, const uint16 y)
 {
-/*    ClipBlit(&(MyScreen[0]->RastPort),x,y,&(XScreen->RastPort),0,0,116,20,192);
-    DrawImage(&(MyScreen[0]->RastPort),&GadImg2,x,y);
+    /* saves 1 argument to be specified in the calls of KLICKGAD */
+    ClipBlit(MyRPort_PTR[0],x,y,&(XScreen->RastPort),0,0,116,20,192);
+    DrawImage(MyRPort_PTR[0],&GadImg2,x,y);
     PLAYSOUND(1,300);
-    ClipBlit(&(XScreen->RastPort),0,0,&(MyScreen[0]->RastPort),x,y,116,20,192);
-*/
-    KLICKWINGAD(&(MyScreen[0]->RastPort), x, y);
+    ClipBlit(&(XScreen->RastPort),0,0,MyRPort_PTR[0],x,y,116,20,192);
 }
-
 
 void KLICKWINGAD(struct RastPort* RPort, const uint16 x, const uint16 y)
 {

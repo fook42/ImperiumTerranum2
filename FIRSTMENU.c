@@ -9,19 +9,19 @@ uint8 FIRSTMENU()
 
     SWITCHDISPLAY();
     INITMENU();
-    WRITE(320, 55,40,WRITE_Center,MyRPort_PTR[1],3,"IMPERIUM TERRANUM 2");
-    WRITE(320, 71,40,WRITE_Center,MyRPort_PTR[1],2,"- War of the Worlds -");
-    WRITE(320, 70,40,WRITE_Center,MyRPort_PTR[1],3,"______________________");
-    WRITE(320,415,40,WRITE_Center,MyRPort_PTR[1],2,"Version 2.8c");
-    WRITE(320,435,40,WRITE_Center,MyRPort_PTR[1],2,"ported to C by F00K42 -a1k-");
-    WRITE(320,455,40,WRITE_Center,MyRPort_PTR[1],2,"Surround-sounds, created with the WaveTracer DS�");
-    WRITE(320,128,40,WRITE_Center,MyRPort_PTR[1],2,"Frei kopierbare Version");
-    WRITE(320,146,40,WRITE_Center,MyRPort_PTR[1],2,"FREEWARE and OpenSource");
-    WRITE(320,164,40,WRITE_Center,MyRPort_PTR[1],2,"Created by VirtualWorlds Productions:http://www.VirtualWorlds.de");
+    WRITE_RPort1(320, 55,40,WRITE_Center,3,"IMPERIUM TERRANUM 2");
+    WRITE_RPort1(320, 71,40,WRITE_Center,2,"- War of the Worlds -");
+    WRITE_RPort1(320, 70,40,WRITE_Center,3,"______________________");
+    WRITE_RPort1(320,415,40,WRITE_Center,2,"Version 2.8c");
+    WRITE_RPort1(320,435,40,WRITE_Center,2,"ported to C by F00K42 -a1k-");
+    WRITE_RPort1(320,455,40,WRITE_Center,2,"Surround-sounds, created with the WaveTracer DS�");
+    WRITE_RPort1(320,128,40,WRITE_Center,2,"Frei kopierbare Version");
+    WRITE_RPort1(320,146,40,WRITE_Center,2,"FREEWARE and OpenSource");
+    WRITE_RPort1(320,164,40,WRITE_Center,2,"Created by VirtualWorlds Productions:http://www.VirtualWorlds.de");
     MAKEWINBORDER(MyRPort_PTR[1],150,200,490,230,40,14,0);
     MAKEWINBORDER(MyRPort_PTR[1],150,240,490,270,40,14,0);
-    WRITE(320,207,21,WRITE_Center,MyRPort_PTR[1],3,PText[664]);
-    WRITE(320,247,21,WRITE_Center,MyRPort_PTR[1],3,PText[665]);
+    WRITE_RPort1(320,207,21,WRITE_Center,3,PText[664]);
+    WRITE_RPort1(320,247,21,WRITE_Center,3,PText[665]);
     ScreenToFront(MyScreen[1]);
 
     do

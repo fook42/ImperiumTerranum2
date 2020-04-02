@@ -4,7 +4,9 @@
 #include "IT2_Functions.h"
 
 #define ACTVERSION  (0x0004)
-
+#define LOAD_OKAY   (0)
+#define LOAD_NOMEM  (128)
+#define LOAD_NOFILE (255)
 
 void LOADSHIPS(r_ShipHeader* ShipPtr, BPTR FHandle)
 {
@@ -20,47 +22,47 @@ void LOADSHIPS(r_ShipHeader* ShipPtr, BPTR FHandle)
     while (NULL != ActShipPtr)
     {
         memory = AllocMem(sizeof(r_ShipHeader), MEMF_ANY);
-        if (NULL == memory)
+        if (NULL != memory)
         {
+            (void) Read(FHandle, memory, sizeof(r_ShipHeader));
+            ActShipPtr = (r_ShipHeader*) memory;
+            BeforeShipPtr->NextShip = ActShipPtr;
+            ActShipPtr->BeforeShip = BeforeShipPtr;
+            BeforeShipPtr = ActShipPtr;
+            if ((SHIPTYPE_FLEET == ActShipPtr->SType)
+                    && (NULL != ActShipPtr->TargetShip))
+            {
+                FirstFShip = true;
+                do
+                {
+                    memory = AllocMem(sizeof(r_ShipHeader), MEMF_ANY);
+                    if (NULL == memory)
+                    {
+                        ActShipPtr->TargetShip = NULL;
+                        ActShipPtr->SType = 8;
+                        return;
+                    }
+                    (void) Read(FHandle, memory, sizeof(r_ShipHeader));
+                    FleetShipPtr = (r_ShipHeader*) memory;
+                    if (FirstFShip)
+                    {
+                        FleetShipPtr->BeforeShip = ActShipPtr;
+                        ActShipPtr->TargetShip = FleetShipPtr;
+                    } else {
+                        BFleetShipPtr->NextShip = FleetShipPtr;
+                        FleetShipPtr->BeforeShip = BFleetShipPtr;
+                    }
+                    BFleetShipPtr = FleetShipPtr;
+                    FleetShipPtr = FleetShipPtr->NextShip;
+                    FirstFShip = false;
+                }
+                while (NULL != FleetShipPtr);
+            }
+            ActShipPtr = ActShipPtr->NextShip;
+        } else {
             BeforeShipPtr->NextShip = NULL;
             ActShipPtr = NULL;
-            return;
         }
-        (void) Read(FHandle, memory, sizeof(r_ShipHeader));
-        ActShipPtr = (r_ShipHeader*) memory;
-        BeforeShipPtr->NextShip = ActShipPtr;
-        ActShipPtr->BeforeShip = BeforeShipPtr;
-        BeforeShipPtr = ActShipPtr;
-        if ((SHIPTYPE_FLEET == ActShipPtr->SType)
-                   && (NULL != ActShipPtr->TargetShip))
-        {
-            FirstFShip = true;
-            do
-            {
-                memory = AllocMem(sizeof(r_ShipHeader), MEMF_ANY);
-                if (NULL == memory)
-                {
-                    ActShipPtr->TargetShip = NULL;
-                    ActShipPtr->SType = 8;
-                    return;
-                }
-                (void) Read(FHandle, memory, sizeof(r_ShipHeader));
-                FleetShipPtr = (r_ShipHeader*) memory;
-                if (FirstFShip)
-                {
-                    FleetShipPtr->BeforeShip = ActShipPtr;
-                    ActShipPtr->TargetShip = FleetShipPtr;
-                } else {
-                    BFleetShipPtr->NextShip = FleetShipPtr;
-                    FleetShipPtr->BeforeShip = BFleetShipPtr;
-                }
-                BFleetShipPtr = FleetShipPtr;
-                FleetShipPtr = FleetShipPtr->NextShip;
-                FirstFShip = false;
-            }
-            while (NULL != FleetShipPtr);
-        }
-        ActShipPtr = ActShipPtr->NextShip;
     }
 }
 
@@ -254,15 +256,193 @@ void NOMEMMESSAGE()
     REQUEST(PText[526],PText[527],8,8);
 }
 
+uint8 DIS_LOADGAME()
+{
+    BPTR    FHandle;
+    char    s[40];
+    int     i, j;
+    uint32  actVer;
+    APTR    MemPtr;
+    r_PlanetHeader* PlanetHeader;
+    uint8   exitvalue = LOAD_NOFILE;
+
+    GETSAVENAME(PText[536], s);
+    if (0 != s[0])
+    {
+        FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+        if (0 != FHandle)
+        {
+            exitvalue = LOAD_OKAY;
+            FREESYSTEMMEMORY(); // freemem of SystemHeader-stucts: projects, planetMem, ships.
+            (void) Read(FHandle, &actVer, 4);   // should be the ACTVERSION.. but we dont check here - was done in GETSAVENAME
+            (void) Read(FHandle, &Year, 4);
+            (void) Read(FHandle, &Level, 1);
+            (void) Read(FHandle, &ActPlayer, 1);
+            (void) Read(FHandle, &MyWormHole[0], MAXHOLES*sizeof(r_WormHole));
+            (void) Read(FHandle, &SystemX[0], MAXSYSTEMS*sizeof(SystemX[0]));
+            (void) Read(FHandle, &SystemY[0], MAXSYSTEMS*sizeof(SystemY[0]));
+            (void) Read(FHandle, &SystemFlags[0][0], MAXSYSTEMS*MAXCIVS*sizeof(SystemFlags[0][0]));
+            (void) Read(FHandle, &MaquesShips, 4);
+
+            for(i = 0; i < MAXSYSTEMS; ++i)
+            {
+                (void) Read(FHandle, &SystemHeader[i], sizeof(r_SystemHeader));
+                if ((NULL != SystemHeader[i].PlanetMemA) && (0 < SystemHeader[i].Planets))
+                {
+                    // load ships if any are stored ...
+                    if (NULL != SystemHeader[i].FirstShip.NextShip)
+                    {
+                        LOADSHIPS(&(SystemHeader[i].FirstShip), FHandle);
+                    }
+
+                    // PlanetMemA was set in savegame, but the memory is not allocated.. so we need to do it
+                    MemPtr = AllocMem(SystemHeader[i].Planets*sizeof(r_PlanetHeader), MEMF_ANY);
+                    if (NULL != MemPtr)
+                    {
+                        SystemHeader[i].PlanetMemA = (r_PlanetHeader*) MemPtr;
+                        (void) Read(FHandle, SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
+                        for(j = 0; j < SystemHeader[i].Planets; ++j)
+                        {
+                            PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
+                            if (NULL != PlanetHeader->ProjectPtr)
+                            {
+                                // in the saved structure an ProjectPtr-Address was set
+                                // so we also need to allocate new memory for it - and read the data into this
+                                MemPtr = AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
+                                if (NULL != MemPtr)
+                                {
+                                    PlanetHeader->ProjectPtr = (ByteArr42*) MemPtr;
+                                    (void) Read(FHandle, (APTR) PlanetHeader->ProjectPtr, sizeof(ByteArr42));
+                                }
+                                else
+                                {
+                                    PlanetHeader->ProjectPtr = NULL;
+                                    exitvalue = LOAD_NOMEM;
+                                    i = 99; // should be enough to exit the outer loop
+                                    j = 99; // should be enough to exit the inner loop
+                                }
+                            }
+                            if ((LOAD_OKAY == exitvalue) && (NULL != PlanetHeader->FirstShip.NextShip))
+                            {
+                                // ships were saved with this Planet.. so restore them
+                                LOADSHIPS(&PlanetHeader->FirstShip, FHandle);
+                            }
+                        }
+                    } else {
+                        SystemHeader[i].PlanetMemA = NULL;
+                        exitvalue = LOAD_NOMEM;
+                        i = 99; // should be enough to exit the outer loop
+                    }
+                }
+            }
+            if (LOAD_NOMEM == exitvalue)
+            {
+                // free some memory.. as we dont get any more yet.
+                FREESYSTEMMEMORY();
+            } else if (LOAD_OKAY == exitvalue)
+            {
+                (void) Read(FHandle, &Save, sizeof(r_Save));   // this is incompatible with the original version of IT2
+                DECODEDATA();
+            
+                SETWORLDCOLORS();
+                MultiPlayer = false;
+                for(i = 1; i < 7; ++i)
+                {
+                    if (0 != Save.CivPlayer[i])
+                    {
+                        MultiPlayer = true;
+                    }
+                }
+                ActPlayerFlag = GETCIVFLAG(ActPlayer);
+            }
+            Close(FHandle);
+        }
+    }
+    return (exitvalue);
+}
+
+bool DIS_SAVEGAME()
+{
+    BPTR    FHandle;
+    char    s[40];
+    int     i, j;
+    uint32  l;
+    r_PlanetHeader* PlanetHeader;
+    bool    exitvalue = FALSE;
+
+    GETSAVENAME(PText[537], s);
+    if (0 != s[0])
+    {
+        FHandle = OPENSMOOTH(s,MODE_NEWFILE);
+        if (0 != FHandle)
+        {
+            l = ACTVERSION;
+            (void) Write(FHandle, &l, 4);
+            (void) Write(FHandle, &Year, 4);
+            (void) Write(FHandle, &Level, 1);
+            (void) Write(FHandle, &ActPlayer, 1);
+            (void) Write(FHandle, &MyWormHole[0], MAXHOLES*sizeof(r_WormHole));
+            (void) Write(FHandle, &SystemX[0], MAXSYSTEMS*sizeof(SystemX[0]));
+            (void) Write(FHandle, &SystemY[0], MAXSYSTEMS*sizeof(SystemY[0]));
+            (void) Write(FHandle, &SystemFlags[0][0], MAXSYSTEMS*MAXCIVS*sizeof(SystemFlags[0][0]));
+            (void) Write(FHandle, &MaquesShips, 4);
+            for(i = 0; i < MAXSYSTEMS; ++i)
+            {
+                (void) Write(FHandle, &SystemHeader[i],sizeof(r_SystemHeader));
+                if ((NULL != SystemHeader[i].PlanetMemA) && (0 < SystemHeader[i].Planets))
+                {
+                    if (NULL != SystemHeader[i].FirstShip.NextShip)
+                    {
+                        SAVESHIPS(&SystemHeader[i].FirstShip, FHandle);
+                    }
+                    (void) Write(FHandle, SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
+                    for(j = 0; j < SystemHeader[i].Planets; ++j)
+                    {
+                        PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
+                        if (NULL != PlanetHeader->ProjectPtr)
+                        {
+                            (void) Write(FHandle, PlanetHeader->ProjectPtr, sizeof(ByteArr42));
+                        }
+                        if (NULL != PlanetHeader->FirstShip.NextShip)
+                        {
+                            SAVESHIPS(&PlanetHeader->FirstShip, FHandle);
+                        }
+                    }
+                }
+            }
+            ENCODEDATA();
+            (void) Write(FHandle, &Save, sizeof(r_Save));   // this is incompatible with the original version of IT2
+            DECODEDATA();
+            Close(FHandle);
+            exitvalue = TRUE;
+        } else {
+            puts("No Savefile\n");
+        }
+    }
+    return (exitvalue);
+}
+
+bool DIS_DELETEGAME()
+{
+    char    s[40];
+    bool    exitvalue = FALSE;
+
+    GETSAVENAME(PText[538], s);
+    if (0 != s[0])
+    {
+        // nachfragen vor dem Löschen... !!!
+        (void) DeleteFile((CONST_STRPTR) s);
+        exitvalue = TRUE;
+    }
+    return (exitvalue);
+}
+
 bool DISKMENU(uint8 Autoselect)
 {
     bool _DISKMENU = true;
-    r_PlanetHeader* PlanetHeader;
-    uint32  l;
+    uint8   loadreturn;
     uint16  ypos;
-    int     i, j, k;
-    char    s[40];
-    BPTR    FHandle;
+    int     i;
     bool    leave_dialog = false;
     struct Window* DIS_Window;
     struct RastPort* RPort_PTR;
@@ -297,159 +477,40 @@ bool DISKMENU(uint8 Autoselect)
             {
                 if (((DIS_Window->MouseY>2) && (DIS_Window->MouseY<24)) || (DISKMENU_LOADGAME == Autoselect))
                 {
-                /* ----------------- load an old savegame */
+                    /* ----------------- load an old savegame */
                     KLICKWINGAD(RPort_PTR,4,3);
-                    leave_dialog = true;
-                    GETSAVENAME(PText[536], s);
-                    if (0 != s[0])
+                    loadreturn = DIS_LOADGAME();
+                    if (LOAD_OKAY == loadreturn)
                     {
-                        FHandle = OPENSMOOTH(s,MODE_OLDFILE);
-                        if (0 != FHandle)
-                        {
-                            FREESYSTEMMEMORY(); // freemem of SystemHeader-stucts: projects, planetMem, ships.
-                            (void) Read(FHandle, &l, 4);   // should be the ACTVERSION.. but we dont check here - was done in GETSAVENAME
-                            (void) Read(FHandle, &Year, 4);
-                            (void) Read(FHandle, &Level, 1);
-                            (void) Read(FHandle, &ActPlayer, 1);
-                            (void) Read(FHandle, &MyWormHole[0], MAXHOLES*sizeof(r_WormHole));
-                            (void) Read(FHandle, &SystemX[0], MAXSYSTEMS*sizeof(SystemX[0]));
-                            (void) Read(FHandle, &SystemY[0], MAXSYSTEMS*sizeof(SystemY[0]));
-                            (void) Read(FHandle, &SystemFlags[0][0], MAXSYSTEMS*MAXCIVS*sizeof(SystemFlags[0][0]));
-                            (void) Read(FHandle, &MaquesShips, 4);
-
-                            for(i = 0; i < MAXSYSTEMS; ++i)
-                            {
-                                (void) Read(FHandle, &SystemHeader[i],sizeof(r_SystemHeader));
-                                if ((NULL != SystemHeader[i].PlanetMemA) && (0 < SystemHeader[i].Planets))
-                                {
-                                    if (NULL != SystemHeader[i].FirstShip.NextShip)
-                                    {
-                                        LOADSHIPS(&SystemHeader[i].FirstShip, FHandle);
-                                    }
-                                    // PlanetMemA is set, but the memory is Free'd already.. so we need to reallocate it
-                                    SystemHeader[i].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[i].Planets*sizeof(r_PlanetHeader), MEMF_ANY);
-                                    if (NULL == SystemHeader[i].PlanetMemA)
-                                    {
-                                        Close(FHandle); // was missing...
-                                        CloseWindow(DIS_Window);
-                                        NOMEMMESSAGE();
-                                        return _DISKMENU;
-                                    }
-                                    (void) Read(FHandle, SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
-                                    for(j = 0; j < SystemHeader[i].Planets; ++j)
-                                    {
-                                        PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                                        if (NULL != PlanetHeader->ProjectPtr)
-                                        {
-                                            l = (uint32) AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
-                                            if (0 == l)
-                                            {
-                                                Close(FHandle);
-                                                CloseWindow(DIS_Window);
-                                                for(k = 0; k < SystemHeader[i].Planets; ++k)
-                                                {
-                                                    if (NULL != PlanetHeader->ProjectPtr)
-                                                    {
-                                                        FreeMem((APTR) (PlanetHeader->ProjectPtr), sizeof(ByteArr42));
-                                                    }
-                                                    PlanetHeader->ProjectPtr = NULL;
-                                                }
-                                                NOMEMMESSAGE();
-                                                return _DISKMENU;
-                                            }
-                                            PlanetHeader->ProjectPtr = (ByteArr42*) l;
-                                            (void) Read(FHandle, (APTR) PlanetHeader->ProjectPtr, sizeof(ByteArr42));
-                                        }
-                                        if (NULL != PlanetHeader->FirstShip.NextShip)
-                                        {
-                                            LOADSHIPS(&PlanetHeader->FirstShip, FHandle);
-                                        }
-                                    }
-                                }
-                            }
-                            (void) Read(FHandle, &Save, sizeof(r_Save));   // this is incompatible with the original version of IT2
-                            DECODEDATA();
-                            Close(FHandle);
-
-                            SETWORLDCOLORS();
-                            MultiPlayer = false;
-                            for(i = 1; i < 7; ++i)
-                            {
-                                if (0 != Save.CivPlayer[i])
-                                {
-                                    MultiPlayer = true;
-                                }
-                            }
-                            ActPlayerFlag = GETCIVFLAG(ActPlayer);
-                            Informed = false;
-                            CloseWindow(DIS_Window);
-                            DIS_Window = NULL;
-                            INFORMUSER();
-                            DRAWSTARS(MODE_REDRAW, ActPlayer);
-                        }
+                        Informed = false;
+                        CloseWindow(DIS_Window);
+                        DIS_Window = NULL;
+                        INFORMUSER();
+                        DRAWSTARS(MODE_REDRAW, ActPlayer);
+                        leave_dialog = true;
+                    } else if (LOAD_NOMEM == loadreturn)
+                    {
+                        CloseWindow(DIS_Window);
+                        DIS_Window = NULL;
+                        NOMEMMESSAGE();
+                        _DISKMENU = false;
+                        leave_dialog = true;
                     }
                 } else if (((DIS_Window->MouseY > 24) && (DIS_Window->MouseY < 46)) || (DISKMENU_SAVEGAME == Autoselect))
                 {
-                /* ----------------- save the current game */
+                    /* ----------------- save the current game */
                     KLICKWINGAD(RPort_PTR,4,25);
-                    leave_dialog = true;
-                    GETSAVENAME(PText[537], s);
-                    if (0 != s[0])
+                    if (DIS_SAVEGAME())
                     {
-                        FHandle = OPENSMOOTH(s,MODE_NEWFILE);
-                        if (0 != FHandle)
-                        {
-                            l = ACTVERSION;
-                            (void) Write(FHandle, &l, 4);
-                            (void) Write(FHandle, &Year, 4);
-                            (void) Write(FHandle, &Level, 1);
-                            (void) Write(FHandle, &ActPlayer, 1);
-                            (void) Write(FHandle, &MyWormHole[0], MAXHOLES*sizeof(r_WormHole));
-                            (void) Write(FHandle, &SystemX[0], MAXSYSTEMS*sizeof(SystemX[0]));
-                            (void) Write(FHandle, &SystemY[0], MAXSYSTEMS*sizeof(SystemY[0]));
-                            (void) Write(FHandle, &SystemFlags[0][0], MAXSYSTEMS*MAXCIVS*sizeof(SystemFlags[0][0]));
-                            (void) Write(FHandle, &MaquesShips, 4);
-                            for(i = 0; i < MAXSYSTEMS; ++i)
-                            {
-                                (void) Write(FHandle, &SystemHeader[i],sizeof(r_SystemHeader));
-                                if ((NULL != SystemHeader[i].PlanetMemA) && (0 < SystemHeader[i].Planets))
-                                {
-                                    if (NULL != SystemHeader[i].FirstShip.NextShip)
-                                    {
-                                        SAVESHIPS(&SystemHeader[i].FirstShip, FHandle);
-                                    }
-                                    (void) Write(FHandle, SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
-                                    for(j = 0; j < SystemHeader[i].Planets; ++j)
-                                    {
-                                        PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                                        if (NULL != PlanetHeader->ProjectPtr)
-                                        {
-                                            (void) Write(FHandle, PlanetHeader->ProjectPtr, sizeof(ByteArr42));
-                                        }
-                                        if (NULL != PlanetHeader->FirstShip.NextShip)
-                                        {
-                                            SAVESHIPS(&PlanetHeader->FirstShip, FHandle);
-                                        }
-                                    }
-                                }
-                            }
-                            ENCODEDATA();
-                            (void) Write(FHandle, &Save, sizeof(r_Save));   // this is incompatible with the original version of IT2
-                            DECODEDATA();
-                            Close(FHandle);
-                        } else {
-                            puts("No Savefile\n");
-                        }
+                        leave_dialog = true;
                     }
                 } else if ((DIS_Window->MouseY > 46) && (DIS_Window->MouseY < 68))
                 {
                     KLICKWINGAD(RPort_PTR,4,47);
-                    GETSAVENAME(PText[538], s);
-                    if (0 != s[0])
+                    if (DIS_DELETEGAME())
                     {
-                        (void) DeleteFile((CONST_STRPTR) s);
+                        leave_dialog = true;
                     }
-                    leave_dialog = true;
                 } else if ((DIS_Window->MouseY > 68) && (DIS_Window->MouseY < 90))
                 {
                     KLICKWINGAD(RPort_PTR,4,69);

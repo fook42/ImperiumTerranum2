@@ -11,7 +11,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
     uint16          pos;
     double          Factor;
     uint32          CVal[MAXCIVS];
-    uint8           DS_ActPlayerFlag;
+    uint8           DS_ActPlayerFlag, CivmaskFlag, Write_DrawMode;
     char            s[20];
 
     DS_ActPlayerFlag = GETCIVFLAG(DS_ActPlayer);
@@ -29,7 +29,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
         WRITE(576,418,0, WRITE_Center              ,MyRPort_PTR[0],3,_PT_Regierung);
         WRITE(576,446,0, WRITE_Center              ,MyRPort_PTR[0],3,_PT_Hauptmenue);
         WRITE(576,474,8,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[0],3,_PT_Rundenende);
-        RECTWIN(MyRPort_PTR[0],0,0,0,511,511);
+        RECT_RP0(0,0,0,511,511);
         SetAPen(MyRPort_PTR[0],6);
         for (i = 0; i<310; ++i)
         {
@@ -50,8 +50,8 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
         {
             if ((i<7) || ((0 != Save.WorldFlag) && (WFLAG_FIELD != Save.WorldFlag)))
             {
-                RECTWIN(MyRPort_PTR[0],0              , pos, 490, pos+62, 511-it_round(CVal[i]/Factor));
-                RECTWIN(MyRPort_PTR[0],GETCIVFLAG(i+1), pos, 511-it_round(CVal[i]/Factor), pos+62, 511);
+                RECT_RP0(0              , pos, 490, pos+62, 511-it_round(CVal[i]/Factor));
+                RECT_RP0(GETCIVFLAG(i+1), pos, 511-it_round(CVal[i]/Factor), pos+62, 511);
                 (void) dez2out(CVal[i], 0, s);
                 WRITE(pos+66,502,45,WRITE_Right,MyRPort_PTR[0],0,s);
             }
@@ -100,29 +100,30 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
                 || (!Informed)) && (SystemHeader[i].vNS != FLAG_KNOWN)) || ((Mode == MODE_STARGATE)
                 && (SystemHeader[i].FirstShip.SType != TARGET_STARGATE))))
         {
-            RECTWIN(MyRPort_PTR[0],0,(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
+            SetAPen(MyRPort_PTR[0],0);
+            RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             SetAPen(MyRPort_PTR[0],12);
             WritePixel(MyRPort_PTR[0],SystemX[i],SystemY[i]);
             WRITE(SystemX[i]+3,SystemY[i]+3,12,1,MyRPort_PTR[0],0,Save.SystemName.data[i]);
-        } else if ((SystemFlags[0][i] & FLAG_CIV_MASK) != 0)
+        }
+        else
         {
-            SetAPen(MyRPort_PTR[0],SystemFlags[0][i] & FLAG_CIV_MASK);
+            CivmaskFlag = SystemFlags[0][i] & FLAG_CIV_MASK;
+            Write_DrawMode = 0;
+            if (CivmaskFlag == 0)
+            {
+                CivmaskFlag = 12;
+                Write_DrawMode = AUTODRAWMODE;
+            }
+
+            SetAPen(MyRPort_PTR[0],CivmaskFlag);
             if (TARGET_STARGATE == SystemHeader[i].FirstShip.SType)
             {
                 DrawEllipse(MyRPort_PTR[0],SystemX[i],SystemY[i],4,4);
             } else {
                 RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             }
-            WRITE(SystemX[i]+3,SystemY[i]+3,SystemFlags[0][i] & FLAG_CIV_MASK,1,MyRPort_PTR[0],0,Save.SystemName.data[i]);
-        } else {
-            SetAPen(MyRPort_PTR[0],12);
-            if (TARGET_STARGATE == SystemHeader[i].FirstShip.SType)
-            {
-                DrawEllipse(MyRPort_PTR[0],SystemX[i],SystemY[i],4,4);
-            } else {
-                RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
-            }
-            WRITE(SystemX[i]+3,SystemY[i]+3,12,1,MyRPort_PTR[0],0,Save.SystemName.data[i]);
+            WRITE(SystemX[i]+3,SystemY[i]+3,CivmaskFlag,Write_DrawMode,MyRPort_PTR[0],0,Save.SystemName.data[i]);
         }
     }
     PRINTGLOBALINFOS(DS_ActPlayer);
