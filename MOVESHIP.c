@@ -82,6 +82,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     }
                     return;
                 }
+                // move the Stargate closer to the sun each round
                 if (0 < MyShipPtr->PosX)
                 {
                     --MyShipPtr->PosX;
@@ -96,7 +97,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 {
                     ++MyShipPtr->PosY;
                 }
-            } else if (MyShipPtr->Target == TARGET_ENEMY_SHIP)
+                // ---
+            } else if (TARGET_ENEMY_SHIP == MyShipPtr->Target)
             {
                 /**** FEINDLICHES SCHIFF ABFANGEN ****/
                 if      (MyShipPtr->TargetShip->PosX < MyShipPtr->PosX) { MyShipPtr->PosX--; }
@@ -152,7 +154,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     }
                 }
                 switch (ObjType) {
-                    case TYPE_PLANET: if (MyShipPtr->Flags == SHIPFLAG_WATER)
+                    case TYPE_PLANET: if (SHIPFLAG_WATER == MyShipPtr->Flags)
                                     {
                                         SystemFlags[ActPlayer-1][ActSys-1] |= FLAG_KNOWN;
                                         if (AUTOWATERTRANSPORT((r_PlanetHeader*) ObjPtr, MyShipPtr, ActSys))
@@ -337,10 +339,10 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     return;
                                                 } else if (CIVVAR_MAQUES == CivVar)
                                                 {
-                                                    MyPlanetHeader->Population    = it_round(MyPlanetHeader->Population*0.99);
-                                                    MyPlanetHeader->Biosphaere    = it_round(MyPlanetHeader->Biosphaere*0.97);
-                                                    MyPlanetHeader->Industrie     = it_round(MyPlanetHeader->Industrie*0.95);
-                                                    MyPlanetHeader->Infrastruktur = it_round(MyPlanetHeader->Infrastruktur*0.93);
+                                                    MyPlanetHeader->Population    -= (MyPlanetHeader->Population   *0x15)>>11; // -0.01x
+                                                    MyPlanetHeader->Biosphaere    -= (MyPlanetHeader->Biosphaere   *0x2D)>>11; // -0.03x
+                                                    MyPlanetHeader->Industrie     -= (MyPlanetHeader->Industrie    *0x67)>>11; // -0.05x
+                                                    MyPlanetHeader->Infrastruktur -= (MyPlanetHeader->Infrastruktur*0x8F)>>11; // -0.07x
 
                                                     slen = strlen(PText[470]);
                                                     memcpy(s, PText[470], slen+1);
@@ -357,14 +359,14 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         REQUEST(s,s2,12,12);
                                                     }
                                                     SUPPORTCIVI(MyPlanetHeader->XProjectPayed / 5);
-                                                    MyPlanetHeader->XProjectPayed = it_round(MyPlanetHeader->XProjectPayed*0.8);
+                                                    MyPlanetHeader->XProjectPayed -= (MyPlanetHeader->XProjectPayed*0xCD)>>10; // -0.2x
                                                     l = GOTONEXTSYSTEM(ActSys,MyShipPtr);
                                                 } else if ((MyShipPtr->Ladung & MASK_LTRUPPS)>0)
                                                 {
                                                     CHECKPLANET(MyPlanetHeader);
                                                     Bool_var = TAKETECH(MyShipPtr->Owner, MyPlanetHeader->PFlags & FLAG_CIV_MASK);
                                                     Save.Staatstopf[GETCIVVAR(MyShipPtr->Owner)-1] += (MyPlanetHeader->XProjectPayed / 5);
-                                                    MyPlanetHeader->XProjectPayed = it_round(MyPlanetHeader->XProjectPayed*0.8);
+                                                    MyPlanetHeader->XProjectPayed -= (MyPlanetHeader->XProjectPayed*0xCD)>>10; // -0.2x
                                                     AUTOVERHANDLUNG(MyShipPtr->Owner, MyPlanetHeader->PFlags, ActSys, 0);
                                                     CHECKPROJECTS(MyPlanetHeader, MyShipPtr->Owner);
                                                     MyPlanetHeader->PFlags = MyShipPtr->Owner;
@@ -542,7 +544,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     PLAYSOUND(1,300);
                     switch (ObjType) {
                         case TYPE_PLANET:   PLANETINFO(ActSys); break;
-                        case TYPE_SHIP:     if (MyShipPtr->SType == SHIPTYPE_FLEET)
+                        case TYPE_SHIP:     if (SHIPTYPE_FLEET == MyShipPtr->SType)
                                             {
                                                 ORBITINFO(MyShipPtr, _PT_Flotte, ActSys, 0, 0);
                                             } else {
@@ -609,15 +611,17 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                                 return;
                                                             }
                                                             AUTOVERHANDLUNG(ActPlayerFlag,CivFlag,ActSys,0);
-                                                        } else if (MyShipPtr->SType != SHIPTYPE_FLEET)
+                                                        } else if (SHIPTYPE_FLEET != MyShipPtr->SType)
                                                         {
+                                                            // moved into our own ship .. lets form a fleet
                                                             FleetShipPtr = OtherShipPtr;
-                                                            if (OtherShipPtr->SType != SHIPTYPE_FLEET)
+                                                            if (SHIPTYPE_FLEET != OtherShipPtr->SType)
                                                             {
                                                                 l = (uint32) AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
                                                                 if (l == 0)
                                                                 {
                                                                     DisplayBeep(NULL);
+                                                                    // more error handling necessary!!! -> setting of Targetship etc..
                                                                 } else {
                                                                     CopyMemQuick((APTR) OtherShipPtr, (APTR) l, sizeof(r_ShipHeader));
                                                                     OtherShipPtr->SType = SHIPTYPE_FLEET;
@@ -627,21 +631,23 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                                     OtherShipPtr->TargetShip->Flags = 0;
                                                                 }
                                                             }
-                                                            if (OtherShipPtr->TargetShip != NULL)
+                                                            if (NULL != OtherShipPtr->TargetShip)
                                                             {
                                                                 OtherShipPtr->Flags = 0;
                                                                 OtherShipPtr = OtherShipPtr->TargetShip;
 
+                                                                // handling of "Other->Next == NULL" is not enough
+                                                                // ... next loop it will be "Other=NULL"
                                                                 while ((OtherShipPtr->SType < MyShipPtr->SType)
-                                                                        && (OtherShipPtr->NextShip != NULL))
+                                                                        && (NULL != OtherShipPtr->NextShip))
                                                                 {
                                                                     OtherShipPtr = OtherShipPtr->NextShip;
                                                                 }
 
-                                                                if (OtherShipPtr->BeforeShip->SType == SHIPTYPE_FLEET)
+                                                                if (SHIPTYPE_FLEET == OtherShipPtr->BeforeShip->SType)
                                                                 {
                                                                     MyShipPtr->BeforeShip->NextShip = MyShipPtr->NextShip;
-                                                                    if (MyShipPtr->NextShip != NULL)
+                                                                    if (NULL != MyShipPtr->NextShip)
                                                                     {
                                                                         MyShipPtr->NextShip->BeforeShip = MyShipPtr->BeforeShip;
                                                                     }
@@ -670,9 +676,9 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                             Delay(RDELAY);
                                                             if (LMB_PRESSED)
                                                             {
-                                                                if (LastSystem != 0)
+                                                                if (0 != LastSystem)
                                                                 {
-                                                                    if (SystemHeader[LastSystem-1].FirstShip.SType == TARGET_STARGATE)
+                                                                    if (TARGET_STARGATE == SystemHeader[LastSystem-1].FirstShip.SType)
                                                                     {
                                                                         SysID = LastSystem;
                                                                     }
@@ -682,15 +688,15 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                                 WRITEGALAXYDATA(0,TARGET_STARGATE);
                                                             }
                                                         }
-                                                        while ((RMB_NOTPRESSED) && (SysID == 0));
-                                                        if ((RMB_PRESSED) || (SysID == ActSys))
+                                                        while ((RMB_NOTPRESSED) && (0 == SysID));
+                                                        if ((RMB_PRESSED) || (ActSys == SysID))
                                                         {
                                                             MyShipPtr->PosX = MOVESHIP_FromX;
                                                             MyShipPtr->PosY = MOVESHIP_FromY;
                                                             PLAYSOUND(1,300);
                                                             DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                                                         }
-                                                        if ((SysID!=0) && (SysID!=ActSys))
+                                                        if ((0 != SysID) && (ActSys != SysID))
                                                         {
                                                             MOVESHIP_x = MOVESHIP_ToX;
                                                             MOVESHIP_y = MOVESHIP_ToY;
@@ -705,8 +711,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                             DisplayBeep(NULL);
                                         }
                             }
-                        } else if ((SystemHeader[ActSys-1].FirstShip.SType != TARGET_STARGATE)
-                                && (MyShipPtr->SType != SHIPTYPE_FLEET)
+                        } else if ((TARGET_STARGATE != SystemHeader[ActSys-1].FirstShip.SType)
+                                && (SHIPTYPE_FLEET != MyShipPtr->SType)
                                 && (((Year+(MyShipPtr->PosX * MyShipPtr->PosY)) % 335) == 0))
                         {
                             DRAWMOVINGSHIP(MyShipPtr, ActSys);
@@ -718,9 +724,9 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         } else {
                             DRAWMOVINGSHIP(MyShipPtr, ActSys);
                         }
-                        if (MyShipPtr->Moving>0)
+                        if (0 < MyShipPtr->Moving)
                         {
-                            MyShipPtr->Moving--;
+                            --MyShipPtr->Moving;
                         }
 
                         if ((MyShipPtr->PosX>=-3) && (MyShipPtr->PosX<=2) && (MyShipPtr->PosY>=-3) && (MyShipPtr->PosY<=2))
@@ -730,7 +736,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                             MOVESHIP_FromY = MyShipPtr->PosY;
                             MyShipPtr->Owner = 0;
                             MOVESHIP_EXPLODE(ActSys,MyShipPtr);
-                            if (MyShipPtr->SType == SHIPTYPE_FLEET)
+                            if (SHIPTYPE_FLEET == MyShipPtr->SType)
                             {
                                 KILLFLEET(MyShipPtr);
                             } else if ((MyShipPtr->SType>=17) && (MyShipPtr->SType<=24))
@@ -751,24 +757,13 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             }
         } else if (RMB_PRESSED)
         {
-            if ((MouseX(0)>=518) && (MouseX(0)<=634) && (MouseY(0)>=9) && (MouseY(0)<=117))
+            if ((MouseX(0)>517) && (MouseX(0)<635) && (MouseY(0)>8) && (MouseY(0)<118))
             {
-                if ((MouseX(0)>=518) && (MouseX(0)<=634) && (MouseY(0)>=9) && (MouseY(0)<=29))
-                {
-                    if (OffsetY<42) { OffsetY += 2; }
-                }
-                if ((MouseX(0)>=518) && (MouseX(0)<=634) && (MouseY(0)>=97) && (MouseY(0)<=117))
-                {
-                    if (OffsetY>-42) { OffsetY -= 2; }
-                }
-                if ((MouseX(0)>=518) && (MouseX(0)<=538) && (MouseY(0)>=9) && (MouseY(0)<=117))
-                {
-                    if (OffsetX<42) { OffsetX += 2; }
-                }
-                if ((MouseX(0)>=614) && (MouseX(0)<=634) && (MouseY(0)>=9) && (MouseY(0)<=117))
-                {
-                    if (OffsetX>-42) { OffsetX -= 2; }
-                }
+                // clicked on minimap area
+                if ((MouseY(0)< 30) && ( 42 > OffsetY)) { OffsetY += 2; }
+                if ((MouseY(0)> 96) && (-42 < OffsetY)) { OffsetY -= 2; }
+                if ((MouseX(0)<539) && ( 42 > OffsetX)) { OffsetX += 2; }
+                if ((MouseX(0)>613) && (-42 < OffsetX)) { OffsetX -= 2; }
                 DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
             } else {
                 PLAYSOUND(1,300);
@@ -804,6 +799,9 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         MOVESHIP_y = 256+((MyShipPtr->PosY+OffsetY)*32);
         CLEARINTUITION();
     }
-    while ((MyShipPtr->Moving > 0) && (MyShipPtr->Target != TARGET_POSITION) && (MyShipPtr->Owner != 0));
+    while ((0 < MyShipPtr->Moving)
+        && (TARGET_POSITION != MyShipPtr->Target)
+        && (0 != MyShipPtr->Owner));
+
     RECT_RP0(0,520,291,632,308);
 }
