@@ -11,23 +11,21 @@ bool INITSTARS()
     int             i,j,k;
     double          sin_rot, cos_rot, d;
     r_PlanetHeader* PlanetHeader;
-    ByteArr42*      ActPProjects;
 
     time_t  t;
     srand((unsigned) time(&t));
 
     SystemFlags[0][0] = FLAG_TERRA|FLAG_KNOWN;
-    for (i = 1; i<(MAXCIVS-1); ++i)
+    for (i = 0; i<(MAXCIVS-1); ++i)
     {
-        for (j = 1; j <= HomePlanets; ++j)
+        for (j = 0; j < HomePlanets; ++j)
         {
-            PMemA[i][j] = AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
+            PMemA[i][j] = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
             if (NULL == PMemA[i][j])
             {
                 return false;
+                // @TODO .. no-memory handling needed...
             }
-            ActPProjects = (ByteArr42*) PMemA[i][j];
-            ActPProjects->data[0] = 1;
         }
     }
 
@@ -37,7 +35,7 @@ bool INITSTARS()
     }
     SystemHeader[0].FirstShip.Owner = FLAG_TERRA;
     SystemHeader[0].Planets = 9;
-    SystemHeader[0].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[0].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
+    SystemHeader[0].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[0].Planets*sizeof(r_PlanetHeader), MEMF_ANY|MEMF_CLEAR);
     if (NULL == SystemHeader[0].PlanetMemA)
     {
         return false;
@@ -50,7 +48,7 @@ bool INITSTARS()
     *PlanetHeader = (r_PlanetHeader) {CLASS_HALFEARTH,7,FLAG_UNKNOWN,0,"",7,7,0,283,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[2]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,   10,FLAG_TERRA,FLAG_TERRA,"",10,10,4000,760,170,165,160,0,0,0,DefaultShip,(ByteArr42*) PMemA[1][1]};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,   10,FLAG_TERRA,FLAG_TERRA,"",10,10,4000,760,170,165,160,0,0,0,DefaultShip,(ByteArr42*) PMemA[0][0]};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[3]);
     *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   5,FLAG_UNKNOWN,0,"",13,13,0,61,0,0,0,0,0,0,DefaultShip,NULL};
@@ -98,8 +96,8 @@ bool INITSTARS()
                     PlanetHeader->Biosphaere    = 170;
                     PlanetHeader->Infrastruktur = 165;
                     PlanetHeader->Industrie     = 160;
-                    PlanetHeader->ProjectPtr    = (ByteArr42*) PMemA[1][l];
-                    l--;
+                    PlanetHeader->ProjectPtr    = (ByteArr42*) PMemA[0][l-1];
+                    --l;
                     HomePlanetProd += PlanetHeader->Size;
                 }
             }
@@ -175,7 +173,7 @@ bool INITSTARS()
             if (j == 2)
             {
                 *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,1,GETCIVFLAG(k),GETCIVFLAG(k),"",
-                    13,0,4000,73,170,165,160,0,0,0, DefaultShip, (ByteArr42*) PMemA[k][1]};
+                    13,0,4000,73,170,165,160,0,0,0, DefaultShip, (ByteArr42*) PMemA[k-1][0]};
             }
             strcpy(PlanetHeader->PName, PNames[k].data[j]);
             PlanetHeader->Water = PlanetHeader->Water / PlanetHeader->Size;
@@ -207,7 +205,7 @@ bool INITSTARS()
                         PlanetHeader->Biosphaere    = 170;
                         PlanetHeader->Infrastruktur = 165;
                         PlanetHeader->Industrie     = 160;
-                        PlanetHeader->ProjectPtr    = (ByteArr42*) PMemA[k][l];
+                        PlanetHeader->ProjectPtr    = (ByteArr42*) PMemA[k-1][l-1];
                         --l;
                         HomePlanetProd += PlanetHeader->Size;
                     }
@@ -223,19 +221,16 @@ bool INITSTARS()
             }
         }
     }
+    // raise project costs for all human/civ players... 
     if (1 < HomePlanets)
     {
-        for(k = 0; k < (HomePlanets+3); ++k)
+        for(i = 0; i < (MAXCIVS-2); ++i)
         {
-            for(i = 0; i < (MAXCIVS-2); ++i)
+            if (0 != Save.CivPlayer[i])
             {
-                if (0 != Save.CivPlayer[i])
+                for(j = 1; j < 43; ++j)
                 {
-                    for(j = 1; j < 43; ++j)
-                    {
-                        Save.ProjectCosts[i].data[j] += (Save.ProjectCosts[i].data[j]>>12) * 0x7B;
-                        // it_round(Save.ProjectCosts[i].data[j]*INFLATION);
-                    }
+                    Save.ProjectCosts[i].data[j] += (HomePlanets+3)*((Save.ProjectCosts[i].data[j] * 0x7B)>>12); // 0x7B >> 12 =~ 0.03
                 }
             }
         }
