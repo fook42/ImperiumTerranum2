@@ -49,6 +49,10 @@ uint8 FIRSTMENU()
     if (1 == selection)
     {
         OPTIONMENU(1);
+        if (1 < Player)
+        {
+            OPTION_MULTIPLAYER();
+        }
     } else
     {
         StopPlayer();

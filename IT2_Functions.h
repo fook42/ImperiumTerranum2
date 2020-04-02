@@ -146,19 +146,9 @@ void ROTATEnX(VectorObj_t* actObject);
 void ROTATEnY(VectorObj_t* actObject);
 void ROTATEnZ(VectorObj_t* actObject);
 void FLY(VectorObj_t* actObject, sint32 Factor);
-//void FLY(VectorObj_t* actObject, double Factor);
-// void GREATEFFECT(uint8 Objects, r_Col_t* Colors);
 void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL);
 // <<<
-/*void INTROEXIT(struct MMD0 *module, APTR* SMemA, uint32* SMemL);
-uint8 MAININTRO_PT1(APTR* SMemA, uint32* SMemL);
-uint8 MAININTRO_PT2(APTR* SMemA, uint32* SMemL);
-uint8 MAININTRO_PT3(APTR* SMemA, uint32* SMemL, struct MMD0 *SndModulePtr);
-uint8 MAININTRO_PT4(APTR* SMemA, uint32* SMemL);
-*/
 void MAIN_FNC();
-
-//**** void MAKEBORDER(struct Screen* XScreen, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge, uint8 Col1, uint8 Col2, uint8 Darken);
 // >>> MILITAER
 //void DRAWDATA(uint8 BSet);
 void MILITAER();
@@ -169,12 +159,12 @@ void MOVESHIP_DRAWSCENE(uint8 ActSys, r_ShipHeader* MyShipPtr);
 void MOVESHIP_EXPLODE(uint8 ActSys, r_ShipHeader* MyShipPtr);
 void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys);
 // <<<
-
 struct Screen* OPENCINEMA(uint8 Depth);
 bool OPENMAINSCREENS();
 BPTR OPENSMOOTH(char* FName, uint32 FMode);
 // >>> OPTIONMENU
 void CHECKGADS(uint8 GadID);
+void OPTION_MULTIPLAYER(void);
 void OPTIONMENU(uint8 Mode);
 // <<<
 // >>> ORBITINFO

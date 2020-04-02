@@ -114,8 +114,9 @@ _EXTERN_  sint32        Year;
 _EXTERN_  sint16        OffsetX, OffsetY, OldX, OldY;
 
 _EXTERN_  uint8         AScr;
-_EXTERN_  uint8         Screen2, LastSystem, Level;
+_EXTERN_  uint8         Screen2, LastSystem;
 
+_EXTERN_  uint8         Player, Level;
 _EXTERN_  uint8         ActPlayer, ActPlayerFlag, Display;
 _EXTERN_  uint8         HomePlanets;
 
