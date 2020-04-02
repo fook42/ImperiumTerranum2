@@ -33,9 +33,7 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
     if (2 > MyShipPtr->Shield) { Step = 1.0f; }
     ColX = it_round(255*(MyShipPtr->Tactical/Step));
     Col1 = 255+ColX;
-    Col1 = 255-ColX;
-//    Col1 = it_round( (MyShipPtr->Tactical+Step)*(255/Step));
-//    Col2 = it_round(-(MyShipPtr->Tactical-Step)*(255/Step));
+    Col2 = 255-ColX;
     for(i = 0; i < 8; ++i)
     {
         if (0 > Col1)      { c1 = 0; }
@@ -121,7 +119,7 @@ void SHIPINFO(uint8 ActSys)
         case WEAPON_DISRUPTOR: strcpy(_s, PText[188]); break;
         case WEAPON_PTORPEDO:  strcpy(_s, PText[189]); break;
         default: (void) dez2out(MyShipPtr->Weapon, 0, _s);
-    }  
+    }
     WRITE(290,42,1,0,MyRPort_PTR[1],2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[191]);
@@ -184,13 +182,14 @@ void SHIPINFO(uint8 ActSys)
                         && (MyShipPtr->Repair < ShipData(MyShipPtr->SType).MaxMove))
                 {
                     ++(MyShipPtr->Repair);
+                    SHIPINFO_WRITEDATA(MyShipPtr);
                 }
                 else if ((489<MouseX(1)) && (526>MouseX(1))
                         && (MyShipPtr->Repair > 0))
                 {
                     --(MyShipPtr->Repair);
+                    SHIPINFO_WRITEDATA(MyShipPtr);
                 }
-                SHIPINFO_WRITEDATA(MyShipPtr);
             }
             else if ((314<MouseY(1)) && (346>MouseY(1)))
             {
@@ -199,6 +198,7 @@ void SHIPINFO(uint8 ActSys)
                         && ((3*MyShipPtr->Tactical) < (MyShipPtr->Shield-2)))
                 {
                     ++(MyShipPtr->Tactical);
+                    SHIPINFO_WRITEDATA(MyShipPtr);
                 }
                 else if ((489<MouseX(1)) && (526>MouseX(1))
                         && (   MyShipPtr->Tactical  > -(ShipData(MyShipPtr->SType).WeaponPower-2))
@@ -206,8 +206,8 @@ void SHIPINFO(uint8 ActSys)
 
                 {
                     --(MyShipPtr->Tactical);
+                    SHIPINFO_WRITEDATA(MyShipPtr);
                 }
-                SHIPINFO_WRITEDATA(MyShipPtr);
             }
             while (LMB_PRESSED)
             { };
