@@ -6,6 +6,8 @@
 void REQUEST(char* s1, char* s2, uint8 c1, uint8 c2)
 {
     struct Window* REQ_Window;
+
+    ScreenToFront(MyScreen[0]);
     REQ_Window = MAKEWINDOW(35,110,441,81,MyScreen[0]);
     if (NULL != REQ_Window)
     {
