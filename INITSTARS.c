@@ -3,42 +3,90 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-bool INITSTARS()
+void INIT_HOMEPLANETS(uint8 Civ, uint8 HomeSystem, uint8 HomePlanet)
 {
-    uint32          l,HomePlanetProd;
-    bool            system_too_close;
-    APTR            PMemA[MAXCIVS][6];
-    int             i,j,k;
-    double          sin_rot, cos_rot, d;
+    uint8   i, value;
+    uint32  HomePlanetProd;
     r_PlanetHeader* PlanetHeader;
+    APTR    MemPointer;
 
-    time_t  t;
-    srand((unsigned) time(&t));
+    // having more than 1 Homeplanet means, having more planets of our own
+    value = HomePlanets-1;
 
-    SystemFlags[0][0] = FLAG_TERRA|FLAG_KNOWN;
-    for (i = 0; i<(MAXCIVS-1); ++i)
+    HomePlanetProd = SystemHeader[HomeSystem].PlanetMemA[HomePlanet].Size;
+
+    for (i = 0; i < SystemHeader[HomeSystem].Planets; ++i)
     {
-        for (j = 0; j < HomePlanets; ++j)
+        PlanetHeader = &(SystemHeader[HomeSystem].PlanetMemA[i]);
+        if ((PlanetHeader->PFlags==FLAG_UNKNOWN) &&
+            (  (PlanetHeader->Class==CLASS_DESERT) || (PlanetHeader->Class==CLASS_HALFEARTH)
+             ||(PlanetHeader->Class==CLASS_EARTH)  || (PlanetHeader->Class==CLASS_WATER)
+             ||(PlanetHeader->Class==CLASS_STONES) || (PlanetHeader->Class==CLASS_ICE)))
         {
-            PMemA[i][j] = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
-            if (NULL == PMemA[i][j])
+            PlanetHeader->PFlags = GETCIVFLAG(Civ+1);
+            PlanetHeader->Ethno  = PlanetHeader->PFlags;
+            PlanetHeader->Water  = PlanetHeader->Water / PlanetHeader->Size;
+            PlanetHeader->Size   = (rand()%15)+5;
+            PlanetHeader->Water  = PlanetHeader->Water*PlanetHeader->Size;
+            PlanetHeader->Population    = PlanetHeader->Size*400;
+            PlanetHeader->Biosphaere    = 170;
+            PlanetHeader->Infrastruktur = 165;
+            PlanetHeader->Industrie     = 160;
+            // get memory for Projects on home planet
+            MemPointer = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
+            if (NULL == MemPointer)
             {
-                return false;
-                // @TODO .. no-memory handling needed...
+                // @TODO out-of-memory handling needed...
+                return;
             }
+            PlanetHeader->ProjectPtr    = (ByteArr42*) MemPointer;
+            HomePlanetProd += PlanetHeader->Size;
+            --value;
+        }
+        if (0 == value)
+        {
+            break;
         }
     }
-
-    for (i = 0; i < MAXSYSTEMS; ++i)
+    if (7 < HomePlanetProd)
     {
-        SystemHeader[i] = (r_SystemHeader) {NULL,0,DefaultShip,0,0,0};
+        for (i = 1; i < 43; ++i)
+        {
+            Save.TechCosts[Civ].data[i] = it_round((double) Save.TechCosts[Civ].data[i]*(HomePlanetProd/15.0));
+        }
     }
-    SystemHeader[0].FirstShip.Owner = FLAG_TERRA;
+    Save.ImperatorState[Civ] -= HomePlanetProd*3;
+}
+
+void INIT_SOLARSYSTEM(void)
+{
+    APTR            MemPointer;
+    r_PlanetHeader* PlanetHeader;
+    uint8           i, j;
+    double          sin_rot, cos_rot, d;
+
+    // prepare the home-system of Terraners (player 1)
+    //
+
     SystemHeader[0].Planets = 9;
-    SystemHeader[0].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[0].Planets*sizeof(r_PlanetHeader), MEMF_ANY|MEMF_CLEAR);
-    if (NULL == SystemHeader[0].PlanetMemA)
+    // get memory for Planets
+    MemPointer = AllocMem(SystemHeader[0].Planets*sizeof(r_PlanetHeader), MEMF_ANY|MEMF_CLEAR);
+    if (NULL == MemPointer)
     {
-        return false;
+        // @TODO out-of-memory handling needed...
+        return;
+    }
+    SystemFlags[0][0] = FLAG_TERRA|FLAG_KNOWN;
+
+    SystemHeader[0] = (r_SystemHeader) {(r_PlanetHeader*) MemPointer, 0, DefaultShip, SystemHeader[0].Planets, 0, FLAG_TERRA};
+    SystemHeader[0].FirstShip.Owner = FLAG_TERRA;
+
+    // get memory for Projects on home planet
+    MemPointer = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
+    if (NULL == MemPointer)
+    {
+        // @TODO out-of-memory handling needed...
+        return;
     }
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[0]);
@@ -48,7 +96,7 @@ bool INITSTARS()
     *PlanetHeader = (r_PlanetHeader) {CLASS_HALFEARTH,7,FLAG_UNKNOWN,0,"",7,7,0,283,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[2]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,   10,FLAG_TERRA,FLAG_TERRA,"",10,10,4000,760,170,165,160,0,0,0,DefaultShip,(ByteArr42*) PMemA[0][0]};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,   10,FLAG_TERRA,FLAG_TERRA,"",10,10,4000,760,170,165,160,0,0,0,DefaultShip,(ByteArr42*) MemPointer};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[3]);
     *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   5,FLAG_UNKNOWN,0,"",13,13,0,61,0,0,0,0,0,0,DefaultShip,NULL};
@@ -72,46 +120,13 @@ bool INITSTARS()
     {
         strcpy(SystemHeader[0].PlanetMemA[i].PName, PNames[1].data[i]);
     }
-    SystemHeader[0].SysOwner = FLAG_TERRA;
 
-    HomePlanetProd = 0;
     if (1 < HomePlanets)
     {
-        l = HomePlanets;
-        for (j = 0; j < SystemHeader[0].Planets; ++j)
-        {
-            PlanetHeader = &(SystemHeader[0].PlanetMemA[j]);
-            if (  (PlanetHeader->Class==CLASS_DESERT) || (PlanetHeader->Class==CLASS_HALFEARTH)
-                ||(PlanetHeader->Class==CLASS_EARTH)  || (PlanetHeader->Class==CLASS_WATER)
-                ||(PlanetHeader->Class==CLASS_STONES) || (PlanetHeader->Class==CLASS_ICE))
-            {
-                if ((l>0) && ((l>1) || (j>1)))
-                {
-                    PlanetHeader->PFlags = FLAG_TERRA;
-                    PlanetHeader->Ethno  = PlanetHeader->PFlags;
-                    PlanetHeader->Water  = PlanetHeader->Water / PlanetHeader->Size;
-                    PlanetHeader->Size   = (rand()%15)+5;
-                    PlanetHeader->Water  = PlanetHeader->Water*PlanetHeader->Size;
-                    PlanetHeader->Population    = PlanetHeader->Size*400;
-                    PlanetHeader->Biosphaere    = 170;
-                    PlanetHeader->Infrastruktur = 165;
-                    PlanetHeader->Industrie     = 160;
-                    PlanetHeader->ProjectPtr    = (ByteArr42*) PMemA[0][l-1];
-                    --l;
-                    HomePlanetProd += PlanetHeader->Size;
-                }
-            }
-        }
-        Save.ImperatorState[0] -= HomePlanetProd*3;
-        if (it_round(HomePlanetProd/15.0)>1)
-        {
-            for (i = 1; i < 43; ++i)
-            {
-                Save.TechCosts[0].data[i] = it_round((double) Save.TechCosts[0].data[i]*(HomePlanetProd/15.0));
-            }
-        }
+        INIT_HOMEPLANETS(0, 0, 2);
     }
 
+    // rotate the planets inside this system a few cycles (200x)
     for (i = 0; i < 200; ++i)
     {
         for (j = 0; j < SystemHeader[0].Planets; ++j)
@@ -125,11 +140,29 @@ bool INITSTARS()
             PlanetHeader->PosY = d*sin_rot + PlanetHeader->PosY*cos_rot;
         }
     }
+
+    // place the system somewhere
     SystemX[0] = 10+(rand()%250)+(rand()%208);
     SystemY[0] = 10+(rand()%250)+(rand()%240);
+}
 
+bool INITSTARS()
+{
+    bool            system_too_close;
+    APTR            ProjectMem;
+    int             i,j,k;
+    r_PlanetHeader* PlanetHeader;
+
+    time_t  t;
+    srand((unsigned) time(&t));
+
+    INIT_SOLARSYSTEM();
+
+    // -----
     for (i = 1; i < MAXSYSTEMS; ++i)
     {
+        // every star-system gets an "empty" Ship
+        SystemHeader[i] = (r_SystemHeader) {NULL,0,DefaultShip,0,0,0};
         do
         {
             SystemX[i] = 10+(rand()%250)+(rand()%208);
@@ -147,33 +180,39 @@ bool INITSTARS()
             }
         }
         while (system_too_close);
-        SystemHeader[i].Planets = 0;
-        SystemHeader[i].PlanetMemA = NULL;
-        memcpy(&SystemHeader[i].FirstShip, &DefaultShip, sizeof(r_ShipHeader));
         for (j = 0; j < (MAXCIVS-2); ++j)
         {
             SystemFlags[j][i] = FLAG_UNKNOWN;
         }
     }
+
     for(k = 2; k < (MAXCIVS-1); ++k)
     {
+        // pick a random star-system
         do
         {
             i = (rand()%(MAXSYSTEMS-1))+1;
         }
-        while (SystemHeader[i].Planets != 0);
-        SystemFlags[0][i] = GETCIVFLAG(k);
+        while (0 != SystemHeader[i].Planets);
+        SystemFlags[  0][i] = GETCIVFLAG(k);
         SystemFlags[k-1][i] = FLAG_KNOWN;
         CREATENEWSYSTEM(i, k);
 
+        SystemHeader[i].FirstShip.Owner = GETCIVFLAG(k);
         for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
-            SystemHeader[i].FirstShip.Owner = GETCIVFLAG(k);
             PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-            if (j == 2)
+            if (2 == j)
             {
+                ProjectMem = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
+                if (NULL == ProjectMem)
+                {
+                    // @TODO cleanup and free some memory..
+                    // @TODO out-of-memory handling needed...
+                    return false;
+                }
                 *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,1,GETCIVFLAG(k),GETCIVFLAG(k),"",
-                    13,0,4000,73,170,165,160,0,0,0, DefaultShip, (ByteArr42*) PMemA[k-1][0]};
+                    13,0,4000,73,170,165,160,0,0,0, DefaultShip, (ByteArr42*) ProjectMem};
             }
             strcpy(PlanetHeader->PName, PNames[k].data[j]);
             PlanetHeader->Water = PlanetHeader->Water / PlanetHeader->Size;
@@ -185,43 +224,11 @@ bool INITSTARS()
 
         if (1 < HomePlanets)
         {
-            HomePlanetProd = 0;
-            l = HomePlanets;
-            for(j = 0; j <= SystemHeader[i].Planets; ++j)
-            {
-                PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                if (   (CLASS_DESERT==PlanetHeader->Class) || (CLASS_HALFEARTH==PlanetHeader->Class)
-                    || (CLASS_EARTH ==PlanetHeader->Class) || (CLASS_WATER    ==PlanetHeader->Class)
-                    || (CLASS_STONES==PlanetHeader->Class) || (CLASS_ICE      ==PlanetHeader->Class))
-                {
-                    if ((0 < l) && ((1 < l) || (1 < j)))
-                    {
-                        PlanetHeader->PFlags = GETCIVFLAG(k);
-                        PlanetHeader->Ethno  = PlanetHeader->PFlags;
-                        PlanetHeader->Water  = PlanetHeader->Water / PlanetHeader->Size;
-                        PlanetHeader->Size   = (rand()%15)+5;
-                        PlanetHeader->Water  = PlanetHeader->Water * PlanetHeader->Size;
-                        PlanetHeader->Population    = PlanetHeader->Size*400;
-                        PlanetHeader->Biosphaere    = 170;
-                        PlanetHeader->Infrastruktur = 165;
-                        PlanetHeader->Industrie     = 160;
-                        PlanetHeader->ProjectPtr    = (ByteArr42*) PMemA[k-1][l-1];
-                        --l;
-                        HomePlanetProd += PlanetHeader->Size;
-                    }
-                }
-            }
-            Save.ImperatorState[k-1] -= (HomePlanetProd*3);
-            if (15 < HomePlanetProd)
-            {
-                for(i = 1; i < 43; ++i)
-                {
-                    Save.TechCosts[k-1].data[i] = it_round(Save.TechCosts[k-1].data[i]*(HomePlanetProd/15.0));
-                }
-            }
+            INIT_HOMEPLANETS(k, i, 2);
         }
     }
-    // raise project costs for all human/civ players... 
+
+    // raise project costs for all human/civ players... by 3%
     if (1 < HomePlanets)
     {
         for(i = 0; i < (MAXCIVS-2); ++i)
@@ -236,6 +243,7 @@ bool INITSTARS()
         }
     }
 
+    // create wormholes...
     for (j = 0; j < MAXHOLES; ++j)
     {
         /* no civilization shall know about the wormholes */
