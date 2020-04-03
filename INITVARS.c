@@ -34,6 +34,27 @@ const char* const ProjectShips[] =
         "Warbird",   "Stargate", "Voyager3",    "Pulsar",
         "Starburner" };
 
+/*ShipData:    (MaxLoad,MaxShield,MaxMove,WeaponPower) */
+const r_ShipData shipDataDef[] =
+    {   { 3,  7, 1, 1},   /* Wostok,       7*/
+        { 4,  5, 1, 1},   /* Mir,         11*/
+        { 5, 16, 2, 5},   /* Spaceshuttle,15*/
+        { 6, 22, 3, 4},   /* Starwing,    16*/
+        { 9, 36, 6, 5},   /* Galaxy,      20*/
+        {10, 49, 6, 6},   /* Catamaran,   24*/
+        {11, 57, 8, 7},   /* Quasar,      21*/
+        { 9, 64, 7, 9},   /* Destroyer    28*/
+        {10, 79,12,10},   /* Voyager 1,   25*/
+        {15, 93,10,11},   /* Delta-Wing,  30*/
+        { 9,107,16,12},   /* Tristars,    33*/
+        {19,121,14,14},   /* Voyager 2,   32*/
+        {22,129,21,15},   /* Warbird,     35*/
+        { 4, 60,20,12},   /* Stargate,    31*/
+        {25,136,19,16},   /* Voyager 3,   38*/
+        {28,149,27,18},   /* Pulsar,      37*/
+        {33,160,24,20}    /* Starburner,  36*/
+    };
+
 const LongArr42 techcosts =
     {{  0,    2010, 2510, 3020, 13020,3030, 4530,  4040, 5040, 6550,
         7050, 7060, 9560, 11070,11070,12580,13080,15090, 15100,16100,
@@ -96,24 +117,22 @@ void INITVARS()
     Save.WorldFlag  = 0;
     Save.CivilWar   = 0;
 
-    for (i = 1;  i<26; ++i ) { strcpy(Save.SystemName.data[i-1], PText[i] ); }
+    for (i = 0;  i<25; ++i ) { strcpy(Save.SystemName.data[i], PText[i+1] ); }
 
     memcpy(&Save.TechCosts[0],    &techcosts, sizeof(LongArr42));
     memcpy(&Save.ProjectCosts[0], &projcosts, sizeof(LongArr42));
 
-    for (i = 1;  i<43; ++i ) { strncpy(TechnologyL.data[i], PText[29+i], 30); }
+    for (i = 1;  i<43; ++i ) { strncpy(TechnologyL.data[i], PText[i+29], 30); }
 
     for (i = 1;  i<8;  ++i ) { strncpy(Project.data[i], PText[i+74], 30); }
     for (i = 8;  i<25; ++i ) { strcpy (Project.data[i], ProjectShips[i-8]); }
     for (i = 25; i<43; ++i ) { strncpy(Project.data[i], PText[i+60], 30); }
 
-    for (i = 1; i<= MAXCIVS; ++i)   // TODO ... arrays should also be shifted..
-    {
-        Warnung[i] = 0;
-        LastDisplay[i] = 0;
-    }
     for (i = 0; i < MAXCIVS; ++i)        // TODO ... added due to shift of Save-array
     {
+        Warnung[i+1] = 0; // TODO ... arrays should also be shifted..
+        LastDisplay[i+1] = 0; // TODO ... arrays should also be shifted..
+
         AllCreative[i] = 1;
         Verschrottung[i] = 0;
         Militaerausgaben[i] = 0;
@@ -153,25 +172,7 @@ void INITVARS()
         SystemHeader[i].PlanetMemA = NULL;
     }
 
-    /*ShipData:    MaxLoad,MaxShield,MaxMove,WeaponPower*/
-    ShipData(8)  = (r_ShipData) { 3,  7, 1, 1};   /* Wostok,       7*/
-    ShipData(9)  = (r_ShipData) { 4,  5, 1, 1};   /* Mir,         11*/
-    ShipData(10) = (r_ShipData) { 5, 16, 2, 5};   /* Spaceshuttle,15*/
-    ShipData(11) = (r_ShipData) { 6, 22, 3, 4};   /* Starwing,    16*/
-    ShipData(12) = (r_ShipData) { 9, 36, 6, 5};   /* Galaxy,      20*/
-    ShipData(13) = (r_ShipData) {10, 49, 6, 6};   /* Catamaran,   24*/
-    ShipData(14) = (r_ShipData) {11, 57, 8, 7};   /* Quasar,      21*/
-    ShipData(15) = (r_ShipData) { 9, 64, 7, 9};   /* Destroyer    28*/
-    ShipData(16) = (r_ShipData) {10, 79,12,10};   /* Voyager 1,   25*/
-    ShipData(17) = (r_ShipData) {15, 93,10,11};   /* Delta-Wing,  30*/
-    ShipData(18) = (r_ShipData) { 9,107,16,12};   /* Tristars,    33*/
-    ShipData(19) = (r_ShipData) {19,121,14,14};   /* Voyager 2,   32*/
-    ShipData(20) = (r_ShipData) {22,129,21,15};   /* Warbird,     35*/
-    ShipData(21) = (r_ShipData) { 4, 60,20,12};   /* Stargate,    31*/
-    ShipData(22) = (r_ShipData) {25,136,19,16};   /* Voyager 3,   38*/
-    ShipData(23) = (r_ShipData) {28,149,27,18};   /* Pulsar,      37*/
-    ShipData(24) = (r_ShipData) {33,160,24,20};   /* Starburner,  36*/
-    /* Maximal:                  --,---,27,-                    */
+    memcpy(ShipData, shipDataDef, sizeof(shipDataDef));
 
     for (i = 0; i<(MAXCIVS-1); ++i)
     {
@@ -183,6 +184,8 @@ void INITVARS()
             strcpy(PNames[i].data[j], PName_def[i][j]);
         }
     }
+
+    // fill in the names of solar-system from language-file...
     for (i = 0; i<9; ++i) { strcpy( PNames[1].data[i], PText[105+i]); }
 
     OffsetX = 0;
