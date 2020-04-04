@@ -186,24 +186,26 @@ bool INITSTARS()
         }
     }
 
-    for(k = 2; k < (MAXCIVS-1); ++k)
+    for(k = 1; k < (MAXCIVS-2); ++k)
     {
-        // pick a random star-system
+        // pick a random, empty star-system as homesystem for this civ
         do
         {
             i = (rand()%(MAXSYSTEMS-1))+1;
         }
         while (0 != SystemHeader[i].Planets);
-        SystemFlags[  0][i] = GETCIVFLAG(k);
-        SystemFlags[k-1][i] = FLAG_KNOWN;
-        CREATENEWSYSTEM(i, k);
+        // mark this system for _all other_ players as "taken" by Civ
+        for (j = 0; j < (MAXCIVS-2); ++j) { SystemFlags[j][i] = GETCIVFLAG(k+1); }
+        CREATENEWSYSTEM(i, k+1);
 
-        SystemHeader[i].FirstShip.Owner = GETCIVFLAG(k);
+        SystemHeader[i].FirstShip.Owner = GETCIVFLAG(k+1);
+        SystemHeader[i].SysOwner        = GETCIVFLAG(k+1);
         for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
             if (2 == j)
             {
+                // always turn the 2nd Planet in the system into the 1st HomePlanet of this Civ
                 ProjectMem = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
                 if (NULL == ProjectMem)
                 {
@@ -211,16 +213,15 @@ bool INITSTARS()
                     // @TODO out-of-memory handling needed...
                     return false;
                 }
-                *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,1,GETCIVFLAG(k),GETCIVFLAG(k),"",
-                    13,0,4000,73,170,165,160,0,0,0, DefaultShip, (ByteArr42*) ProjectMem};
+                *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH, 1,GETCIVFLAG(k+1),GETCIVFLAG(k+1),"", 13, 0,
+                                                  4000, 73,170,165,160,0,0,0,DefaultShip,(ByteArr42*) ProjectMem};
             }
             strcpy(PlanetHeader->PName, PNames[k].data[j]);
             PlanetHeader->Water = PlanetHeader->Water / PlanetHeader->Size;
             PlanetHeader->Size  = (rand()%15)+5;
             PlanetHeader->Water = PlanetHeader->Water * PlanetHeader->Size;
         }
-        SystemFlags[k-1][i] += FLAG_KNOWN;
-        SystemHeader[i].SysOwner = GETCIVFLAG(k);
+        SystemFlags[k][i] |= FLAG_KNOWN;
 
         if (1 < HomePlanets)
         {
