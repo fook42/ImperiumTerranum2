@@ -118,7 +118,7 @@ void OPTION_REDUCECOSTS(void)
 {
     // reduce Project/Tech Costs according to selected Level
     uint8   i, j;
-    sint32  Factor;
+    sint16  Factor;
     const sint16 LevelFactors[] = { 0xE2, 0xA9, 0x71, 0x38, 0x00, 0x44, 0x88, 0xCC, 0x110 ,0x154 };
     // Levels 0..5 = 0.220, 0.165, 0.110, 0.055, 0
     // Levels 6..10= 0.066, 0.133, 0.200, 0.266, 0.332  ... >> 10!
@@ -159,8 +159,8 @@ void OPTION_REDUCECOSTS(void)
 void OPTION_MULTIPLAYER(void)
 {
     uint8   i, j, btx;
-    uint16  y;
-    char    s[40];
+    uint16  offset;
+    char    s[60];
     char*   _s;
     int     stringlen;
     bool    b;
@@ -187,21 +187,21 @@ void OPTION_MULTIPLAYER(void)
             btx = 1;
             Save.CivPlayer[0] = 0;
         }
-        y = 100;
+        offset = 100;
         for (j = 0; j < btx; ++j)
         {
             if (0 == Save.CivPlayer[j])
             {
-                MAKEWINBORDER(MyRPort_PTR[1],100, y, 540, y+30,14,40,0);
+                MAKEWINBORDER(MyRPort_PTR[1],100, offset, 540, offset+30,14,40,0);
                 _s = GETCIVNAME(j+1);
             } else {
-                RECT_RP1(0, 100, y, 540, y+30);
+                RECT_RP1(0, 100, offset, 540, offset+30);
                 strcpy(s, "Player 0");
                 s[strlen(s)-1] = Save.CivPlayer[j]+'0';
                 _s = s;
             }
-            WRITE(320, y+8,40,WRITE_Center,MyRPort_PTR[1],3, _s);
-            y += 50;
+            WRITE(320, offset+8,40,WRITE_Center,MyRPort_PTR[1],3, _s);
+            offset += 50;
         }
 
         b = false;
@@ -211,17 +211,17 @@ void OPTION_MULTIPLAYER(void)
             Delay(RDELAY);
             if (LMB_PRESSED && (MouseX(1)>=100) && (MouseX(1)<=540))
             {
-                y = 100;
+                offset = 100;
                 for (j = 0; j < btx; ++j)
                 {
-                    if ((MouseY(1)>=y) && (MouseY(1)<=(y+30)) && (0 == Save.CivPlayer[j]))
+                    if ((MouseY(1)>=offset) && (MouseY(1)<=(offset+30)) && (0 == Save.CivPlayer[j]))
                     {
                         b = true;
                         Save.CivPlayer[j] = i+1;
-                        CLICKRECT(MyRPort_PTR[1], 100, y, 540, y+30, 40);
+                        CLICKRECT(MyRPort_PTR[1], 100, offset, 540, offset+30, 40);
                         PLAYERJINGLE(j+1);
                     }
-                    y += 50;
+                    offset += 50;
                 }
 
                 while (LMB_PRESSED) {};
@@ -242,39 +242,43 @@ void OPTION_MULTIPLAYER(void)
     SWITCHDISPLAY();
     INITMENU();
     WRITE(320,100,40,WRITE_Center,MyRPort_PTR[1],3,PText[521]);
-    y = 123;
+    offset = 123;
     for (i = 0; i < 5; ++i)
     {
-        MAKEWINBORDER(MyRPort_PTR[1], y, 200, y+40, 240,14,40,0);
+        MAKEWINBORDER(MyRPort_PTR[1], offset, 200, offset+40, 240,14,40,0);
         s[0] = i+'1';
         s[1] = 0;
-        WRITE(y+20,213,40,WRITE_Center,MyRPort_PTR[1],3,s);
-        y += 88;
+        WRITE(offset+20,213,40,WRITE_Center,MyRPort_PTR[1],3,s);
+        offset += 88;
     }
 
     ScreenToFront(MyScreen[1]);
-    HomePlanets = 0;
+    HomePlanets = 99;
     do
     {
         Delay(RDELAY);
         if (LMB_PRESSED && (MouseY(1)>=200) && (MouseY(1)<=240)) 
         {
-            HomePlanets = (uint8) ((MouseX(1)-35) / 88);
+            offset = 123;
+            for (i = 0; i < 5; ++i)
+            {
+                if ((MouseX(1)>offset) && (MouseX(1)<(offset+40)))
+                {
+                    HomePlanets = i;
+                    break;
+                }
+                offset += 88;
+            }
         }
     }
-    while ((1 > HomePlanets) || (5 < HomePlanets));
+    while (5 < HomePlanets);
 
-    CLICKRECT(MyRPort_PTR[1],HomePlanets*88+35,200,HomePlanets*88+75,240,40);
+    ++HomePlanets;
 
-//    Delay(20);
-//    SWITCHDISPLAY();
+    CLICKRECT(MyRPort_PTR[1],offset,200,offset+40,240,40);
 
     OPTION_REDUCECOSTS();
 
-/*
-    while (RMB_NOTPRESSED) {};
-    while (RMB_PRESSED) {};
-*/
     ScreenToFront(XScreen);
 }
 
@@ -412,7 +416,7 @@ void OPTIONMENU(uint8 Mode)
 
     ScreenToFront(XScreen);
 
-    if ((Player>1) || (Save.CivPlayer[0] == 0))
+    if ((1 < Player) || (0 == Save.CivPlayer[0]))
     {
         MultiPlayer = true;
     } else {
