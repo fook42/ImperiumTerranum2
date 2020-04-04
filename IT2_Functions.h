@@ -164,6 +164,7 @@ bool OPENMAINSCREENS();
 BPTR OPENSMOOTH(char* FName, uint32 FMode);
 // >>> OPTIONMENU
 void CHECKGADS(uint8 GadID);
+void OPTION_REDUCECOSTS(void);
 void OPTION_MULTIPLAYER(void);
 void OPTIONMENU(uint8 Mode);
 // <<<

@@ -157,6 +157,15 @@ void MAIN_FNC()
         STARTROTATEPLANETS();
     }
 
+    // if in Multiplayer mode,
+    // the first ships (Wostok, Mir, Spaceshuttle) can move further (3 instead of 1/2)
+    if (MultiPlayer)
+    {
+        ShipData[0].MaxMove = 3;
+        ShipData[1].MaxMove = 3;
+        ShipData[2].MaxMove = 3;
+    }
+
     /*********************************************
      * Main loop
      *
@@ -167,12 +176,6 @@ void MAIN_FNC()
         CLOCK();
         ScreenToFront(MyScreen[0]);
         RawCode = GETRAWCODE();
-        if (MultiPlayer)
-        {
-            ShipData(8).MaxMove = 3;
-            ShipData(9).MaxMove = 3;
-            ShipData(10).MaxMove = 3;
-        }
 
         if ((Save.PlayMySelf) || (Save.CivPlayer[ActPlayer-1] == 0) || (!Informed)
                 || ((!MultiPlayer) && (!Informed) && (Year%10 != 0)))

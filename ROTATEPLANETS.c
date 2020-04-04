@@ -1227,12 +1227,12 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         Save.SService[i] = 0;
                     }
-                    if ((Save.CivPlayer[i] == 0) || (Save.PlayMySelf))
+                    if ((0 == Save.CivPlayer[i]) || (Save.PlayMySelf))
                     {
                         if (((Save.Staatstopf[i]<(Militaerausgaben[i]*7)) || (Save.Staatstopf[i]<3000))
                             && ((Save.GSteuer[i]+Save.JSteuer[i])<90))
                         {
-                            Save.GSteuer[i]++;
+                            ++Save.GSteuer[i];
                             if ((Save.Staatstopf[i]<0) && ((Save.GSteuer[i]+Save.JSteuer[i]+3) <= 100))
                             {
                                 Save.GSteuer[i] += 3;
@@ -1254,7 +1254,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             Save.ImperatorState[i] += 2;
                         }
                     }
-                    if ((Year % 10) == 0) { DOINFLATION(i); }
+                    if (0 == (Year % 10)) { DOINFLATION(i); }
                 }
                 if ((Save.CivPlayer[i] == 0) && (Save.CivPlayer[ActPlayer-1] != 0)
                     && (!Save.PlayMySelf))

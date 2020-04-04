@@ -69,6 +69,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
 
     if (false == life_possible)
     {
+        // if no life was possible on any planet in this system.. make one inhabitable
         MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[(rand()%2)+2]);
 
         l = (rand()%50)+5;
@@ -84,6 +85,8 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
         MyPlanetHeader->XProjectPayed = 0;
         memcpy(&MyPlanetHeader->FirstShip, &DefaultShip, sizeof(r_ShipHeader));
     }
+
+    // now rotate the planets in the system a bit.
     l = SystemHeader[ActSys].Planets*20;
     for (i = 0; i < l; ++i)
     {
