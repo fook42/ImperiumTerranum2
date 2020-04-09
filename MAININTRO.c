@@ -279,13 +279,14 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     VectorObj_t* actObject = NULL;
     struct RastPort* RPort_PTR;
 
+    // fade in...
     WaitTOF();
     Factor = 0;
     for (Ctr = 0; Ctr < 50; ++Ctr)
     {
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        Factor += 0x00000029; // 0010 1001 = 1/64 + 1/256 + 1/2048 =~~ 0,0200
+        Factor += 0x00000029; // 0010 1001 = 1/64 + 1/256 + 1/2048 =~~ 0,0200   >>11 !
 
         for (i = 1; i < 32; ++i)
         {
@@ -318,6 +319,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
                                       Colors[i].b<<24);
     }
     Delay(50);
+    // fade out the text below image (col 31) ...
     for (Ctr = 0; Ctr < 50; ++Ctr)
     {
         AScr = 1-AScr;
@@ -331,6 +333,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     for (i = 0; i < Objects; ++i)
     {
         actObject = VObj[i];
+        // calculate "center" of each object .. Sum(X)/num of points ... Sum(Y)/num of points
         for (j = 0; j < actObject->Size1; ++j)
         {
             actObject->PosX += actObject->X1[j];
@@ -338,6 +341,8 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
         }
         actObject->PosX =     it_round(actObject->PosX / (double) actObject->Size1);
         actObject->PosY = 235+it_round(actObject->PosY / (double) actObject->Size1);
+
+        // PosX, PosY = center of object
         for (j = 0; j < actObject->Size1; ++j)
         {
             actObject->X1[j] = (actObject->PosX+1)-actObject->X1[j];
@@ -346,16 +351,13 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
             actObject->Y1[j] = (actObject->Y1[j])<<10;
             actObject->Z1[j] = (actObject->Z1[j])<<10;
         }
-        if (0 < actObject->Size2)
+        for (j = 0; j < actObject->Size2; ++j)
         {
-            for (j = 0; j < actObject->Size2; ++j)
-            {
-                actObject->X2[j] = (actObject->PosX+1)-actObject->X2[j];
-                actObject->Y2[j] = (actObject->PosY+1)-actObject->Y2[j]-235;
-                actObject->X2[j] = (actObject->X2[j])<<10;
-                actObject->Y2[j] = (actObject->Y2[j])<<10;
-                actObject->Z2[j] = (actObject->Z2[j])<<10;
-            }
+            actObject->X2[j] = (actObject->PosX+1)-actObject->X2[j];
+            actObject->Y2[j] = (actObject->PosY+1)-actObject->Y2[j]-235;
+            actObject->X2[j] = (actObject->X2[j])<<10;
+            actObject->Y2[j] = (actObject->Y2[j])<<10;
+            actObject->Z2[j] = (actObject->Z2[j])<<10;
         }
     }
 
@@ -364,25 +366,27 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
 
     custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
     Factor = 0x00000052; // 0101 0010 = 1/512 + 1/2048 + 1/16384 =~ 0,0025
-    for (i = 1; (i < 30) && LMB_NOTPRESSED; ++i)
+    for (i = 0; (i < 29) && LMB_NOTPRESSED; ++i)
     {
         RPort_PTR = MyRPort_PTR[AScr];
         Factor += 0x00000083; // 1000 0011 = 1/256 + 1/16384 + 1/32768 =~ 0,004
-        if (1 < i)
+        if (0 == i)
         {
-            SetAPen(RPort_PTR,0);
-            RectFill(RPort_PTR,0,150,639,330);    /*75..434*/
-        } else {
+            // reduce all colors ... multiply with 0,625 ...
             for (j = 2; j < 31; ++j)
             {
                 SetRGB32(MyVPort_PTR[AScr], j, ((Colors[j].r<<2)+Colors[j].r)<<21,
                                                ((Colors[j].g<<2)+Colors[j].g)<<21,
                                                ((Colors[j].b<<2)+Colors[j].b)<<21);
             }
+        } else {
+            SetAPen(RPort_PTR,0);
+            RectFill(RPort_PTR,0,150,639,330);    /*75..434*/
         }
-        if (i>16) { VObj[rand()%13]->Size1 = 0; }
 
-        SetAPen(RPort_PTR,1);
+        if (15 < i) { VObj[rand()%13]->Size1 = 0; }
+
+        SetAPen(RPort_PTR, 1);
         for (j = 0; j < Objects; ++j)
         {
             actObject = VObj[j];
@@ -433,7 +437,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
         }
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
-        if (i == 1)
+        if (0 == i)
         {
             SPLengthC = 1;
             SPLengthD = 1;
