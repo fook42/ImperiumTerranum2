@@ -496,7 +496,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 (void) dez2out(Save.Staatstopf[ActPlayer-1], 0, s);
                 WRITE(136, 74,4,WRITE_Center,RPort_PTR,1,s);
                 MAKEWINBORDER(RPort_PTR, 10,100,131,125,2,32,1);
-                WRITE( 70,106,2,WRITE_Center,RPort_PTR,3,PText[159]);
+                WRITE( 70,106,2,WRITE_Center,RPort_PTR,3,_PT_Kaufen);
                 MAKEWINBORDER(RPort_PTR,141,100,263,125,2,32,1);
                 WRITE(202,106,2,WRITE_Center,RPort_PTR,3,"Abbruch");
                 b = false;

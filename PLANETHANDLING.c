@@ -128,8 +128,9 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
     bool    _SMALLREQUEST;
 
     MAKEBORDER(MyScreen[0],35,110,475,220,12,6,0);
-    strcpy(s2, "Player ");
+    strcpy(s2, _PTx_Player);
     slen=strlen(s2);
+    s2[slen++]=' ';
     s2[slen++]='0'+Save.CivPlayer[CivVar-1];
     s2[slen++]=',';
     s2[slen++]=' ';

@@ -87,7 +87,7 @@ void CHECKGADS(uint8 GadID)
             WRITE(240,275,40,1,MyRPort_PTR[1],3,PText[505]);
         } else {
             DRAWGAD(240,2);
-            WRITE(240,275,40,1,MyRPort_PTR[1],3,"Player");
+            WRITE(240,275,40,1,MyRPort_PTR[1],3,_PTx_Player);
         }
     }
     if ((0 == GadID) || (4 == GadID))
@@ -98,7 +98,7 @@ void CHECKGADS(uint8 GadID)
             WRITE(240,355,40,1,MyRPort_PTR[1],3,PText[505]);
         } else {
             DRAWGAD(320,2);
-            WRITE(240,355,40,1,MyRPort_PTR[1],3,"Player");
+            WRITE(240,355,40,1,MyRPort_PTR[1],3,_PTx_Player);
         }
     }
     if ((0 == GadID) || (5 == GadID))
@@ -172,14 +172,16 @@ void OPTION_MULTIPLAYER(void)
     strcpy(Save.SystemName.data[0], s);
 
     // pick the civilization names for each player...
+    strcpy(s, _PTx_Player);
+    stringlen = strlen(s);
+    s[stringlen]   = ' ';
+    strcpy(s+stringlen+3, PText[520]);
     for (i = 0; i < Player; ++i)
     {
         SWITCHDISPLAY();
         INITMENU();
-        strcpy(s, "Player 1 ");
-        stringlen = strlen(s);
-        s[stringlen-2] = i + '1';
-        strcpy(s+stringlen, PText[520]);
+        s[stringlen+1] = i + '1';
+        s[stringlen+2] = ' ';
         WRITE(320,50,40,WRITE_Center,MyRPort_PTR[1],3,s);
         btx = 7;
         if (0 == i)
@@ -187,6 +189,7 @@ void OPTION_MULTIPLAYER(void)
             btx = 1;
             Save.CivPlayer[0] = 0;
         }
+        s[stringlen+2] = 0;
         offset = 100;
         for (j = 0; j < btx; ++j)
         {
@@ -196,8 +199,7 @@ void OPTION_MULTIPLAYER(void)
                 _s = GETCIVNAME(j+1);
             } else {
                 RECT_RP1(0, 100, offset, 540, offset+30);
-                strcpy(s, "Player 0");
-                s[strlen(s)-1] = Save.CivPlayer[j]+'0';
+                s[stringlen+1] = Save.CivPlayer[j]+'0';
                 _s = s;
             }
             WRITE(320, offset+8,40,WRITE_Center,MyRPort_PTR[1],3, _s);
@@ -287,7 +289,8 @@ void OPTIONMENU(uint8 Mode)
 {
     uint8   i;
     uint16  y;
-    sint32  bitmap_srcCord[5][2] = { {384,448},{384,448},{384,512},{384,448},{576,512} };
+    const sint32 bitmap_srcCord[5][2] = { {384,448},{384,448},{384,512},{384,448},{576,512} };
+    const char*  button_txt[5] = {_PTx_Player, PText[514], PText[515], PText[516], PText[517]};
 
     SWITCHDISPLAY();
 	INITMENU();
@@ -310,14 +313,9 @@ void OPTIONMENU(uint8 Mode)
         MAKEWINBORDER(MyRPort_PTR[1], 236, y+31, 390, y+54, 14, 40, 1);
         BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][0], 128, MyRPort_PTR[1], 60, y, 64, 64, 192);
         BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][1], 128, MyRPort_PTR[1],150, y, 64, 64, 192);
+        WRITE(240,y+10,40,0,MyRPort_PTR[1],3,button_txt[i]);
         y += 80;
     }
-
-    WRITE(240, 90,40,0,MyRPort_PTR[1],3,"Player");
-    WRITE(240,170,40,0,MyRPort_PTR[1],3,PText[514]);
-    WRITE(240,250,40,0,MyRPort_PTR[1],3,PText[515]);
-    WRITE(240,330,40,0,MyRPort_PTR[1],3,PText[516]);
-    WRITE(240,410,40,0,MyRPort_PTR[1],3,PText[517]);
 
     WRITE(460,100,40,WRITE_Center,MyRPort_PTR[1],3,"Level");
     if (1 == Mode)
@@ -328,7 +326,7 @@ void OPTIONMENU(uint8 Mode)
     MAKEWINBORDER(MyRPort_PTR[1],445,139,475,312,14,40,1);
     MAKEWINBORDER(MyRPort_PTR[1],410,339,510,362,14,40,1);
 
-    WRITE(555,100,40,WRITE_Center,MyRPort_PTR[1],3,"Player");
+    WRITE(555,100,40,WRITE_Center,MyRPort_PTR[1],3,_PTx_Player);
     if (1 == Mode)
     {
         WRITE(550,120,40,0,MyRPort_PTR[1],1,"I");

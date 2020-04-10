@@ -15,6 +15,7 @@ void SYSTEMINFO(uint8 ActSys)
     bool    FleetUsed;
     struct Window* SYS_Window;
     struct RastPort* RPort_PTR;
+    char*  button_txt[] = {_PT_Sterne, _PT_Sprengen, _PT_Position, _PT_Bewaessern, _PT_Warten};
 
     b = false;
     if (NULL == ObjPtr)
@@ -43,33 +44,29 @@ void SYSTEMINFO(uint8 ActSys)
     } else {
         FleetUsed = false;
     }
+
+    if (TARGET_POSITION == UseShipPtr->Target)
+    {
+        button_txt[2] = _PT_Abloesen;
+    }
+    if (SHIPTYPE_STARGATE == MyShipPtr->SType)
+    {
+        button_txt[3] = _PT_Stargate;
+    }
+
     y = 3;
     for(i = 0; i < 5; ++i)
     {
         DrawImage(RPort_PTR,&GadImg1,4,y);
+        WRITE(62, y+2, 0,WRITE_Center, RPort_PTR, 3, button_txt[i]);
         y += 22;
     }
-    WRITE(62, 5,0,WRITE_Center,RPort_PTR,3,_PT_Sterne);
-    WRITE(62,27,0,WRITE_Center,RPort_PTR,3,_PT_Sprengen);
-    if (TARGET_POSITION == UseShipPtr->Target)
-    {
-        WRITE(62,49,0,WRITE_Center,RPort_PTR,3,_PT_Abloesen);
-    } else {
-        WRITE(62,49,0,WRITE_Center,RPort_PTR,3,_PT_Position);
-    }
-    if (SHIPTYPE_STARGATE != MyShipPtr->SType)
-    {
-        WRITE(62,71,0,WRITE_Center,RPort_PTR,3,_PT_Bewaessern);
-    } else {
-        WRITE(62,71,0,WRITE_Center,RPort_PTR,3,_PT_Stargate);
-    }
-    WRITE(62,93,0,WRITE_Center,RPort_PTR,3,_PT_Warten);
     do
     {
         Delay(RDELAY);
         if (LMB_PRESSED)
         {
-            if ((-1 < SYS_Window->MouseX) && (123 > SYS_Window->MouseX))
+            if ((3 < SYS_Window->MouseX) && (121 > SYS_Window->MouseX))
             {
                 if ((2 < SYS_Window->MouseY) && (24 > SYS_Window->MouseY))
                 {
@@ -100,6 +97,7 @@ void SYSTEMINFO(uint8 ActSys)
                         if (0 == SystemHeader[SysID-1].Planets) { CREATENEWSYSTEM(SysID-1, 1); }
                         MyShipPtr->Target = SysID;
                         MyShipPtr->Source = ActSys;
+                        // @TODO .. replace with sqrt-calculation...
                         l = abs(SystemX[ActSys-1]-SystemX[SysID-1]) + abs(SystemY[ActSys-1]-SystemY[SysID-1]);
                         l = (l / ShipData(MyShipPtr->SType).MaxMove)+1;
                         if (127 < l) { l = 127; }
@@ -165,7 +163,7 @@ void SYSTEMINFO(uint8 ActSys)
                     if (TARGET_POSITION == UseShipPtr->Target)
                     {
                         UseShipPtr->Target = ActSys;
-                        if (UseShipPtr->Moving>0)
+                        if (0 < UseShipPtr->Moving)
                         {
                             MOVESHIP(ActSys,UseShipPtr,false);
                         }

@@ -34,10 +34,11 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
     {
         WRITE(320,150,2,WRITE_Center,RPort_PTR,3,PText[161]);
     } else {
-        strcpy(s, "Player 0");
+        strcpy(s, _PTx_Player);
         PName_len = strlen(s);
-        s[PName_len-1] = Save.CivPlayer[GPN_ActPlayer]+'0';
-        strcpy(s+PName_len, PText[162]);
+        s[PName_len]   = ' ';
+        s[PName_len+1] = Save.CivPlayer[GPN_ActPlayer]+'0';
+        strcpy(s+PName_len+2, PText[162]);
         WRITE(320,150,2,WRITE_Center,RPort_PTR,3,s);
     }
     MAKEWINBORDER(RPort_PTR,100,200,540,230,1,3,1);

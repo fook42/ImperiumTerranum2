@@ -556,8 +556,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s  =0;
     WRITE(22,40,29,0,MyRPort_PTR[AScr],0,s);
 
-    slen=strlen(PText[152]);
-    memcpy(s, PText[152], slen);
+    slen=strlen(_PT_Infrastruktur);
+    memcpy(s, _PT_Infrastruktur, slen);
     s[slen++]=':';
     s[slen++]=' ';
     _s = dez2out((MyPlanetHeader->Infrastruktur >>1), 0, s+slen);
@@ -588,8 +588,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s  =0;
     WRITE(22,70,29,0,MyRPort_PTR[AScr],0,s);
 
-    slen=strlen(PText[151]);
-    memcpy(s, PText[151], slen);
+    slen=strlen(_PT_Biosphaere);
+    memcpy(s, _PT_Biosphaere, slen);
     s[slen++]=':';
     s[slen++]=' ';
     _s = dez2out((MyPlanetHeader->Biosphaere >>1), 0, s+slen);

@@ -23,6 +23,16 @@
 
 #define _PT_beginnenKrieggegen      PText[150]
 
+#define _PT_Biosphaere              PText[151]
+#define _PT_Infrastruktur           PText[152]
+#define _PT_Industriealisierung     PText[153]
+#define _PT_Millionen               PText[154]
+#define _PT_Population              PText[155]
+#define _PT_Kreativitaet            PText[156]
+#define _PT_Produktivitaet          PText[157]
+#define _PT_Aendern                 PText[158]
+#define _PT_Kaufen                  PText[159]
+
 #define _PT_System                  PText[166]
 #define _PT_Planet                  PText[167]
 #define _PT_Klasse                  PText[168]

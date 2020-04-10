@@ -46,7 +46,7 @@ void SYSINFO(uint8 SysID, uint8 ThePlayerFlag)
         strcat(s, ": ");
         _s = dez2out(SysPop, 0, s+strlen(s));
         *_s++=' ';
-        strcpy(_s, PText[154]);
+        strcpy(_s, _PT_Millionen);
         WRITE(256,290,ThePlayerFlag,WRITE_Center,MyRPort_PTR[0],3,s);
 
         strcpy(s, _PT_Planeten);
