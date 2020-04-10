@@ -44,7 +44,7 @@ void CLOSEMYSCREENS();
 void CREATECIVILWAR(uint8 CivVar);
 void CREATEJAHADR(uint8 CJ_ActPlayer);
 bool CREATEMAQUESSHIP(uint8 SysID, uint8 ShipID);
-void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar);
+void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets);
 void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum);
 void CREATEPATHS();
 void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr);

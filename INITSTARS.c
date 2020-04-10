@@ -196,7 +196,13 @@ bool INITSTARS()
         while (0 != SystemHeader[i].Planets);
         // mark this system for _all other_ players as "taken" by Civ
         for (j = 0; j < (MAXCIVS-2); ++j) { SystemFlags[j][i] = GETCIVFLAG(k+1); }
-        CREATENEWSYSTEM(i, k+1);
+        CREATENEWSYSTEM(i, k+1, HomePlanets); // create at least #HomePlanets in this system
+        if (0 == SystemHeader[i].Planets)
+        {
+            // @TODO cleanup
+            // errorhandling - out-of-memory
+            return false;
+        }
 
         SystemHeader[i].FirstShip.Owner = GETCIVFLAG(k+1);
         SystemHeader[i].SysOwner        = GETCIVFLAG(k+1);
@@ -216,7 +222,7 @@ bool INITSTARS()
                 *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH, 1,GETCIVFLAG(k+1),GETCIVFLAG(k+1),"", 13, 0,
                                                   4000, 73,170,165,160,0,0,0,DefaultShip,(ByteArr42*) ProjectMem};
             }
-            strcpy(PlanetHeader->PName, PNames[k].data[j]);
+            strcpy(PlanetHeader->PName, PNames[k+1].data[j]);
             PlanetHeader->Water = PlanetHeader->Water / PlanetHeader->Size;
             PlanetHeader->Size  = (rand()%15)+5;
             PlanetHeader->Water = PlanetHeader->Water * PlanetHeader->Size;

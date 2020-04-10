@@ -1596,7 +1596,7 @@ void ROTATEPLANETS(uint8 ActSys)
         {
             if (SystemHeader[j].Planets == 0)
             {
-                CREATENEWSYSTEM(j,ActPlayer);
+                CREATENEWSYSTEM(j, ActPlayer, 1);
             }
             for(k = 0; k < SystemHeader[j].Planets; k++)
             {

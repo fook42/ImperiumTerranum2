@@ -52,7 +52,7 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
     }
 
     if (SystemHeader[SysID-1].Planets == 0)
-    {   CREATENEWSYSTEM(SysID-1,CivVar); }
+    {   CREATENEWSYSTEM(SysID-1, CivVar, 1); }
 
     if ((SystemHeader[ActSys-1].FirstShip.SType == TARGET_STARGATE)
      && (SystemHeader[ SysID-1].FirstShip.SType == TARGET_STARGATE))

@@ -94,7 +94,7 @@ void SYSTEMINFO(uint8 ActSys)
                     if (RMB_PRESSED) { PLAYSOUND(1,300); }
                     if ((0 < SysID) && (MAXSYSTEMS >= SysID) && (ActSys != SysID))
                     {
-                        if (0 == SystemHeader[SysID-1].Planets) { CREATENEWSYSTEM(SysID-1, 1); }
+                        if (0 == SystemHeader[SysID-1].Planets) { CREATENEWSYSTEM(SysID-1, 1, 1); }
                         MyShipPtr->Target = SysID;
                         MyShipPtr->Source = ActSys;
                         // @TODO .. replace with sqrt-calculation...

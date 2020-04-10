@@ -5,35 +5,33 @@
 
 const char* const Romanum[] = {" I"," II"," III"," IV"," V"," VI"," VII"," VIII"," IX"," X"," XI"};
 
-void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
+void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
 {
     int     i,j,l;
     double  sin_rot,cos_rot,d;
-    bool    life_possible;
+    uint8   life_possible;
     r_PlanetHeader* MyPlanetHeader;
-    time_t  t;
-    srand((unsigned) time(&t));
 
     Save.ImperatorState[CivVar-1] += 50;
     SystemHeader[ActSys].Planets    = (rand()%(MAXPLANETS-3))+4;
+    if (minHomePlanets > SystemHeader[ActSys].Planets) { SystemHeader[ActSys].Planets = minHomePlanets; }
     SystemHeader[ActSys].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[ActSys].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
     if (NULL == SystemHeader[ActSys].PlanetMemA)
     {
         SystemHeader[ActSys].Planets = 0;
         return;
     }
-    life_possible = false;
+    life_possible = 0;
     for (i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
         MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
 
         MyPlanetHeader->Class = rand()%CLASS_MAX_TYPES;
-        if ( (false == life_possible ) &&
-            ((CLASS_DESERT == MyPlanetHeader->Class) || (CLASS_HALFEARTH == MyPlanetHeader->Class)
+        if ( (CLASS_DESERT == MyPlanetHeader->Class) || (CLASS_HALFEARTH == MyPlanetHeader->Class)
           || (CLASS_EARTH  == MyPlanetHeader->Class) || (CLASS_ICE       == MyPlanetHeader->Class)
-          || (CLASS_STONES == MyPlanetHeader->Class) || (CLASS_WATER     == MyPlanetHeader->Class)))
+          || (CLASS_STONES == MyPlanetHeader->Class) || (CLASS_WATER     == MyPlanetHeader->Class))
         {
-            life_possible = true;
+            ++life_possible;
         }
         MyPlanetHeader->Size = (rand()%206)+1;
         switch (MyPlanetHeader->Class)
@@ -51,7 +49,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
         strcat(MyPlanetHeader->PName, Romanum[i]);
 
         MyPlanetHeader->PosX = (float) (i+i+i+4);
-        MyPlanetHeader->PosY = MyPlanetHeader->PosX;
+        MyPlanetHeader->PosY = (rand()%2 == 0) ? MyPlanetHeader->PosX : (-MyPlanetHeader->PosX);
         if (((CLASS_EARTH == MyPlanetHeader->Class) || (CLASS_WATER == MyPlanetHeader->Class)) && (0 == (rand()%10)))
         {
             MyPlanetHeader->Biosphaere = 150+(rand()%50);
@@ -67,27 +65,23 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar)
         MyPlanetHeader->ProjectPtr = NULL;
     }
 
-    if (false == life_possible)
+    // while less than "minHomePlanets" are inhabitable, randomly pick one and convert the planet
+    while (minHomePlanets > life_possible)
     {
-        // if no life was possible on any planet in this system.. make one inhabitable
-        MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[(rand()%2)+2]);
-
-        l = (rand()%50)+5;
-        MyPlanetHeader->Class = CLASS_EARTH;
-        MyPlanetHeader->Size  = (rand()%197)+1;
-        MyPlanetHeader->Ethno = 0;
-        MyPlanetHeader->PosY  = 0.0;
-        MyPlanetHeader->Population = l;
-        MyPlanetHeader->Water = l*73;
-        MyPlanetHeader->Biosphaere    = 200;
-        MyPlanetHeader->Infrastruktur = (rand()%50)+50;
-        MyPlanetHeader->Industrie     = (rand()%50)+50;
-        MyPlanetHeader->XProjectPayed = 0;
-        memcpy(&MyPlanetHeader->FirstShip, &DefaultShip, sizeof(r_ShipHeader));
+        MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[rand()%SystemHeader[ActSys].Planets]);
+        if (   (CLASS_GAS     == MyPlanetHeader->Class)
+            || (CLASS_SATURN  == MyPlanetHeader->Class)
+            || (CLASS_PHANTOM == MyPlanetHeader->Class))
+        {
+            MyPlanetHeader->Class = CLASS_EARTH;
+            MyPlanetHeader->Water = MyPlanetHeader->Size*73;
+            MyPlanetHeader->Biosphaere = 50+(rand()%50);
+            ++life_possible;
+        }
     }
 
     // now rotate the planets in the system a bit.
-    l = SystemHeader[ActSys].Planets*20;
+    l = SystemHeader[ActSys].Planets*(20+(rand()%100));
     for (i = 0; i < l; ++i)
     {
         for (j = 0; j < SystemHeader[ActSys].Planets; ++j)
