@@ -380,8 +380,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
                                                ((Colors[j].b<<2)+Colors[j].b)<<21);
             }
         } else {
-            SetAPen(RPort_PTR,0);
-            RectFill(RPort_PTR,0,150,639,330);    /*75..434*/
+            SetRast(RPort_PTR, 0);
         }
 
         if (15 < i) { VObj[rand()%13]->Size1 = 0; }
@@ -445,8 +444,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     }
     for (i = 0; i<2; i++)
     {
-        SetAPen(MyRPort_PTR[AScr],0);
-        RectFill(MyRPort_PTR[AScr],0,75,639,434);
+        SetRast(MyRPort_PTR[AScr], 0);
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
     }
@@ -506,7 +504,6 @@ void MAININTRO()
         "Jakob Gaardsted   Andy Jones", "George Moore",
         "Surround-Sounds created with", "WaveTracer DS�",
         "Colors in Technicolor�",       "Panaflex� Camera and Lenses by Panavision�"};
-//  const uint8 FArr[] = {0, 4,5, 4,5, 4,5, 4,5, 4,5, 5,5, 4,5, 4,4};
     const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3};
 
     r_Coords_t* ShipX;
@@ -518,6 +515,7 @@ void MAININTRO()
     double      FacSin, FacCos;
     double      SizeFactor;
     double      Factor;
+    uint16      dFactor;
     double      store;
     uint8       i, k;
     uint16      xpos;
@@ -962,21 +960,24 @@ void MAININTRO()
                              (PLANEPTR) (IMemA[0]+17280), NULL }};
 
     // fade in....
-    Factor = 0;
+    dFactor = 0;
+    k = 20;
     do
     {
         ScreenToFront(MyScreen[AScr]);
         AScr=1-AScr;
-        Factor += 0.05;
+        dFactor += 0xCD; // 11001101 =~ 0,05  >>12
         for (i = 1; i<128; ++i)
         {
-            SetRGB32(MyVPort_PTR[AScr], i, it_round(Colors[i].r*Factor)<<24,
-                                           it_round(Colors[i].g*Factor)<<24,
-                                           it_round(Colors[i].b*Factor)<<24);
+            SetRGB32(MyVPort_PTR[AScr], i, (Colors[i].r*dFactor)<<12,
+                                           (Colors[i].g*dFactor)<<12,
+                                           (Colors[i].b*dFactor)<<12);
         }
+        --k;
     }
-    while (Factor < 1.0);
+    while (0 != k);
 
+    // set all colours to the max. values
     for (i = 1; i<128; ++i)
     {
         SetRGB32(MyVPort_PTR[1-AScr], i, Colors[i].r<<24, Colors[i].g<<24, Colors[i].b<<24);
@@ -1029,11 +1030,11 @@ void MAININTRO()
     if (LMB_PRESSED)
         { goto leave_intro; }
 
-    RECTWIN(actRastPort,0,0,75,639,434);
+    SetRast(actRastPort, 0); // clear Rastport
     ScreenToFront(MyScreen[AScr]);
     AScr = 1-AScr;
     actRastPort = MyRPort_PTR[AScr];
-    RECTWIN(actRastPort,0,0,75,639,434);
+    SetRast(actRastPort, 0); // clear Rastport
 
     strcpy(s+pathname_len, "Frame6.pal");
     (void) SETCOLOR(MyScreen[  AScr],s);
