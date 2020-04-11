@@ -76,15 +76,17 @@ uint8 GETOPTION(uint8 Opts, char (*OptArr)[40], uint8 CivFlag)
     sint8   Pos = 0, i = 0;
     uint16  ypos;
     struct Window* GOP_Window;
+    struct RastPort* RPort_PTR;
 
     GOP_Window=MAKEWINDOW(50,100,411,141,MyScreen[0]);
     if (NULL != GOP_Window)
     {
-        MAKEWINBORDER(GOP_Window->RPort,0,0,410,140,12,6,1);
+        RPort_PTR = GOP_Window->RPort;
+        MAKEWINBORDER(RPort_PTR,0,0,410,140,12,6,1);
         ypos = 10;
         for(i = 0; i < Opts; ++i)
         {
-            WRITE(10, ypos,12,0,GOP_Window->RPort,3,OptArr[i]);
+            WRITE(10, ypos,12,0,RPort_PTR,3,OptArr[i]);
             ypos += 20;
         }
 
@@ -103,9 +105,9 @@ uint8 GETOPTION(uint8 Opts, char (*OptArr)[40], uint8 CivFlag)
                     {
                         if (i == Pos)
                         {
-                            WRITE(10, ypos,CivFlag,0,GOP_Window->RPort,3,OptArr[i]);
+                            WRITE(10, ypos,CivFlag,0,RPort_PTR,3,OptArr[i]);
                         } else {
-                            WRITE(10, ypos,     12,0,GOP_Window->RPort,3,OptArr[i]);
+                            WRITE(10, ypos,     12,0,RPort_PTR,3,OptArr[i]);
                         }
                         ypos += 20;
                     }
@@ -125,41 +127,47 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
 {
     char    s2[60];
     int     slen;
-    bool    _SMALLREQUEST;
+    bool    _SMALLREQUEST = false;
+    struct RastPort* RPort_PTR;
 
-    MAKEBORDER(MyScreen[0],35,110,475,220,12,6,0);
-    strcpy(s2, _PTx_Player);
-    slen=strlen(s2);
-    s2[slen++]=' ';
-    s2[slen++]='0'+Save.CivPlayer[CivVar-1];
-    s2[slen++]=',';
-    s2[slen++]=' ';
-    strcpy(s2+slen, PText[421]);
-    WRITE(256,130,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s2);
-    WRITE(256,155,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
-    DrawImage(MyRPort_PTR[0],&GadImg1,55,190);
-    DrawImage(MyRPort_PTR[0],&GadImg1,337,190);
-    WRITE(115, 192, 8, WRITE_Center, MyRPort_PTR[0],3, _PT_Annehmen);
-    WRITE(397, 192, 8, WRITE_Center, MyRPort_PTR[0],3, _PT_Ablehnen);
-    do
-    {
-        Delay(RDELAY);
-    }
-    while ((LMB_NOTPRESSED)
-        || (((MouseX(0)<55) || (MouseX(0)>183))
-            && ((MouseX(0)<337) || (MouseX(0)>465)))
-        || ((MouseY(0)<190) || (MouseY(0)>210)));
+    struct Window* SRE_Window;
 
-    if ((MouseX(0)>=55) && (MouseX(0)<=183))
+    SRE_Window=MAKEWINDOW(35,110,440,110,MyScreen[0]);
+    if (NULL != SRE_Window)
     {
-        KLICKGAD(55,190);
-        _SMALLREQUEST = true;
-    } else {
-        KLICKGAD(337,190);
-        _SMALLREQUEST = false;
+        RPort_PTR = SRE_Window->RPort;
+        MAKEWINBORDER(RPort_PTR,0,0,440,110,12,6,1);
+        strcpy(s2, _PTx_Player);
+        slen=strlen(s2);
+        s2[slen++]=' ';
+        s2[slen++]='0'+Save.CivPlayer[CivVar-1];
+        s2[slen++]=',';
+        s2[slen++]=' ';
+        strcpy(s2+slen, PText[421]);
+        WRITE(221,20,CivFlag,WRITE_Center,RPort_PTR,3,s2);
+        WRITE(221,45,CivFlag,WRITE_Center,RPort_PTR,3,s);
+        DrawImage(RPort_PTR,&GadImg1, 20,80);
+        DrawImage(RPort_PTR,&GadImg1,302,80);
+        WRITE( 80, 82, 8, WRITE_Center, RPort_PTR,3, _PT_Annehmen);
+        WRITE(362, 82, 8, WRITE_Center, RPort_PTR,3, _PT_Ablehnen);
+        do
+        {
+            Delay(RDELAY);
+        }
+        while ((LMB_NOTPRESSED)
+            || (((SRE_Window->MouseX<20) || (SRE_Window->MouseX>148)) && ((SRE_Window->MouseX<302) || (SRE_Window->MouseX>430)))
+             || ((SRE_Window->MouseY<80) || (SRE_Window->MouseY>100)));
+
+        if (SRE_Window->MouseX<149)
+        {
+            KLICKWINGAD(RPort_PTR, 20,80);
+            _SMALLREQUEST = true;
+        } else {
+            KLICKWINGAD(RPort_PTR,302,80);
+            _SMALLREQUEST = false;
+        }
+        CloseWindow(SRE_Window);
     }
-    RECT_RP0(0,35,110,475,220);
-    REFRESHDISPLAY();
     return _SMALLREQUEST;
 }
 
@@ -291,12 +299,12 @@ void DIPLOMACY()
                                 strcat(s2, " ");
                                 strcat(s2, PText[437]);
                                 SYSINFO(XSystem,CivFlag);
-                                if (!SMALLREQUEST(s2, CivVar, CivFlag))
+                                if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
-                                    NEGATIVEANSWER();
-                                } else {
                                     POSITIVEANSWER(CivVar);
                                     SYSTEMTOENEMY(XSystem-1,ActPlayerFlag,CivFlag);
+                                } else {
+                                    NEGATIVEANSWER();
                                 }
                                 RECT_RP0(0,30,250,480,360);
                             } break;
@@ -306,26 +314,26 @@ void DIPLOMACY()
                                 strcat(s2, TechnologyL.data[XTech]);
                                 strcat(s2, " ");
                                 strcat(s2, PText[437]);
-                                if (!SMALLREQUEST(s2, CivVar, CivFlag))
+                                if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
-                                    NEGATIVEANSWER();
-                                } else {
                                     POSITIVEANSWER(CivVar);
                                     Save.TechCosts[ActPlayer-1].data[XTech] = 0;
                                     DISPLAYTECH(XTech);
+                                } else {
+                                    NEGATIVEANSWER();
                                 }
                             } break;
             case OPT_MONEY: {
                                 _s = dez2out(XCosts, 0, s2);
                                 strcpy(_s, PText[439]);
-                                if (!SMALLREQUEST(s2, CivVar, CivFlag))
+                                if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
-                                    NEGATIVEANSWER();
-                                } else {
                                     POSITIVEANSWER(CivVar);
                                     Save.Staatstopf[CivVar-1] -= XCosts;
                                     Save.Staatstopf[ActPlayer-1] += XCosts;
                                     PRINTGLOBALINFOS(ActPlayer-1);
+                                } else {
+                                    NEGATIVEANSWER();
                                 }
                             } break;
             case OPT_WAR:   {
@@ -333,7 +341,8 @@ void DIPLOMACY()
                                 for(i = 1; i < MAXCIVS; ++i)
                                 {
                                     if ((i != CivVar) && (i != ActPlayer)
-                                        && (Save.WarState[ActPlayer-1][i-1]!=LEVEL_DIED) && (Save.WarState[ActPlayer-1][i-1]!=LEVEL_UNKNOWN)
+                                        && (Save.WarState[ActPlayer-1][i-1] != LEVEL_DIED)
+                                        && (Save.WarState[ActPlayer-1][i-1] != LEVEL_UNKNOWN)
                                         && ((i<8) || (Save.WorldFlag != 0)))
                                     {
                                         strcpy(OptArr[Opts], PText[440]);
@@ -356,15 +365,15 @@ void DIPLOMACY()
                                     strcat(s2, GETCIVNAME(OptID[Answer]));
                                     strcat(s2, " ");
                                     strcat(s2, PText[442]);
-                                    if (!SMALLREQUEST(s2, CivVar, CivFlag))
+                                    if (SMALLREQUEST(s2, CivVar, CivFlag))
                                     {
-                                        NEGATIVEANSWER();
-                                    } else {
                                         POSITIVEANSWER(CivVar);
                                         GOTOWAR(ActPlayerFlag,GETCIVFLAG(OptID[Answer]));
                                         GOTOWAR(CivFlag,GETCIVFLAG(OptID[Answer]));
                                         Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_ALLIANZ;
                                         Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_ALLIANZ;
+                                    } else {
+                                        NEGATIVEANSWER();
                                     }
                                 } else {
                                     MAKEWINBORDER(MyRPort_PTR[0],85,120,425,200,12,6,0);
