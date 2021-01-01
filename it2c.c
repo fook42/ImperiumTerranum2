@@ -8,16 +8,48 @@ const char __ver[] = "$VER: ImperiumTerranum 2.8c (10.04.2020)\0";
 #include <proto/graphics.h>
 #include <proto/diskfont.h>
 #include <proto/medplayer.h>
+#include <proto/asl.h>  // for screenmode-requester
 #include <dos/dostags.h>
 #include <workbench/startup.h>
 
 #define AUTOCON "CON:20/20/500/120/mycon/auto/close/wait"
 #define _EXTERN_
 
+#define SCREENREQTITLE_High "HIGHRES (min. 640x512) screenmode"
+#define SCREENREQTITLE_Low  "LOWRES (min. 320x256) screenmode"
+
 #include "IT2_Defines.h"
 #include "IT2_Types.h"
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
+
+ULONG getScreenmode(char* RequestTitle, ULONG orgScreenmodeID)
+{
+    struct ScreenModeRequester* gSm_SMRequester;
+    struct TagItem RequesterTags[]={{ASLSM_DoWidth, true},
+                                    {ASLSM_DoHeight, true},
+                                    {ASLSM_DoDepth, true},
+                                    {ASLSM_InitialDisplayID, orgScreenmodeID},
+                                    {ASLSM_InitialDisplayDepth, (ULONG) 8},
+                                    {ASLSM_TitleText, (ULONG) RequestTitle},
+                                    {TAG_DONE,0},
+                                    {TAG_END,0} };
+    bool    rc;
+    ULONG   newScreenmodeID = orgScreenmodeID;
+
+    gSm_SMRequester = AllocAslRequest(ASL_ScreenModeRequest, RequesterTags);
+
+    if (NULL != gSm_SMRequester)
+    {
+        rc = AslRequest( (APTR) gSm_SMRequester, NULL );
+        if (rc)
+        {
+            newScreenmodeID = gSm_SMRequester->sm_DisplayID;
+        }
+        FreeAslRequest( gSm_SMRequester );
+    }
+    return newScreenmodeID;
+}
 
 int main(void)
 {
@@ -41,11 +73,15 @@ int main(void)
     {
         SelectOutput(CLIout);
         //--------------------------------------------------
-        MEDPlayerBase = OpenLibrary((CONST_STRPTR) "medplayer.library", (unsigned long int) 0);
+        MEDPlayerBase = OpenLibrary((CONST_STRPTR) "medplayer.library", (ULONG) 0);
         if(!MEDPlayerBase)
         {
             puts("Can't open medplayer.library!\n");
         }
+
+        ScreenModeID_HighRes = getScreenmode(SCREENREQTITLE_High, 0xA9004);
+
+        ScreenModeID_LowRes  = getScreenmode(SCREENREQTITLE_Low,  0xA1000);
 
         MAIN_FNC();
         rc = 0;
