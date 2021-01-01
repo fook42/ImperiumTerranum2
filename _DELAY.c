@@ -83,11 +83,11 @@ bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint
     ITBMap->MemA = AllocMem(ITBMap->MemL, MEMF_CHIP | MEMF_CLEAR);
     if (NULL != ITBMap->MemA)
     {
-        ITBMap->BytesPerRow  = BytesPerRow;
-        ITBMap->Rows         = Rows;
-        ITBMap->Flags        = 1;
-        ITBMap->Depth        = Depth;
-        ITBMap->pad = 0;
+        ITBMap->BytesPerRow = BytesPerRow;
+        ITBMap->Rows        = Rows;
+        ITBMap->Flags       = 1;
+        ITBMap->Depth       = Depth;
+        ITBMap->pad         = 0;
         PlaneMemA = (PLANEPTR) ITBMap->MemA;
         for (i=0; i<Depth; ++i)
         {

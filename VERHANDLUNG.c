@@ -87,13 +87,13 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             i = 2*(1+(Save.WarPower[7] / Save.WarPower[ActPlayer-1]));
             if (MODE_FORCE == Mode)
             {
-                len1 = strlen(PText[260]);
-                memcpy(s, PText[260], len1);
-                s[len1++]=' ';
-                strcpy(s+len1, GETCIVNAME(ActPlayer));
+                strcpy(s, PText[260]);
                 len1 = strlen(s);
-                s[len1++]=' ';
-                strcpy(s+len1, PText[231]);
+                s[len1]=' ';
+                strcpy(s+len1+1, GETCIVNAME(ActPlayer));
+                len1 = strlen(s);
+                s[len1]=' ';
+                strcpy(s+len1+1, PText[231]);
                 WRITE(256,110,FLAG_OTHER,WRITE_Center,MyRPort_PTR[0],3,s);
                 WRITE(256,130,FLAG_OTHER,WRITE_Center,MyRPort_PTR[0],3,PText[261]);
                 WRITE(256,150,FLAG_OTHER,WRITE_Center,MyRPort_PTR[0],3,PText[262]);
@@ -104,10 +104,10 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             }
             if (0 == Save.JSteuer[ActPlayer-1])
             {
-                len1 = strlen(PText[266]);
-                memcpy(s, PText[266], len1);
-                s[len1++]=' ';
-                _s = dez2out(i,0,s+len1);
+                strcpy(s, PText[266]);
+                len1 = strlen(s);
+                s[len1]=' ';
+                _s = dez2out(i,0,s+len1+1);
                 *_s++='%';
                 *_s++=' ';
                 strcpy(_s, PText[267]);

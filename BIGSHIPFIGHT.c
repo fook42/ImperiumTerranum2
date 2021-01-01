@@ -52,46 +52,55 @@ bool LOADSAMPLE(char* FName, uint8 SID)
 
 void INITSOUNDNAMES(uint8 SoundID, char* s)
 {
-    strcpy(s, PathStr[6]);
+    const char* soundnames[]={"Gun","Laser","Phaser","Disruptor","PTorpedo",""};
+    uint8   len1, soundnr;
+
     switch (SoundID) {
-        case WEAPON_GUN:       strcat(s,       "Gun"); break;
-        case WEAPON_LASER:     strcat(s,     "Laser"); break;
-        case WEAPON_PHASER:    strcat(s,    "Phaser"); break;
-        case WEAPON_DISRUPTOR: strcat(s, "Disruptor"); break;
-        case WEAPON_PTORPEDO:  strcat(s,  "PTorpedo"); break;
-        default: { }
+        case WEAPON_GUN:       soundnr=0; break;
+        case WEAPON_LASER:     soundnr=1; break;
+        case WEAPON_PHASER:    soundnr=2; break;
+        case WEAPON_DISRUPTOR: soundnr=3; break;
+        case WEAPON_PTORPEDO:  soundnr=4; break;
+        default: { soundnr=5; }
     }
-    strcat(s, ".RAW");      /* SFX/ */
+    strcpy(s, PathStr[6]);  /* SFX/ */
+    len1 = strlen(s);
+    strcpy(s+len1, soundnames[soundnr]);
+    len1 = strlen(s);
+    strcpy(s+len1, ".RAW");
 }
 
 // ShipPtr1, ShipPtr2, BSFSoundMemA, BSFSoundSize
 bool INITIMAGES()
 {
     char    s[60];
-    uint8   l;
+    uint8   len1, len2;
 
-    l = strlen(PathStr[5]);
-    memcpy(s, PathStr[5], l+1);      /* SHIPS/ */
+    strcpy(s, PathStr[5]);  /* SHIPS/ */
+    len1 = strlen(s);
 
-    strcpy(s+l, Project.data[ShipPtr1->SType]);
-    strcat(s, ".img");
+    strcpy(s+len1, Project.data[ShipPtr1->SType]);
+    len2 = strlen(s);
+    strcpy(s+len2, ".img");
     if (!RAWLOADIMAGE(s,0,32,512,32,4, &ImgBitMap4)) { return false; }
 
-    strcpy(s+l, Project.data[ShipPtr2->SType]);
-    strcat(s, ".img");
+    strcpy(s+len1, Project.data[ShipPtr2->SType]);
+    len2 = strlen(s);
+    strcpy(s+len2, ".img");
     if (!RAWLOADIMAGE(s,0,64,512,32,4, &ImgBitMap4)) { return false; }
 
     BSFSoundMemA[0] = (uint16*) IMemA[0];
     INITSOUNDNAMES(ShipPtr1->Weapon, s);
-    if (!LOADSAMPLE(s,0)) { return false; }
+    if (!LOADSAMPLE(s, 0)) { return false; }
 
     BSFSoundMemA[1] = BSFSoundMemA[0] + BSFSoundSize[0];
     INITSOUNDNAMES(ShipPtr2->Weapon, s);
-    if (!LOADSAMPLE(s,1)) { return false; }
+    if (!LOADSAMPLE(s, 1)) { return false; }
 
     BSFSoundMemA[2] = BSFSoundMemA[1] + BSFSoundSize[1];
-    strcpy(s, PathStr[6]);      /* SFX/ */
-    strcat(s, "FightSoundDS.RAW");
+    strcpy(s, PathStr[6]);  /* SFX/ */
+    len1 = strlen(s);
+    strcpy(s+len1, "FightSoundDS.RAW");
     if (!LOADSAMPLE(s,2)) { return false; }
 
     BSFSoundSize[2] /= 2;
@@ -217,11 +226,6 @@ void STARFLY(uint8 Ship)
             Angle[Ship] += 512;
         }
         Angle[Ship] &= 511;
-/*        while (Angle[Ship] > 511)
-        {
-            Angle[Ship] -= 512;
-        }
-*/
     }
 
     SetAPen(MyRPort_PTR[AScr],0);
@@ -367,8 +371,8 @@ void XTRAROUND()
     x[1] = 520; y[1] = 100; Angle[1] = (rand()%17)*32;
     x[0] = 120; y[0] = 412; Angle[0] = (rand()%17)*32;
     StepCtr = 1;
-    RECT_RP0(0,0,0,639,511);
-    RECT_RP1(0,0,0,639,511);
+    SetRast(MyRPort_PTR[0], 0);
+    SetRast(MyRPort_PTR[1], 0);
     if (Audio_enable)
     {
         custom.dmacon = BITCLR | DMAF_AUDIO;
@@ -547,8 +551,12 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
 {
     uint8   _BIGSHIPFIGHT = 2;
     struct NewScreen    BSF_NeuScreen = {0,0,640,512,4,0,0,HIRES+LACE,CUSTOMSCREEN+SCREENQUIET, NULL,NULL,NULL,NULL};
+    struct r_Col BSF_Colors[]= {{0,0,0},   {13,13,15}, {12,12,14}, {11,11,13},
+                                {10,10,12},{9,9,11},   {8,8,10},   {15,0,0},
+                                {7,5,5},   {15,15,0},  {15,2,12},  {15,15,15},
+                                {1,1,15}};
     uint8   l;
-    uint8   i;
+    uint8   i, j;
 
     ShipPtr1 = Ship1;
     ShipPtr2 = Ship2;
@@ -629,13 +637,10 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
         {
             MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
             MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
-            SetRGB4(MyVPort_PTR[i],1,0,0,0);
-            SetRGB4(MyVPort_PTR[i],2,13,13,15);  SetRGB4(MyVPort_PTR[i],3,12,12,14);
-            SetRGB4(MyVPort_PTR[i],4,11,11,13);  SetRGB4(MyVPort_PTR[i],5,10,10,12);
-            SetRGB4(MyVPort_PTR[i],6,9,9,11);    SetRGB4(MyVPort_PTR[i],7,8,8,10);
-            SetRGB4(MyVPort_PTR[i],8,15,0,0);    SetRGB4(MyVPort_PTR[i],9,7,5,5);
-            SetRGB4(MyVPort_PTR[i],10,15,15,0);  SetRGB4(MyVPort_PTR[i],11,15,2,12);
-            SetRGB4(MyVPort_PTR[i],12,15,15,15); SetRGB4(MyVPort_PTR[i],13,1,1,15);
+            for (j=0; j<13; ++j)
+            {
+                SetRGB4(MyVPort_PTR[i], j+1, BSF_Colors[j].r, BSF_Colors[j].g, BSF_Colors[j].b);
+            }
         }
     }
     SWITCHDISPLAY();

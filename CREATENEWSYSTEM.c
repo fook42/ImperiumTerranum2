@@ -74,7 +74,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
             || (CLASS_PHANTOM == MyPlanetHeader->Class))
         {
             MyPlanetHeader->Class = CLASS_EARTH;
-            MyPlanetHeader->Water = MyPlanetHeader->Size*73;
+            MyPlanetHeader->Water = MyPlanetHeader->Size*60;
             MyPlanetHeader->Biosphaere = 50+(rand()%50);
             ++life_possible;
         }

@@ -10,6 +10,7 @@ bool INITLANG()
     uint16  i;
     uint8*  TextMemEnd;
     uint8*  Char_PTR;
+    uint8*  last_PTR;
     char    s[] = {"Language.txt\0"};
     BPTR    FHandle;
 
@@ -38,6 +39,7 @@ bool INITLANG()
     Close(FHandle);
     TextMemEnd = (uint8*) (TextMemA + TextMemL);
     Char_PTR = (uint8*) TextMemA;
+    last_PTR = Char_PTR;
     i = 1;
     WordSet = false;
     do
@@ -54,6 +56,8 @@ bool INITLANG()
         } else if ((10 == c) && (WordSet))
         {
             *Char_PTR = 0;
+            PTextLen[i-1] = Char_PTR-last_PTR;
+            last_PTR = Char_PTR+1;
             WordSet = false;
         }
         ++Char_PTR;

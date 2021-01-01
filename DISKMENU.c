@@ -299,8 +299,8 @@ uint8 DIS_LOADGAME()
                     MemPtr = AllocMem(SystemHeader[i].Planets*sizeof(r_PlanetHeader), MEMF_ANY);
                     if (NULL != MemPtr)
                     {
+                        (void) Read(FHandle, MemPtr, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
                         SystemHeader[i].PlanetMemA = (r_PlanetHeader*) MemPtr;
-                        (void) Read(FHandle, SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
                         for(j = 0; j < SystemHeader[i].Planets; ++j)
                         {
                             PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);

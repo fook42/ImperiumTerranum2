@@ -48,22 +48,22 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     } else {
                         WRITE(40,y,ActPlayerFlag,0,MyRPort_PTR[0],2, Project.data[MyShipPtr->SType]);
 
-                        len = strlen(PText[455]);
-                        memcpy(s, PText[455], len);
+                        strcpy(s, PText[456]);
+                        len = PTextLen[456];
                         s[len++]=':';
                         s[len++]=' ';
                         (void) dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 0, s+len);
                         WRITE(135,y,12,0,MyRPort_PTR[0],2,s);
 
-                        len = strlen(PText[456]);
-                        memcpy(s, PText[456], len);
+                        strcpy(s, PText[457]);
+                        len = PTextLen[457];
                         s[len++]=':';
                         s[len++]=' ';
                         (void) dez2out(MyShipPtr->Ladung & MASK_LTRUPPS, 0, s+len);
                         WRITE(230,y,12,0,MyRPort_PTR[0],2,s);
 
-                        len = strlen(PText[458]);
-                        memcpy(s, PText[458], len);
+                        strcpy(s, PText[459]);
+                        len = PTextLen[459];
                         s[len++]=':';
                         s[len++]=' ';
                         _s = dez2out(it_round(MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, s+len);
@@ -87,6 +87,7 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
 uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* PCol)
 {
     uint8   i,j;
+    uint8   len;
     uint16  y,z;
     r_PlanetHeader* MyPlanet;
     char    s[60];
@@ -106,8 +107,8 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
             {
                 MyPlanet = &(SystemHeader[i].PlanetMemA[j]);
 
-                if ((((MyPlanet->PFlags & FLAG_CIV_MASK) == CivFlag)       && (CivFlag != 0)) ||
-                    (((MyPlanet->PFlags & FLAG_CIV_MASK) != ActPlayerFlag) && (CivFlag == 0) && (MyPlanet->PFlags>0)))
+                if ((((MyPlanet->PFlags & FLAG_CIV_MASK) == CivFlag)       && (0 != CivFlag)) ||
+                    (((MyPlanet->PFlags & FLAG_CIV_MASK) != ActPlayerFlag) && (0 == CivFlag) && (0 < MyPlanet->PFlags)))
                 {
                     ++z;
                     if (36 == z)
@@ -136,15 +137,18 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                         WRITE(465,y,12,WRITE_Right,MyRPort_PTR[0],2,s);
                     } else {
                         strcpy(s, _PT_Groesse);
-                        strcat(s, ": ");
-                        (void) float2out( (MyPlanet->Size/10.0), 0, 2, s+strlen(s));
+                        len = strlen(s);
+                        s[len++] = ':';
+                        s[len++] = ' ';
+                        (void) float2out( (MyPlanet->Size/10.0), 0, 2, s+len);
                         WRITE(170,y,12,0,MyRPort_PTR[0],2,s);
 
                         if (MyPlanet->Ethno == ActPlayerFlag)
                         {
                             strcpy(s, GETCIVADJ(ActPlayer));
-                            strcat(s, " ");
-                            strcat(s, PText[182]);
+                            len = strlen(s);
+                            s[len++] = ' ';
+                            strcpy(s+len, PText[182]);
                             WRITE(350,y,12,0,MyRPort_PTR[0],2,s);
                         }
                     }
@@ -205,24 +209,24 @@ void SEARCHOBJECT(uint8* ActSys)
         Delay(RDELAY);
         if (LMB_PRESSED)
         {
-            if ((SEO_Window->MouseX>=4) && (SEO_Window->MouseX<=120))
+            if ((SEO_Window->MouseX>5) && (SEO_Window->MouseX<121))
             {
-                if ((SEO_Window->MouseY>=25) && (SEO_Window->MouseY<=45))
+                if ((SEO_Window->MouseY>24) && (SEO_Window->MouseY<46))
                 {
                     KLICKWINGAD(RPort_PTR,4,25);
                     Mode = (sint8) ActPlayerFlag;   // own planets
                     b = true;
-                } else if ((SEO_Window->MouseY>=47) && (SEO_Window->MouseY<=67))
+                } else if ((SEO_Window->MouseY>46) && (SEO_Window->MouseY<68))
                 {
                     KLICKWINGAD(RPort_PTR,4,47);
                     Mode = 0;                       // foreign planets
                     b = true;
-                } else if ((SEO_Window->MouseY>=91) && (SEO_Window->MouseY<=111))
+                } else if ((SEO_Window->MouseY>90) && (SEO_Window->MouseY<112))
                 {
                     KLICKWINGAD(RPort_PTR,4,91);
                     Mode = -1;                      // fixed ships
                     b = true;
-                } else if ((SEO_Window->MouseY>=113) && (SEO_Window->MouseY<=133))
+                } else if ((SEO_Window->MouseY>112) && (SEO_Window->MouseY<134))
                 {
                     KLICKWINGAD(RPort_PTR,4,113);
                     Mode = -2;                      // watering ships
