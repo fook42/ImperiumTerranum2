@@ -587,20 +587,26 @@ void MAKELOADWINDOW()
         xpos += 115;
     }
 
-    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (0 == PLANET_MyPlanetHeader->Population))
+    if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
     {
         MAKEWINBORDER(MyRPort_PTR[0],112,228,212,258,12,6,1);
-    }
-    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (0  < PLANET_MyPlanetHeader->Population))
-    {
         MAKEWINBORDER(MyRPort_PTR[0],227,228,327,258,12,6,1);
-    }
-    if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
-     || ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
-     || ((ActPProjects->data[34] == 0) && (ActPProjects->data[40] == 0))
-     || (PLANET_MyPlanetHeader->ProjectPtr == NULL)) && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
-    {
         MAKEWINBORDER(MyRPort_PTR[0],342,228,442,258,12,6,1);
+    } else
+    {
+        if (0 == PLANET_MyPlanetHeader->Population)
+        {
+            MAKEWINBORDER(MyRPort_PTR[0],112,228,212,258,12,6,1);
+        } else  // if (0 < PLANET_MyPlanetHeader->Population) .... implicit .. Population is uint .. >=0 !
+        {
+            MAKEWINBORDER(MyRPort_PTR[0],227,228,327,258,12,6,1);
+        }
+        if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
+        || ((ActPProjects->data[34] == 0) && (ActPProjects->data[40] == 0))
+        || (PLANET_MyPlanetHeader->ProjectPtr == NULL)) && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
+        {
+            MAKEWINBORDER(MyRPort_PTR[0],342,228,442,258,12,6,1);
+        }
     }
 
     WRITE(133,203,ActPlayerFlag,0,MyRPort_PTR[0],3,PText[456]);
@@ -692,6 +698,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
     bool    b, OldCiviPlanet;
     uint8   ShipsInOrbit;
     uint32  l;
+    APTR    MemPtr;
     int     LTOut, SOut, FIn;
     r_ShipHeader*   XShipPtr;
     r_ShipHeader*   OtherShipPtr;
@@ -858,14 +865,14 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                     default:
                         {
                         /*GADGET_LADEN,GADGET_LANDUNG*/
-                            if (PLANET_MyPlanetHeader->ProjectPtr == NULL)
+                            if (NULL == PLANET_MyPlanetHeader->ProjectPtr)
                             {
-                                l = (uint32) AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
-                                if (l == 0)
+                                MemPtr = AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
+                                if (NULL == MemPtr)
                                 {
                                     return false;
                                 } else {
-                                    PLANET_MyPlanetHeader->ProjectPtr = (ByteArr42*) l;
+                                    PLANET_MyPlanetHeader->ProjectPtr = (ByteArr42*) MemPtr;
                                 }
                                 OldCiviPlanet = false;
                             } else {
@@ -884,58 +891,60 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                     if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
                                         || (PLANET_MyPlanetHeader->Population == 0))
                                     {
-                                        if ((MouseX(0)>=112) && (MouseX(0)<=212)
-                                         && (MouseY(0)>=164) && (MouseY(0)<=194)
-                                         && (ActPProjects->data[26]>0)
-                                         && (ShipData(PLANET_MyShipPtr->SType).MaxLoad > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
-                                         && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
-                                         && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
-                                         && (PLANET_MyShipPtr->Fracht == 0))
+                                        if ((MouseX(0)>=112) && (MouseX(0)<=212))
                                         {
-                                            PLAYSOUND(1,300);
-                                            ActPProjects->data[26]--;
-                                            PLANET_MyShipPtr->Ladung += 16;
-                                            SOut--;
-                                        }
-                                        if ((MouseX(0)>=112) && (MouseX(0)<=212)
-                                         && (MouseY(0)>=228) && (MouseY(0)<=258)
-                                         && (ActPProjects->data[26]<250)
-                                         && ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER)>0)
-                                         && (PLANET_MyShipPtr->Fracht == 0))
-                                        {
-                                            PLAYSOUND(1,300);
-                                            ActPProjects->data[26]++;
-                                            PLANET_MyShipPtr->Ladung -= 16;
-                                            SOut++;
+                                            if ((MouseY(0)>=164) && (MouseY(0)<=194)
+                                            && (ActPProjects->data[26]>0)
+                                            && (ShipData(PLANET_MyShipPtr->SType).MaxLoad > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
+                                            && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
+                                            && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
+                                            && (PLANET_MyShipPtr->Fracht == 0))
+                                            {
+                                                PLAYSOUND(1,300);
+                                                ActPProjects->data[26]--;
+                                                PLANET_MyShipPtr->Ladung += 16;
+                                                SOut--;
+                                            }
+                                            if ((MouseY(0)>=228) && (MouseY(0)<=258)
+                                            && (ActPProjects->data[26]<250)
+                                            && ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER)>0)
+                                            && (PLANET_MyShipPtr->Fracht == 0))
+                                            {
+                                                PLAYSOUND(1,300);
+                                                ActPProjects->data[26]++;
+                                                PLANET_MyShipPtr->Ladung -= 16;
+                                                SOut++;
+                                            }
                                         }
                                     }
                                     if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
                                         || (PLANET_MyPlanetHeader->Population>0))
                                     {
-                                        if ((MouseX(0)>=227) && (MouseX(0)<=327)
-                                         && (MouseY(0)>=164) && (MouseY(0)<=194)
-                                         && (ActPProjects->data[27]>0)
-                                         && (ShipData(PLANET_MyShipPtr->SType).MaxLoad>((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
-                                         && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
-                                         && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
-                                         && (PLANET_MyShipPtr->Fracht == 0)
-                                         && (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (LTOut>0)))
+                                        if ((MouseX(0)>=227) && (MouseX(0)<=327))
                                         {
-                                            PLAYSOUND(1,300);
-                                            --(ActPProjects->data[27]);
-                                            ++(PLANET_MyShipPtr->Ladung);
-                                            --LTOut;
-                                        }
-                                        if ((MouseX(0)>=227) && (MouseX(0)<=327)
-                                         && (MouseY(0)>=228) && (MouseY(0)<=258)
-                                         && (ActPProjects->data[27]<250)
-                                         && ((PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)>0)
-                                         && (PLANET_MyShipPtr->Fracht == 0))
-                                        {
-                                            PLAYSOUND(1,300);
-                                            ++(ActPProjects->data[27]);
-                                            --(PLANET_MyShipPtr->Ladung);
-                                            ++LTOut;
+                                            if ((MouseY(0)>=164) && (MouseY(0)<=194)
+                                            && (ActPProjects->data[27]>0)
+                                            && (ShipData(PLANET_MyShipPtr->SType).MaxLoad>((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
+                                            && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
+                                            && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
+                                            && (PLANET_MyShipPtr->Fracht == 0)
+                                            && (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (LTOut>0)))
+                                            {
+                                                PLAYSOUND(1,300);
+                                                --(ActPProjects->data[27]);
+                                                ++(PLANET_MyShipPtr->Ladung);
+                                                --LTOut;
+                                            }
+                                            if ((MouseY(0)>=228) && (MouseY(0)<=258)
+                                            && (ActPProjects->data[27]<250)
+                                            && ((PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)>0)
+                                            && (PLANET_MyShipPtr->Fracht == 0))
+                                            {
+                                                PLAYSOUND(1,300);
+                                                ++(ActPProjects->data[27]);
+                                                --(PLANET_MyShipPtr->Ladung);
+                                                ++LTOut;
+                                            }
                                         }
                                     }
                                     if (((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
@@ -946,28 +955,29 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                         do
                                         {
                                             Delay(RDELAY);
-                                            if ((MouseX(0)>=342) && (MouseX(0)<=442)
-                                             && (MouseY(0)>=164) && (MouseY(0)<=194)
-                                             && (PLANET_MyShipPtr->Ladung == 0)
-                                             && (PLANET_MyShipPtr->Fracht < ShipData(PLANET_MyShipPtr->SType).MaxLoad)
-                                             && (PLANET_MyPlanetHeader->Water>10))
+                                            if ((MouseX(0)>=342) && (MouseX(0)<=442))
                                             {
-                                                Delay(7);
-                                                PLANET_MyShipPtr->Fracht++;
-                                                FIn++;
-                                                PLANET_MyPlanetHeader->Water -= 5;
-                                                WRITELOADDATA(LTOut);
-                                            }
-                                            if ((MouseX(0)>=342) && (MouseX(0)<=442)
-                                             && (MouseY(0)>=228) && (MouseY(0)<=258)
-                                             && (PLANET_MyShipPtr->Fracht>0)
-                                             && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<100))
-                                            {
-                                                Delay(7);
-                                                PLANET_MyPlanetHeader->Water += 5;
-                                                FIn--;
-                                                PLANET_MyShipPtr->Fracht--;
-                                                WRITELOADDATA(LTOut);
+                                                if ((MouseY(0)>=164) && (MouseY(0)<=194)
+                                                && (PLANET_MyShipPtr->Ladung == 0)
+                                                && (PLANET_MyShipPtr->Fracht < ShipData(PLANET_MyShipPtr->SType).MaxLoad)
+                                                && (PLANET_MyPlanetHeader->Water>10))
+                                                {
+                                                    Delay(7);
+                                                    PLANET_MyPlanetHeader->Water -= 5;
+                                                    ++FIn;
+                                                    ++(PLANET_MyShipPtr->Fracht);
+                                                    WRITELOADDATA(LTOut);
+                                                }
+                                                if ((MouseY(0)>=228) && (MouseY(0)<=258)
+                                                && (PLANET_MyShipPtr->Fracht>0)
+                                                && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<100))
+                                                {
+                                                    Delay(7);
+                                                    PLANET_MyPlanetHeader->Water += 5;
+                                                    --FIn;
+                                                    --(PLANET_MyShipPtr->Fracht);
+                                                    WRITELOADDATA(LTOut);
+                                                }
                                             }
                                         }
                                         while (LMB_PRESSED);

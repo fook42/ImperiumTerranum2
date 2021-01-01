@@ -139,6 +139,7 @@ _EXTERN_  struct r_PlanetHeader* GetPlanet[MAXCIVS]; // new range 0..MAXCIVS-1
 _EXTERN_  uint8                  GetPlanetSys[MAXCIVS]; // new range 0..MAXCIVS-1
 _EXTERN_  bool          vNSonde[MAXCIVS]; // new range 0..MAXCIVS-1
 _EXTERN_  char*         PText[MAXSTR+1];
+_EXTERN_  uint8         PTextLen[MAXSTR+1];
 
 _EXTERN_  r_Save        Save;
 

@@ -86,8 +86,9 @@ void MAIN_FNC()
         puts("Can`t open screens!\n");
         return;
     }
-    //    WBench = CloseWorkBench();
+    WBench = CloseWorkBench();
     ScreenToFront(XScreen);
+    // Alloc 29184 (76*96*4) + 28672 (64*64*7) + 122880 (80*192*8) Bytes.
     if ((!FillITBitMap(&ImgBitMap4, 76, 96, 4)) ||
         (!FillITBitMap(&ImgBitMap7, 64, 64, 7)) ||
         (!FillITBitMap(&ImgBitMap8, 80,192, 8)))
@@ -116,16 +117,16 @@ void MAIN_FNC()
     //    INITCHANNELS();
     INITSOUNDS();
     i = 0;
-    /*    if (!WBench)
+    if (!WBench)
     {
-        WRITE(320,100,1,WRITE_Center,MyScreen[0],3,PText[831]);
-        SetRGB4(&(MyScreen[0]->ViewPort),1,15,15,15);
-        WRITE(320,130,1,WRITE_Center,MyScreen[0],3,PText[832]);
+        SetRGB4(MyVPort_PTR[0],1,15,15,15);
+        WRITE(320,100,1,WRITE_Center,MyRPort_PTR[0],3,PText[831]);
+        WRITE(320,130,1,WRITE_Center,MyRPort_PTR[0],3,PText[832]);
         ScreenToFront(MyScreen[0]);
         WAITLOOP(false);
-        RECT(MyScreen[0],0,0,0,639,511);
+        SetRast(MyRPort_PTR[0], 0);
     }
-*/
+
     SWITCHDISPLAY();
     if (!INITDESK(1))
     {
