@@ -132,7 +132,7 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
 
     struct Window* SRE_Window;
 
-    SRE_Window=MAKEWINDOW(35,110,440,110,MyScreen[0]);
+    SRE_Window=MAKEWINDOW(35,110,441,111,MyScreen[0]);
     if (NULL != SRE_Window)
     {
         RPort_PTR = SRE_Window->RPort;
@@ -293,11 +293,11 @@ void DIPLOMACY()
                                 }
                             } break;
             case OPT_SYSTEM:{
-                                strcpy(s2, PText[436]);
+                                strcpy(s2, PText[436]); // "das System"
                                 strcat(s2, " ");
                                 strcat(s2, Save.SystemName.data[XSystem-1]);
                                 strcat(s2, " ");
-                                strcat(s2, PText[437]);
+                                strcat(s2, PText[437]); // "zu übergeben"
                                 SYSINFO(XSystem,CivFlag);
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
@@ -306,7 +306,7 @@ void DIPLOMACY()
                                 } else {
                                     NEGATIVEANSWER();
                                 }
-                                RECT_RP0(0,30,250,480,360);
+                                RECT_RP0(0,30,250,480,360);   // clear SYSINFO-Area
                             } break;
             case OPT_TECH:  {
                                 strcpy(s2, PText[438]);

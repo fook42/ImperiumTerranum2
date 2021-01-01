@@ -89,11 +89,12 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             {
                 strcpy(s, PText[260]);
                 len1 = strlen(s);
-                s[len1]=' ';
-                strcpy(s+len1+1, GETCIVNAME(ActPlayer));
-                len1 = strlen(s);
-                s[len1]=' ';
-                strcpy(s+len1+1, PText[231]);
+                s[len1++]=' ';
+                _s = GETCIVNAME(ActPlayer);
+                strcpy(s+len1, _s);
+                len1+= strlen(_s);
+                s[len1++]=' ';
+                strcpy(s+len1, PText[231]);
                 WRITE(256,110,FLAG_OTHER,WRITE_Center,MyRPort_PTR[0],3,s);
                 WRITE(256,130,FLAG_OTHER,WRITE_Center,MyRPort_PTR[0],3,PText[261]);
                 WRITE(256,150,FLAG_OTHER,WRITE_Center,MyRPort_PTR[0],3,PText[262]);
@@ -124,7 +125,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                   || (((MouseX(0)<60)  || (MouseX(0)>176))
                                    && ((MouseX(0)<330) || (MouseX(0)>446))));
-            SYSINFO(0,0);
+            RECT_RP0(0,30,250,480,360);
             if ((MouseX(0)>=60) && (MouseX(0)<=176))
             {
                 KLICKGAD(60,200);
@@ -299,7 +300,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                   || (((MouseX(0)<60) || (MouseX(0)>176))
                                    && ((MouseX(0)<330)|| (MouseX(0)>446))));
-            SYSINFO(0,0);
+            RECT_RP0(0,30,250,480,360);  // clear SYSINFO-Area
             if ((MouseX(0)>59) && (MouseX(0)<177))
             {
                 KLICKGAD(60,200);
@@ -317,22 +318,22 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_PEACE;
                 Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_PEACE;
                 PEACEINFO(ActPlayer,CivVar,ActPlayerFlag,CivFlag);
-                return;
+            } else {
+                KLICKGAD(330,200);
+                VERHANDLUNG_INIT(CivFlag, CivStr, 0);
+                WRITE(256,110,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[305]);
+                WRITE(256,130,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[306]);
+                strcpy(s, PText[298]);
+                strcat(s, " ");
+                strcat(s, GETCIVNAME(ActPlayer));
+                strcat(s, " ");
+                strcat(s, PText[307]);
+                WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
+                WAITLOOP(false);
+                RECT_RP0(0,30,80,480,230);
+                Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_WAR;
+                Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_WAR;
             }
-            KLICKGAD(330,200);
-            VERHANDLUNG_INIT(CivFlag, CivStr, 0);
-            WRITE(256,110,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[305]);
-            WRITE(256,130,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[306]);
-            strcpy(s, PText[298]);
-            strcat(s, " ");
-            strcat(s, GETCIVNAME(ActPlayer));
-            strcat(s, " ");
-            strcat(s, PText[307]);
-            WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,s);
-            WAITLOOP(false);
-            RECT_RP0(0,30,80,480,230);
-            Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_WAR;
-            Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_WAR;
             return;
         }
         if ((Save.WarState[CivVar-1][ActPlayer-1] == LEVEL_WAR) && ((Save.WarPower[CivVar-1]*2) < Save.WarPower[ActPlayer-1])
@@ -380,17 +381,25 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             VERHANDLUNG_INIT(CivFlag, CivStr, 1);
             if (MODE_TERRITORIUM == Mode)
             {
+                /*  verurteilt die Verletzung seines Hoheitsgebietes
+                    und verlangt als Entschädigung für diese Aggression
+                    die bedingungslose Übergabe des
+                */
                 WRITE(256,110,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[315]);
                 WRITE(256,130,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[316]);
                 WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[317]);
             } else {
+                /*  weist auf die militärische Überlegenheit seiner
+                    Zivilisation hin und verlangt als Vorbedingung
+                    für einen Friedensvertrag die Übergabe des
+                */
                 WRITE(256,110,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[318]);
                 WRITE(256,130,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[319]);
                 WRITE(256,150,CivFlag,WRITE_Center,MyRPort_PTR[0],3,PText[320]);
             }
             strcpy(s, GETCIVADJ(ActPlayer));
             strcat(s, " ");
-            strcat(s, PText[321]);
+            strcat(s, PText[321]);      // "n Systems"
             strcat(s, " ");
             strcat(s, Save.SystemName.data[XSystem-1]);
             strcat(s, ".");
@@ -403,7 +412,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             while (LMB_NOTPRESSED || (MouseY(0)<200) || (MouseY(0)>220)
                                   || (((MouseX(0)<60)  || (MouseX(0)>176))
                                    && ((MouseX(0)<330) || (MouseX(0)>446))));
-            SYSINFO(0,0);
+            RECT_RP0(0,30,250,480,360); // clear SYSINFO-Area
             if ((MouseX(0)>59) && (MouseX(0)<177))
             {
                 KLICKGAD(60,200);

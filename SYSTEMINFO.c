@@ -186,7 +186,7 @@ void SYSTEMINFO(uint8 ActSys)
                             if (NULL != SYS_Window)
                             {
                                 RPort_PTR = SYS_Window->RPort;
-                                MAKEWINBORDER(RPort_PTR,0,0,370,86,12,6,1);
+                                MAKEWINBORDER(RPort_PTR,0,0,370,85,12,6,1);
                                 WRITE(186,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[481]);
                                 WRITE(186,32,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[482]);
                                 WRITE(186,54,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[483]);
