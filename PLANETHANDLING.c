@@ -306,7 +306,7 @@ void DIPLOMACY()
                                 } else {
                                     NEGATIVEANSWER();
                                 }
-                                RECT_RP0(0,30,250,480,360);   // clear SYSINFO-Area
+                                RECT_RP0(0,30,250,480,360);   // clear -Area
                             } break;
             case OPT_TECH:  {
                                 strcpy(s2, PText[438]);
