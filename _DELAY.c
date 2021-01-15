@@ -4,6 +4,7 @@
 #include <math.h>
 #include "IT2_Defines.h"
 #include "IT2_Types.h"
+#include "IT2_Vars.h"
 
 int it_round(double x)
 {
@@ -101,4 +102,33 @@ bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint
         return true;
     }
     return false;
+}
+
+ULONG string2hex(char* in_string)
+{
+    ULONG out_dez=0;
+    char act_c=*in_string++;
+    if ((act_c == '0') && (in_string[0] == 'x'))
+    {
+        in_string++;
+        act_c=*in_string++;
+    } else if (act_c == '$')
+    {
+        act_c=*in_string++;
+    }
+
+    int num=0;
+    while((num<7) && (0 != act_c))
+    {
+        act_c -= '0';  // -> 0..9 ..
+        act_c &= 0x1F; // a -> A
+        if (act_c > 0x09 )
+        {
+            act_c -= 6;
+        }
+        out_dez = (out_dez<<4)+act_c;
+        act_c=*in_string++;
+        ++num;
+    }
+    return out_dez;
 }

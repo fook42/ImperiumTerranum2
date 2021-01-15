@@ -62,8 +62,8 @@ void MAIN_FNC()
     XScreen = OpenScreenTagList(&NeuScreen, Tags);
     if (NULL == XScreen)
     {
-        ScreenModeID_HighRes = 0x20000+0x9004;
-        ScreenModeID_LowRes  = 0x20000+0x1000;
+        ScreenModeID_HighRes = 0x20000+0x9004; // PAL:HighRes Interlace (640x512)
+        ScreenModeID_LowRes  = 0x20000+0x1000; // PAL:LowRes (320x256)
         INITSTDTAGS();
         XScreen = OpenScreenTagList(&NeuScreen, Tags);
     }
@@ -87,7 +87,8 @@ void MAIN_FNC()
         puts("Can`t open screens!\n");
         return;
     }
-    WBench = CloseWorkBench();
+/*    WBench = CloseWorkBench();
+*/
     ScreenToFront(XScreen);
     // Alloc 29184 (76*96*4) + 28672 (64*64*7) + 122880 (80*192*8) Bytes.
     if ((!FillITBitMap(&ImgBitMap4, 76, 96, 4)) ||
@@ -118,7 +119,7 @@ void MAIN_FNC()
     //    INITCHANNELS();
     INITSOUNDS();
     i = 0;
-    if (!WBench)
+/*    if (!WBench)
     {
         SetRGB4(MyVPort_PTR[0],1,15,15,15);
         WRITE(320,100,1,WRITE_Center,MyRPort_PTR[0],3,PText[831]);
@@ -127,7 +128,7 @@ void MAIN_FNC()
         WAITLOOP(false);
         SetRast(MyRPort_PTR[0], 0);
     }
-
+*/
     SWITCHDISPLAY();
     if (!INITDESK(1))
     {

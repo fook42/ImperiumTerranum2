@@ -8,6 +8,7 @@ const char __ver[] = "$VER: ImperiumTerranum 2.801c (01.01.2021)\0";
 #include <proto/graphics.h>
 #include <proto/diskfont.h>
 #include <proto/medplayer.h>
+#include <proto/icon.h>
 #include <proto/asl.h>  // for screenmode-requester
 #include <dos/dostags.h>
 #include <workbench/startup.h>
@@ -23,13 +24,46 @@ const char __ver[] = "$VER: ImperiumTerranum 2.801c (01.01.2021)\0";
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-ULONG getScreenmode(char* RequestTitle, ULONG orgScreenmodeID)
+uint8 getMyScreenToolTypes(BYTE* waName)
+{
+    uint8 status = 0;
+    STRPTR *toolarray;
+    struct DiskObject* myIcon;
+    char* s;
+    if (NULL != waName)
+    {
+        myIcon = GetDiskObject(waName);
+        if (NULL != myIcon)
+        {
+            toolarray = myIcon->do_ToolTypes;
+            s = (char*) FindToolType(toolarray, "BigScreenMode");
+            if (NULL != s)
+            {
+                ScreenModeID_HighRes = string2hex(s);
+                status |= 1;
+            }
+            s = (char*) FindToolType(toolarray, "LowScreenMode");
+            if (NULL != s)
+            {
+                ScreenModeID_LowRes = string2hex(s);
+                status |= 2;
+            }
+            FreeDiskObject(myIcon);
+        }
+    }
+    return status;
+}
+
+
+ULONG getScreenmode(char* RequestTitle, int ReqWidth, int ReqHeight, ULONG orgScreenmodeID)
 {
     struct ScreenModeRequester* gSm_SMRequester;
     struct TagItem RequesterTags[]={{ASLSM_DoWidth, true},
                                     {ASLSM_DoHeight, true},
                                     {ASLSM_DoDepth, true},
                                     {ASLSM_InitialDisplayID, orgScreenmodeID},
+                                    {ASLSM_InitialDisplayWidth, (ULONG) ReqWidth},
+                                    {ASLSM_InitialDisplayHeight, (ULONG) ReqHeight},
                                     {ASLSM_InitialDisplayDepth, (ULONG) 8},
                                     {ASLSM_TitleText, (ULONG) RequestTitle},
                                     {TAG_DONE,0},
@@ -51,21 +85,22 @@ ULONG getScreenmode(char* RequestTitle, ULONG orgScreenmodeID)
     return newScreenmodeID;
 }
 
-int main(void)
+
+int main(int argc,char** argv)
 {
     struct Process   *proc;
     struct WBStartup *WBMsg = NULL;
+    struct WBArg     *wbarg = NULL;
     bool             prCLI;
     BPTR             CLIout;
-    int              rc = 0;
+    int              rc = RETURN_OK;
 
-    proc    = (struct Process *)FindTask(NULL);
+    proc = (struct Process *)FindTask(NULL);
 
     prCLI = proc->pr_CLI ? true : false;
     if (!prCLI)
     {
-        WaitPort(&proc->pr_MsgPort);
-        WBMsg = (struct WBStartup *)GetMsg(&proc->pr_MsgPort);
+        WBMsg = (struct WBStartup*) argv;
     }
 
     CLIout = prCLI ? Output() : Open(AUTOCON,MODE_OLDFILE);
@@ -79,12 +114,24 @@ int main(void)
             puts("Can't open medplayer.library!\n");
         }
 
-        ScreenModeID_HighRes = getScreenmode(SCREENREQTITLE_High, 0xA9004);
+        /* get icon -> tooltypes to detect screenmodes.. if started from WB */
+        if (!prCLI)
+        {
+            wbarg = WBMsg->sm_ArgList;
 
-        ScreenModeID_LowRes  = getScreenmode(SCREENREQTITLE_Low,  0xA1000);
+            /* if there's a directory lock for this wbarg, CD there */
+            if((wbarg->wa_Lock) && (*wbarg->wa_Name))
+                CurrentDir(wbarg->wa_Lock);
+ 
+            if (3 != getMyScreenToolTypes( wbarg->wa_Name ))
+            {
+                ScreenModeID_HighRes = getScreenmode(SCREENREQTITLE_High, 640, 512, 0xA9004);
+                ScreenModeID_LowRes  = getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000);
+            }
+        }
 
         MAIN_FNC();
-        rc = 0;
+        rc = RETURN_OK;
 
         if(MEDPlayerBase)
         {
@@ -100,11 +147,6 @@ int main(void)
 
     } else {
         rc = RETURN_FAIL;
-    }
-    if (WBMsg)
-    {
-        Forbid();
-        ReplyMsg(&WBMsg->sm_Message);
     }
 
     return rc;

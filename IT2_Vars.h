@@ -55,6 +55,7 @@ struct Image    GadImg2 = { 0, 0, 116, 20, 7, NULL , 127, 0, NULL};
 char _PTx_Player[] = "Player\0";
 #endif
 
+_EXTERN_  struct Library *MEDPlayerBase;
 
 #ifdef _DEBUG_
 _EXTERN_  uint8             PubScreenNum;
@@ -74,13 +75,7 @@ _EXTERN_  struct RastPort*  MyRPort_PTR[2];
 _EXTERN_  struct ViewPort*  MyVPort_PTR[2];
 
 _EXTERN_  struct ITBitMap   ImgBitMap4, ImgBitMap7, ImgBitMap8;
-
-// _EXTERN_  struct IntuitionBase* IBase;
-// _EXTERN_  struct Process*   Process_Ptr;
-// _EXTERN_  BPTR              OldWindow_Ptr;
-
-_EXTERN_  struct Library*   MEDPlayerBase;
-    
+  
 _EXTERN_  r_WormHole        MyWormHole[MAXHOLES];  // shift done..
 _EXTERN_  StrArr11          PNames[MAXCIVS-1];  // range 0..MAXCIVS-2
 _EXTERN_  sint16            SystemX[MAXSYSTEMS];  // new range 0..MAXSYSTEMS-1
@@ -151,5 +146,3 @@ _EXTERN_  sint16        MOVESHIP_ToX;
 _EXTERN_  sint16        MOVESHIP_ToY;
 _EXTERN_  sint16        MOVESHIP_FromX;
 _EXTERN_  sint16        MOVESHIP_FromY;
-
-extern struct Custom custom;

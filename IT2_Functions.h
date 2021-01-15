@@ -13,6 +13,8 @@ int it_round(double x);
 char* dez2out(sint32 value, uint8 digits, char* dest);
 char* float2out(double fvalue, uint8 dezdigits, uint8 flodigits, char* dest);
 char* hex2out(sint32 dez, uint8 digits, char* dest);
+ULONG string2hex(char* in_string);
+
 bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint8 Depth);
 
 uint8 GETCIVFLAG(uint8 CivVar);
