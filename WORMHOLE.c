@@ -488,7 +488,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     WRITE(256,Offset+57,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,s);
     if (0 == SystemHeader[SysID].Planets)
     {
-        CREATENEWSYSTEM(SysID, ActPlayer, 1);
+        CREATENEWSYSTEM(SysID, ActPlayer-1, 1);
     }
     SystemFlags[ActPlayer-1][SysID] |= FLAG_KNOWN;
     LINKSHIP(MyShipPtr, &SystemHeader[SysID].FirstShip,1);

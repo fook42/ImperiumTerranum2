@@ -196,7 +196,7 @@ bool INITSTARS()
         while (0 != SystemHeader[i].Planets);
         // mark this system for _all other_ players as "taken" by Civ
         for (j = 0; j < (MAXCIVS-2); ++j) { SystemFlags[j][i] = GETCIVFLAG(k+1); }
-        CREATENEWSYSTEM(i, k+1, HomePlanets); // create at least #HomePlanets in this system
+        CREATENEWSYSTEM(i, k, HomePlanets); // create at least #HomePlanets in this system
         if (0 == SystemHeader[i].Planets)
         {
             // @TODO cleanup

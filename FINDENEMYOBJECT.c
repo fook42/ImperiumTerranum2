@@ -83,7 +83,7 @@ void FINDENEMYOBJECT(uint8 ActSys, r_ShipHeader* ShipPtr)
         if (0 == btx)
         {
             MyShipPtr->Target = 1;
-            FINDENEMYSYSTEM(ActSys,CivVar,MyShipPtr);
+            FINDENEMYSYSTEM(ActSys,CivVar-1,MyShipPtr);
         }
     }
 }

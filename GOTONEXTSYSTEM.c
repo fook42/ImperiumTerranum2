@@ -56,7 +56,7 @@ uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* MyShipPtr)
     }
     if (0 == SystemHeader[SysID].Planets)
     {
-        CREATENEWSYSTEM(SysID, CivVar, 1);
+        CREATENEWSYSTEM(SysID, CivVar-1, 1);
     }
     if ((TARGET_STARGATE == SystemHeader[ActSys].FirstShip.SType)
      && (TARGET_STARGATE == SystemHeader[ SysID].FirstShip.SType))

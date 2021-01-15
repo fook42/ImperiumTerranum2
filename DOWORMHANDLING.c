@@ -47,7 +47,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
     NewSys--; // to shift the arrays
     if (SystemHeader[NewSys].Planets == 0)
     {
-        CREATENEWSYSTEM(NewSys, ActPlayer, 1);
+        CREATENEWSYSTEM(NewSys, ActPlayer-1, 1);
     }
     SystemFlags[ActPlayer-1][NewSys] |= FLAG_KNOWN;
     LINKSHIP(MyShipPtr, &SystemHeader[NewSys].FirstShip, 1);

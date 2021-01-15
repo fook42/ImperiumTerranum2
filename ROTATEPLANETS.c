@@ -1592,15 +1592,15 @@ void ROTATEPLANETS(uint8 ActSys)
         && (ActPlayer <= (MAXCIVS-2)) && (Save.Bevoelkerung[ActPlayer-1] <= 0))
     {
         j = rand()%Save.Systems;
-        if ((SystemFlags[0][j] & FLAG_CIV_MASK) == 0)
+        if (0 == (SystemFlags[0][j] & FLAG_CIV_MASK))
         {
-            if (SystemHeader[j].Planets == 0)
+            if (0 == SystemHeader[j].Planets)
             {
-                CREATENEWSYSTEM(j, ActPlayer, 1);
+                CREATENEWSYSTEM(j, ActPlayer-1, 1);
             }
             for(k = 0; k < SystemHeader[j].Planets; k++)
             {
-                if (Save.Bevoelkerung[ActPlayer-1] == 0)
+                if (0 == Save.Bevoelkerung[ActPlayer-1])
                 {
                     PlanetHeader = &(SystemHeader[j].PlanetMemA[k]);
                     if ((PlanetHeader->Class==CLASS_WATER) || (PlanetHeader->Class==CLASS_ICE)

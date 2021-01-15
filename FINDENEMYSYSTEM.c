@@ -37,8 +37,8 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
                         SysEntfernung = 255;
                     }
                 } else if ((l<SysEntfernung) && ((SystemFlags[0][i-1] & FLAG_CIV_MASK) != 0)
-                        && ((Save.WarState[CivVar-1][GETCIVVAR(SystemFlags[0][i-1])-1]==LEVEL_WAR)
-                          ||(Save.WarState[CivVar-1][GETCIVVAR(SystemFlags[0][i-1])-1]==LEVEL_COLDWAR)))
+                        && ((Save.WarState[CivVar][GETCIVVAR(SystemFlags[0][i-1])-1]==LEVEL_WAR)
+                          ||(Save.WarState[CivVar][GETCIVVAR(SystemFlags[0][i-1])-1]==LEVEL_COLDWAR)))
                 {
                     SysEntfernung = l;
                     SysID = i;
@@ -46,12 +46,12 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
             }
         }
     }
-    if (SysID == 0)
+    if (0 == SysID)
     {
         SysID = (rand()%Save.Systems)+1;
     }
 
-    if (SystemHeader[SysID-1].Planets == 0)
+    if (0 == SystemHeader[SysID-1].Planets)
     {   CREATENEWSYSTEM(SysID-1, CivVar, 1); }
 
     if ((SystemHeader[ActSys-1].FirstShip.SType == TARGET_STARGATE)
@@ -64,14 +64,14 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
     }
     for(i = 0; i < MAXHOLES; i++)
     {
-        if (MyWormHole[i].CivKnowledge[CivVar-1] == FLAG_KNOWN)
+        if (MyWormHole[i].CivKnowledge[CivVar] == FLAG_KNOWN)
         {
             for(j = 0; j < 2; j++)
             {
                 if ((MyWormHole[i].System[j] == ActSys) && ((SystemFlags[0][MyWormHole[i].System[1-j]-1] & FLAG_CIV_MASK) != 0))
                 {
-                    if ((Save.WarState[CivVar-1][GETCIVVAR(SystemFlags[0][MyWormHole[i].System[1-j]-1])-1]==LEVEL_WAR)
-                      ||(Save.WarState[CivVar-1][GETCIVVAR(SystemFlags[0][MyWormHole[i].System[1-j]-1])-1]==LEVEL_COLDWAR))
+                    if ((Save.WarState[CivVar][GETCIVVAR(SystemFlags[0][MyWormHole[i].System[1-j]-1])-1]==LEVEL_WAR)
+                      ||(Save.WarState[CivVar][GETCIVVAR(SystemFlags[0][MyWormHole[i].System[1-j]-1])-1]==LEVEL_COLDWAR))
                     {
                         SysID = MyWormHole[i].System[1-j];
                         /* *** Feindliche Systeme mit Wurmloch bevorzugt angreifen *** */
@@ -82,7 +82,7 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
     }
     for(i = 0; i < MAXHOLES; i++)
     {
-        if (MyWormHole[i].CivKnowledge[CivVar-1] == FLAG_KNOWN)
+        if (MyWormHole[i].CivKnowledge[CivVar] == FLAG_KNOWN)
         {
             for(j = 0; j < 2; j++)
             {

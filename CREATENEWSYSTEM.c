@@ -12,7 +12,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
     uint8   life_possible;
     r_PlanetHeader* MyPlanetHeader;
 
-    Save.ImperatorState[CivVar-1] += 50;
+    Save.ImperatorState[CivVar] += 50;
     SystemHeader[ActSys].Planets    = (rand()%(MAXPLANETS-3))+4;
     if (minHomePlanets > SystemHeader[ActSys].Planets) { SystemHeader[ActSys].Planets = minHomePlanets; }
     SystemHeader[ActSys].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[ActSys].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
