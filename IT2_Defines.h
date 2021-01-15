@@ -152,9 +152,6 @@ enum {  SCREEN_PLANET = 1,
 #define MAKEBORDER(A,B,C,D,E,F,G,H)  MAKEWINBORDER(&((A)->RastPort),B,C,D,E,F,G,H)
 #define RECT(A,B,C,D,E,F)            RECTWIN(&((A)->RastPort),B,C,D,E,F)
 
-#define WRITE_RPort0(A,B,C,D,E,F)    WRITE(A, B, C, D, MyRPort_PTR[0], E, F)
-#define WRITE_RPort1(A,B,C,D,E,F)    WRITE(A, B, C, D, MyRPort_PTR[1], E, F)
-
 // WRITE-Defines
 #define WRITE_Center  0x10
 #define WRITE_Right   0x20

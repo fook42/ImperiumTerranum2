@@ -245,5 +245,7 @@ void RECTWIN(struct RastPort* RPort, const uint16 Color, const uint16 LEdge, con
 void MAKEWINBORDER(struct RastPort* RPort, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge, uint8 Col1, uint8 Col2, uint8 Darken);
 void KLICKWINGAD(struct RastPort* RPort, const uint16 x, const uint16 y);
 struct Window* MAKEWINDOW(uint16 LEdge, uint16 TEdge, uint16 SizeX, uint16 SizeY, struct Screen* onScreen);
+void WRITE_RP0(const uint16 IPosX, const uint16 IPosY, const uint8 Color, const uint8 DMode, const uint8 TA, const char* WText);
+void WRITE_RP1(const uint16 IPosX, const uint16 IPosY, const uint8 Color, const uint8 DMode, const uint8 TA, const char* WText);
 
 #endif

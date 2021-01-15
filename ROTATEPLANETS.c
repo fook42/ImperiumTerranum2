@@ -123,9 +123,9 @@ void ROTATEPLANETS(uint8 ActSys)
                     strcpy(s, _PT_System);
                     strcat(s, ": ");
                     strcat(s, Save.SystemName.data[i]);
-                    WRITE(256,131,12,WRITE_Center,MyRPort_PTR[0],3, s);
-                    WRITE(256,151,12,WRITE_Center,MyRPort_PTR[0],3, _PT_Umlaufbahn_kollabiert);
-                    WRITE(256,171,12,WRITE_Center,MyRPort_PTR[0],3, _PT_Stargate_zerstoert);
+                    WRITE_RP0(256,131,12,WRITE_Center,3, s);
+                    WRITE_RP0(256,151,12,WRITE_Center,3, _PT_Umlaufbahn_kollabiert);
+                    WRITE_RP0(256,171,12,WRITE_Center,3, _PT_Stargate_zerstoert);
                     if (Save.PlayMySelf) { Delay(PAUSE); }
                     WAITLOOP(Save.PlayMySelf);
                     RECT_RP0(0,85,120,425,200);
@@ -1266,14 +1266,14 @@ void ROTATEPLANETS(uint8 ActSys)
                             && (Save.WarState[ActPlayer-1][i]!=LEVEL_UNKNOWN) && (Save.WarState[ActPlayer-1][i]!=LEVEL_NO_ALLIANZ))
                         {
                             MAKEBORDER(MyScreen[0],85,120,425,265,12,6,0);
-                            WRITE(256,136,GETCIVFLAG(i+1),(1|WRITE_Center),MyRPort_PTR[0],3,GETCIVNAME(i+1));
-                            WRITE(256,156,12,(1|WRITE_Center),MyRPort_PTR[0],3,PText[597]);
-                            WRITE(256,176,GETCIVFLAG(j+1),(1|WRITE_Center),MyRPort_PTR[0],3,GETCIVNAME(j+1));
-                            WRITE(256,196,12,(1|WRITE_Center),MyRPort_PTR[0],3,PText[598]);
+                            WRITE_RP0(256,136,GETCIVFLAG(i+1),(1|WRITE_Center),3,GETCIVNAME(i+1));
+                            WRITE_RP0(256,156,12,(1|WRITE_Center),3,PText[597]);
+                            WRITE_RP0(256,176,GETCIVFLAG(j+1),(1|WRITE_Center),3,GETCIVNAME(j+1));
+                            WRITE_RP0(256,196,12,(1|WRITE_Center),3,PText[598]);
                             DrawImage(&(MyScreen[0]->RastPort),&GadImg1,105,225);
                             DrawImage(&(MyScreen[0]->RastPort),&GadImg1,290,225);
-                            WRITE(162,227,8,WRITE_Center,MyRPort_PTR[0],3,_PT_Annehmen);
-                            WRITE(348,227,8,WRITE_Center,MyRPort_PTR[0],3,_PT_Ablehnen);
+                            WRITE_RP0(162,227,8,WRITE_Center,3,_PT_Annehmen);
+                            WRITE_RP0(348,227,8,WRITE_Center,3,_PT_Ablehnen);
                             while (LMB_PRESSED) { };
                             do
                             {
@@ -1314,8 +1314,8 @@ void ROTATEPLANETS(uint8 ActSys)
                         strcpy(s, PText[600]);
                         strcat(s, " ");
                         strcat(s, GETCIVNAME(i+1));
-                        WRITE(256,140,GETCIVFLAG(i+1),(1|WRITE_Center),MyRPort_PTR[0],3,s);
-                        WRITE(256,165,12,(1|WRITE_Center),MyRPort_PTR[0],3,PText[601]);
+                        WRITE_RP0(256,140,GETCIVFLAG(i+1),(1|WRITE_Center),3,s);
+                        WRITE_RP0(256,165,12,(1|WRITE_Center),3,PText[601]);
                         if (Save.PlayMySelf) { Delay(PAUSE); }
                         WAITLOOP(Save.PlayMySelf);
                         RECT_RP0(0,85,120,425,210);
@@ -1350,22 +1350,22 @@ void ROTATEPLANETS(uint8 ActSys)
                 if ((0 != Save.CivPlayer[ActPlayer-1]) && (!Save.PlayMySelf))
                 {
                     MAKEBORDER(MyScreen[0],80,120,430,265,12,6,0);
-                    WRITE(256,136,FLAG_OTHER,(1|WRITE_Center),MyRPort_PTR[0],3,PText[602]);
-                    WRITE(256,156,FLAG_OTHER,(1|WRITE_Center),MyRPort_PTR[0],3,PText[603]);
+                    WRITE_RP0(256,136,FLAG_OTHER,(1|WRITE_Center),3,PText[602]);
+                    WRITE_RP0(256,156,FLAG_OTHER,(1|WRITE_Center),3,PText[603]);
                     strcpy(s, GETCIVNAME(i));
                     strcat(s, " ");
                     strcat(s, PText[604]);
-                    WRITE(256,176,FLAG_OTHER,(1|WRITE_Center),MyRPort_PTR[0],3,s);
+                    WRITE_RP0(256,176,FLAG_OTHER,(1|WRITE_Center),3,s);
                     l = strlen(PText[605]);
                     memcpy(s, PText[605], l);
                     s[l++]=' ';
                     (void) dez2out(abs(Year)*11, 0, s+l);
                     l = abs(Year)*11;
-                    WRITE(256,196,FLAG_OTHER,(1|WRITE_Center),MyRPort_PTR[0],3,s);
+                    WRITE_RP0(256,196,FLAG_OTHER,(1|WRITE_Center),3,s);
                     DrawImage(&(MyScreen[0]->RastPort),&GadImg1,105,225);
                     DrawImage(&(MyScreen[0]->RastPort),&GadImg1,290,225);
-                    WRITE(162,227,8,WRITE_Center,MyRPort_PTR[0],3,_PT_Annehmen);
-                    WRITE(348,227,8,WRITE_Center,MyRPort_PTR[0],3,_PT_Ablehnen);
+                    WRITE_RP0(162,227,8,WRITE_Center,3,_PT_Annehmen);
+                    WRITE_RP0(348,227,8,WRITE_Center,3,_PT_Ablehnen);
                     do
                     {
                         Delay(RDELAY);
@@ -1445,17 +1445,17 @@ void ROTATEPLANETS(uint8 ActSys)
         {
             INFORMUSER();
             MAKEBORDER(MyScreen[0],35,110,475,210,12,6,0);
-            WRITE(256,150,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,s);
+            WRITE_RP0(256,150,ActPlayerFlag,WRITE_Center,3,s);
             strcpy(s, GETCIVNAME(ActPlayer));
             strcat(s, " ");
             strcat(s, PText[615]);
-            WRITE(256,127,12,WRITE_Center,MyRPort_PTR[0],3,s);
+            WRITE_RP0(256,127,12,WRITE_Center,3,s);
             strcpy(s, PText[616]);
             strcat(s, " ");
             strcat(s, Project.data[btx]);
             strcat(s, " ");
             strcat(s, PText[617]);
-            WRITE(256,175,12,WRITE_Center,MyRPort_PTR[0],3,s);
+            WRITE_RP0(256,175,12,WRITE_Center,3,s);
             if (Save.PlayMySelf) { Delay(PAUSE); }
             WAITLOOP(Save.PlayMySelf);
             RECT_RP0(0,35,110,475,210);
@@ -1469,11 +1469,11 @@ void ROTATEPLANETS(uint8 ActSys)
         {
             INFORMUSER();
             MAKEBORDER(MyScreen[0],30,80,480,205,12,6,0);
-            WRITE(256, 95,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[620]);
-            WRITE(256,115,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[621]);
-            WRITE(256,135,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[622]);
-            WRITE(256,155,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[623]);
-            WRITE(256,175,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[624]);
+            WRITE_RP0(256, 95,ActPlayerFlag,WRITE_Center,3,PText[620]);
+            WRITE_RP0(256,115,ActPlayerFlag,WRITE_Center,3,PText[621]);
+            WRITE_RP0(256,135,ActPlayerFlag,WRITE_Center,3,PText[622]);
+            WRITE_RP0(256,155,ActPlayerFlag,WRITE_Center,3,PText[623]);
+            WRITE_RP0(256,175,ActPlayerFlag,WRITE_Center,3,PText[624]);
             Warnung[ActPlayer] = 1;
             Save.ImperatorState[ActPlayer-1] = 700;
             WAITLOOP(false);
@@ -1483,10 +1483,10 @@ void ROTATEPLANETS(uint8 ActSys)
         {
             INFORMUSER();
             MAKEBORDER(MyScreen[0],30,80,480,185,12,6,0);
-            WRITE(256, 95,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[626]);
-            WRITE(256,115,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[627]);
-            WRITE(256,135,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[628]);
-            WRITE(256,155,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[629]);
+            WRITE_RP0(256, 95,ActPlayerFlag,WRITE_Center,3,PText[626]);
+            WRITE_RP0(256,115,ActPlayerFlag,WRITE_Center,3,PText[627]);
+            WRITE_RP0(256,135,ActPlayerFlag,WRITE_Center,3,PText[628]);
+            WRITE_RP0(256,155,ActPlayerFlag,WRITE_Center,3,PText[629]);
             Warnung[ActPlayer] = 2;
             WAITLOOP(false);
             RECT_RP0(0,30,80,480,185);
@@ -1556,9 +1556,9 @@ void ROTATEPLANETS(uint8 ActSys)
             s[len++]=' ';
             ActPlayer--; // @TODO .. only to shift the arrays!!!
             (void)dez2out(Save.CivPlayer[ActPlayer], 0, s+len);
-            WRITE(256,140,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,s);
-            WRITE(256,160,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[632]);
-            WRITE(256,180,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[633]);
+            WRITE_RP0(256,140,ActPlayerFlag,WRITE_Center,3,s);
+            WRITE_RP0(256,160,ActPlayerFlag,WRITE_Center,3,PText[632]);
+            WRITE_RP0(256,180,ActPlayerFlag,WRITE_Center,3,PText[633]);
             WAITLOOP(false);
             RECT_RP0(0,30,120,480,215);
             Save.CivPlayer[ActPlayer] = 0;

@@ -26,7 +26,7 @@ void CHECKGADS(uint8 GadID)
         RECT_RP1(0,542,141,568,310);
         txt[0]=Player+'0';
         txt[1]=0;
-        WRITE(555,(5-Player)*38+142,40,WRITE_Center,MyRPort_PTR[1],3,txt);
+        WRITE_RP1(555,(5-Player)*38+142,40,WRITE_Center,3,txt);
         if (7 == GadID) { return; }
     }
     if ((0 == GadID) || (6 == GadID))
@@ -42,8 +42,8 @@ void CHECKGADS(uint8 GadID)
             txt[1]=(Level%10)+'0';
             txt[2]=0;
         }
-        WRITE(460,(10-Level)*17+142,40,WRITE_Center,MyRPort_PTR[1],3, txt);
-        WRITE(460,              343,40,WRITE_Center,MyRPort_PTR[1],3, PText[Level+491]);
+        WRITE_RP1(460,(10-Level)*17+142,40,WRITE_Center,3, txt);
+        WRITE_RP1(460,              343,40,WRITE_Center,3, PText[Level+491]);
         if (6 == GadID) { return; }
     }
     if (0 == GadID)
@@ -62,10 +62,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.PlayMySelf)
         {
             DRAWGAD(80,1);
-            WRITE(240,115,40,1,MyRPort_PTR[1],3,PText[505]);
+            WRITE_RP1(240,115,40,1,3,PText[505]);
         } else {
             DRAWGAD(80,2);
-            WRITE(240,115,40,1,MyRPort_PTR[1],3,PText[506]);
+            WRITE_RP1(240,115,40,1,3,PText[506]);
         }
     }
     if ((0 == GadID) || (2 == GadID))
@@ -73,10 +73,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.SmallFight)
         {
             DRAWGAD(160,1);
-            WRITE(240,195,40,1,MyRPort_PTR[1],3,_PT_aus);
+            WRITE_RP1(240,195,40,1,3,_PT_aus);
         } else {
             DRAWGAD(160,2);
-            WRITE(240,195,40,1,MyRPort_PTR[1],3,_PT_ein);
+            WRITE_RP1(240,195,40,1,3,_PT_ein);
         }
     }
     if ((0 == GadID) || (3 == GadID))
@@ -84,10 +84,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.SmallLand)
         {
             DRAWGAD(240,1);
-            WRITE(240,275,40,1,MyRPort_PTR[1],3,PText[505]);
+            WRITE_RP1(240,275,40,1,3,PText[505]);
         } else {
             DRAWGAD(240,2);
-            WRITE(240,275,40,1,MyRPort_PTR[1],3,_PTx_Player);
+            WRITE_RP1(240,275,40,1,3,_PTx_Player);
         }
     }
     if ((0 == GadID) || (4 == GadID))
@@ -95,10 +95,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.NoWorm)
         {
             DRAWGAD(320,1);
-            WRITE(240,355,40,1,MyRPort_PTR[1],3,PText[505]);
+            WRITE_RP1(240,355,40,1,3,PText[505]);
         } else {
             DRAWGAD(320,2);
-            WRITE(240,355,40,1,MyRPort_PTR[1],3,_PTx_Player);
+            WRITE_RP1(240,355,40,1,3,_PTx_Player);
         }
     }
     if ((0 == GadID) || (5 == GadID))
@@ -106,10 +106,10 @@ void CHECKGADS(uint8 GadID)
         if (Save.FastMove)
         {
             DRAWGAD(400,1);
-            WRITE(240,435,40,1,MyRPort_PTR[1],3,PText[510]);
+            WRITE_RP1(240,435,40,1,3,PText[510]);
         } else {
             DRAWGAD(400,2);
-            WRITE(240,435,40,1,MyRPort_PTR[1],3,PText[511]);
+            WRITE_RP1(240,435,40,1,3,PText[511]);
         }
     }
 }
@@ -182,7 +182,7 @@ void OPTION_MULTIPLAYER(void)
         INITMENU();
         s[stringlen+1] = i + '1';
         s[stringlen+2] = ' ';
-        WRITE(320,50,40,WRITE_Center,MyRPort_PTR[1],3,s);
+        WRITE_RP1(320,50,40,WRITE_Center,3,s);
         btx = 7;
         if (0 == i)
         {
@@ -202,7 +202,7 @@ void OPTION_MULTIPLAYER(void)
                 s[stringlen+1] = Save.CivPlayer[j]+'0';
                 _s = s;
             }
-            WRITE(320, offset+8,40,WRITE_Center,MyRPort_PTR[1],3, _s);
+            WRITE_RP1(320, offset+8,40,WRITE_Center,3, _s);
             offset += 50;
         }
 
@@ -243,14 +243,14 @@ void OPTION_MULTIPLAYER(void)
     // pick the number of home-planets (1..5) **************
     SWITCHDISPLAY();
     INITMENU();
-    WRITE(320,100,40,WRITE_Center,MyRPort_PTR[1],3,PText[521]);
+    WRITE_RP1(320,100,40,WRITE_Center,3,PText[521]);
     offset = 123;
     for (i = 0; i < 5; ++i)
     {
         MAKEWINBORDER(MyRPort_PTR[1], offset, 200, offset+40, 240,14,40,0);
         s[0] = i+'1';
         s[1] = 0;
-        WRITE(offset+20,213,40,WRITE_Center,MyRPort_PTR[1],3,s);
+        WRITE_RP1(offset+20,213,40,WRITE_Center,3,s);
         offset += 88;
     }
 
@@ -304,7 +304,7 @@ void OPTIONMENU(uint8 Mode)
             ++Player;
         }
     }
-    WRITE(320,55,40,WRITE_Center,MyRPort_PTR[1],3,PText[513]);
+    WRITE_RP1(320,55,40,WRITE_Center,3,PText[513]);
 
     // draw left 5*2 images
     y = 80;
@@ -313,33 +313,33 @@ void OPTIONMENU(uint8 Mode)
         MAKEWINBORDER(MyRPort_PTR[1], 236, y+31, 390, y+54, 14, 40, 1);
         BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][0], 128, MyRPort_PTR[1], 60, y, 64, 64, 192);
         BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][1], 128, MyRPort_PTR[1],150, y, 64, 64, 192);
-        WRITE(240,y+10,40,0,MyRPort_PTR[1],3,button_txt[i]);
+        WRITE_RP1(240,y+10,40,0,3,button_txt[i]);
         y += 80;
     }
 
-    WRITE(460,100,40,WRITE_Center,MyRPort_PTR[1],3,"Level");
+    WRITE_RP1(460,100,40,WRITE_Center,3,"Level");
     if (1 == Mode)
     {
-        WRITE(455,120,40,0,MyRPort_PTR[1],1,"I");
-        WRITE(455,320,40,0,MyRPort_PTR[1],1,"J");
+        WRITE_RP1(455,120,40,0,1,"I");
+        WRITE_RP1(455,320,40,0,1,"J");
     }
     MAKEWINBORDER(MyRPort_PTR[1],445,139,475,312,14,40,1);
     MAKEWINBORDER(MyRPort_PTR[1],410,339,510,362,14,40,1);
 
-    WRITE(555,100,40,WRITE_Center,MyRPort_PTR[1],3,_PTx_Player);
+    WRITE_RP1(555,100,40,WRITE_Center,3,_PTx_Player);
     if (1 == Mode)
     {
-        WRITE(550,120,40,0,MyRPort_PTR[1],1,"I");
-        WRITE(550,320,40,0,MyRPort_PTR[1],1,"J");
+        WRITE_RP1(550,120,40,0,1,"I");
+        WRITE_RP1(550,320,40,0,1,"J");
     }
     MAKEWINBORDER(MyRPort_PTR[1],540,139,570,312,14,40,1);
 
     // new .. audio-option!!!
-    WRITE(507,410,40,WRITE_Center,MyRPort_PTR[1],3,"Audio");
+    WRITE_RP1(507,410,40,WRITE_Center,3,"Audio");
     RECT_RP1(0,442,431,504,454);
-    WRITE(473,435,40,WRITE_Center,MyRPort_PTR[1],3,_PT_ein);
+    WRITE_RP1(473,435,40,WRITE_Center,3,_PT_ein);
     RECT_RP1(0,510,431,572,454);
-    WRITE(541,435,40,WRITE_Center,MyRPort_PTR[1],3,_PT_aus);
+    WRITE_RP1(541,435,40,WRITE_Center,3,_PT_aus);
     // ----
 
     CHECKGADS(0);

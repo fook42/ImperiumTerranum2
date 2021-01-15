@@ -480,12 +480,12 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     }
     SysID = (rand()%Save.Systems);  // shifted by -1 for the arrays
     MAKEWINBORDER(MyRPort_PTR[0],70,Offset,440,Offset+85,12,6,0);
-    WRITE(256,Offset+13,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[467]);
-    WRITE(256,Offset+35,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[468]);
+    WRITE_RP0(256,Offset+13,ActPlayerFlag,WRITE_Center,3,PText[467]);
+    WRITE_RP0(256,Offset+35,ActPlayerFlag,WRITE_Center,3,PText[468]);
     strcpy(s, PText[469]);
     strcat(s, " ");
     strcat(s, Save.SystemName.data[SysID]);
-    WRITE(256,Offset+57,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,s);
+    WRITE_RP0(256,Offset+57,ActPlayerFlag,WRITE_Center,3,s);
     if (0 == SystemHeader[SysID].Planets)
     {
         CREATENEWSYSTEM(SysID, ActPlayer-1, 1);

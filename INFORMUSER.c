@@ -31,8 +31,8 @@ void INFORMUSER()
         PLAYERJINGLE(ActPlayer);
 
         MAKEWINBORDER(MyRPort_PTR[0],35,80,475,290,12,6,0);
-        WRITE(256,100,12,WRITE_Center,MyRPort_PTR[0],3,PText[207]);
-        WRITE(256,125,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,s);
+        WRITE_RP0(256,100,           12,WRITE_Center,3,PText[207]);
+        WRITE_RP0(256,125,ActPlayerFlag,WRITE_Center,3,s);
         DISPLAYLOGO(ActPlayer,192,150);
         PRINTGLOBALINFOS(ActPlayer-1);
         if (Save.PlayMySelf)

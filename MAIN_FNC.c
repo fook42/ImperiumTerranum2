@@ -122,8 +122,8 @@ void MAIN_FNC()
 /*    if (!WBench)
     {
         SetRGB4(MyVPort_PTR[0],1,15,15,15);
-        WRITE(320,100,1,WRITE_Center,MyRPort_PTR[0],3,PText[831]);
-        WRITE(320,130,1,WRITE_Center,MyRPort_PTR[0],3,PText[832]);
+        WRITE_RP0(320,100,1,WRITE_Center,3,PText[831]);
+        WRITE_RP0(320,130,1,WRITE_Center,3,PText[832]);
         ScreenToFront(MyScreen[0]);
         WAITLOOP(false);
         SetRast(MyRPort_PTR[0], 0);
@@ -306,9 +306,9 @@ void MAIN_FNC()
 
                         // OpenWin
                         MAKEWINBORDER(MyRPort_PTR[0],40,100,470,190,12,6,0);
-                        WRITE(256,113,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[834]);
-                        WRITE(256,137,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[835]);
-                        WRITE(256,161,ActPlayerFlag,WRITE_Center,MyRPort_PTR[0],3,PText[836]);
+                        WRITE_RP0(256,113,ActPlayerFlag,WRITE_Center,3,PText[834]);
+                        WRITE_RP0(256,137,ActPlayerFlag,WRITE_Center,3,PText[835]);
+                        WRITE_RP0(256,161,ActPlayerFlag,WRITE_Center,3,PText[836]);
                         WAITLOOP(Save.PlayMySelf);
                         RECT_RP0(0,40,100,470,190);
                         REFRESHDISPLAY();

@@ -26,9 +26,9 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
             DrawImage(MyRPort_PTR[0], &GadImg1, 518, pos);
             pos += 28;
         }
-        WRITE(576,418,0, WRITE_Center              ,MyRPort_PTR[0],3,_PT_Regierung);
-        WRITE(576,446,0, WRITE_Center              ,MyRPort_PTR[0],3,_PT_Hauptmenue);
-        WRITE(576,474,8,(WRITE_Center|WRITE_Shadow),MyRPort_PTR[0],3,_PT_Rundenende);
+        WRITE_RP0(576,418,0, WRITE_Center              ,3,_PT_Regierung);
+        WRITE_RP0(576,446,0, WRITE_Center              ,3,_PT_Hauptmenue);
+        WRITE_RP0(576,474,8,(WRITE_Center|WRITE_Shadow),3,_PT_Rundenende);
         RECT_RP0(0,0,0,511,511);
         SetAPen(MyRPort_PTR[0],6);
         for (i = 0; i<310; ++i)
@@ -53,7 +53,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
                 RECT_RP0(0              , pos, 490, pos+62, 511-it_round(CVal[i]/Factor));
                 RECT_RP0(GETCIVFLAG(i+1), pos, 511-it_round(CVal[i]/Factor), pos+62, 511);
                 (void) dez2out(CVal[i], 0, s);
-                WRITE(pos+66,502,45,WRITE_Right,MyRPort_PTR[0],0,s);
+                WRITE_RP0(pos+66,502,45,WRITE_Right,0,s);
             }
             pos += 64;
         }
@@ -104,7 +104,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
             RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             SetAPen(MyRPort_PTR[0],12);
             WritePixel(MyRPort_PTR[0],SystemX[i],SystemY[i]);
-            WRITE(SystemX[i]+3,SystemY[i]+3,12,1,MyRPort_PTR[0],0,Save.SystemName.data[i]);
+            WRITE_RP0(SystemX[i]+3,SystemY[i]+3,12,1,0,Save.SystemName.data[i]);
         }
         else
         {
@@ -123,7 +123,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
             } else {
                 RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             }
-            WRITE(SystemX[i]+3,SystemY[i]+3,CivmaskFlag,Write_DrawMode,MyRPort_PTR[0],0,Save.SystemName.data[i]);
+            WRITE_RP0(SystemX[i]+3,SystemY[i]+3,CivmaskFlag,Write_DrawMode,0,Save.SystemName.data[i]);
         }
     }
     PRINTGLOBALINFOS(DS_ActPlayer);

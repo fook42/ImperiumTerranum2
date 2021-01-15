@@ -27,7 +27,7 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
 
     TactStep = it_round((MyShipPtr->Tactical * 300) / MyShipPtr->Shield);
     RECT_RP1(0,386,296,513,310);
-    WRITE(443-TactStep,297,1,1,MyRPort_PTR[1],1,"#");
+    WRITE_RP1(443-TactStep,297,1,1,1,"#");
 
     Step = (MyShipPtr->Shield / 3);
     if (2 > MyShipPtr->Shield) { Step = 1.0f; }
@@ -49,20 +49,20 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
         Col2 -= 30;
     }
     (void) dez2out(MyShipPtr->Shield + MyShipPtr->Tactical*3, 3, s);
-    WRITE(275,296,5,1,MyRPort_PTR[1],1,s);
+    WRITE_RP1(275,296,5,1,1,s);
     (void) dez2out(it_round((MyShipPtr->Shield+MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, s);
-    WRITE(324,296,5,1,MyRPort_PTR[1],1,s);
+    WRITE_RP1(324,296,5,1,1,s);
 
     w1 = it_round((MyShipPtr->Weapon/10.0+1)*(ShipData(MyShipPtr->SType).WeaponPower-MyShipPtr->Tactical));
     w2 = it_round((MyShipPtr->Weapon/10.0+1)* ShipData(MyShipPtr->SType).WeaponPower);
     (void) dez2out(w1, 3, s);
-    WRITE(522,296,5,1,MyRPort_PTR[1],1,s);
+    WRITE_RP1(522,296,5,1,1,s);
     (void) dez2out(it_round((double)w1/w2*100.0), 3, s);
-    WRITE(571,296,5,1,MyRPort_PTR[1],1,s);
+    WRITE_RP1(571,296,5,1,1,s);
 
     Step = 111.0 / ShipData(MyShipPtr->SType).MaxMove;
     RECT_RP1(0,386,427,513,442);
-    WRITE(498-it_round(Step*MyShipPtr->Repair),429,1,1,MyRPort_PTR[1],1,"#");
+    WRITE_RP1(498-it_round(Step*MyShipPtr->Repair),429,1,1,1,"#");
 
     if (0 == MyShipPtr->Repair)
     {
@@ -74,10 +74,10 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
         (void) dez2out(((ShipData(MyShipPtr->SType).MaxShield-MyShipPtr->Shield) / MyShipPtr->Repair), 3, s);
         _s=(char*) &s;
     }
-    WRITE(337,428,5,1,MyRPort_PTR[1],1, _s);
+    WRITE_RP1(337,428,5,1,1, _s);
 
     (void) dez2out((ShipData(MyShipPtr->SType).MaxMove - MyShipPtr->Repair), 3, s);
-    WRITE(522,428,5,1,MyRPort_PTR[1],1,s);
+    WRITE_RP1(522,428,5,1,1,s);
 }
 
 void SHIPINFO(uint8 ActSys)
@@ -108,7 +108,7 @@ void SHIPINFO(uint8 ActSys)
     strcpy(s+l1+l2, "Tech.img");
     if (!DISPLAYIMAGE(s,6,7,256,498,5,MyScreen[1],0)) { }
 
-    WRITE(290,15,1,0,MyRPort_PTR[1],3,Project.data[MyShipPtr->SType]);
+    WRITE_RP1(290,15,1,0,3,Project.data[MyShipPtr->SType]);
     s[0]='-'; s[1]=' ';
     _s2=s+2;
     _s = SHIPINFO_MAKETEXT(_s2, PText[190]);
@@ -120,43 +120,43 @@ void SHIPINFO(uint8 ActSys)
         case WEAPON_PTORPEDO:  strcpy(_s, PText[189]); break;
         default: (void) dez2out(MyShipPtr->Weapon, 0, _s);
     }
-    WRITE(290,42,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,42,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[191]);
     (void)dez2out(it_round((double)ShipData(MyShipPtr->SType).WeaponPower*(MyShipPtr->Weapon/10+1)), 0, _s);
-    WRITE(290,62,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,62,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[192]);
     (void)dez2out(ShipData(MyShipPtr->SType).MaxShield, 0, _s);
-    WRITE(290,82,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,82,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[193]);
     (void)dez2out(MyShipPtr->ShieldBonus, 0, _s);
-    WRITE(290,102,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,102,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[194]);
     _s = float2out( ((double) MyShipPtr->Shield / ShipData(MyShipPtr->SType).MaxShield*100.0), 0, 2, _s);
     *_s++=' ';
     *_s++='%';
     *_s  =0;
-    WRITE(290,122,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,122,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[195]);
     (void)dez2out(ShipData(MyShipPtr->SType).MaxMove, 0, _s);
-    WRITE(290,142,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,142,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[196]);
     (void)dez2out( ((MyShipPtr->Ladung & MASK_SIEDLER) / 16), 0, _s);
-    WRITE(290,162,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,162,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[197]);
     (void)dez2out( (MyShipPtr->Ladung & MASK_LTRUPPS), 0, _s);
-    WRITE(290,182,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,182,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[198]);
     _s = dez2out(it_round((double) MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, _s);
     strcpy(_s, "% belegt");
-    WRITE(290,202,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,202,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[199]);
     if (200 > MyShipPtr->Age)
@@ -166,7 +166,7 @@ void SHIPINFO(uint8 ActSys)
         *_s++=' ';
         strcpy(_s, PText[200]);
     }
-    WRITE(290,222,1,0,MyRPort_PTR[1],2,s);
+    WRITE_RP1(290,222,1,0,2,s);
 
     SHIPINFO_WRITEDATA(MyShipPtr);
     ScreenToFront(MyScreen[1]);
