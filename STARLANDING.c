@@ -641,7 +641,7 @@ void STARLANDINGEXIT(bool Error, r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8
 
 void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
 {
-    struct NewScreen    SL_NeuScreen = {16,0,256,256,5,0,0,0,CUSTOMSCREEN+SCREENQUIET,NULL,NULL,NULL,NULL};
+    struct NewScreen SL_NeuScreen = {16,0,256,256,5,0,0,0,CUSTOMSCREEN|SCREENQUIET,NULL,NULL,NULL,NULL};
     int             i;
     uint8           CivVar;
     r_ShipHeader*   MyShipPtr;
@@ -656,6 +656,10 @@ void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
                                 {TAG_DONE,0},
                                 {TAG_DONE,0}};
 
+    if ((LowRes_Width < 256) || (LowRes_Height < 256))
+    {
+        SL_NeuScreen.Type |= AUTOSCROLL;
+    }
     if (Save.SmallLand)
     {
         MOVESHIP_SMALLANDING(PPtr,SPtr,ActSys);

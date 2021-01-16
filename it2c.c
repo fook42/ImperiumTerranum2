@@ -1,4 +1,4 @@
-const char __ver[] = "$VER: ImperiumTerranum 2.801c (01.01.2021)\0";
+const char __ver[] = "$VER: ImperiumTerranum 2.802c (17.01.2021)\0";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,60 +16,34 @@ const char __ver[] = "$VER: ImperiumTerranum 2.801c (01.01.2021)\0";
 #define AUTOCON "CON:20/20/500/120/mycon/auto/close/wait"
 #define _EXTERN_
 
-#define SCREENREQTITLE_High "HIGHRES (min. 640x512) screenmode"
-#define SCREENREQTITLE_Low  "LOWRES (min. 320x256) screenmode"
+#define SCREENREQTITLE_High "HIGHRES 640x512 screenmode"
+#define SCREENREQTITLE_Low  "LOWRES 320x256 screenmode"
 
 #include "IT2_Defines.h"
 #include "IT2_Types.h"
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-uint8 getMyScreenToolTypes(BYTE* waName)
-{
-    uint8 status = 0;
-    STRPTR *toolarray;
-    struct DiskObject* myIcon;
-    char* s;
-    if (NULL != waName)
-    {
-        myIcon = GetDiskObject(waName);
-        if (NULL != myIcon)
-        {
-            toolarray = myIcon->do_ToolTypes;
-            s = (char*) FindToolType(toolarray, "BigScreenMode");
-            if (NULL != s)
-            {
-                ScreenModeID_HighRes = string2hex(s);
-                status |= 1;
-            }
-            s = (char*) FindToolType(toolarray, "LowScreenMode");
-            if (NULL != s)
-            {
-                ScreenModeID_LowRes = string2hex(s);
-                status |= 2;
-            }
-            FreeDiskObject(myIcon);
-        }
-    }
-    return status;
-}
 
-
-ULONG getScreenmode(char* RequestTitle, int ReqWidth, int ReqHeight, ULONG orgScreenmodeID)
+BOOL getScreenmode(char* RequestTitle, int ReqWidth, int ReqHeight, ULONG orgScreenmodeID, ULONG* newScreenmodeID, UWORD* newScreenWidth, UWORD* newScreenHeight)
 {
     struct ScreenModeRequester* gSm_SMRequester;
-    struct TagItem RequesterTags[]={{ASLSM_DoWidth, true},
-                                    {ASLSM_DoHeight, true},
+    struct TagItem RequesterTags[]={{ASLSM_DoWidth, false},
+                                    {ASLSM_DoHeight, false},
                                     {ASLSM_DoDepth, true},
                                     {ASLSM_InitialDisplayID, orgScreenmodeID},
                                     {ASLSM_InitialDisplayWidth, (ULONG) ReqWidth},
                                     {ASLSM_InitialDisplayHeight, (ULONG) ReqHeight},
                                     {ASLSM_InitialDisplayDepth, (ULONG) 8},
+                                    {ASLSM_MinDepth, (ULONG) 8},
+                                    {ASLSM_MaxDepth, (ULONG) 8},
                                     {ASLSM_TitleText, (ULONG) RequestTitle},
                                     {TAG_DONE,0},
                                     {TAG_END,0} };
-    bool    rc;
-    ULONG   newScreenmodeID = orgScreenmodeID;
+    bool    rc = false;
+    *newScreenmodeID = orgScreenmodeID;
+    *newScreenWidth  = ReqWidth;
+    *newScreenHeight = ReqHeight;
 
     gSm_SMRequester = AllocAslRequest(ASL_ScreenModeRequest, RequesterTags);
 
@@ -78,11 +52,13 @@ ULONG getScreenmode(char* RequestTitle, int ReqWidth, int ReqHeight, ULONG orgSc
         rc = AslRequest( (APTR) gSm_SMRequester, NULL );
         if (rc)
         {
-            newScreenmodeID = gSm_SMRequester->sm_DisplayID;
+            *newScreenmodeID = gSm_SMRequester->sm_DisplayID;
+            *newScreenWidth  = (UWORD) gSm_SMRequester->sm_DisplayWidth;
+            *newScreenHeight = (UWORD) gSm_SMRequester->sm_DisplayHeight;
         }
         FreeAslRequest( gSm_SMRequester );
     }
-    return newScreenmodeID;
+    return rc;
 }
 
 
@@ -121,12 +97,15 @@ int main(int argc,char** argv)
 
             /* if there's a directory lock for this wbarg, CD there */
             if((wbarg->wa_Lock) && (*wbarg->wa_Name))
-                CurrentDir(wbarg->wa_Lock);
- 
-            if (3 != getMyScreenToolTypes( wbarg->wa_Name ))
             {
-                ScreenModeID_HighRes = getScreenmode(SCREENREQTITLE_High, 640, 512, 0xA9004);
-                ScreenModeID_LowRes  = getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000);
+                CurrentDir(wbarg->wa_Lock);
+            }
+ 
+            if (!getMyScreenToolTypes( wbarg->wa_Name, &ScreenModeID_HighRes, &ScreenModeID_LowRes ))
+            {
+                (void) getScreenmode(SCREENREQTITLE_High, 640, 512, 0xA9004, &ScreenModeID_HighRes, &HighRes_Width, &HighRes_Height);
+                (void) getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000, &ScreenModeID_LowRes,  &LowRes_Width,  &LowRes_Height);
+                (void) setMyScreenToolTypes( wbarg->wa_Name, ScreenModeID_HighRes, ScreenModeID_LowRes );
             }
         }
 

@@ -13,7 +13,7 @@ void MAIN_FNC()
 
     BPTR    FHandle;
     struct MMD0 *SndModulePtr = 0;
-    struct NewScreen  NeuScreen = {0,0,116,201,7,0,0,HIRES+LACE,CUSTOMSCREEN+SCREENQUIET,NULL,NULL,NULL,NULL};
+    struct NewScreen  NeuScreen = {0,0,116,201,7,0,0,HIRES+LACE,CUSTOMSCREEN|SCREENQUIET,NULL,NULL,NULL,NULL};
 
 
     if (!INITLANG()) { return; }

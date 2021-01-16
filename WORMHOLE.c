@@ -392,7 +392,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
     bool    _WORMFLIGHT = false;
 
     r_ShipHeader*   MyShipPtr;
-    struct NewScreen    WH_NeuScreen = {0,0,320,256,4,0,0,GENLOCK_VIDEO,CUSTOMSCREEN+SCREENQUIET,NULL,NULL,NULL,NULL};
+    struct NewScreen WH_NeuScreen = {0,0,320,256,4,0,0,GENLOCK_VIDEO,CUSTOMSCREEN|SCREENQUIET,NULL,NULL,NULL,NULL};
     struct TagItem  newTags[] ={{SA_DisplayID,  ScreenModeID_LowRes},
                             {SA_Interleaved,    true},
                             {SA_Draggable,      false},
@@ -401,6 +401,11 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
                             {TAG_DONE,0},
                             {TAG_DONE,0}};
  
+    if ((LowRes_Width < 320) || (LowRes_Height < 256))
+    {
+        WH_NeuScreen.Type |= AUTOSCROLL;
+    }
+
     Error = true;
     MyShipPtr = ShipPtr;
     WORMHOLE_ShipShield = it_round(MyShipPtr->Shield / ShipData(MyShipPtr->SType).MaxShield * 760.0);

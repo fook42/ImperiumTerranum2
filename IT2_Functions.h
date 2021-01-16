@@ -7,7 +7,12 @@
 #include <proto/dos.h>
 #include <proto/exec.h>
 #include <proto/medplayer.h>
+#include <proto/icon.h>
 #include "IT2_Types.h"
+
+
+BOOL getMyScreenToolTypes(BYTE* waName, ULONG* Hires_ID_PTR, ULONG* Lowres_ID_PTR);
+BOOL setMyScreenToolTypes(BYTE* waName, ULONG Hires_ID, ULONG Lowres_ID);
 
 int it_round(double x);
 char* dez2out(sint32 value, uint8 digits, char* dest);

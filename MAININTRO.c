@@ -84,7 +84,6 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* 
     {
         if (NULL != MyScreen[i])
         {
-           //  RECTWIN(MyRPort_PTR[i],0,0,75,639,434);
             CloseScreen(MyScreen[i]);
             MyScreen[i] = NULL;
             MyRPort_PTR[i] = NULL;

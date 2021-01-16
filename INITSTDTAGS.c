@@ -10,6 +10,7 @@ void INITSTDTAGS()
     struct TagItem newTags[] = {{SA_DisplayID,   ScreenModeID_HighRes},
                                 {SA_Interleaved, true},
                                 {SA_Draggable,   false},
+                                {SA_AutoScroll,  true},
                                 {SA_Pens,        (ULONG) &Pens},
                                 {SA_Colors,      (ULONG) &ColSpec},
 #ifdef _DEBUG_

@@ -63,7 +63,7 @@ _EXTERN_  uint8             PubScreenNum;
 
 _EXTERN_  bool              Audio_enable;
 
-_EXTERN_  struct TagItem    Tags[7];
+_EXTERN_  struct TagItem    Tags[8];
 _EXTERN_  PenArr            Pens;
 _EXTERN_  ColSpecArr        ColSpec;
 
@@ -110,6 +110,7 @@ _EXTERN_  uint8*        TextMemA;
 _EXTERN_  uint8*        PathMemA;
 _EXTERN_  uint32        TextMemL, PathMemL, MaquesShips;
 _EXTERN_  uint32        ScreenModeID_HighRes, ScreenModeID_LowRes;
+_EXTERN_  uint16        HighRes_Width, HighRes_Height, LowRes_Width, LowRes_Height;
 _EXTERN_  sint32        Year;
 _EXTERN_  sint16        OffsetX, OffsetY, OldX, OldY;
 

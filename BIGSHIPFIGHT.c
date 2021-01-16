@@ -550,13 +550,19 @@ void BIGFIGHTEXIT(uint8 Mode, uint8 ActSys, uint8* BIGSHIPFIGHT)
 uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 ActSys)
 {
     uint8   _BIGSHIPFIGHT = 2;
-    struct NewScreen    BSF_NeuScreen = {0,0,640,512,4,0,0,HIRES+LACE,CUSTOMSCREEN+SCREENQUIET, NULL,NULL,NULL,NULL};
+    struct NewScreen BSF_NeuScreen = {0,0,640,512,4,0,0,HIRES+LACE,CUSTOMSCREEN|SCREENQUIET, NULL,NULL,NULL,NULL};
     struct r_Col BSF_Colors[]= {{0,0,0},   {13,13,15}, {12,12,14}, {11,11,13},
                                 {10,10,12},{9,9,11},   {8,8,10},   {15,0,0},
                                 {7,5,5},   {15,15,0},  {15,2,12},  {15,15,15},
                                 {1,1,15}};
     uint8   l;
     uint8   i, j;
+
+    if ((HighRes_Width < 640) || (HighRes_Height < 512))
+    {
+        BSF_NeuScreen.Type |= AUTOSCROLL;
+    }
+
 
     ShipPtr1 = Ship1;
     ShipPtr2 = Ship2;

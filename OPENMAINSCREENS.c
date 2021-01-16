@@ -5,11 +5,16 @@
 
 bool OPENMAINSCREENS()
 {
-    struct NewScreen  NeuScreen = {0,0,640,512,0,0,0,HIRES+LACE,CUSTOMSCREEN+SCREENQUIET, NULL,NULL,NULL,NULL};
+
+    struct NewScreen  NeuScreen = {0,0,640,512,0,0,0,HIRES+LACE,CUSTOMSCREEN|SCREENQUIET, NULL,NULL,NULL,NULL};
     struct NewWindow  NeuWindow = {0,0,640,512,0,0,RAWKEY,SMART_REFRESH+BACKDROP+BORDERLESS, NULL,NULL,NULL,NULL,NULL,640,512,640,512,CUSTOMSCREEN};
 //  struct NewWindow  NeuWindow = {0,0,640,512,0,0,RAWKEY,SIMPLE_REFRESH+BACKDROP+BORDERLESS, NULL,NULL,NULL,NULL,NULL,640,512,640,512,CUSTOMSCREEN};
     int     i;
 
+    if ((HighRes_Width < 640) || (HighRes_Height < 512))
+    {
+        NeuScreen.Type |= AUTOSCROLL;
+    }
     INITSTDTAGS();
     ColSpec = (ColSpecArr) {{ 0,0,0,0,-1 }};
     for (i = 0; i < 2; i++)

@@ -116,15 +116,14 @@ ULONG string2hex(char* in_string)
     {
         act_c=*in_string++;
     }
-
     int num=0;
-    while((num<7) && (0 != act_c))
+    while((num<8) && (0 != act_c))
     {
         act_c -= '0';  // -> 0..9 ..
         act_c &= 0x1F; // a -> A
         if (act_c > 0x09 )
         {
-            act_c -= 6;
+            act_c -= 7;
         }
         out_dez = (out_dez<<4)+act_c;
         act_c=*in_string++;
