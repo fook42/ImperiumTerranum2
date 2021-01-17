@@ -4,30 +4,32 @@
 CC      = /opt/amiga/bin/m68k-amigaos-gcc
 STRIP   = /opt/amiga/bin/m68k-amigaos-strip
 CFLAGS  = -Wpointer-arith -noixemul -flto -s -g0 -Os -m68020-60 -Wall -Wno-pointer-sign 
-TARGET  = IT2C
 LDFLAGS = -lm -noixemul -flto
 
-OBJDIR = objdir
-SRC = $(wildcard *.c)
-objects := $(patsubst %.c,%.o,$(wildcard *.c))
-# OBJS = $(addprefix $(OBJDIR)/,$(dir $(SOURCE)), $(notdir $(SOURCE:.c=.o)))
+TARGET  = IT2C
 
-clean:
-	@rm -f $(TARGET) || true
-	@rm -f $(objects) || true
+BUILD_DIR ?= ./build
+SRC_DIR ?= ./src
+INC_DIR ?= ./include
+OBJ_DIR ?= objdir
+SRC = $(shell find $(SRC_DIR) -name *.c)
+objects := $(SRC:%=$(BUILD_DIR)/%.o)
 
-all : clean $(objects)
-	@echo "building the target $@"
-	@$(CC) $(CFLAGS) -o $(TARGET) $(objects) $(LDFLAGS)
-	@rm -f $(objects)
+INC_FLAGS := $(addprefix -I,$(INC_DIR))
 
-$(TARGET): $(SRC)
-	echo "============="
-	echo "building the target $@"
-	echo "============="
-	@$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+$(TARGET): $(objects)
+	@$(CC) $(CFLAGS) $(objects) -o $@ $(LDFLAGS)
 	@$(STRIP) $@ --strip-all
 	@echo "-- Link finished --"
 
-%.o : %.c
-	$(CC) $(CFLAGS) -c $<
+$(BUILD_DIR)/%.c.o : %.c
+	$(MKDIR_P) $(dir $@)
+	$(CC) $(INC_FLAGS) $(CFLAGS) -c $< -o $@	
+
+.PHONY: clean
+
+clean:
+	$(RM) -r $(BUILD_DIR)
+
+MKDIR_P ?= mkdir -p
+
