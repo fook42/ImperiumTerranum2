@@ -182,7 +182,7 @@ void CALLOTHERPLAYER(uint8 CivVar, uint8 CivFlag)
     DISPLAYLOGO(ActPlayer,96,150);
     DISPLAYLOGO(CivVar,287,150);
     WAITLOOP(false);
-    RECT_RP0(0,35,80,475,290);
+    RECT_RP0_C0(35,80,475,290);
     REFRESHDISPLAY();
 }
 
@@ -306,7 +306,7 @@ void DIPLOMACY()
                                 } else {
                                     NEGATIVEANSWER();
                                 }
-                                RECT_RP0(0,30,250,480,360);   // clear -Area
+                                RECT_RP0_C0(30,250,480,360);   // clear -Area
                             } break;
             case OPT_TECH:  {
                                 strcpy(s2, PText[438]);
@@ -380,7 +380,7 @@ void DIPLOMACY()
                                     WRITE_RP0(256,140,12,WRITE_Center,3,PText[445]);
                                     WRITE_RP0(256,160,12,WRITE_Center,3,PText[446]);
                                     WAITLOOP(false);
-                                    RECT_RP0(0,85,120,425,200);
+                                    RECT_RP0_C0(85,120,425,200);
                                     REFRESHDISPLAY();
                                 }
                             } break;
@@ -442,7 +442,7 @@ void DIPLOMACY()
                                 (void) dez2out(XCosts, 0, s2);
                                 WRITE_RP0(256,173,      CivFlag,WRITE_Center,3,s2);
                                 WAITLOOP(false);
-                                RECT_RP0(0,85,120,425,200);
+                                RECT_RP0_C0(85,120,425,200);
                                 if ((Save.WorldFlag == ActPlayerFlag) && (CivVar == 8))
                                 {
                                     STOPCIVILWAR(0);
@@ -494,7 +494,7 @@ void DIPLOMACY()
                                 WRITE_RP0(256,140,12,WRITE_Center,3,PText[445]);    // Keine weiteren
                                 WRITE_RP0(256,160,12,WRITE_Center,3,PText[446]);    // Zivilisationen bekannt.
                                 WAITLOOP(false);
-                                RECT_RP0(0,85,120,425,200);
+                                RECT_RP0_C0(85,120,425,200);
                                 REFRESHDISPLAY();
                             }
                         } break;
@@ -553,7 +553,7 @@ void DIPLOMACY()
                             {
                                 REQUEST(PText[453],PText[454],ActPlayerFlag,ActPlayerFlag);
                             }
-                            RECT_RP0(0,85,120,425,200);
+                            RECT_RP0_C0(85,120,425,200);
                             REFRESHDISPLAY();
                         } break;
         case OPT_SHIP:  {
@@ -564,7 +564,7 @@ void DIPLOMACY()
                                 PLANET_MyShipPtr->Owner = CivFlag;
                                 PLANET_MyShipPtr->Moving = 0;
                             }
-                            RECT_RP0(0,85,120,425,200);
+                            RECT_RP0_C0(85,120,425,200);
                             REFRESHDISPLAY();
                             Delay(15);
                         } break;
@@ -807,7 +807,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
             {
                 l = (MouseY(0)-100) / 22;
                 KLICKGAD(198,100+l*22);
-                RECT_RP0(0,194,119,316,122+GadCnt*22);
+                RECT_RP0_C0(194,119,316,122+GadCnt*22);
                 REFRESHDISPLAY();
                 switch (GadSet[l])
                 {
@@ -987,7 +987,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                             }
                             while (RMB_NOTPRESSED);
                             PLAYSOUND(1,300);
-                            RECT_RP0(0,42,148,469,273);
+                            RECT_RP0_C0(42,148,469,273);
                             REFRESHDISPLAY();
                             if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) != ActPlayerFlag)
                             {
@@ -1057,7 +1057,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
     }
     while ((!b) && (RMB_NOTPRESSED));
     if (RMB_PRESSED) { PLAYSOUND(1,300); }
-    RECT_RP0(0,194,119,318,280);
+    RECT_RP0_C0(194,119,318,280);
     REFRESHDISPLAY();
 
     return true;

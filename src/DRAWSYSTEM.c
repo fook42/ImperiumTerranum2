@@ -211,7 +211,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
                 }
                 if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
                 {
-                    RECT_RP0(0,x,y,x+31,y+31);
+                    RECT_RP0_C0(x,y,x+31,y+31);
                     BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32,32,MyRPort_PTR[0],x,y,31,31,192);
                 }
                 if (TARGET_STARGATE != UseShipPtr->SType)

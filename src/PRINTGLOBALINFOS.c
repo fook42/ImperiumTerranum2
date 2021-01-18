@@ -9,7 +9,7 @@ void PRINTGLOBALINFOS(uint8 PGI_ActPlayer)
 
     (void) dez2out(Year, 0, s);
     // clean the area before...
-    RECT_RP0(0,519,132,632,149);
+    RECT_RP0_C0(519,132,632,149);
     WRITE_RP0(575,134,109,(1|WRITE_Center),1,s);
 
     if ((true == Valid) && ((0 != Save.CivPlayer[PGI_ActPlayer]) || (!Save.PlayMySelf)))
@@ -22,7 +22,7 @@ void PRINTGLOBALINFOS(uint8 PGI_ActPlayer)
             s[1]=0;
         }
         // clean the area before...
-        RECT_RP0(0,519,183,632,200);
+        RECT_RP0_C0(519,183,632,200);
         WRITE_RP0(640,185,109,(1|WRITE_Right),1,s);
 
         if ((0 != Save.CivPlayer[PGI_ActPlayer]) && (Informed))
@@ -33,7 +33,7 @@ void PRINTGLOBALINFOS(uint8 PGI_ActPlayer)
             s[1]=0;
         }
         // clean the area before...
-        RECT_RP0(0,519,234,632,251);
+        RECT_RP0_C0(519,234,632,251);
         WRITE_RP0(640,236,109,(1|WRITE_Right),1,s);
     }
 }

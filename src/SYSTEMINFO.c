@@ -129,13 +129,13 @@ void SYSTEMINFO(uint8 ActSys)
                     // show explosion-animation
                     if ((x>=0) && (x<481) && (y>=0) && (y<481))
                     {
-                        RECT_RP0(0,x,y,x+31,y+31);
+                        RECT_RP0_C0(x,y,x+31,y+31);
                         for(i = 0; i < 16; ++i)
                         {
                             BltBitMapRastPort((struct BitMap*) &ImgBitMap4,i*32,0,MyRPort_PTR[0],x,y,31,31,192);
                             Delay(5);
                         }
-                        RECT_RP0(0,x,y,x+31,y+31);
+                        RECT_RP0_C0(x,y,x+31,y+31);
                     }
                     Delay(10);
                     // remove ship/fleet

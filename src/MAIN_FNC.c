@@ -310,7 +310,7 @@ void MAIN_FNC()
                         WRITE_RP0(256,137,ActPlayerFlag,WRITE_Center,3,PText[835]);
                         WRITE_RP0(256,161,ActPlayerFlag,WRITE_Center,3,PText[836]);
                         WAITLOOP(Save.PlayMySelf);
-                        RECT_RP0(0,40,100,470,190);
+                        RECT_RP0_C0(40,100,470,190);
                         REFRESHDISPLAY();
                         // CloseWin
 

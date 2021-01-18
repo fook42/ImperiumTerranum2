@@ -29,7 +29,7 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
         WRITE_RP0(576,418,0, WRITE_Center              ,3,_PT_Regierung);
         WRITE_RP0(576,446,0, WRITE_Center              ,3,_PT_Hauptmenue);
         WRITE_RP0(576,474,8,(WRITE_Center|WRITE_Shadow),3,_PT_Rundenende);
-        RECT_RP0(0,0,0,511,511);
+        RECT_RP0_C0(0,0,511,511);
         SetAPen(MyRPort_PTR[0],6);
         for (i = 0; i<310; ++i)
         {
@@ -50,8 +50,8 @@ void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
         {
             if ((i<7) || ((0 != Save.WorldFlag) && (WFLAG_FIELD != Save.WorldFlag)))
             {
-                RECT_RP0(0              , pos, 490, pos+62, 511-it_round(CVal[i]/Factor));
-                RECT_RP0(GETCIVFLAG(i+1), pos, 511-it_round(CVal[i]/Factor), pos+62, 511);
+                RECT_RP0_C0(pos, 490, pos+62, 511-it_round(CVal[i]/Factor));
+                RECTWIN(MyRPort_PTR[0],GETCIVFLAG(i+1), pos, 511-it_round(CVal[i]/Factor), pos+62, 511);
                 (void) dez2out(CVal[i], 0, s);
                 WRITE_RP0(pos+66,502,45,WRITE_Right,0,s);
             }

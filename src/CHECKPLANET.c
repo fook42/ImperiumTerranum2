@@ -32,12 +32,10 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
 
                 if (GETCIVVAR(MyPlanetHeader->PFlags) == HomeWorld)
                 {
-                    if ((0 == SplitWorld) && (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & FLAG_CIV_MASK)))
+                    if ((0 == SplitWorld)
+                        && (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & FLAG_CIV_MASK)))
                     {
-                        if (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
-                        {
-                            SplitWorld = MyPlanetHeader->Ethno;
-                        }
+                        SplitWorld = MyPlanetHeader->Ethno;
                         if (0 != Save.CivPlayer[ActPlayer-1])
                         {
                             INFORMUSER();

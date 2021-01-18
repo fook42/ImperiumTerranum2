@@ -7,6 +7,7 @@ void REGIERUNG()
 {
     uint8   i;
     uint16  ypos;
+    int     PTextIndex;
 
     struct Window* REG_Window;
     struct RastPort* RPort_PTR;
@@ -27,18 +28,14 @@ void REGIERUNG()
     MAKEWINBORDER(RPort_PTR,0,0,122,157,12,6,1);
 
     ypos = 3;
+    PTextIndex=746;
     for (i = 0; i<7; ++i)
     {
         DrawImage(RPort_PTR,&GadImg1,4,ypos);
+        WRITE( 61,2+ypos,((i<6)?0:8),WRITE_Center,RPort_PTR,3,PText[PTextIndex]);
+        ++PTextIndex;
         ypos += 22;
     }
-    WRITE( 61,  5,0,WRITE_Center,RPort_PTR,3,PText[746]);
-    WRITE( 61, 27,0,WRITE_Center,RPort_PTR,3,PText[747]);
-    WRITE( 61, 49,0,WRITE_Center,RPort_PTR,3,PText[748]);
-    WRITE( 61, 71,0,WRITE_Center,RPort_PTR,3,PText[749]);
-    WRITE( 61, 93,0,WRITE_Center,RPort_PTR,3,PText[750]);
-    WRITE( 61,115,0,WRITE_Center,RPort_PTR,3,PText[751]);
-    WRITE( 61,137,8,WRITE_Center,RPort_PTR,3,PText[752]);
 
     do
     {

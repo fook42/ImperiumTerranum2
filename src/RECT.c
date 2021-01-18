@@ -3,9 +3,9 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void RECT_RP0(const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge)
+void RECT_RP0_C0(const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge)
 {
-    SetAPen(MyRPort_PTR[0], Color);
+    SetAPen(MyRPort_PTR[0], 0);
     RectFill(MyRPort_PTR[0], LEdge, TEdge, REdge, BEdge);
 }
 

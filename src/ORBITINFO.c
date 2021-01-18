@@ -8,7 +8,7 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
     int     j;
     char    s[14];
     char*   pos;
-    RECT_RP0(0,22,69,416,456);
+    RECT_RP0_C0(22,69,416,456);
     for(j = 0; j < 12; j++) { ShipNames[j][0] = 0; }
     j = 0;
     do
@@ -156,7 +156,7 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     }
     while ((!b) && RMB_NOTPRESSED);
     if (RMB_PRESSED) { PLAYSOUND(1,300); }
-    RECT_RP0(0,20,30,422,482);
+    RECT_RP0_C0(20,30,422,482);
 // CloseWindow()
     if (b)
     {

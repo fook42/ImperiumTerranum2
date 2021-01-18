@@ -803,5 +803,5 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         && (TARGET_POSITION != MyShipPtr->Target)
         && (0 != MyShipPtr->Owner));
 
-    RECT_RP0(0,520,291,632,308);
+    RECT_RP0_C0(520,291,632,308);
 }
