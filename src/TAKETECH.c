@@ -7,6 +7,7 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
 {
     uint8   i,TechID,CivVar1,CivVar2;
     char    s[60];
+    char*   _s;
     bool    _TAKETECH = false;
     struct Window* TKT_Window;
     struct RastPort* RPort_PTR;
@@ -35,10 +36,11 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
                 RPort_PTR = TKT_Window->RPort;
                 MAKEWINBORDER(RPort_PTR,0,0,340,82,12,6,1);
 
-                strcpy(s, GETCIVNAME(CivVar1));
-                strcat(s, " ");
-                strcat(s, _PT_uebernehmen_Technologie);
-                strcat(s, ":");
+                _s=my_strcpy(s, GETCIVNAME(CivVar1));
+                *_s++ = ' ';
+                _s=my_strcpy(_s, _PT_uebernehmen_Technologie);
+                *_s++ = ':';
+                *_s = 0;
 
                 WRITE(171,22,CivFlag1,(1|WRITE_Center),RPort_PTR,3, s);
                 WRITE(171,42,      12,(1|WRITE_Center),RPort_PTR,3, TechnologyL.data[TechID]);

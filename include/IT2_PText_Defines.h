@@ -45,6 +45,7 @@
 #define _PT_Die                     PText[215]
 
 #define _PT_uebernehmen_Technologie PText[230]
+#define _PT_und                     PText[231]
 #define _PT_Bevoelkerung            PText[235]
 // 235 = 687
 

@@ -8,7 +8,7 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
     uint8   HomeWorld,SplitWorld,i,j;
     r_ShipHeader*    MyShipPtr;
     char    s[60];
-    int     l;
+    char*   _s;
     struct Window* CHP_Window;
     struct RastPort* RPort_PTR;
 
@@ -45,19 +45,16 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                                 RPort_PTR = CHP_Window->RPort;
                                 MAKEWINBORDER(RPort_PTR,0,0,350,130,12,6,1);
                                 WRITE(176,16,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,3,PText[208]);
-                                strcpy(s, GETCIVNAME(HomeWorld));
-                                l=strlen(s);
-                                s[l++]=' ';
-                                strcpy(s+l, PText[209]);
+                                _s=my_strcpy(s, GETCIVNAME(HomeWorld));
+                                *_s++=' ';
+                                (void)my_strcpy(_s, PText[209]);
                                 WRITE(176,36,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,3,s);
                                 WRITE(176,56,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,3,PText[210]);
                                 WRITE(176,76,           SplitWorld,(1|WRITE_Center),RPort_PTR,3,PText[211]);
-                                strcpy(s, GETCIVADJ(GETCIVVAR(SplitWorld)));
-                                l=strlen(s);
-                                strcpy(s+l, PText[212]);
-                                l=strlen(s);
-                                s[l++]='!';
-                                s[l]=0;
+                                _s=my_strcpy( s, GETCIVADJ(GETCIVVAR(SplitWorld)));
+                                _s=my_strcpy(_s, PText[212]);
+                                *_s++='!';
+                                *_s=0;
                                 WRITE(176,96,           SplitWorld,(1|WRITE_Center),RPort_PTR,3,s);
                                 if (Save.PlayMySelf)
                                 {

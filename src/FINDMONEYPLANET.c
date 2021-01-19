@@ -8,6 +8,7 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
     r_PlanetHeader* MyPlanetHeader;
     ByteArr42*      ActPProject;
     uint8           i,j,k,l,SysID,PID,Objects,XProjectID;
+    char*           _s;
 
     SysID = 0;
     PID = 0;
@@ -47,13 +48,18 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
     {
         MyPlanetHeader = &(SystemHeader[SysID-1].PlanetMemA[PID]);
         ActPProject = MyPlanetHeader->ProjectPtr;
-        strcpy(s, _PT_System);
-        strcat(s, ": ");
-        strcat(s, Save.SystemName.data[SysID-1]);
-        strcat(s, "   ");
-        strcat(s, _PT_Planet);
-        strcat(s, ": ");
-        strcat(s, MyPlanetHeader->PName);
+        _s=my_strcpy(s, _PT_System);
+        *_s++ = ':';
+        *_s++ = ' ';
+        _s=my_strcpy(_s, Save.SystemName.data[SysID-1]);
+        *_s++ = ' ';
+        *_s++ = ' ';
+        *_s++ = ' ';
+        _s=my_strcpy(_s, _PT_Planet);
+        *_s++ = ':';
+        *_s++ = ' ';
+        (void)my_strcpy(_s, MyPlanetHeader->PName);
+
         do
         {
             XProjectID = (rand()%42)+1;

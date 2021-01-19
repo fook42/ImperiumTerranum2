@@ -36,43 +36,40 @@ bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, uint8 Ship_Weapon)
 {
     //ImgBitMap5 , SLSoundSize, SLSoundMemA
     char    s[40];
-    uint8   stringlen;
+    char*   _s;
     BPTR    FHandle;
     bool    returnvalue = false;
 
-    stringlen = strlen(PathStr[0]);
-    memcpy(s, PathStr[0], stringlen);
-    strcpy(s+stringlen, "LandScape");
-    stringlen=strlen(s);
+    _s=my_strcpy(s, PathStr[0]);
+    _s=my_strcpy(_s, "LandScape");
     switch (MyPlanetHeader->Class) {
-        case CLASS_DESERT:   s[stringlen++] = 'D'; break;
-        case CLASS_HALFEARTH:s[stringlen++] = 'H'; break;
-        case CLASS_EARTH:    s[stringlen++] = 'M'; break;
-        case CLASS_ICE:      s[stringlen++] = 'I'; break;
-        case CLASS_STONES:   s[stringlen++] = 'T'; break;
-        case CLASS_WATER:    s[stringlen++] = 'W'; break;
+        case CLASS_DESERT:   *_s++ = 'D'; break;
+        case CLASS_HALFEARTH:*_s++ = 'H'; break;
+        case CLASS_EARTH:    *_s++ = 'M'; break;
+        case CLASS_ICE:      *_s++ = 'I'; break;
+        case CLASS_STONES:   *_s++ = 'T'; break;
+        case CLASS_WATER:    *_s++ = 'W'; break;
         default: { }
     }
-    strcpy(s+stringlen, ".img");
+    _s=my_strcpy(_s, ".img");
     if (RAWLOADIMAGE(s,0,0,640,32,5,&ImgBitMap5))
     {
-        strcpy(s+stringlen, ".pal");
+        (void)my_strcpy(_s-3, "pal");
         (void) SETCOLOR(MyScreen[0],s);
         (void) SETCOLOR(MyScreen[1],s);
 
         if (Audio_enable)
         {
-            stringlen = strlen(PathStr[6]);
-            memcpy(s, PathStr[6], stringlen);
+            _s=my_strcpy(s, PathStr[6]);
             switch (Ship_Weapon) {
-                case WEAPON_GUN:       strcpy(s+stringlen,       "Gun"); break;
-                case WEAPON_LASER:     strcpy(s+stringlen,     "Laser"); break;
-                case WEAPON_PHASER:    strcpy(s+stringlen,    "Phaser"); break;
-                case WEAPON_DISRUPTOR: strcpy(s+stringlen, "Disruptor"); break;
-                case WEAPON_PTORPEDO:  strcpy(s+stringlen,  "PTorpedo"); break;
+                case WEAPON_GUN:       _s=my_strcpy(_s,       "Gun"); break;
+                case WEAPON_LASER:     _s=my_strcpy(_s,     "Laser"); break;
+                case WEAPON_PHASER:    _s=my_strcpy(_s,    "Phaser"); break;
+                case WEAPON_DISRUPTOR: _s=my_strcpy(_s, "Disruptor"); break;
+                case WEAPON_PTORPEDO:  _s=my_strcpy(_s,  "PTorpedo"); break;
                 default: { }
             }
-            strcat(s, ".RAW");
+            _s=my_strcpy(_s, ".RAW");
             FHandle = OPENSMOOTH(s,MODE_OLDFILE);
             if (0 != FHandle)
             {
@@ -179,7 +176,6 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
 
     char    s[80];
     char*   _s;
-    int     slen;
 
     for(i = 0; i < 2; ++i)
     {
@@ -509,10 +505,10 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     BioDrawed += CityDrawed+SDIBaseDrawed+SPHBaseDrawed;
     BioHit    += CityHit   +SDIBaseHit   +SPHBaseHit;
 
-    strcpy(s, PathStr[0]);
-    strcat(s, "Paper.pal");
+    _s=my_strcpy( s, PathStr[0]);
+    _s=my_strcpy(_s, "Paper.pal");
     (void) SETCOLOR(MyScreen[AScr],s);
-    strcpy(s+strlen(s)-4, ".img");
+    (void)my_strcpy(_s-3, "img");
     if (!DISPLAYIMAGE(s,0,0,256,256,5,MyScreen[AScr],0)) { }
     if (SDIBaseDrawed>0) { ActPProjects->data[34] -= (SDIBaseHit*ActPProjects->data[34] / SDIBaseDrawed); }
     if (SPHBaseDrawed>0) { ActPProjects->data[40] -= (SPHBaseHit*ActPProjects->data[40] / SPHBaseDrawed); }
@@ -533,84 +529,79 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         Save.ImperatorState[ActPlayer-1] = it_round(Save.ImperatorState[ActPlayer-1]*Percs);
     }
 
-    slen=strlen(PText[411]);
-    memcpy(s, PText[411], slen);
-    s[slen++]=':';
-    s[slen++]=' ';
-    _s = dez2out(MyPlanetHeader->Population, 0, s+slen);
-    *_s++=' ';
-    *_s++='-';
-    *_s++='>';
-    *_s++=' ';
+    _s=my_strcpy(s, PText[411]);
+    *_s++ = ':';
+    *_s++ = ' ';
+    _s = dez2out(MyPlanetHeader->Population, 0, _s);
+    *_s++ = ' ';
+    *_s++ = '-';
+    *_s++ = '>';
+    *_s++ = ' ';
     MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*Percs);
     if ((Percs>0) && (MyPlanetHeader->Population == 0))
     {
         MyPlanetHeader->Population = 1;
     }
     _s = dez2out(MyPlanetHeader->Population, 0, _s);
-    *_s++=' ';
-    *_s++='(';
+    *_s++ = ' ';
+    *_s++ = '(';
     _s = dez2out(it_round(Percs*100), 0, _s);
-    *_s++='%';
-    *_s++=')';
+    *_s++ = '%';
+    *_s++ = ')';
     *_s  =0;
     WRITE(22,40,29,0,MyRPort_PTR[AScr],0,s);
 
-    slen=strlen(_PT_Infrastruktur);
-    memcpy(s, _PT_Infrastruktur, slen);
-    s[slen++]=':';
-    s[slen++]=' ';
-    _s = dez2out((MyPlanetHeader->Infrastruktur >>1), 0, s+slen);
-    *_s++='%';
-    *_s++=' ';
-    *_s++='-';
-    *_s++='>';
-    *_s++=' ';
+    _s=my_strcpy(s, _PT_Infrastruktur);
+    *_s++ = ':';
+    *_s++ = ' ';
+    _s = dez2out((MyPlanetHeader->Infrastruktur >>1), 0, _s);
+    *_s++ = '%';
+    *_s++ = ' ';
+    *_s++ = '-';
+    *_s++ = '>';
+    *_s++ = ' ';
     MyPlanetHeader->Infrastruktur -= (CityHit*MyPlanetHeader->Infrastruktur / CityDrawed);
     _s = dez2out((MyPlanetHeader->Infrastruktur >>1), 0, _s);
-    *_s++='%';
+    *_s++ = '%';
     *_s  =0;
     WRITE(22,55,29,0,MyRPort_PTR[AScr],0,s);
 
-    slen=strlen(PText[149]);
-    memcpy(s, PText[149], slen);
-    s[slen++]=':';
-    s[slen++]=' ';
-    _s = dez2out((MyPlanetHeader->Industrie >>1), 0, s+slen);
-    *_s++='%';
-    *_s++=' ';
-    *_s++='-';
-    *_s++='>';
-    *_s++=' ';
+    _s=my_strcpy(s, PText[149]);
+    *_s++ = ':';
+    *_s++ = ' ';
+    _s = dez2out((MyPlanetHeader->Industrie >>1), 0, _s);
+    *_s++ = '%';
+    *_s++ = ' ';
+    *_s++ = '-';
+    *_s++ = '>';
+    *_s++ = ' ';
     MyPlanetHeader->Industrie -= (CityHit*MyPlanetHeader->Industrie / CityDrawed);
     _s = dez2out((MyPlanetHeader->Industrie >>1), 0, _s);
-    *_s++='%';
+    *_s++ = '%';
     *_s  =0;
     WRITE(22,70,29,0,MyRPort_PTR[AScr],0,s);
 
-    slen=strlen(_PT_Biosphaere);
-    memcpy(s, _PT_Biosphaere, slen);
-    s[slen++]=':';
-    s[slen++]=' ';
-    _s = dez2out((MyPlanetHeader->Biosphaere >>1), 0, s+slen);
-    *_s++='%';
-    *_s++=' ';
-    *_s++='-';
-    *_s++='>';
-    *_s++=' ';
+    _s=my_strcpy(s, _PT_Biosphaere);
+    *_s++ = ':';
+    *_s++ = ' ';
+    _s = dez2out((MyPlanetHeader->Biosphaere >>1), 0, _s);
+    *_s++ = '%';
+    *_s++ = ' ';
+    *_s++ = '-';
+    *_s++ = '>';
+    *_s++ = ' ';
     MyPlanetHeader->Biosphaere -= (BioHit* MyPlanetHeader->Biosphaere / BioDrawed);
     _s = dez2out((MyPlanetHeader->Biosphaere >>1), 0, _s);
-    *_s++='%';
+    *_s++ = '%';
     *_s  =0;
     WRITE(22,85,29,0,MyRPort_PTR[AScr],0,s);
 
-    slen=strlen(PText[413]);
-    memcpy(s, PText[413], slen);
-    s[slen++]=':';
-    s[slen++]=' ';
-    _s = dez2out(Save.ImperatorState[ActPlayer-1], 0, s+slen);
-    *_s++=' ';
-    strcpy(_s, PText[414]);
+    _s=my_strcpy(s, PText[413]);
+    *_s++ = ':';
+    *_s++ = ' ';
+    _s = dez2out(Save.ImperatorState[ActPlayer-1], 0, _s);
+    *_s++ = ' ';
+    (void)my_strcpy(_s, PText[414]);
     WRITE(22,120,29,0,MyRPort_PTR[AScr],0,s);
     ScreenToFront(MyScreen[AScr]);
     WAITLOOP(false);

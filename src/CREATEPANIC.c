@@ -188,19 +188,21 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
 
         MAKEWINBORDER(RPort_PTR,0,0,340,90,12,6,1);
         WRITE(171,51,12,(1|WRITE_Center),RPort_PTR,2, _s1);
-        strcpy(s, _PT_System);
-        strcat(s, ": ");
-        strcat(s, Save.SystemName.data[ActSys-1]);
+        _s1=my_strcpy(s, _PT_System);
+        *_s1++ = ':';
+        *_s1++ = ' ';
+        (void)my_strcpy(_s1, Save.SystemName.data[ActSys-1]);
         WRITE(171, 7,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
-        strcpy(s, _PT_Planet);
-        strcat(s, ": ");
-        strcat(s, MyPlanetHeader->PName);
+        _s1=my_strcpy(s, _PT_Planet);
+        *_s1++ = ':';
+        *_s1++ = ' ';
+        (void)my_strcpy(_s1, MyPlanetHeader->PName);
         WRITE(171,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
         if ((0 < TheProject) && (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[TheProject]]))
         {
-            strcpy(s, PText[570]);
-            strcat(s, " ");
-            strcat(s, Project.data[TheProject]);
+            _s1=my_strcpy(s, PText[570]);
+            *_s1++ = ' ';
+            (void)my_strcpy(_s1, Project.data[TheProject]);
             WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,2, s);
         }
         if (-1 == TheProject)

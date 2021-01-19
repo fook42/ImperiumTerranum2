@@ -10,6 +10,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
     int     i,j,l;
     double  sin_rot,cos_rot,d;
     uint8   life_possible;
+    char*   _s;
     r_PlanetHeader* MyPlanetHeader;
 
     Save.ImperatorState[CivVar] += 50;
@@ -45,8 +46,8 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
             default:              MyPlanetHeader->Water = 0;
         }
         MyPlanetHeader->PFlags = 0;
-        strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
-        strcat(MyPlanetHeader->PName, Romanum[i]);
+        _s=my_strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
+        (void)my_strcpy(_s, Romanum[i]);
 
         MyPlanetHeader->PosX = (float) (i+i+i+4);
         MyPlanetHeader->PosY = (rand()%2 == 0) ? MyPlanetHeader->PosX : (-MyPlanetHeader->PosX);

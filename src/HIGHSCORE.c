@@ -5,16 +5,13 @@
 
 uint8 _GETCOLOR[]={122,122,123,124,2,125,126,11};
 
-void CREATEHIGHSCORE()
+void CREATEHIGHSCORE(char* HScoreFileName)
 {
     BPTR    FHandle;
     uint8   i;
     uint32  points;
-    char    s[30];
 
-    strcpy(s, PathStr[4]);
-    strcat(s, "HiScore.dat");
-    FHandle = Open((CONST_STRPTR) s,MODE_NEWFILE);
+    FHandle = Open((CONST_STRPTR) HScoreFileName,MODE_NEWFILE);
     if (0 == FHandle)
     {
         ScreenToFront(MyScreen[0]);
@@ -28,14 +25,14 @@ void CREATEHIGHSCORE()
         HiScore.CivVar[i] = i+1;
         if (7 == i) { HiScore.CivVar[i] = 1; }
     }
-    strcpy(HiScore.Player[0], "Oxygenic");
-    strcpy(HiScore.Player[1], "Kha`thak");
-    strcpy(HiScore.Player[2], "Tomalak");
-    strcpy(HiScore.Player[3], "Megalith");
-    strcpy(HiScore.Player[4], "Monolith");
-    strcpy(HiScore.Player[5], "The One");
-    strcpy(HiScore.Player[6], "Dark Blitter");
-    strcpy(HiScore.Player[7], "CyberTrace");
+    (void)my_strcpy(HiScore.Player[0], "Oxygenic");
+    (void)my_strcpy(HiScore.Player[1], "Kha`thak");
+    (void)my_strcpy(HiScore.Player[2], "Tomalak");
+    (void)my_strcpy(HiScore.Player[3], "Megalith");
+    (void)my_strcpy(HiScore.Player[4], "Monolith");
+    (void)my_strcpy(HiScore.Player[5], "The One");
+    (void)my_strcpy(HiScore.Player[6], "Dark Blitter");
+    (void)my_strcpy(HiScore.Player[7], "CyberTrace");
     (void) Write(FHandle, &HiScore, sizeof(r_HiScore));
     Close(FHandle);
 }
@@ -55,17 +52,16 @@ void HIGHSCORE()
     BPTR    FHandle;
     uint8   i, col;
     uint16  ypos;
-    char    s[30];
+    char    s[40];
 
     SWITCHDISPLAY();
     INITSCREEN(SCREEN_HISCORE);
     WRITE_RP1(210,60,027,(WRITE_Center|WRITE_Shadow),4,"Imperium Terranum Highscores");
-    strcpy(s, PathStr[4]);
-    strcat(s, "HiScore.dat");
+    (void)my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.dat");
     FHandle = OPENSMOOTH(s,MODE_OLDFILE);
     if (0 == FHandle)
     {
-        CREATEHIGHSCORE();
+        CREATEHIGHSCORE(s);
         FHandle = OPENSMOOTH(s,MODE_OLDFILE);
     }
     if (0 != FHandle)

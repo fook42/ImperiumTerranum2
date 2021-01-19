@@ -27,7 +27,7 @@ void INFORMUSER()
         {
             RECT_RP0_C0(0,0,511,511);
         }
-        s[strlen(s)-1]=Save.CivPlayer[ActPlayer-1]+'0';
+        s[7]=Save.CivPlayer[ActPlayer-1]+'0';
         PLAYERJINGLE(ActPlayer);
 
         MAKEWINBORDER(MyRPort_PTR[0],35,80,475,290,12,6,0);

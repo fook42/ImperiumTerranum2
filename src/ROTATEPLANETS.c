@@ -21,7 +21,7 @@ void ROTATEPLANETS(uint8 ActSys)
     double      sin_rot, cos_rot, d;
     uint8       CivVar,PCreativity,PProd,btx,XState,Fight;
     char        s[99];
-    uint32      len;
+    char*       _s;
     sint8       NewTech[7];
     time_t      t;
     uint8       NewPNames;
@@ -120,9 +120,10 @@ void ROTATEPLANETS(uint8 ActSys)
                     // if the stargate is too close to the sun (-3..+2) .. its orbit collapses/it is destroyed
 /* OpenWindow() ---- */
                     MAKEBORDER(MyScreen[0],85,120,425,200,12,6,0);
-                    strcpy(s, _PT_System);
-                    strcat(s, ": ");
-                    strcat(s, Save.SystemName.data[i]);
+                    _s=my_strcpy(s, _PT_System);
+                    *_s++ = ':';
+                    *_s++ = ' ';
+                    (void)my_strcpy(_s, Save.SystemName.data[i]);
                     WRITE_RP0(256,131,12,WRITE_Center,3, s);
                     WRITE_RP0(256,151,12,WRITE_Center,3, _PT_Umlaufbahn_kollabiert);
                     WRITE_RP0(256,171,12,WRITE_Center,3, _PT_Stargate_zerstoert);
@@ -289,24 +290,29 @@ void ROTATEPLANETS(uint8 ActSys)
                         RPort_PTR = ROT_Window->RPort;
                         MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
 
-                        strcpy(s, _PT_System);
-                        strcat(s, ": ");
-                        strcat(s, Save.SystemName.data[i]);
+                        _s=my_strcpy(s, _PT_System);
+                        *_s++ = ':';
+                        *_s++ = ' ';
+                        (void)my_strcpy(_s, Save.SystemName.data[i]);
                         WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
-                        strcpy(s, _PT_Planet);
-                        strcat(s, ": ");
-                        strcat(s, PlanetHeader->PName);
+
+                        _s=my_strcpy(s, _PT_Planet);
+                        *_s++ = ':';
+                        *_s++ = ' ';
+                        (void)my_strcpy(_s, PlanetHeader->PName);
                         WRITE(171, 27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
 
-                        strcpy(s, PText[578]);
+                        _s=my_strcpy(s, PText[578]);
+                        *_s++ = ' ';
                         switch (PlanetHeader->Class)
                         {
-                            case CLASS_DESERT    : strcat(s, " D"); break;
-                            case CLASS_HALFEARTH : strcat(s, " H"); break;
-                            case CLASS_EARTH     : strcat(s, " M"); break;
-                            case CLASS_WATER     : strcat(s, " W"); break;
+                            case CLASS_DESERT    : *_s++ = 'D'; break;
+                            case CLASS_HALFEARTH : *_s++ = 'H'; break;
+                            case CLASS_EARTH     : *_s++ = 'M'; break;
+                            case CLASS_WATER     : *_s++ = 'W'; break;
                             default: { }
                         }
+                        *_s = 0;
                         WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
                         if (Save.PlayMySelf) { Delay(PAUSE); }
                         WAITLOOP(Save.PlayMySelf);
@@ -547,21 +553,24 @@ void ROTATEPLANETS(uint8 ActSys)
                                     RPort_PTR = ROT_Window->RPort;
                                     MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
 
-                                    strcpy(s, GETCIVNAME(ActPlayer));
-                                    strcat(s, " ");
-                                    strcat(s, PText[579]); // fuehren als erste
+                                    _s=my_strcpy(s, GETCIVNAME(ActPlayer));
+                                    *_s++ = ' ';
+                                    (void)my_strcpy(_s, PText[579]); // fuehren als erste
                                     WRITE(171, 7,GETCIVFLAG(ActPlayer),(1|WRITE_Center),RPort_PTR,3,s);
-                                    strcpy(s, Project.data[PlanetHeader->ProjectID]);
-                                    strcat(s, "-");
+
+                                    _s=my_strcpy(s, Project.data[PlanetHeader->ProjectID]);
+                                    *_s++ = '-';
+                                    *_s = 0;
                                     WRITE(171,29,                   12,(1|WRITE_Center),RPort_PTR,3,s);
                                     s[0]=0;
+                                    _s=s;
                                     if ((1 <= PlanetHeader->ProjectID)
                                      && (3 >= PlanetHeader->ProjectID))
                                     {
-                                        strcpy(s, PText[582]); // Projekt
-                                        strcat(s, " ");
+                                        _s=my_strcpy(s, PText[582]); // Projekt
+                                        *_s++ = ' ';
                                     }
-                                    strcat(s, PText[580]); // durch
+                                    (void)my_strcpy(_s, PText[580]); // durch
                                     WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
                                     if (Save.PlayMySelf) { Delay(PAUSE); }
                                     WAITLOOP(Save.PlayMySelf);
@@ -607,27 +616,29 @@ void ROTATEPLANETS(uint8 ActSys)
                             RPort_PTR = ROT_Window->RPort;
                             MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
 
-                            strcpy(s, _PT_System);
-                            strcat(s, ": ");
-                            strcat(s, Save.SystemName.data[i]);
+                            _s=my_strcpy(s, _PT_System);
+                            *_s++ = ':';
+                            *_s++ = ' ';
+                            (void)my_strcpy(_s, Save.SystemName.data[i]);
                             WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
 
-                            strcpy(s, _PT_Planet);
-                            strcat(s, ": ");
-                            strcat(s, PlanetHeader->PName);
+                            _s=my_strcpy(s, _PT_Planet);
+                            *_s++ = ':';
+                            *_s++ = ' ';
+                            (void)my_strcpy(_s, PlanetHeader->PName);
                             WRITE(171,27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
 
                             if (0 < PlanetHeader->ProjectID)
                             {
-                                strcpy(s, PText[583]);  // baut
-                                strcat(s, " ");
-                                strcat(s, Project.data[PlanetHeader->ProjectID]);
+                                _s=my_strcpy(s, PText[583]);  // baut
+                                *_s++ = ' ';
+                                (void)my_strcpy(_s, Project.data[PlanetHeader->ProjectID]);
                             } else {
                                 switch (PlanetHeader->ProjectID)
                                 {
-                                    case -3: strcpy(s, _PT_Biosphaere_gereinigt);    break;
-                                    case -2: strcpy(s, _PT_Infrastructur_repariert); break;
-                                    default: strcpy(s, _PT_IndustrAnlage_repariert);
+                                    case -3: (void)my_strcpy(s, _PT_Biosphaere_gereinigt);    break;
+                                    case -2: (void)my_strcpy(s, _PT_Infrastructur_repariert); break;
+                                    default: (void)my_strcpy(s, _PT_IndustrAnlage_repariert);
                                 }
                             }
                             WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
@@ -1311,9 +1322,9 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         INFORMUSER();
                         MAKEBORDER(MyScreen[0],85,120,425,210,12,6,0);
-                        strcpy(s, PText[600]);
-                        strcat(s, " ");
-                        strcat(s, GETCIVNAME(i+1));
+                        _s=my_strcpy(s, PText[600]);
+                        *_s++ = ' ';
+                        (void)my_strcpy(_s, GETCIVNAME(i+1));
                         WRITE_RP0(256,140,GETCIVFLAG(i+1),(1|WRITE_Center),3,s);
                         WRITE_RP0(256,165,12,(1|WRITE_Center),3,PText[601]);
                         if (Save.PlayMySelf) { Delay(PAUSE); }
@@ -1352,14 +1363,13 @@ void ROTATEPLANETS(uint8 ActSys)
                     MAKEBORDER(MyScreen[0],80,120,430,265,12,6,0);
                     WRITE_RP0(256,136,FLAG_OTHER,(1|WRITE_Center),3,PText[602]);
                     WRITE_RP0(256,156,FLAG_OTHER,(1|WRITE_Center),3,PText[603]);
-                    strcpy(s, GETCIVNAME(i));
-                    strcat(s, " ");
-                    strcat(s, PText[604]);
+                    _s=my_strcpy(s, GETCIVNAME(i));
+                    *_s++ = ' ';
+                    (void)my_strcpy(_s, PText[604]);
                     WRITE_RP0(256,176,FLAG_OTHER,(1|WRITE_Center),3,s);
-                    l = strlen(PText[605]);
-                    memcpy(s, PText[605], l);
-                    s[l++]=' ';
-                    (void) dez2out(abs(Year)*11, 0, s+l);
+                    _s=my_strcpy(s, PText[605]);
+                    *_s++ = ' ';
+                    (void) dez2out(abs(Year)*11, 0, _s);
                     l = abs(Year)*11;
                     WRITE_RP0(256,196,FLAG_OTHER,(1|WRITE_Center),3,s);
                     DrawImage(&(MyScreen[0]->RastPort),&GadImg1,105,225);
@@ -1446,15 +1456,15 @@ void ROTATEPLANETS(uint8 ActSys)
             INFORMUSER();
             MAKEBORDER(MyScreen[0],35,110,475,210,12,6,0);
             WRITE_RP0(256,150,ActPlayerFlag,WRITE_Center,3,s);
-            strcpy(s, GETCIVNAME(ActPlayer));
-            strcat(s, " ");
-            strcat(s, PText[615]);
+            _s=my_strcpy(s, GETCIVNAME(ActPlayer));
+            *_s++ = ' ';
+            (void)my_strcpy(_s, PText[615]);
             WRITE_RP0(256,127,12,WRITE_Center,3,s);
-            strcpy(s, PText[616]);
-            strcat(s, " ");
-            strcat(s, Project.data[btx]);
-            strcat(s, " ");
-            strcat(s, PText[617]);
+            _s=my_strcpy(s, PText[616]);
+            *_s++ = ' ';
+            _s=my_strcpy(_s, Project.data[btx]);
+            *_s++ = ' ';
+            (void)my_strcpy(_s, PText[617]);
             WRITE_RP0(256,175,12,WRITE_Center,3,s);
             if (Save.PlayMySelf) { Delay(PAUSE); }
             WAITLOOP(Save.PlayMySelf);
@@ -1545,17 +1555,14 @@ void ROTATEPLANETS(uint8 ActSys)
         {
             INFORMUSER();
             MAKEBORDER(MyScreen[0],30,120,480,215,12,6,0);
-            len = strlen(_PT_Die);
-            memcpy(s, _PT_Die, len);
-            s[len++]=' ';
-            strcpy(s+len, GETCIVNAME(ActPlayer));
-            len=strlen(s);
-            s[len++]=' ';
-            strcpy(s+len, PText[631]);
-            len=strlen(s);
-            s[len++]=' ';
+            _s=my_strcpy(s, _PT_Die);
+            *_s++ = ' ';
+            _s=my_strcpy(_s, GETCIVNAME(ActPlayer));
+            *_s++ = ' ';
+            _s=my_strcpy(_s, PText[631]);
+            *_s++ = ' ';
             ActPlayer--; // @TODO .. only to shift the arrays!!!
-            (void)dez2out(Save.CivPlayer[ActPlayer], 0, s+len);
+            (void)dez2out(Save.CivPlayer[ActPlayer], 0, _s);
             WRITE_RP0(256,140,ActPlayerFlag,WRITE_Center,3,s);
             WRITE_RP0(256,160,ActPlayerFlag,WRITE_Center,3,PText[632]);
             WRITE_RP0(256,180,ActPlayerFlag,WRITE_Center,3,PText[633]);
@@ -1609,7 +1616,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         SystemHeader[j].vNS = 0;
                         Save.CivPlayer[ActPlayer-1] = 0;
-                        strcpy(PlanetHeader->PName, PNames[0].data[NewPNames]);
+                        (void)my_strcpy(PlanetHeader->PName, PNames[0].data[NewPNames]);
                         NewPNames++;
                         if (NewPNames >= MAXPLANETS) { NewPNames = 0; }
 

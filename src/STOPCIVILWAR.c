@@ -7,6 +7,7 @@ void STOPCIVILWAR(uint8 EndText)
 {
     uint8   CivVar,CivFlag,i,j;
     char    s[99];
+    char*   _s;
     r_PlanetHeader* MyPlanetHeader;
     r_ShipHeader*   MyShipPtr;
     APTR    ModC = NULL;
@@ -35,11 +36,11 @@ void STOPCIVILWAR(uint8 EndText)
     }
     if (0 == EndText)
     {
-        strcpy(s, _PT_Die);
-        strcat(s, " ");
-        strcat(s, GETCIVNAME(CivVar+1));
-        strcat(s, " ");
-        strcat(s, PText[216]);
+        _s=my_strcpy(s, _PT_Die);
+        *_s++ = ' ';
+        _s=my_strcpy(_s, GETCIVNAME(CivVar+1));
+        *_s++ = ' ';
+        (void)my_strcpy(_s, PText[216]);
         
         if (0 != Save.CivPlayer[CivVar])
         {

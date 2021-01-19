@@ -12,7 +12,7 @@ void FASTREFRESH(sint16 OldX, sint16 OldY, r_ShipHeader* XCludeShip)
     r_ShipHeader*   UseShipPtr;
     
     OtherShipPtr = &SystemHeader[locDisplay].FirstShip;
-    while (OtherShipPtr != NULL)
+    while (NULL != OtherShipPtr)
     {
         if ((OtherShipPtr->PosX > (OldX-2)) && (OtherShipPtr->PosX < (OldX+2))
          && (OtherShipPtr->PosY > (OldY-2)) && (OtherShipPtr->PosY < (OldY+2)))

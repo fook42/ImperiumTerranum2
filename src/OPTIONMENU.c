@@ -161,27 +161,26 @@ void OPTION_MULTIPLAYER(void)
     uint8   i, j, btx;
     uint16  offset;
     char    s[60];
-    char*   _s;
-    int     stringlen;
+    char*   _s1;
+    char*   _s2;
     bool    b;
 
     // randomly exchange one StarSystemName with the first one (Solar-system)
     i = 1+(rand()%(MAXSYSTEMS-1));
-    strcpy(s, Save.SystemName.data[i]);
-    strcpy(Save.SystemName.data[i], Save.SystemName.data[0]);
-    strcpy(Save.SystemName.data[0], s);
+    (void)my_strcpy(s, Save.SystemName.data[i]);
+    (void)my_strcpy(Save.SystemName.data[i], Save.SystemName.data[0]);
+    (void)my_strcpy(Save.SystemName.data[0], s);
 
     // pick the civilization names for each player...
-    strcpy(s, _PTx_Player);
-    stringlen = strlen(s);
-    s[stringlen]   = ' ';
-    strcpy(s+stringlen+3, PText[520]);
+    _s1=my_strcpy(s, _PTx_Player);
+    *_s1++ = ' ';
+    (void)my_strcpy(_s1+2, PText[520]);
     for (i = 0; i < Player; ++i)
     {
         SWITCHDISPLAY();
         INITMENU();
-        s[stringlen+1] = i + '1';
-        s[stringlen+2] = ' ';
+        *_s1     = i + '1';
+        *(_s1+1) = ' ';
         WRITE_RP1(320,50,40,WRITE_Center,3,s);
         btx = 7;
         if (0 == i)
@@ -189,20 +188,20 @@ void OPTION_MULTIPLAYER(void)
             btx = 1;
             Save.CivPlayer[0] = 0;
         }
-        s[stringlen+2] = 0;
+        *(_s1+1) = 0;
         offset = 100;
         for (j = 0; j < btx; ++j)
         {
             if (0 == Save.CivPlayer[j])
             {
                 MAKEWINBORDER(MyRPort_PTR[1],100, offset, 540, offset+30,14,40,0);
-                _s = GETCIVNAME(j+1);
+                _s2 = GETCIVNAME(j+1);
             } else {
                 RECT_RP1(0, 100, offset, 540, offset+30);
-                s[stringlen+1] = Save.CivPlayer[j]+'0';
-                _s = s;
+                *_s1 = Save.CivPlayer[j]+'0';
+                _s2 = s;
             }
-            WRITE_RP1(320, offset+8,40,WRITE_Center,3, _s);
+            WRITE_RP1(320, offset+8,40,WRITE_Center,3, _s2);
             offset += 50;
         }
 

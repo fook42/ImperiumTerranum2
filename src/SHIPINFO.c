@@ -5,10 +5,7 @@
 
 char* SHIPINFO_MAKETEXT(char* s, char* text_PTR)
 {
-    uint8  l;
-    l = strlen(text_PTR);
-    memcpy(s, text_PTR, l);
-    s += l;
+    s=my_strcpy(s, text_PTR);
     *s++=':';
     *s++=' ';
     *s++=' ';
@@ -85,7 +82,6 @@ void SHIPINFO(uint8 ActSys)
     char    s[50];
     char*   _s;
     char*   _s2;
-    uint8   l1,l2;
     r_ShipHeader*   MyShipPtr;
     APTR    ModC = NULL;
     uint32  ModL;
@@ -101,23 +97,21 @@ void SHIPINFO(uint8 ActSys)
     ModL = ModMemL[2];
 
     INITSCREEN(SCREEN_TECH);
-    l1=strlen(PathStr[5]);
-    memcpy(s, PathStr[5], l1);
-    l2=strlen(Project.data[MyShipPtr->SType]);
-    memcpy(s+l1, Project.data[MyShipPtr->SType], l2);
-    strcpy(s+l1+l2, "Tech.img");
+    _s=my_strcpy( s, PathStr[5]);
+    _s=my_strcpy(_s,Project.data[MyShipPtr->SType]);
+    (void)my_strcpy(_s, "Tech.img");
     if (!DISPLAYIMAGE(s,6,7,256,498,5,MyScreen[1],0)) { }
 
     WRITE_RP1(290,15,1,0,3,Project.data[MyShipPtr->SType]);
-    s[0]='-'; s[1]=' ';
+    s[0] = '-'; s[1] = ' ';
     _s2=s+2;
     _s = SHIPINFO_MAKETEXT(_s2, PText[190]);
     switch (MyShipPtr->Weapon) {
-        case WEAPON_GUN:       strcpy(_s, PText[185]); break;
-        case WEAPON_LASER:     strcpy(_s, PText[186]); break;
-        case WEAPON_PHASER:    strcpy(_s, PText[187]); break;
-        case WEAPON_DISRUPTOR: strcpy(_s, PText[188]); break;
-        case WEAPON_PTORPEDO:  strcpy(_s, PText[189]); break;
+        case WEAPON_GUN:       (void)my_strcpy(_s, PText[185]); break;
+        case WEAPON_LASER:     (void)my_strcpy(_s, PText[186]); break;
+        case WEAPON_PHASER:    (void)my_strcpy(_s, PText[187]); break;
+        case WEAPON_DISRUPTOR: (void)my_strcpy(_s, PText[188]); break;
+        case WEAPON_PTORPEDO:  (void)my_strcpy(_s, PText[189]); break;
         default: (void) dez2out(MyShipPtr->Weapon, 0, _s);
     }
     WRITE_RP1(290,42,1,0,2,s);
@@ -155,7 +149,7 @@ void SHIPINFO(uint8 ActSys)
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[198]);
     _s = dez2out(it_round((double) MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, _s);
-    strcpy(_s, "% belegt");
+    (void)my_strcpy(_s, "% belegt");
     WRITE_RP1(290,202,1,0,2,s);
 
     _s = SHIPINFO_MAKETEXT(_s2, PText[199]);
@@ -164,7 +158,7 @@ void SHIPINFO(uint8 ActSys)
         (void)dez2out(Year-(MyShipPtr->Age), 0, _s);
     } else {
         *_s++=' ';
-        strcpy(_s, PText[200]);
+        (void)my_strcpy(_s, PText[200]);
     }
     WRITE_RP1(290,222,1,0,2,s);
 

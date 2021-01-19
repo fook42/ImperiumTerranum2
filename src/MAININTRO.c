@@ -450,19 +450,18 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     custom.dmacon = BITCLR | DMAF_AUD2 | DMAF_AUD3; // 0x000C
 }
 
-bool LOADSOUNDS(char* path, uint16 pathlen, uint16** SMemA, uint32* SMemL)
+bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, uint32* SMemL)
 {
     uint8   i;
     uint32  ssize;
     BPTR    FHandle;
 
     //    INITCHANNELS();
-    strcpy(path+pathlen, "Snd0.RAW");
-    pathlen+=3;
+    (void)my_strcpy(FName, "Snd0.RAW");
     for (i = 0; i<3; ++i)
     {
-        path[pathlen] = i+'1';
-        FHandle = OPENSMOOTH(path,MODE_OLDFILE);
+        FName[3] = i+'1';
+        FHandle = OPENSMOOTH(FNamePath,MODE_OLDFILE);
         if (0 != FHandle)
         {
             (void)  Seek(FHandle, 0, OFFSET_END);
@@ -484,8 +483,8 @@ void MAININTRO()
     uint16*     SMemA[3];
     uint32      SMemL[3];
     char        s[40];
+    char*       _s;
     BPTR        FHandle;
-    uint16      pathname_len;
     r_Col_t     Colors[128];
     PLANEPTR    MyRastPtr = NULL;
     struct TmpRas       MyTmpRas;
@@ -525,10 +524,8 @@ void MAININTRO()
     for (i = 0; i<2; ++i) { MyScreen[i] = NULL; IMemA[i] = NULL; MyRPort_PTR[i] = NULL; MyVPort_PTR[i] = NULL; }
     for (i = 0; i<3; ++i) { SMemA[i] = NULL; SMemL[i] = 0; }
 
-    pathname_len = strlen(PathStr[7]);
-    memcpy(s, PathStr[7], pathname_len+1);
-
-    if (!LOADSOUNDS(s, pathname_len, SMemA, SMemL))
+    _s=my_strcpy(s,PathStr[7]);
+    if (!LOADSOUNDS(s, _s, SMemA, SMemL))
     {
         goto leave_intro;
     }
@@ -551,12 +548,11 @@ void MAININTRO()
     IMemL[0] = IntroBitMap.MemL;
     IMemA[0] = (uint8*) IntroBitMap.MemA;
 
-    strcpy(s+pathname_len, "Frame0.pal");
-
+    (void)my_strcpy(_s, "Frame0.pal");
     (void) SETCOLOR(MyScreen[0], s);
     (void) SETCOLOR(MyScreen[1], s);
-    strcpy(s+pathname_len, "Frame0.img");   // Touchbyte ...
 
+    (void)my_strcpy(_s, "Frame0.img");   // Touchbyte ...
     if (!RAWLOADIMAGE(s,0,0,640,183,5,&IntroBitMap))
     {
         goto leave_intro;
@@ -670,9 +666,9 @@ void MAININTRO()
 
     /*****************************************************************************/
     /* TOUCHBYTE SOFTWARE PRESENTS */
-    strcpy(s+pathname_len, "Frame1.pal");
+    (void)my_strcpy(_s, "Frame1.pal");
     SETDARKCOLOR(s, Colors);
-    strcpy(s+pathname_len, "Frame1.img");
+    (void)my_strcpy(_s, "Frame1.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRESENTS");
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,75,192);
@@ -736,9 +732,9 @@ void MAININTRO()
 
     /*****************************************************************************/
     /* A VIRTUAL WORLDS PRODUCTION */
-    strcpy(s+pathname_len, "Frame2.pal");
+    (void)my_strcpy(_s, "Frame2.pal");
     SETDARKCOLOR(s, Colors);
-    strcpy(s+pathname_len, "Frame2.img");
+    (void)my_strcpy(_s, "Frame2.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
     WRITE(320,205,31,WRITE_Center,MyRPort_PTR[AScr],4,"A");
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRODUCTION");
@@ -795,9 +791,9 @@ void MAININTRO()
 
     /*****************************************************************************/
     /* IMPERIUM TERRANUM */
-    strcpy(s+pathname_len, "Frame3.pal");
+    (void)my_strcpy(_s, "Frame3.pal");
     SETDARKCOLOR(s, Colors);
-    strcpy(s+pathname_len, "Frame3.img");
+    (void)my_strcpy(_s, "Frame3.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,37,192);
 
@@ -918,7 +914,7 @@ void MAININTRO()
     if (LMB_PRESSED)
         { goto leave_intro; }
 
-    strcpy(s+pathname_len, "MOD.Intro");
+    (void)my_strcpy(_s, "MOD.Intro");
     FHandle = OPENSMOOTH(s,MODE_OLDFILE);
     if (0 != FHandle)
     {
@@ -932,16 +928,16 @@ void MAININTRO()
         }
     }
 
-    strcpy(s+pathname_len, "Frame4.pal");
+    (void)my_strcpy(_s, "Frame4.pal");
     SETDARKCOLOR(s, Colors);
-    strcpy(s+pathname_len, "Frame4.img");       // terrain with stars...
+    (void)my_strcpy(_s, "Frame4.img");       // terrain with stars...
     if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[1],0))
     {
         goto leave_intro;
     }
     ClipBlit(MyRPort_PTR[1],0,75,MyRPort_PTR[0],0,75,640,360,192);
 
-    strcpy(s+pathname_len, "Frame5.img");       // little earth-image..
+    (void)my_strcpy(_s, "Frame5.img");       // little earth-image..
 
     FHandle = OPENSMOOTH(s,MODE_OLDFILE);
     if (0 != FHandle)
@@ -1035,7 +1031,7 @@ void MAININTRO()
     actRastPort = MyRPort_PTR[AScr];
     SetRast(actRastPort, 0); // clear Rastport
 
-    strcpy(s+pathname_len, "Frame6.pal");
+    (void)my_strcpy(_s, "Frame6.pal");
     (void) SETCOLOR(MyScreen[  AScr],s);
     (void) SETCOLOR(MyScreen[1-AScr],s);
     SetRGB4(MyVPort_PTR[AScr],127,9,9,11);   SetRGB4(MyVPort_PTR[1-AScr],127,9,9,11);
@@ -1044,7 +1040,7 @@ void MAININTRO()
     SetRGB4(MyVPort_PTR[AScr],124,13,0,0);   SetRGB4(MyVPort_PTR[1-AScr],124,15,2,2);
     SetRGB4(MyVPort_PTR[AScr],123,14,14,15); SetRGB4(MyVPort_PTR[1-AScr],123,14,14,15);
 
-    strcpy(s+pathname_len, "Frame6.img");
+    (void)my_strcpy(_s, "Frame6.img");
     if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[AScr],0)) { goto leave_intro; }
     MyBitMap = (struct BitMap) { 80, 360, 1, 7, 0, \
                             {(PLANEPTR) (IMemA[0]),       (PLANEPTR) (IMemA[0]+28800), (PLANEPTR) (IMemA[0]+57600), \

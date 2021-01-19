@@ -106,20 +106,17 @@ void GETSAVENAME(char* Title, char* SName)
     sint16  mouse_over, selected;
     volatile bool   mouse_b;
     volatile sint16 mouse_y;
-    int     path_len;
     char    s[40];
-    char*   pos;
-    uint8   file_slen;
-    int     stringlen;
+    char*   _s1;
+    char*   _s2;
     BPTR    FHandle;
     struct Window* GSN_Window;
     struct RastPort* RPort_PTR;
 
     SName[0] = 0;   // invalidate the "selected file"-string
 
-    path_len = strlen(PathStr[8]);
-    memcpy(s, PathStr[8], path_len+1);
-    strcpy(s+path_len, "IMPT.ID");
+    _s1=my_strcpy(s, PathStr[8]);
+    (void)my_strcpy(_s1, "IMPT.ID");
     FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     if (0 == FHandle)
     {
@@ -127,18 +124,18 @@ void GETSAVENAME(char* Title, char* SName)
     } else {
         Close(FHandle);
     }
-    strcpy(s+path_len, "IMPT.0");
-    file_slen=strlen(s)-1;
+    _s2=my_strcpy(_s1, "IMPT.0");
+    _s2--;
     for(i = 0; i < 6; ++i)
     {
         ID[i][0] = 0;
-        s[file_slen] = i + '1';
+        *_s2= i+'1';
         do
         {
             FHandle = Open((CONST_STRPTR) s ,MODE_OLDFILE);
             if (0 == FHandle)
             {
-                strcpy(ID[i], PText[525]);      // = "leer"
+                (void)my_strcpy(ID[i], PText[525]);      // = "leer"
             } else {
                 (void) Read(FHandle, &SVersion, 4);   // game-version
                 if (ACTVERSION == SVersion)
@@ -146,15 +143,12 @@ void GETSAVENAME(char* Title, char* SName)
                     (void) Read(FHandle, &SYear, 4);  // year
                     (void) Read(FHandle, &SLevel, 1); // level
 
-                    stringlen=strlen(_PT_Jahr);
-                    memcpy(ID[i], _PT_Jahr, stringlen);
-                    ID[i][stringlen++]=':';
-                    ID[i][stringlen++]=' ';
-                    pos = dez2out(SYear, 4, ID[i]+stringlen);
-
-                    strcpy(pos, "     Level: ");
-                    stringlen = strlen(ID[i]);
-                    (void)dez2out(SLevel, 0, ID[i]+stringlen);
+                    _s1=my_strcpy(ID[i], _PT_Jahr);
+                    *_s1++=':';
+                    *_s1++=' ';
+                    _s1=dez2out(SYear, 4, _s1);
+                    _s1=my_strcpy(_s1, "     Level: ");
+                    (void)dez2out(SLevel, 0, _s1);
 
                     Close(FHandle);
                 } else {
@@ -225,9 +219,10 @@ void GETSAVENAME(char* Title, char* SName)
 
     if (-1 < selected)
     {
-        memcpy(SName, PathStr[8], path_len+1);
-        strcpy(SName+path_len, "IMPT.0");
-        SName[strlen(SName)-1] = selected + '1';
+        _s1=my_strcpy(SName, PathStr[8]);
+        _s1=my_strcpy(_s1, "IMPT.0");
+        _s1--;
+        *_s1 = selected + '1';
     }
     CloseWindow(GSN_Window);
     return;
@@ -430,7 +425,7 @@ bool DIS_DELETEGAME()
     GETSAVENAME(PText[538], s);
     if (0 != s[0])
     {
-        // nachfragen vor dem Löschen... !!!
+        // @TODO ... nachfragen vor dem Löschen... !!!
         (void) DeleteFile((CONST_STRPTR) s);
         exitvalue = TRUE;
     }

@@ -131,3 +131,17 @@ ULONG string2hex(char* in_string)
     }
     return out_dez;
 }
+
+char* my_strcpy(char* destination, const char* source)
+{
+    // return if no memory is allocated to the destination
+    if (destination == NULL)
+        return NULL;
+ 
+    // copy the C-string pointed by source into the array
+    // pointed by destination
+    while ((*destination++ = *source++) != '\0');
+ 
+    // destination is returned by standard strcpy()
+    return (destination-1);
+}

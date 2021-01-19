@@ -9,6 +9,7 @@ void MAIN_FNC()
     uint32  l;
     uint8   RawCode;
     char    s[60];
+    char*   _s;
     char    Txt_notEnoughMem[] = {"Not enough memory available!\n"};
 
     BPTR    FHandle;
@@ -30,7 +31,7 @@ void MAIN_FNC()
         }
     }
     /* read Paths.txt-File **********************************/
-    strcpy(s, "Paths.txt");
+    (void)my_strcpy(s, "Paths.txt");
     FHandle = Open((CONST_STRPTR) s, MODE_OLDFILE);
     if (0 == FHandle)
     {
@@ -289,8 +290,8 @@ void MAIN_FNC()
                     }
                     if (0 != Save.CivPlayer[ActPlayer-1])
                     {
-                        strcpy(s, PathStr[4]);
-                        strcat(s, "MOD.HappyEnd");
+                        _s=my_strcpy(s, PathStr[4]);
+                        (void)my_strcpy(_s, "MOD.HappyEnd");
                         FHandle = OPENSMOOTH(s,MODE_OLDFILE);
                         if (0 != FHandle)
                         {

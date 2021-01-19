@@ -47,7 +47,7 @@ BPTR OPENSMOOTH(char* FName, uint32 FMode)
             ScreenToBack(OS_XScreen);
 
             WRITE(140, 0,1,WRITE_Center,&(OS_XScreen->RastPort),3, "Bitte Disk");
-            strcpy(DName+i, " einlegen!");
+            (void)my_strcpy(DName+i, " einlegen!");
             WRITE(140,20,1,WRITE_Center,&(OS_XScreen->RastPort),3, DName);
 
             i = 0;

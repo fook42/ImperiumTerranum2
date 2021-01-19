@@ -6,11 +6,11 @@
 void CREATECIVILWAR(uint8 CivVar)
 {
     int     i,j;
-    uint8   len;
     uint8   CivFlag;
     r_PlanetHeader* MyPlanetHeader;
     r_ShipHeader*   MyShipPtr;
     char    s[99];
+    char*   _s;
     APTR    ModC = NULL;
     uint32  ModL;
 
@@ -19,13 +19,11 @@ void CREATECIVILWAR(uint8 CivVar)
     { return; }
     if  (0 == Save.WorldFlag)
     {
-        len = strlen(PText[385]);
-        memcpy(s, PText[385], len);
-        s[len++]=' ';
-        strcpy(s+len, GETCIVNAME(CivVar));
-        len = strlen(s);
-        s[len++]=' ';
-        strcpy(s+len, PText[386]);
+        _s=my_strcpy(s, PText[385]);
+        *_s++=' ';
+        _s=my_strcpy(_s, GETCIVNAME(CivVar));
+        *_s++=' ';
+        (void)my_strcpy(_s, PText[386]);
         --CivVar; // to shift the arrays ...
         if (0 != Save.CivPlayer[CivVar])
         {

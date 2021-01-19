@@ -11,13 +11,12 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
     uint32  ex_Points;
     uint8   ex_CivVar;
 
-    strcpy(s, PathStr[4]);
-    strcat(s, "HiScore.dat");
+    (void)my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.dat");
 
     FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     if (0 == FHandle)
     {
-        CREATEHIGHSCORE();
+        CREATEHIGHSCORE(s);
         FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     }
     if (0 != FHandle)
@@ -33,7 +32,7 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
             {
                 GETPLAYERNAME(PHS_ActPlayer, HiScore.Player[7]);
             } else {
-                strcpy(HiScore.Player[7], GETCIVNAME(PHS_ActPlayer+1));
+                (void)my_strcpy(HiScore.Player[7], GETCIVNAME(PHS_ActPlayer+1));
             }
             for (i = 7; i > 0; --i)
             {
@@ -47,9 +46,9 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
                     HiScore.CivVar[i]  =HiScore.CivVar[i-1];
                     HiScore.CivVar[i-1]=ex_CivVar;
 
-                    strcpy(s,                 HiScore.Player[i]);
-                    strcpy(HiScore.Player[i], HiScore.Player[i-1]);
-                    strcpy(HiScore.Player[i-1],s);
+                    (void)my_strcpy(s,                 HiScore.Player[i]);
+                    (void)my_strcpy(HiScore.Player[i], HiScore.Player[i-1]);
+                    (void)my_strcpy(HiScore.Player[i-1],s);
                 }
             }
             (void) Seek(FHandle,0,OFFSET_BEGINNING);

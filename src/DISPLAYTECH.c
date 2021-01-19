@@ -30,6 +30,7 @@ const char* const Technology[] =
 void DISPLAYTECH(uint8 TechID)
 {
     char    s[50];
+    char*   _s;
     uint8   Depth, CivVar, Offset=0;
     uint16  l;
     APTR    ModC = NULL;
@@ -43,25 +44,25 @@ void DISPLAYTECH(uint8 TechID)
     RECT_RP1(0,0,0,639,511);        // clear the screen
 
     s[0]=0;
-    if      ((TechID>= 1) && (TechID<=18)) { strcpy(s, PathStr[1]); }
-    else if ((TechID>=19) && (TechID<=38)) { strcpy(s, PathStr[2]); }
-    else if ((TechID>=39) && (TechID<=42)) { strcpy(s, PathStr[3]); }
+    if      ((TechID>= 1) && (TechID<=18)) { _s=my_strcpy(s, PathStr[1]); }
+    else if ((TechID>=19) && (TechID<=38)) { _s=my_strcpy(s, PathStr[2]); }
+    else if ((TechID>=39) && (TechID<=42)) { _s=my_strcpy(s, PathStr[3]); }
 
     if (34 == TechID)
     {
-        strcat(s, "selbstSys");
+        _s=my_strcpy(_s, "selbstSys");
     } else {
-        strcat(s, Technology[TechID-1]);
+        _s=my_strcpy(_s, Technology[TechID-1]);
     }
-    strcat(s, ".pal");
+    (void)my_strcpy(_s, ".pal");
     Depth = SETCOLOR(MyScreen[1],s);
     if (0 == Depth)
     {
-        strcpy(s, PathStr[1]);
-        strcat(s, "NoPic.pal");
+        _s=my_strcpy( s, PathStr[1]);
+        _s=my_strcpy(_s, "NoPic.pal");
         Depth = SETCOLOR(MyScreen[1],s);
     }
-    strcpy(s+strlen(s)-3, "img");
+    (void)my_strcpy(_s-3, "img");
 
     if (!DISPLAYIMAGE(s,0,40,320,256,Depth,MyScreen[1],0)) { }
 
@@ -96,11 +97,12 @@ void DISPLAYTECH(uint8 TechID)
     {
         if (ProjectNeedsTech[CivVar] == TechID)
         {
-            if       (CivVar < 8)                   { strcpy(s, PText[226]); }
-            else if ((CivVar > 7) && (CivVar < 25)) { strcpy(s, PText[227]); }
-            else                                    { strcpy(s, PText[228]); }
-            strcat(s, "  ");
-            strcat(s, Project.data[CivVar]);
+            if       (CivVar < 8)                   { _s=my_strcpy(s, PText[226]); }
+            else if ((CivVar > 7) && (CivVar < 25)) { _s=my_strcpy(s, PText[227]); }
+            else                                    { _s=my_strcpy(s, PText[228]); }
+            *_s++=' ';
+            *_s++=' ';
+            (void)my_strcpy(_s, Project.data[CivVar]);
             WRITE_RP1(20,l,1,0,3,s);
             l += 20;
         }

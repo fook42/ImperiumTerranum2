@@ -6,6 +6,7 @@
 bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, struct Screen* DI_Screen, uint8 CacheNum)
 {
     char    FName[80];
+    char*   _s;
     BPTR    FHandle;
     uint8   realCacheNum=0;
     uint16  CNum, i;
@@ -62,9 +63,8 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
             Colors = (uint16*) Addr;
             *Colors= CNum;
             Addr += 4;
-            l = strlen(Fn)-3;
-            memcpy(FName, Fn, l);
-            strcpy(FName+l, "pal");
+            _s=my_strcpy(FName, Fn);
+            (void)my_strcpy(_s-3, "pal");
             FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
             if (0 == FHandle)
             {

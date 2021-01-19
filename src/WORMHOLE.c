@@ -39,28 +39,26 @@ void WORMHOLE_LOADSOUND(char* FName, uint8 SID)
 void WORMHOLE_INITSOUNDS()
 {
     char s[40];
-    int l;
+    char* _s;
     
-    l = strlen(PathStr[6]);
-    memcpy(s, PathStr[6], l+1);
-    strcpy(s+l, "Sensor.RAW");
+    _s=my_strcpy(s,PathStr[6]);
+    (void)my_strcpy(_s, "Sensor.RAW");
     WORMHOLE_LOADSOUND(s, 0);       /*SFX/Sensor.RAW*/
-    strcpy(s+l, "FightSoundDS.RAW");
+    (void)my_strcpy(_s, "FightSoundDS.RAW");
     WORMHOLE_LOADSOUND(s, 1);       /*SFX/FightsoundDS.RAW*/
 }
 
 bool WORMHOLE_INITIMAGES()
 {
     char    s[40];
-    int l;
+    char*   _s;
 
-    l = strlen(PathStr[4]);
-    memcpy(s, PathStr[4], l+1);
-    strcpy(s+l, "Wormhole.img");
+    _s=my_strcpy(s, PathStr[4]);
+    _s=my_strcpy(_s, "Wormhole.img");
     if (!RAWLOADIMAGE(s,0,0,640,512,4, &ImgBitMapW4))
         { return false; }
 
-    strcpy(s+l, "Wormhole.pal");
+    (void)my_strcpy(_s-3, "pal");
     (void) SETCOLOR(MyScreen[0],s);
     (void) SETCOLOR(MyScreen[1],s);
     return true;
@@ -459,6 +457,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     uint8   SysID;
     uint16  Offset;
     char    s[60];
+    char*   _s;
 
     MyShipPtr = ShipPtr;
     if ((MOVESHIP_ToX<0) || (MOVESHIP_ToX>478) || (MOVESHIP_ToY<0) || (MOVESHIP_ToY>478))
@@ -487,9 +486,9 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     MAKEWINBORDER(MyRPort_PTR[0],70,Offset,440,Offset+85,12,6,0);
     WRITE_RP0(256,Offset+13,ActPlayerFlag,WRITE_Center,3,PText[467]);
     WRITE_RP0(256,Offset+35,ActPlayerFlag,WRITE_Center,3,PText[468]);
-    strcpy(s, PText[469]);
-    strcat(s, " ");
-    strcat(s, Save.SystemName.data[SysID]);
+    _s=my_strcpy(s, PText[469]);
+    *_s++ = ' ';
+    (void)my_strcpy(_s, Save.SystemName.data[SysID]);
     WRITE_RP0(256,Offset+57,ActPlayerFlag,WRITE_Center,3,s);
     if (0 == SystemHeader[SysID].Planets)
     {

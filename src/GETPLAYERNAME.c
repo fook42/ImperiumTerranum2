@@ -16,11 +16,12 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
     uint8   VKey = 0;
     int     PName_len;
     char    s[40];
+    char*   _s;
 
     GPN_Window = OpenWindow(&GPN_NewWindow);
     if (NULL == GPN_Window)
     {
-        strcpy(PName, "Player X");
+        (void)my_strcpy(PName, "Player X");
         ScreenToFront(MyScreen[1]);
         return;
     }
@@ -34,11 +35,10 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
     {
         WRITE(320,150,2,WRITE_Center,RPort_PTR,3,PText[161]);
     } else {
-        strcpy(s, _PTx_Player);
-        PName_len = strlen(s);
-        s[PName_len]   = ' ';
-        s[PName_len+1] = Save.CivPlayer[GPN_ActPlayer]+'0';
-        strcpy(s+PName_len+2, PText[162]);
+        _s=my_strcpy(s, _PTx_Player);
+        *_s++ = ' ';
+        *_s++ = Save.CivPlayer[GPN_ActPlayer]+'0';
+        (void)my_strcpy(_s, PText[162]);
         WRITE(320,150,2,WRITE_Center,RPort_PTR,3,s);
     }
     MAKEWINBORDER(RPort_PTR,100,200,540,230,1,3,1);

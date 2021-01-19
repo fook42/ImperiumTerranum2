@@ -12,6 +12,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
     bool            DconDone,b,Visible;
     r_PlanetHeader* MyPlanetHeader;
     char            s[60];
+    char*           _s;
     struct Window*   AST_Window;
     struct RastPort* RPort_PTR;
     time_t  t;
@@ -222,8 +223,6 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             case 3: --(MyShipPtr->PosY); break;
                                             default: { }
                                         }
-//                                        printf("## AST - i %02d - iStep %02d - ActSys %02d - Mode %02d - SysSteps %02d\n", i, iStep, ActSys, Mode, SysSteps);
-//                                        printf("## AST ## posx %03d # posy %03d # OffsetX %03d # OffsetY %03d # findobj %02d ###\n",MyShipPtr->PosX, MyShipPtr->PosY, OffsetX, OffsetY, ObjType);
                                     }
                                     while (FINDOBJECT(i-1, 256+(MyShipPtr->PosX+OffsetX)*32, 256+(MyShipPtr->PosY+OffsetY)*32, MyShipPtr));
 
@@ -237,22 +236,23 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             RPort_PTR = AST_Window->RPort;
                                             MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
 
-                                            strcpy(s, GETMYADJ(MyShipPtr->Owner, &DconDone));
+                                            _s=my_strcpy(s, GETMYADJ(MyShipPtr->Owner, &DconDone));
                                             if (!DconDone)
                                             {
                                                 if (SHIPTYPE_FLEET == MyShipPtr->SType)
                                                 {
-                                                    s[strlen(s)-1] = ' ';
-                                                    strcat(s, PText[552]);
+                                                    _s--;
+                                                    *_s++ = ' ';
+                                                    (void)my_strcpy(_s, PText[552]);
                                                 } else {
-                                                    strcat(s, " ");
-                                                    strcat(s, PText[553]);
+                                                    *_s++ = ' ';
+                                                    (void)my_strcpy(_s, PText[553]);
                                                 }
                                             }
                                             WRITE(195,16,MyShipPtr->Owner,(1|WRITE_Center),RPort_PTR,3,s);
-                                            strcpy(s, _PT_System);
-                                            strcat(s, " ");
-                                            strcat(s, Save.SystemName.data[i-1]);
+                                            _s=my_strcpy(s, _PT_System);
+                                            *_s++ = ' ';
+                                            (void)my_strcpy(_s, Save.SystemName.data[i-1]);
                                             if ((SystemFlags[0][i-1] & FLAG_CIV_MASK) != 0)
                                             {
                                                 WRITE(195,43,SystemFlags[0][i-1] & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);

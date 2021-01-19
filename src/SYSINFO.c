@@ -36,27 +36,31 @@ void SYSINFO(uint8 SysID, uint8 ThePlayerFlag)
     {
         MAKEBORDER(MyScreen[0],30,250,480,360,12,6,0);
 
-        strcpy(s, _PT_System);
-        strcat(s, ": ");
-        strcat(s, Save.SystemName.data[SysID]);
+        _s=my_strcpy(s, _PT_System);
+        *_s++=':';
+        *_s++=' ';
+        (void)my_strcpy(_s, Save.SystemName.data[SysID]);
         WRITE_RP0(256,260,SystemFlags[0][SysID] & FLAG_CIV_MASK,WRITE_Center,3,s);
 
-        strcpy(s, _PT_Bevoelkerung);
-        strcat(s, ": ");
-        _s = dez2out(SysPop, 0, s+strlen(s));
+        _s=my_strcpy(s, _PT_Bevoelkerung);
+        *_s++=':';
         *_s++=' ';
-        strcpy(_s, _PT_Millionen);
+        _s = dez2out(SysPop, 0, _s);
+        *_s++=' ';
+        (void)my_strcpy(_s, _PT_Millionen);
         WRITE_RP0(256,290,ThePlayerFlag,WRITE_Center,3,s);
 
-        strcpy(s, _PT_Planeten);
-        strcat(s, ": ");
-        _s = dez2out(SystemHeader[SysID].Planets, 0, s+strlen(s));
-        *_s++=','; *_s++=' ';
-        strcpy(_s, _PT_davon);
-        strcat(s, " ");
-        _s = dez2out(MyPlanets, 0, s+strlen(s));
+        _s=my_strcpy(s, _PT_Planeten);
+        *_s++=':';
         *_s++=' ';
-        strcpy(_s, GETCIVADJ(GETCIVVAR(ThePlayerFlag)));
+        _s = dez2out(SystemHeader[SysID].Planets, 0, _s);
+        *_s++=',';
+        *_s++=' ';
+        _s=my_strcpy(_s, _PT_davon);
+        *_s++=' ';
+        _s = dez2out(MyPlanets, 0, _s);
+        *_s++=' ';
+        (void)my_strcpy(_s, GETCIVADJ(GETCIVVAR(ThePlayerFlag)));
         WRITE_RP0(256,310,ThePlayerFlag,WRITE_Center,3,s);
 
         Buildings = (Buildings / MyPlanets) +1;

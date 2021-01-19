@@ -26,7 +26,6 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
     char        s[56], s2[56];
     char*       CivStr = NULL;
     char*       _s;
-    int         len1;
     uint16      ypos;
     uint8       XSystem, XTech, CivVar, i;
     uint32      XCosts;
@@ -45,18 +44,18 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
         return;
     }
     switch (CivFlag) {
-        case FLAG_TERRA:  CivStr = PText[247]; break;
-        case FLAG_KLEGAN: CivStr = PText[248]; break;
-        case FLAG_REMALO: CivStr = PText[249]; break;
-        case FLAG_CARDAC: CivStr = PText[250]; break;
+        case FLAG_TERRA:  CivStr = PText[247]; break; // = Der Vertreter des Terranischen Imperiums
+        case FLAG_KLEGAN: CivStr = PText[248]; break; // ...Kleganischen...
+        case FLAG_REMALO: CivStr = PText[249]; break; // ...Remalonischen...
+        case FLAG_CARDAC: CivStr = PText[250]; break; // ...
         case FLAG_FERAGI: CivStr = PText[251]; break;
         case FLAG_BAROJA: CivStr = PText[252]; break;
         case FLAG_VOLKAN: CivStr = PText[253]; break;
         case FLAG_OTHER:{
                             switch (Save.WorldFlag) {
-                                case WFLAG_DCON:    CivStr = PText[254]; break;
-                                case WFLAG_JAHADR:  CivStr = PText[255]; break;
-                                default:            CivStr = PText[256];
+                                case WFLAG_DCON:    CivStr = PText[254]; break; // Der Vertreter des Dcon-Imperiums
+                                case WFLAG_JAHADR:  CivStr = PText[255]; break; // Das Ja´Hadr - Hauptkommando
+                                default:            CivStr = PText[256];        // Die Militärführung der Rebellen
                             }
                         } break;
         default:    return;
@@ -87,14 +86,11 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             i = 2*(1+(Save.WarPower[7] / Save.WarPower[ActPlayer-1]));
             if (MODE_FORCE == Mode)
             {
-                strcpy(s, PText[260]);
-                len1 = strlen(s);
-                s[len1++]=' ';
-                _s = GETCIVNAME(ActPlayer);
-                strcpy(s+len1, _s);
-                len1+= strlen(_s);
-                s[len1++]=' ';
-                strcpy(s+len1, PText[231]);
+                _s=my_strcpy(s, PText[260]);
+                *_s++ = ' ';
+                _s=my_strcpy(_s, GETCIVNAME(ActPlayer));
+                *_s++ = ' ';
+                (void)my_strcpy(_s, _PT_und);
                 WRITE_RP0(256,110,FLAG_OTHER,WRITE_Center,3,s);
                 WRITE_RP0(256,130,FLAG_OTHER,WRITE_Center,3,PText[261]);
                 WRITE_RP0(256,150,FLAG_OTHER,WRITE_Center,3,PText[262]);
@@ -105,13 +101,12 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             }
             if (0 == Save.JSteuer[ActPlayer-1])
             {
-                strcpy(s, PText[266]);
-                len1 = strlen(s);
-                s[len1]=' ';
-                _s = dez2out(i,0,s+len1+1);
-                *_s++='%';
-                *_s++=' ';
-                strcpy(_s, PText[267]);
+                _s=my_strcpy(s, PText[266]);
+                *_s++ = ' ';
+                _s = dez2out(i,0,_s);
+                *_s++ = '%';
+                *_s++ = ' ';
+                (void)my_strcpy(_s, PText[267]);
                 _s = s;
             } else {
                 _s = PText[268];
@@ -146,11 +141,11 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             VERHANDLUNG_INIT(CivFlag, CivStr, 0);
             WRITE_RP0(256,110,CivFlag,WRITE_Center,3,PText[270]);
             WRITE_RP0(256,130,CivFlag,WRITE_Center,3,PText[271]);
-            strcpy(s, PText[272]);
-            strcat(s, " ");
-            strcat(s, GETCIVADJ(ActPlayer));
-            strcat(s, " ");
-            strcat(s, PText[273]);
+            _s=my_strcpy(s, PText[272]);
+            *_s++ = ' ';
+            _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
+            *_s++ = ' ';
+            (void)my_strcpy(_s, PText[273]);
             WRITE_RP0(256,150,CivFlag,WRITE_Center,3,s);
             WAITLOOP(false);
             RECT_RP0_C0(30,80,480,230);
@@ -169,13 +164,12 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 i = 2*(1+(Save.WarPower[7] / Save.WarPower[ActPlayer-1]));
                 if (i>53) { i = 53; }
 
-                len1 = strlen(PText[278]);
-                memcpy(s, PText[278], len1);
-                s[len1++]=' ';
-                _s = dez2out(i, 0, s+len1);
-                *_s++='%';
-                *_s++=' ';
-                strcpy(_s, PText[279]);
+                _s=my_strcpy(s, PText[278]);
+                *_s++ = ' ';
+                _s = dez2out(i, 0, _s);
+                *_s++ = '%';
+                *_s++ = ' ';
+                (void)my_strcpy(_s, PText[279]);
 
                 WRITE_RP0(256,170,CivFlag,WRITE_Center,3,s);
                 do
@@ -233,35 +227,34 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             {
                 Save.ImperatorState[ActPlayer-1] -= 50;
             }
-            strcpy(s2, PText[285]);
-            strcat(s2, " ");
-            strcat(s2, GETCIVADJ(ActPlayer));
-            strcat(s2, " ");
-            strcat(s2, PText[286]);
+            _s=my_strcpy(s2, PText[285]);
+            *_s++ = ' ';
+            _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
+            *_s++ = ' ';
+            (void)my_strcpy(_s, PText[286]);
             TArr4 = (TextArr4) {{s2, PText[287], NULL, NULL}};
             if (MODE_MONEY == Mode)
             {
-                len1 = strlen(PText[290]);
-                memcpy(s, PText[290], len1);
-                s[len1++] = ' ';
-                _s = dez2out(XCosts, 0, s+len1);
-                *_s++=',';
-                *_s++=' ';
-                strcpy(_s, PText[291]);
+                _s=my_strcpy(s, PText[290]);
+                *_s++ = ' ';
+                _s = dez2out(XCosts, 0, _s);
+                *_s++ = ',';
+                *_s++ = ' ';
+                (void)my_strcpy(_s, PText[291]);
 
-                len1 = strlen(PText[292]);
-                memcpy(s2, PText[292], len1);
-                s2[len1++] = ' ';
-                strcpy(s2+len1, GETCIVADJ(ActPlayer));
+                _s=my_strcpy(s2, PText[292]);
+                *_s++ = ' ';
+                (void)my_strcpy(_s, GETCIVADJ(ActPlayer));
 
                 TArr4 = (TextArr4) {{PText[293], s, s2, PText[294]}};
             } else if ((Save.WarPower[ActPlayer-1] < (Save.WarPower[CivVar-1]*3)) && (XSystem>0))
             {
                 TArr4.data[2] = PText[295];
-                strcpy(s, PText[174]);
-                strcat(s, " ");
-                strcat(s, Save.SystemName.data[XSystem-1]);
-                strcat(s, ".");
+                _s=my_strcpy(s, PText[174]);
+                *_s++ = ' ';
+                _s=my_strcpy(_s, Save.SystemName.data[XSystem-1]);
+                *_s++ = '.';
+                *_s = 0;
                 TArr4.data[3] = s;
                 SYSINFO(XSystem,ActPlayerFlag);
             } else if ((Save.WarPower[ActPlayer-1] < (Save.WarPower[CivVar-1]*4)) && (XTech>0))
@@ -270,16 +263,17 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                   ||(XTech==20) || (XTech==23) || (XTech==24) || (XTech==28)
                   ||(XTech==30) || (XTech==33) || (XTech==36))
                 {
-                    strcpy(s, PText[296]);
+                    _s=my_strcpy(s, PText[296]);
                 } else if ((XTech==3) || (XTech==17) || (XTech==21) || (XTech==25) || (XTech==31))
                 {
-                    strcpy(s, PText[297]);
+                    _s=my_strcpy(s, PText[297]);
                 } else {
-                    strcpy(s, PText[298]);
+                    _s=my_strcpy(s, PText[298]);
                 }
-                strcat(s, " ");
-                strcat(s, TechnologyL.data[XTech]);
-                strcat(s, ".");
+                *_s++ = ' ';
+                _s=my_strcpy(_s, TechnologyL.data[XTech]);
+                *_s++ = '.';
+                *_s = 0;
                 TArr4.data[2] = PText[299];
                 TArr4.data[3] = s;
             } else {
@@ -323,11 +317,11 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 VERHANDLUNG_INIT(CivFlag, CivStr, 0);
                 WRITE_RP0(256,110,CivFlag,WRITE_Center,3,PText[305]);
                 WRITE_RP0(256,130,CivFlag,WRITE_Center,3,PText[306]);
-                strcpy(s, PText[298]);
-                strcat(s, " ");
-                strcat(s, GETCIVNAME(ActPlayer));
-                strcat(s, " ");
-                strcat(s, PText[307]);
+                _s=my_strcpy(s, PText[298]);
+                *_s++ = ' ';
+                _s=my_strcpy(_s, GETCIVNAME(ActPlayer));
+                *_s++ = ' ';
+                (void)my_strcpy(_s, PText[307]);
                 WRITE_RP0(256,150,CivFlag,WRITE_Center,3,s);
                 WAITLOOP(false);
                 RECT_RP0_C0(30,80,480,230);
@@ -363,9 +357,9 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
         } else if (MODE_FORCE == Mode)
         {
             MAKEWINBORDER(MyRPort_PTR[0],85,120,425,200,12,6,0);
-            strcpy(s, PText[310]);
-            strcat(s, " ");
-            strcat(s, GETCIVNAME(ActPlayer));
+            _s=my_strcpy(s, PText[310]);
+            *_s++ = ' ';
+            (void)my_strcpy(_s, GETCIVNAME(ActPlayer));
             WRITE_RP0(256,140,CivFlag,WRITE_Center,3,s);
             WRITE_RP0(256,165,CivFlag,WRITE_Center,3,PText[311]);
             WAITLOOP(false);
@@ -397,12 +391,13 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 WRITE_RP0(256,130,CivFlag,WRITE_Center,3,PText[319]);
                 WRITE_RP0(256,150,CivFlag,WRITE_Center,3,PText[320]);
             }
-            strcpy(s, GETCIVADJ(ActPlayer));
-            strcat(s, " ");
-            strcat(s, PText[321]);      // "n Systems"
-            strcat(s, " ");
-            strcat(s, Save.SystemName.data[XSystem-1]);
-            strcat(s, ".");
+            _s=my_strcpy(s, GETCIVADJ(ActPlayer));
+            *_s++ = ' ';
+            _s=my_strcpy(_s, PText[321]);       // "n Systems"
+            *_s++ = ' ';
+            _s=my_strcpy(_s, Save.SystemName.data[XSystem-1]);
+            *_s++ = '.';
+            *_s = 0;
             WRITE_RP0(256,170,CivFlag,WRITE_Center,3,s);
             SYSINFO(XSystem,ActPlayerFlag);
             do
@@ -440,17 +435,18 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             {
                 WRITE_RP0(256,110,CivFlag,WRITE_Center,3,PText[325]);
                 WRITE_RP0(256,130,CivFlag,WRITE_Center,3,PText[326]);
-                strcpy(s, "den Krieg gegen die ");
-                strcat(s, GETCIVNAME(ActPlayer));
-                strcat(s, "!");
+                _s=my_strcpy(s, "den Krieg gegen die ");
+                _s=my_strcpy(_s, GETCIVNAME(ActPlayer));
+                *_s++ = '!';
+                *_s = 0;
                 WRITE_RP0(256,150,CivFlag,WRITE_Center,3,s);
             } else {
                 WRITE_RP0(256,110,CivFlag,WRITE_Center,3,PText[327]);
                 WRITE_RP0(256,130,CivFlag,WRITE_Center,3,PText[328]);
-                strcpy(s, PText[329]);
-                strcat(s, " ");
-                strcat(s, GETCIVADJ(ActPlayer));
-                strcat(s, PText[330]);
+                _s=my_strcpy(s, PText[329]);
+                *_s++ = ' ';
+                _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
+                (void)my_strcpy(_s, PText[330]);
                 WRITE_RP0(256,150,CivFlag,WRITE_Center,3,s);
             }
             WAITLOOP(false);

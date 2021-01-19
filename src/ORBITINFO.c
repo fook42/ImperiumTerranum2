@@ -7,7 +7,7 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
 {
     int     j;
     char    s[14];
-    char*   pos;
+    char*   _s;
     RECT_RP0_C0(22,69,416,456);
     for(j = 0; j < 12; j++) { ShipNames[j][0] = 0; }
     j = 0;
@@ -22,16 +22,17 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->SType-8)*32,32,MyRPort_PTR[0],35,37+i*32,32,32,192);
                 WRITE_RP0(72,45+i*32,12,0,3,Project.data[MyShipPtr->SType]);
 
-                strcpy(ShipNames[j], Project.data[MyShipPtr->SType]);
+                (void)my_strcpy(ShipNames[j], Project.data[MyShipPtr->SType]);
 
-                pos = dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 2, s);
-                *pos++=' ';
-                pos = dez2out((MyShipPtr->Ladung & MASK_LTRUPPS), 2, pos);
-                *pos++=' ';
-                pos = dez2out(MyShipPtr->ShieldBonus, 2, pos);
-                *pos++=' ';
-                pos = dez2out(it_round((MyShipPtr->Shield + MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, pos);
-                *pos++='%'; *pos=0;
+                _s = dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 2, s);
+                *_s++ = ' ';
+                _s = dez2out((MyShipPtr->Ladung & MASK_LTRUPPS), 2, _s);
+                *_s++ = ' ';
+                _s = dez2out(MyShipPtr->ShieldBonus, 2, _s);
+                *_s++ = ' ';
+                _s = dez2out(it_round((MyShipPtr->Shield + MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, _s);
+                *_s++ = '%';
+                *_s = 0;
                 WRITE_RP0(235,45+i*32,8,0,1,s);
                 i++;
                 j++;

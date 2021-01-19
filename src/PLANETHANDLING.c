@@ -28,6 +28,7 @@ ByteArr42*      ActPProjects;
 void NEGATIVEANSWER()
 {
     char    s[40];
+    char*   _s;
     struct Window* ANS_Window;
     struct RastPort* RPort_PTR;
 
@@ -36,10 +37,10 @@ void NEGATIVEANSWER()
     {
         RPort_PTR = ANS_Window->RPort;
         MAKEWINBORDER(RPort_PTR, 0, 0, 340, 80, 12, 6, 1);
-        strcpy(s, _PT_Die);
-        strcat(s, " ");
-        strcat(s, GETCIVADJ(ActPlayer));
-        strcat(s, PText[416]);
+        _s=my_strcpy(s, _PT_Die);
+        *_s++ = ' ';
+        _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
+        (void)my_strcpy(_s, PText[416]);
         WRITE(171, 20, ActPlayerFlag, WRITE_Center, RPort_PTR,3, s);
         WRITE(171, 45, ActPlayerFlag, WRITE_Center, RPort_PTR,3, PText[417]);
         WAITLOOP(false);
@@ -50,6 +51,7 @@ void NEGATIVEANSWER()
 void POSITIVEANSWER(uint8 CivVar)
 {
     char    s[40];
+    char*   _s;
     struct Window* ANS_Window;
     struct RastPort* RPort_PTR;
 
@@ -58,10 +60,10 @@ void POSITIVEANSWER(uint8 CivVar)
     {
         RPort_PTR = ANS_Window->RPort;
         MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
-        strcpy(s, _PT_Die);
-        strcat(s, " ");
-        strcat(s, GETCIVADJ(ActPlayer));
-        strcat(s, PText[418]);
+        _s=my_strcpy(s, _PT_Die);
+        *_s++ = ' ';
+        _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
+        (void)my_strcpy(_s, PText[418]);
         WRITE(171, 20, ActPlayerFlag, WRITE_Center, RPort_PTR,3, s);
         WRITE(171, 45, ActPlayerFlag, WRITE_Center, RPort_PTR,3, PText[419]);
         WAITLOOP(false);
@@ -126,7 +128,7 @@ uint8 GETOPTION(uint8 Opts, char (*OptArr)[40], uint8 CivFlag)
 bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
 {
     char    s2[60];
-    int     slen;
+    char*   _s;
     bool    _SMALLREQUEST = false;
     struct RastPort* RPort_PTR;
 
@@ -137,13 +139,12 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
     {
         RPort_PTR = SRE_Window->RPort;
         MAKEWINBORDER(RPort_PTR,0,0,440,110,12,6,1);
-        strcpy(s2, _PTx_Player);
-        slen=strlen(s2);
-        s2[slen++]=' ';
-        s2[slen++]='0'+Save.CivPlayer[CivVar-1];
-        s2[slen++]=',';
-        s2[slen++]=' ';
-        strcpy(s2+slen, PText[421]);
+        _s=my_strcpy(s2, _PTx_Player);
+        *_s++ = ' ';
+        *_s++ = '0'+Save.CivPlayer[CivVar-1];
+        *_s++ = ',';
+        *_s++ = ' ';
+        (void)my_strcpy(_s, PText[421]);
         WRITE(221,20,CivFlag,WRITE_Center,RPort_PTR,3,s2);
         WRITE(221,45,CivFlag,WRITE_Center,RPort_PTR,3,s);
         DrawImage(RPort_PTR,&GadImg1, 20,80);
@@ -223,43 +224,43 @@ void DIPLOMACY()
     Opts = 0;
     if (LEVEL_WAR == Save.WarState[ActPlayer-1][CivVar-1])
     {
-        strcpy(OptArr[Opts], PText[423]);           // Frieden ohne Bedingungen
+        (void)my_strcpy(OptArr[Opts], PText[423]);           // Frieden ohne Bedingungen
         OptID[Opts++] = OPT_NONE;
         if (0 != XSystem)
         {
-            strcpy(OptArr[Opts], PText[424]);       // Frieden gegen Sonnensystem
+            (void)my_strcpy(OptArr[Opts], PText[424]);       // Frieden gegen Sonnensystem
             OptID[Opts++] = OPT_SYSTEM;
         }
         if (0 != XTech)
         {
-            strcpy(OptArr[Opts], PText[425]);       // Frieden gegen Technologie
+            (void)my_strcpy(OptArr[Opts], PText[425]);       // Frieden gegen Technologie
             OptID[Opts++] = OPT_TECH;
         }
-        strcpy(OptArr[Opts], PText[426]);           // Frieden gegen Reparationen
+        (void)my_strcpy(OptArr[Opts], PText[426]);           // Frieden gegen Reparationen
         OptID[Opts++] = OPT_MONEY;
     } else
     {
         if (0 != XSystem)
         {
-            strcpy(OptArr[Opts], PText[427]);       // Sonnensystem für Frieden
+            (void)my_strcpy(OptArr[Opts], PText[427]);       // Sonnensystem für Frieden
             OptID[Opts++] = OPT_SYSTEM;
         }
         if (0 != XTech)
         {
-            strcpy(OptArr[Opts], PText[428]);       // Technologie für Frieden
+            (void)my_strcpy(OptArr[Opts], PText[428]);       // Technologie für Frieden
             OptID[Opts++] = OPT_TECH;
         }
-        strcpy(OptArr[Opts], PText[429]);           // Tributzahlungen für Frieden
+        (void)my_strcpy(OptArr[Opts], PText[429]);           // Tributzahlungen für Frieden
         OptID[Opts++] = OPT_MONEY;
-        strcpy(OptArr[Opts], PText[430]);           // Gemeinsamen Feldzug anbieten
+        (void)my_strcpy(OptArr[Opts], PText[430]);           // Gemeinsamen Feldzug anbieten
         OptID[Opts++] = OPT_WAR;
         if (0 == Save.CivPlayer[CivVar-1])
         {
-            strcpy(OptArr[Opts], PText[431]);       // Entwicklungshilfe leisten
+            (void)my_strcpy(OptArr[Opts], PText[431]);       // Entwicklungshilfe leisten
             OptID[Opts++] = OPT_HELP;
             if (Save.WarPower[CivVar-1] < Save.WarPower[ActPlayer-1])
             {
-                strcpy(OptArr[Opts], PText[432]);   // Schiff übergeben
+                (void)my_strcpy(OptArr[Opts], PText[432]);   // Schiff übergeben
                 OptID[Opts++] = OPT_SHIP;
             }
         }
@@ -293,11 +294,11 @@ void DIPLOMACY()
                                 }
                             } break;
             case OPT_SYSTEM:{
-                                strcpy(s2, PText[436]); // "das System"
-                                strcat(s2, " ");
-                                strcat(s2, Save.SystemName.data[XSystem-1]);
-                                strcat(s2, " ");
-                                strcat(s2, PText[437]); // "zu übergeben"
+                                _s=my_strcpy(s2, PText[436]); // "das System"
+                                *_s++ = ' ';
+                                _s=my_strcpy(_s, Save.SystemName.data[XSystem-1]);
+                                *_s++ = ' ';
+                                (void)my_strcpy(_s, PText[437]); // "zu übergeben"
                                 SYSINFO(XSystem,CivFlag);
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
@@ -309,11 +310,11 @@ void DIPLOMACY()
                                 RECT_RP0_C0(30,250,480,360);   // clear -Area
                             } break;
             case OPT_TECH:  {
-                                strcpy(s2, PText[438]);
-                                strcat(s2, " ");
-                                strcat(s2, TechnologyL.data[XTech]);
-                                strcat(s2, " ");
-                                strcat(s2, PText[437]);
+                                _s=my_strcpy(s2, PText[438]);
+                                *_s++ = ' ';
+                                _s=my_strcpy(_s, TechnologyL.data[XTech]);
+                                *_s++ = ' ';
+                                (void)my_strcpy(_s, PText[437]); // "zu übergeben"
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
                                     POSITIVEANSWER(CivVar);
@@ -325,7 +326,7 @@ void DIPLOMACY()
                             } break;
             case OPT_MONEY: {
                                 _s = dez2out(XCosts, 0, s2);
-                                strcpy(_s, PText[439]);
+                                (void)my_strcpy(_s, PText[439]);
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
                                     POSITIVEANSWER(CivVar);
@@ -345,9 +346,9 @@ void DIPLOMACY()
                                         && (Save.WarState[ActPlayer-1][i-1] != LEVEL_UNKNOWN)
                                         && ((i<8) || (Save.WorldFlag != 0)))
                                     {
-                                        strcpy(OptArr[Opts], PText[440]);
-                                        strcat(OptArr[Opts], " ");
-                                        strcat(OptArr[Opts], GETCIVNAME(i));
+                                        _s=my_strcpy(OptArr[Opts], PText[440]);
+                                        *_s++ = ' ';
+                                        (void)my_strcpy(_s, GETCIVNAME(i));
                                         OptID[Opts++] = i;
                                     }
                                 }
@@ -360,11 +361,11 @@ void DIPLOMACY()
                                     }
                                     --Answer;
                                     CALLOTHERPLAYER(CivVar, CivFlag);
-                                    strcpy(s2, PText[441]);
-                                    strcat(s2, " ");
-                                    strcat(s2, GETCIVNAME(OptID[Answer]));
-                                    strcat(s2, " ");
-                                    strcat(s2, PText[442]);
+                                    _s=my_strcpy(s2, PText[441]);
+                                    *_s++ = ' ';
+                                    _s=my_strcpy(_s, GETCIVNAME(OptID[Answer]));
+                                    *_s++ = ' ';
+                                    (void)my_strcpy(_s, PText[442]);
                                     if (SMALLREQUEST(s2, CivVar, CivFlag))
                                     {
                                         POSITIVEANSWER(CivVar);
@@ -459,9 +460,9 @@ void DIPLOMACY()
                                     && (Save.WarState[ActPlayer-1][i-1]!=LEVEL_DIED) && (Save.WarState[ActPlayer-1][i-1]!=LEVEL_UNKNOWN)
                                     && ((i<8) || (Save.WorldFlag != 0)))
                                 {
-                                    strcpy(OptArr[Opts], PText[440]);
-                                    strcat(OptArr[Opts], " ");
-                                    strcat(OptArr[Opts], GETCIVNAME(i));
+                                    _s=my_strcpy(OptArr[Opts], PText[440]);
+                                    *_s++ = ' ';
+                                    (void)my_strcpy(_s, GETCIVNAME(i));
                                     OptID[Opts++] = i;
                                 }
                             }
@@ -515,8 +516,8 @@ void DIPLOMACY()
                                     i = 2;
                                 } else {
                                     i = 0;
-                                    strcpy(s2, TechnologyL.data[XTech]);
-                                    strcat(s2, ".");
+                                    _s=my_strcpy(s2, TechnologyL.data[XTech]);
+                                    (void)my_strcpy(_s, ".");
                                     REQUEST(PText[450],s2,ActPlayerFlag,ActPlayerFlag);
                                     Save.TechCosts[CivVar-1].data[XTech] = 0;
                                     Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_ALLIANZ;
@@ -534,12 +535,11 @@ void DIPLOMACY()
                                 {
                                     i = 3;
                                 } else {
-                                    i = strlen(PText[452]);
-                                    memcpy(s2, PText[452], i);
-                                    s2[i++]=' ';
-                                    _s = dez2out(XCosts, 0, s2+i);
-                                    *_s++='.';
-                                    *_s  =0;
+                                    _s=my_strcpy(s2, PText[452]);
+                                    *_s++ = ' ';
+                                    _s = dez2out(XCosts, 0, _s);
+                                    *_s++ = '.';
+                                    *_s = 0;
                                     REQUEST(PText[451],s2,ActPlayerFlag,ActPlayerFlag);
                                     Save.Staatstopf[CivVar-1]    += XCosts;
                                     Save.Staatstopf[ActPlayer-1] -= XCosts;
@@ -686,7 +686,7 @@ void WRITELOADDATA(int LTOut)
             *_s++='D'; *_s++=' ';
             CLIPPLANET(CLASS_DESERT);
         }
-        *_s++=0;
+        *_s=0;
         WRITE_RP0(419,235,ActPlayerFlag,1,3,s);
     }
 }

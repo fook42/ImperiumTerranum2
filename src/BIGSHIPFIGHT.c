@@ -53,7 +53,8 @@ bool LOADSAMPLE(char* FName, uint8 SID)
 void INITSOUNDNAMES(uint8 SoundID, char* s)
 {
     const char* soundnames[]={"Gun","Laser","Phaser","Disruptor","PTorpedo",""};
-    uint8   len1, soundnr;
+    uint8   soundnr;
+    char*   _s;
 
     switch (SoundID) {
         case WEAPON_GUN:       soundnr=0; break;
@@ -63,30 +64,25 @@ void INITSOUNDNAMES(uint8 SoundID, char* s)
         case WEAPON_PTORPEDO:  soundnr=4; break;
         default: { soundnr=5; }
     }
-    strcpy(s, PathStr[6]);  /* SFX/ */
-    len1 = strlen(s);
-    strcpy(s+len1, soundnames[soundnr]);
-    len1 = strlen(s);
-    strcpy(s+len1, ".RAW");
+    _s=my_strcpy( s, PathStr[6]);  /* SFX/ */
+    _s=my_strcpy(_s, soundnames[soundnr]);
+    (void)my_strcpy(_s, ".RAW");
 }
 
 // ShipPtr1, ShipPtr2, BSFSoundMemA, BSFSoundSize
 bool INITIMAGES()
 {
     char    s[60];
-    uint8   len1, len2;
+    char*   _s1;
+    char*   _s2;
 
-    strcpy(s, PathStr[5]);  /* SHIPS/ */
-    len1 = strlen(s);
-
-    strcpy(s+len1, Project.data[ShipPtr1->SType]);
-    len2 = strlen(s);
-    strcpy(s+len2, ".img");
+    _s1=my_strcpy( s, PathStr[5]);  /* SHIPS/ */
+    _s2=my_strcpy(_s1, Project.data[ShipPtr1->SType]);
+    (void)my_strcpy(_s2, ".img");
     if (!RAWLOADIMAGE(s,0,32,512,32,4, &ImgBitMap4)) { return false; }
 
-    strcpy(s+len1, Project.data[ShipPtr2->SType]);
-    len2 = strlen(s);
-    strcpy(s+len2, ".img");
+    _s2=my_strcpy(_s1, Project.data[ShipPtr2->SType]);
+    (void)my_strcpy(_s2, ".img");
     if (!RAWLOADIMAGE(s,0,64,512,32,4, &ImgBitMap4)) { return false; }
 
     BSFSoundMemA[0] = (uint16*) IMemA[0];
@@ -98,9 +94,8 @@ bool INITIMAGES()
     if (!LOADSAMPLE(s, 1)) { return false; }
 
     BSFSoundMemA[2] = BSFSoundMemA[1] + BSFSoundSize[1];
-    strcpy(s, PathStr[6]);  /* SFX/ */
-    len1 = strlen(s);
-    strcpy(s+len1, "FightSoundDS.RAW");
+    _s1=my_strcpy(s, PathStr[6]);  /* SFX/ */
+    (void)my_strcpy(_s1, "FightSoundDS.RAW");
     if (!LOADSAMPLE(s,2)) { return false; }
 
     BSFSoundSize[2] /= 2;

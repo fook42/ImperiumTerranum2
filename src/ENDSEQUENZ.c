@@ -9,11 +9,11 @@ typedef struct SArr13 { char* data[11]; } SArr13;
 
     SArr13  SA13;
     uint8   i, t;
-    uint16  slen, ypos;
+    uint16  ypos;
     BPTR    FHandle;
     struct MMD0 *SndModulePtr = NULL;
     char    s[70];
-    char    s2[70];
+    char    s2[50];
     char*   _s;
     struct RastPort* RPort_PTR;
 
@@ -42,13 +42,12 @@ typedef struct SArr13 { char* data[11]; } SArr13;
 
     RPort_PTR = &(MyScreen[0]->RastPort);
 
-    slen = strlen(PathStr[4]);
-    memcpy(s, PathStr[4], slen);
+    _s = my_strcpy(s, PathStr[4]);
     if ((1 == Mode) || (-3 == Mode))
     {
-        strcpy( s+slen, "MOD.HappyEnd" );
+        (void)my_strcpy( _s, "MOD.HappyEnd" );
     } else {
-        strcpy( s+slen, "MOD.DeadEnd" );
+        (void)my_strcpy( _s, "MOD.DeadEnd" );
     }
     FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     if (0 != FHandle)
@@ -68,18 +67,18 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     {
         if (Save.WorldFlag == WFLAG_FIELD)
         {
-            strcpy( s+slen, "FieldEnd.pal" );
+            (void)my_strcpy( _s, "FieldEnd.pal" );
         } else {
-            strcpy( s+slen, "DeadEnd.pal" );
+            (void)my_strcpy( _s, "DeadEnd.pal" );
         }
     } else if (-2 == Mode)
     {
-        strcpy( s+slen, "BigBang.pal" );
+        (void)my_strcpy( _s, "BigBang.pal" );
     } else {
-        strcpy( s+slen, "HappyEnd.pal" );
+        (void)my_strcpy( _s, "HappyEnd.pal" );
     }
     (void) SETCOLOR(MyScreen[0], s);
-    strcpy( s+strlen(s)-3, "img" );
+    (void)my_strcpy( _s-3, "img" );
 
     if (!DISPLAYIMAGE(s,0,75,640,360,8,MyScreen[0],0))
     {
@@ -90,23 +89,21 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     SetRGB4(&(MyScreen[0]->ViewPort),255,7,7,7);
     if (-1 == Mode)
     {
-        slen = strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, slen);
-        s[slen++]=' ';
-        _s = dez2out(Year, 0, s+slen);
+        _s=my_strcpy(s, _PT_ImJahre);
         *_s++=' ';
-        strcpy(_s, PText[759]);
+        _s = dez2out(Year, 0, _s);
+        *_s++=' ';
+        (void)my_strcpy(_s, PText[759]);
         if (Save.WorldFlag == WFLAG_FIELD)
         {
             SA13 = (SArr13) {{s,PText[760],PText[761],PText[762],PText[763],PText[764],
                                 PText[765],PText[766],PText[767],PText[768],PText[769]}};
             t = 11;
         } else {
-            slen = strlen(PText[771]);
-            strcpy(s2, PText[771]);
-            s2[slen++]=' ';
-            strcpy(s2+slen, GETCIVADJ(ActPlayer));
-            strcpy(s2+strlen(s2), PText[772]);
+            _s=my_strcpy(s2, PText[771]);
+            *_s++=' ';
+            _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
+            (void)my_strcpy(_s, PText[772]);
             SA13 = (SArr13) {{s,s2,        PText[773],PText[774],PText[775],PText[776],
                                 PText[777],PText[778],PText[779],PText[780],NULL}};
             t = 10;
@@ -115,74 +112,63 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     {
         _s = dez2out(Year, 0, s);
         *_s++=' ';
-        strcpy(_s, PText[782]);
-        slen = strlen(s);
-        s[slen++]=' ';
-        strcpy(s+slen, GETCIVNAME(ActPlayer));
-        slen = strlen(s);
-        s[slen++]=' ';
-        strcpy(s+slen, PText[783]);
+        _s = my_strcpy(_s, PText[782]);
+        *_s++=' ';
+        _s = my_strcpy(_s, GETCIVNAME(ActPlayer));
+        *_s++=' ';
+        (void)my_strcpy(_s, PText[783]);
         SA13 = (SArr13) {{s,PText[784],PText[785],PText[786],PText[787],PText[788],
                             PText[789],PText[790],PText[791],NULL,NULL}};
         t = 9;
     } else if (-3 == Mode)
     {
         Save.ImperatorState[ActPlayer-1] -= 1500;
-        slen = strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, slen);
-        s[slen++]=' ';
-        _s = dez2out(Year, 0, s+slen);
+        _s = my_strcpy(s, _PT_ImJahre);
         *_s++=' ';
-        strcpy(_s, PText[794]);
-        slen = strlen(s);
-        s[slen++]=' ';
-        strcpy(s+slen, GETCIVNAME(ActPlayer));
-        slen = strlen(s);
-        s[slen++]=' ';
-        strcpy(s+slen, PText[795]);
+        _s = dez2out(Year, 0, _s);
+        *_s++=' ';
+        _s = my_strcpy(_s, PText[794]);
+        *_s++=' ';
+        _s = my_strcpy(_s, GETCIVNAME(ActPlayer));
+        *_s++=' ';
+        (void)my_strcpy(_s, PText[795]);
         SA13 = (SArr13) {{s,PText[796],PText[797],PText[798],PText[799],PText[800],
                             PText[801],PText[802],PText[803],PText[804],NULL}};
         t = 10;
     } else if (1 == Mode)
     {
-        slen = strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, slen);
-        s[slen++]=' ';
-        _s = dez2out(Year, 0, s+slen);
+        _s = my_strcpy(s, _PT_ImJahre);
         *_s++=' ';
-        strcpy(_s, PText[794]);
-        slen = strlen(s);
-        s[slen++]=' ';
-        strcpy(s+slen, GETCIVNAME(ActPlayer));
-        slen = strlen(s);
+        _s = dez2out(Year, 0, _s);
+        *_s++=' ';
+        _s = my_strcpy(_s, PText[794]);
+        *_s++=' ';
+        _s = my_strcpy(_s, GETCIVNAME(ActPlayer));
         if (3 != ActPlayer)
         {
-            s[slen++]='n';
+            *_s++='n';
         }
-        s[slen++]=',';
-        s[slen++]=' ';
-        strcpy(s+slen, PText[806]);
+        *_s++=',';
+        *_s++=' ';
+        (void)my_strcpy(_s, PText[806]);
         SA13 = (SArr13) {{s,PText[807],PText[808],PText[809],PText[810],PText[811],
                             PText[812],PText[813],PText[814],NULL,NULL}};
         t = 9;
     } else {
-        slen = strlen(_PT_ImJahre);
-        memcpy(s, _PT_ImJahre, slen);
-        s[slen++]=' ';
-        _s = dez2out(Year, 0, s+slen);
+        _s = my_strcpy(s, _PT_ImJahre);
         *_s++=' ';
-        strcpy(_s, PText[794]);
-        slen = strlen(s);
-        s[slen++]=' ';
-        strcpy(s+slen, GETCIVNAME(Mode));
-        slen = strlen(s);
+        _s = dez2out(Year, 0, _s);
+        *_s++=' ';
+        _s = my_strcpy(_s, PText[794]);
+        *_s++=' ';
+        _s = my_strcpy(_s, GETCIVNAME(Mode));
         if (3 != Mode)
         {
-            s[slen++]='n';
+            *_s++='n';
         }
-        s[slen++]=',';
-        s[slen++]=' ';
-        strcpy(s+slen, PText[816]);
+        *_s++=',';
+        *_s++=' ';
+        (void)my_strcpy(_s, PText[816]);
         SA13 = (SArr13) {{s,PText[817],PText[818],PText[819],PText[820],PText[821],
                             PText[822],PText[823],NULL,NULL,NULL}};
         t = 8;

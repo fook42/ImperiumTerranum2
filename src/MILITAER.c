@@ -56,8 +56,7 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 void MILITAER()
 {
     char    s[40];
-    char    Txt_notavail[]= "--- (benötigt ";
-    const int _Txt_notavail_len = (sizeof(Txt_notavail)/sizeof(Txt_notavail[0]))-1;
+    const char Txt_notavail[] = {"--- (benötigt \0"};
     char*   _s;
     int     i;
     uint16  ypos;
@@ -89,11 +88,10 @@ void MILITAER()
     {
         _s = PText[672];
     } else {
-        memcpy(s, Txt_notavail, _Txt_notavail_len);
-        i = strlen(TechnologyL.data[9]);
-        memcpy(s+_Txt_notavail_len, TechnologyL.data[9], i);
-        s[_Txt_notavail_len+(i++)]=')';
-        s[_Txt_notavail_len+i]=0;
+        _s=my_strcpy(s, Txt_notavail);
+        _s=my_strcpy(_s, TechnologyL.data[9]);
+        *_s++ = ')';
+        *_s = 0;
         _s = s;
     }
     WRITE(60,175,12,0, RPort_PTR,3,_s);
@@ -102,11 +100,10 @@ void MILITAER()
     {
         _s = PText[673];
     } else {
-        memcpy(s, Txt_notavail, _Txt_notavail_len);
-        i = strlen(TechnologyL.data[23]);
-        memcpy(s+_Txt_notavail_len, TechnologyL.data[23], i);
-        s[_Txt_notavail_len+(i++)]=')';
-        s[_Txt_notavail_len+i]=0;
+        _s=my_strcpy(s, Txt_notavail);
+        _s=my_strcpy(_s, TechnologyL.data[9]);
+        *_s++ = ')';
+        *_s = 0;
         _s = s;
     }
     WRITE(60,205,12,0, RPort_PTR,3,_s);

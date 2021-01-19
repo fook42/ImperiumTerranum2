@@ -7,15 +7,13 @@ void PLAYERJINGLE(uint8 JingleID)
 {
     char    FName[60];
     char*   _s;
-    int     len;
     BPTR    FHandle;
 
     if (NULL == LogoSMemA[JingleID])
     {
-        len = strlen(PathStr[9]);
-        memcpy(FName, PathStr[9], len);
-        _s = dez2out(JingleID, 0, FName+len);
-        strcpy(_s, ".RAW");
+        _s=my_strcpy(FName, PathStr[9]);
+        _s = dez2out(JingleID, 0, _s);
+        (void)my_strcpy(_s, ".RAW");
         FHandle = OPENSMOOTH(FName,MODE_OLDFILE);
         if (0 == FHandle) { return; }
         (void) Seek(FHandle, 0, OFFSET_END);

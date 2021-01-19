@@ -45,12 +45,12 @@ void FORSCHUNG()
 
     if (Save.ActTech[ActPlayer-1]>0)
     {
-        i=strlen(TechnologyL.data[Save.ActTech[ActPlayer-1]]);
-        memcpy(s, TechnologyL.data[Save.ActTech[ActPlayer-1]], i);
-        s[i++]=','; s[i++]=' ';
-        _s = dez2out((Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, s+i);
+        _s=my_strcpy(s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
+        *_s++=',';
         *_s++=' ';
-        strcpy(_s, _PT_Jahre);
+        _s = dez2out((Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
+        *_s++=' ';
+        (void)my_strcpy(_s, _PT_Jahre);
         WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,s);
 
         MAKEWINBORDER(RPort_PTR,20,365,492,390,6,12,0);

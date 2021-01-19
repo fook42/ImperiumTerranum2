@@ -6,13 +6,14 @@
 void INITMENU()
 {
     char    s[40];
+    char*   _s;
 
     Screen2 = 0;
-    strcpy(s, PathStr[7]);
-    strcat(s, "Menu.pal");
+    _s=my_strcpy( s, PathStr[7]);
+    _s=my_strcpy(_s, "Menu.pal");
     (void) SETCOLOR(MyScreen[1], s);
 
-    strcpy(s+strlen(s)-3, "img");
+    (void)my_strcpy(_s-3, "img");
     if (!DISPLAYIMAGE(s,0,0,640,512,6,MyScreen[1],4))
     {
         DisplayBeep(NULL);

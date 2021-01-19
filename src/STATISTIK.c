@@ -150,29 +150,26 @@ void STATISTIK()
         WRITE(250,180,12,0,RPort_PTR,3, _s);
     }
 
-    l=strlen(PText[735]);
-    memcpy(s, PText[735], l);
-    s[l++]=':';
-    s[l++]=' ';
-    (void)dez2out(Militaerausgaben[ActPlayer-1], 0, s+l);
+    _s=my_strcpy(s, PText[735]);
+    *_s++=':';
+    *_s++=' ';
+    (void)dez2out(Militaerausgaben[ActPlayer-1], 0, _s);
     WRITE(20,280,12,0,RPort_PTR,3,s);
 
-    l=strlen(PText[736]);
-    memcpy(s, PText[736], l);
-    s[l++]=':';
-    s[l++]=' ';
-    _s=dez2out((sint32) (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, s+l);
+    _s=my_strcpy(s, PText[736]);
+    *_s++=':';
     *_s++=' ';
-    strcpy(_s, _PT_Jahre);
+    _s=dez2out((sint32) (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
+    *_s++=' ';
+    (void) my_strcpy(_s, _PT_Jahre);
     WRITE(20,300,12,0,RPort_PTR,3,s);
 
-    l=strlen(PText[674]);
-    memcpy(s, PText[674], l);
-    s[l++]=':';
-    s[l++]=' ';
-    _s=dez2out(Save.ImperatorState[ActPlayer-1], 0, s+l);
+    _s=my_strcpy(s, PText[674]);
+    *_s++=':';
     *_s++=' ';
-    strcpy(_s, PText[414]);
+    _s=dez2out(Save.ImperatorState[ActPlayer-1], 0, _s);
+    *_s++=' ';
+    (void) my_strcpy(_s, PText[414]);
     WRITE(20,320,12,0,RPort_PTR,3,s);
 
     // TODO ... debug-display???

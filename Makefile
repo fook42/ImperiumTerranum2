@@ -23,7 +23,7 @@ $(TARGET): $(objects)
 	@echo "-- Link finished --"
 
 $(BUILD_DIR)/%.c.o : %.c
-	$(MKDIR_P) $(dir $@)
+	@$(MKDIR_P) $(dir $@)
 	$(CC) $(INC_FLAGS) $(CFLAGS) -c $< -o $@	
 
 .PHONY: clean

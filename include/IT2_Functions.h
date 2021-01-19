@@ -19,6 +19,7 @@ char* dez2out(sint32 value, uint8 digits, char* dest);
 char* float2out(double fvalue, uint8 dezdigits, uint8 flodigits, char* dest);
 char* hex2out(sint32 dez, uint8 digits, char* dest);
 ULONG string2hex(char* in_string);
+char* my_strcpy(char* destination, const char* source);
 
 bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint8 Depth);
 
@@ -116,7 +117,7 @@ void SEARCHOBJECT(uint8* ActSys);
 void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr);
 // <<<
 // >>> HIGHSCORE
-void CREATEHIGHSCORE();
+void CREATEHIGHSCORE(char* HScoreFileName);
 uint8 GETCOLOR(uint8 Col);
 void HIGHSCORE();
 // <<<
@@ -144,7 +145,7 @@ void SETDARKCOLOR(char* FName, r_Col_t* Colors);
 // void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module);
 void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL);
 // bool LOADSOUNDS();
-bool LOADSOUNDS(char* path, uint16 pathlen, uint16** SMemA, uint32* SMemL);
+bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, uint32* SMemL);
 int ff_round(long int value);
 void ROTATEpX(VectorObj_t* actObject);
 void ROTATEpY(VectorObj_t* actObject);

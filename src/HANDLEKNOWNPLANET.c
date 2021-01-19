@@ -220,50 +220,56 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
 
     INITSCREEN(SCREEN_PLANET);
     ActPProjects = MyPlanetHeader->ProjectPtr;
+    j=0;
     for(i = 0; i < 3; ++i)
     {
-        RECT_RP1(0,56,101+i*49,256,120+i*49);
+        RECT_RP1(0,56,101+j,256,120+j);
+        j+=49;
     }
     RECT_RP1(0,0,0,639,90);
 
-    strcpy(s, _PT_System);
-    strcat(s, ": ");
-    strcat(s, Save.SystemName.data[ActSys-1]);
+    _s=my_strcpy(s, _PT_System);
+    *_s++=':';
+    *_s++=' ';
+    (void)my_strcpy(_s, Save.SystemName.data[ActSys-1]);
     WRITE_RP1(5,5,1,1,3,s);
 
-    strcpy(s, _PT_Planet);
-    strcat(s, ": ");
-    strcat(s, MyPlanetHeader->PName);
+    _s=my_strcpy(s, _PT_Planet);
+    *_s++=':';
+    *_s++=' ';
+    (void)my_strcpy(_s, MyPlanetHeader->PName);
     WRITE_RP1(5,25,1,1,3,s);
 
-    strcpy(s, _PT_Klasse);
-    strcat(s, ": ");
+    _s=my_strcpy(s, _PT_Klasse);
+    *_s++=':';
+    *_s++=' ';
     switch ( MyPlanetHeader->Class) {
-        case CLASS_DESERT    : strcat(s, "D (ca. 60%"); break;
-        case CLASS_HALFEARTH : strcat(s, "H (ca. 80%"); break;
-        case CLASS_EARTH     : strcat(s, "M (ca. 95%"); break;
-        case CLASS_ICE       : strcat(s, "I (ca. 60%"); break;
-        case CLASS_STONES    : strcat(s, "T (ca. 75%"); break;
-        case CLASS_WATER     : strcat(s, "W (ca. 60%"); break;
+        case CLASS_DESERT    : _s=my_strcpy(_s, "D (ca. 60% "); break;
+        case CLASS_HALFEARTH : _s=my_strcpy(_s, "H (ca. 80% "); break;
+        case CLASS_EARTH     : _s=my_strcpy(_s, "M (ca. 95% "); break;
+        case CLASS_ICE       : _s=my_strcpy(_s, "I (ca. 60% "); break;
+        case CLASS_STONES    : _s=my_strcpy(_s, "T (ca. 75% "); break;
+        case CLASS_WATER     : _s=my_strcpy(_s, "W (ca. 60% "); break;
         default: { }
     }
-    strcat(s, " ");
-    strcat(s, _PT_Besiedlung);
-    strcat(s, ")");
+    _s=my_strcpy(_s, _PT_Besiedlung);
+    *_s++=')';
+    *_s=0;
     WRITE_RP1(5,45,1,1,3,s);
 
-    strcpy(s, _PT_Groesse);
-    strcat(s, ": ");
-
-    _s = float2out( (MyPlanetHeader->Size/10.0), 0, 2, s+strlen(s));
-    strcpy(_s, PText[171]);
+    _s=my_strcpy(s, _PT_Groesse);
+    *_s++=':';
+    *_s++=' ';
+    _s = float2out( (MyPlanetHeader->Size/10.0), 0, 2, _s);
+    (void)my_strcpy(_s, PText[171]);
     WRITE_RP1(5,65,1,1,3,s);
 
     if (Save.ActTech[ActPlayer-1]>0)
     {
-        strcpy(s, PText[172]);
-        strcat(s, ": ");
-        strcat(s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
+        _s=my_strcpy(s, PText[172]);
+        *_s++=':';
+        *_s++=' ';
+        (void)my_strcpy(_s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
         WRITE_RP1(275,5,1,1,3,s);
     } else {
         WRITE_RP1(275,5,1,1,3,PText[173]);
@@ -280,16 +286,17 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         }
         while (NULL != MyShipPtr);
 
-        strcpy(s, PText[175]);
-        strcat(s, ": ");
-        (void) dez2out(i, 0, s+strlen(s));
+        _s=my_strcpy(s, PText[175]);
+        *_s++=':';
+        *_s++=' ';
+        (void) dez2out(i, 0, _s);
         WRITE_RP1(275,45,1,1,3,s);
     }
     if (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & ActPlayerFlag))
     {
-        strcpy (s, PText[176]);
-        strcat(s, " ");
-        strcat(s, GETCIVNAME(GETCIVVAR(MyPlanetHeader->Ethno)));
+        _s=my_strcpy(s, PText[176]);
+        *_s++=' ';
+        (void)my_strcpy(_s, GETCIVNAME(GETCIVVAR(MyPlanetHeader->Ethno)));
         WRITE_RP1(275,65,1,1,3,s);
     }
 
@@ -337,7 +344,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 j = 1;
                 if (MyPlanetHeader->Biosphaere<200)
                 {
-                    strcpy(NewProject[j], PText[163]);
+                    (void)my_strcpy(NewProject[j], PText[163]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Biosphaere)*PMoney / 9;
                     ProjectNum[j] = -3;
                     ProjectType[j] = 1;
@@ -345,7 +352,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 }
                 if (MyPlanetHeader->Infrastruktur<200)
                 {
-                    strcpy(NewProject[j], PText[164]);
+                    (void)my_strcpy(NewProject[j], PText[164]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Infrastruktur)*PMoney / 9;
                     ProjectNum[j] = -2;
                     ProjectType[j] = 1;
@@ -353,7 +360,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 }
                 if (MyPlanetHeader->Industrie<200)
                 {
-                    strcpy(NewProject[j], PText[165]);
+                    (void)my_strcpy(NewProject[j], PText[165]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Industrie)*PMoney / 9;
                     ProjectNum[j] = -1;
                     ProjectType[j] = 1;
@@ -389,7 +396,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     if (DoIt)
                     {
                         ProjectRounds[j] = Save.ProjectCosts[ActPlayer-1].data[i];
-                        strcpy(NewProject[j], Project.data[i]);
+                        (void)my_strcpy(NewProject[j], Project.data[i]);
                         ProjectNum[j] = i;
                         if ((7 < i) && (25 > i))
                         {
@@ -472,13 +479,13 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     MyPlanetHeader->XProjectCosts = ProjectRounds[btx];
                     if (MyPlanetHeader->ProjectID>0)
                     {
-                        strcpy(s, Project.data[MyPlanetHeader->ProjectID]);
+                        (void)my_strcpy(s, Project.data[MyPlanetHeader->ProjectID]);
                     }
                 }
                 WRITECURRENTPROJECT(MyPlanetHeader);
                 WRITEPROJECTSSTATUS(MyPlanetHeader, ActPProjects);
-            } else if ((MouseX(1) >= 198) && (MouseX(1) <= 328)
-                    && (MouseY(1) >= 455) && (MouseY(1) <= 480)
+            } else if ((MouseX(1) > 197) && (MouseX(1) < 329)
+                    && (MouseY(1) > 454) && (MouseY(1) < 481)
                     && (MyPlanetHeader->ProjectID>0))
             {
                 CLICKRECT(MyRPort_PTR[1],197,455,328,481,2);
@@ -504,8 +511,8 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 {
                     Delay(RDELAY);
                     if (LMB_PRESSED
-                        && (HKP_Window->MouseX >=  10) && (HKP_Window->MouseX <= 131)
-                        && (HKP_Window->MouseY >= 100) && (HKP_Window->MouseY <= 125))
+                        && (HKP_Window->MouseX >  9) && (HKP_Window->MouseX < 132)
+                        && (HKP_Window->MouseY > 99) && (HKP_Window->MouseY < 126))
                     {
                         /* Kaufen */
                         CLICKRECT(RPort_PTR, 10,100,131,125,2);
@@ -522,8 +529,8 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         }
                     }
                     if (RMB_PRESSED || (LMB_PRESSED
-                        && (HKP_Window->MouseX >= 141) && (HKP_Window->MouseX <= 263)
-                        && (HKP_Window->MouseY >= 100) && (HKP_Window->MouseY <= 125)))
+                        && (HKP_Window->MouseX > 140) && (HKP_Window->MouseX < 264)
+                        && (HKP_Window->MouseY >  99) && (HKP_Window->MouseY < 126)))
                     {
                         /* Abbruch */
                         CLICKRECT(RPort_PTR,141,100,263,125,2);

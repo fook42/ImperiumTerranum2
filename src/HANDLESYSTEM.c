@@ -10,7 +10,7 @@ char _Txt_nextPage[40];
 uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader** ShipPos)
 {
     uint8   i;
-    int     y, z, len;
+    int     y, z;
     char    s[60];
     char*   _s;
     r_ShipHeader* MyShipPtr;
@@ -48,25 +48,22 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     } else {
                         WRITE_RP0(40,y,ActPlayerFlag,0,2, Project.data[MyShipPtr->SType]);
 
-                        strcpy(s, PText[456]);
-                        len = PTextLen[456];
-                        s[len++]=':';
-                        s[len++]=' ';
-                        (void) dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 0, s+len);
+                        _s=my_strcpy(s, PText[456]);
+                        *_s++=':';
+                        *_s++=' ';
+                        (void) dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 0, _s);
                         WRITE_RP0(135,y,12,0,2,s);
 
-                        strcpy(s, PText[457]);
-                        len = PTextLen[457];
-                        s[len++]=':';
-                        s[len++]=' ';
-                        (void) dez2out(MyShipPtr->Ladung & MASK_LTRUPPS, 0, s+len);
+                        _s=my_strcpy(s, PText[457]);
+                        *_s++=':';
+                        *_s++=' ';
+                        (void) dez2out(MyShipPtr->Ladung & MASK_LTRUPPS, 0, _s);
                         WRITE_RP0(230,y,12,0,2,s);
 
-                        strcpy(s, PText[459]);
-                        len = PTextLen[459];
-                        s[len++]=':';
-                        s[len++]=' ';
-                        _s = dez2out(it_round(MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, s+len);
+                        _s=my_strcpy(s, PText[459]);
+                        *_s++=':';
+                        *_s++=' ';
+                        _s = dez2out(it_round(MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, _s);
                         *_s++=' ';
                         *_s++='%';
                         *_s = 0;
@@ -87,7 +84,6 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
 uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* PCol)
 {
     uint8   i,j;
-    uint8   len;
     uint16  y,z;
     r_PlanetHeader* MyPlanet;
     char    s[60];
@@ -133,22 +129,20 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                         WRITE_RP0(170,y,12,0,2, _s);
 
                         _s = dez2out(MyPlanet->Population, 0, s);
-                        strcpy(_s, " Mio");
+                        (void)my_strcpy(_s, " Mio");
                         WRITE_RP0(465,y,12,WRITE_Right,2,s);
                     } else {
-                        strcpy(s, _PT_Groesse);
-                        len = strlen(s);
-                        s[len++] = ':';
-                        s[len++] = ' ';
-                        (void) float2out( (MyPlanet->Size/10.0), 0, 2, s+len);
+                        _s=my_strcpy(s, _PT_Groesse);
+                        *_s++ = ':';
+                        *_s++ = ' ';
+                        (void) float2out( (MyPlanet->Size/10.0), 0, 2, _s);
                         WRITE_RP0(170,y,12,0,2,s);
 
                         if (MyPlanet->Ethno == ActPlayerFlag)
                         {
-                            strcpy(s, GETCIVADJ(ActPlayer));
-                            len = strlen(s);
-                            s[len++] = ' ';
-                            strcpy(s+len, PText[182]);
+                            _s=my_strcpy(s, GETCIVADJ(ActPlayer));
+                            *_s++ = ' ';
+                            (void)my_strcpy(_s, PText[182]);
                             WRITE_RP0(350,y,12,0,2,s);
                         }
                     }
@@ -180,8 +174,8 @@ void SEARCHOBJECT(uint8* ActSys)
     ThisP = 1;
     LastP = 0;
     LastSys = 1;
-    strcpy(_Txt_nextPage, _PT_Naechste_Seite);
-    strcat(_Txt_nextPage, "      >>>");
+    _s=my_strcpy(_Txt_nextPage, _PT_Naechste_Seite);
+    (void)my_strcpy(_s, "      >>>");
 
     SEO_Window=MAKEWINDOW(194,119,123,136,MyScreen[0]);
     RPort_PTR = SEO_Window->RPort;
@@ -385,6 +379,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
     r_ShipHeader*   MyShipPtr;
     r_PlanetHeader* MyPlanetHeader;
     char    s[60];
+    char*   _s;
     uint8   RawCode;
 
     OffsetX = 0;
@@ -485,9 +480,9 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                         switch (ObjType) {
                             case TYPE_PLANET: {
                                                 MyPlanetHeader = (r_PlanetHeader*) ObjPtr;
-                                                strcpy(s, PText[645]);
-                                                strcat(s, " ");
-                                                strcat(s, MyPlanetHeader->PName);
+                                                _s=my_strcpy(s, PText[645]);
+                                                *_s++=' ';
+                                                (void)my_strcpy(_s, MyPlanetHeader->PName);
                                                 ORBITINFO(MyPlanetHeader->FirstShip.NextShip, s, *ActSys, it_round(MyPlanetHeader->PosX), it_round(MyPlanetHeader->PosY));
                                             } break;
                             case TYPE_SHIP: SYSTEMINFO(*ActSys); break;

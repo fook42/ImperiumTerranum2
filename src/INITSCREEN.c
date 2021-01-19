@@ -11,8 +11,7 @@ void INITSCREEN(uint8 Mode)
         case SCREEN_PLANET:
                             SetRast(MyRPort_PTR[1], 0);     // fill a complete RastPort with color..
                             // = RECT_RP1(0,0,0,639,511);
-                            strcpy(s, PathStr[0]);
-                            strcat(s, "PlanetDesk.img");
+                            (void)my_strcpy(my_strcpy(s, PathStr[0]), "PlanetDesk.img");
                             if (!DISPLAYIMAGE(s,0,94,384,394,8,MyScreen[1],2)) { return; }
                             WRITE_RP1( 62,126,2,           0,3,_PT_Biosphaere);
                             WRITE_RP1( 62,175,2,           0,3,_PT_Infrastruktur);
@@ -30,13 +29,11 @@ void INITSCREEN(uint8 Mode)
                             WRITE_RP1(333,402,2,           0,3,"%");
                             break;
         case SCREEN_HISCORE:
-                            strcpy(s, PathStr[4]);
-                            strcat(s, "HiScore.img");
+                            (void)my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.img");
                             if (!DISPLAYIMAGE(s,0,0,640,512,7,MyScreen[1],3)) { return; }
                             break;
         case SCREEN_TECH:
-                            strcpy(s, PathStr[5]);
-                            strcat(s, "ShipTech.img");
+                            (void)my_strcpy(my_strcpy(s, PathStr[5]), "ShipTech.img");
                             if (!DISPLAYIMAGE(s,0,0,640,512,3,MyScreen[1],1)) { return; }
                             break;
         default:            {}
