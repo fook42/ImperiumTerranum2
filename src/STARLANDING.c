@@ -54,7 +54,7 @@ bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, uint8 Ship_Weapon)
     _s=my_strcpy(_s, ".img");
     if (RAWLOADIMAGE(s,0,0,640,32,5,&ImgBitMap5))
     {
-        (void)my_strcpy(_s-3, "pal");
+        (void) my_strcpy(_s-3, "pal");
         (void) SETCOLOR(MyScreen[0],s);
         (void) SETCOLOR(MyScreen[1],s);
 
@@ -508,7 +508,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     _s=my_strcpy( s, PathStr[0]);
     _s=my_strcpy(_s, "Paper.pal");
     (void) SETCOLOR(MyScreen[AScr],s);
-    (void)my_strcpy(_s-3, "img");
+    (void) my_strcpy(_s-3, "img");
     if (!DISPLAYIMAGE(s,0,0,256,256,5,MyScreen[AScr],0)) { }
     if (SDIBaseDrawed>0) { ActPProjects->data[34] -= (SDIBaseHit*ActPProjects->data[34] / SDIBaseDrawed); }
     if (SPHBaseDrawed>0) { ActPProjects->data[40] -= (SPHBaseHit*ActPProjects->data[40] / SPHBaseDrawed); }
@@ -601,7 +601,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s++ = ' ';
     _s = dez2out(Save.ImperatorState[ActPlayer-1], 0, _s);
     *_s++ = ' ';
-    (void)my_strcpy(_s, PText[414]);
+    (void) my_strcpy(_s, PText[414]);
     WRITE(22,120,29,0,MyRPort_PTR[AScr],0,s);
     ScreenToFront(MyScreen[AScr]);
     WAITLOOP(false);

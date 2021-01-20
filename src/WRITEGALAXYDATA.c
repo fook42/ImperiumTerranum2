@@ -25,7 +25,7 @@ void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove)
             {
                 _s = dez2out(SystemHeader[i].Planets, 0, s);
                 *_s++ = ' ';
-                (void)my_strcpy(_s, _PT_Planeten);
+                (void) my_strcpy(_s, _PT_Planeten);
                 WRITE_RP0(528,29,12,0,3, s);
                 _s = GETCIVNAME(GETCIVVAR(SystemFlags[0][i] & FLAG_CIV_MASK));
                 WRITE_RP0(528,46,SystemFlags[0][i] & FLAG_CIV_MASK,0,3, _s);

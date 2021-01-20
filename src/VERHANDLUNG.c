@@ -90,7 +90,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 *_s++ = ' ';
                 _s=my_strcpy(_s, GETCIVNAME(ActPlayer));
                 *_s++ = ' ';
-                (void)my_strcpy(_s, _PT_und);
+                (void) my_strcpy(_s, _PT_und);
                 WRITE_RP0(256,110,FLAG_OTHER,WRITE_Center,3,s);
                 WRITE_RP0(256,130,FLAG_OTHER,WRITE_Center,3,PText[261]);
                 WRITE_RP0(256,150,FLAG_OTHER,WRITE_Center,3,PText[262]);
@@ -106,7 +106,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 _s = dez2out(i,0,_s);
                 *_s++ = '%';
                 *_s++ = ' ';
-                (void)my_strcpy(_s, PText[267]);
+                (void) my_strcpy(_s, PText[267]);
                 _s = s;
             } else {
                 _s = PText[268];
@@ -145,7 +145,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             *_s++ = ' ';
             _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
             *_s++ = ' ';
-            (void)my_strcpy(_s, PText[273]);
+            (void) my_strcpy(_s, PText[273]);
             WRITE_RP0(256,150,CivFlag,WRITE_Center,3,s);
             WAITLOOP(false);
             RECT_RP0_C0(30,80,480,230);
@@ -169,7 +169,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 _s = dez2out(i, 0, _s);
                 *_s++ = '%';
                 *_s++ = ' ';
-                (void)my_strcpy(_s, PText[279]);
+                (void) my_strcpy(_s, PText[279]);
 
                 WRITE_RP0(256,170,CivFlag,WRITE_Center,3,s);
                 do
@@ -231,7 +231,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             *_s++ = ' ';
             _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
             *_s++ = ' ';
-            (void)my_strcpy(_s, PText[286]);
+            (void) my_strcpy(_s, PText[286]);
             TArr4 = (TextArr4) {{s2, PText[287], NULL, NULL}};
             if (MODE_MONEY == Mode)
             {
@@ -240,11 +240,11 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 _s = dez2out(XCosts, 0, _s);
                 *_s++ = ',';
                 *_s++ = ' ';
-                (void)my_strcpy(_s, PText[291]);
+                (void) my_strcpy(_s, PText[291]);
 
                 _s=my_strcpy(s2, PText[292]);
                 *_s++ = ' ';
-                (void)my_strcpy(_s, GETCIVADJ(ActPlayer));
+                (void) my_strcpy(_s, GETCIVADJ(ActPlayer));
 
                 TArr4 = (TextArr4) {{PText[293], s, s2, PText[294]}};
             } else if ((Save.WarPower[ActPlayer-1] < (Save.WarPower[CivVar-1]*3)) && (XSystem>0))
@@ -321,7 +321,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 *_s++ = ' ';
                 _s=my_strcpy(_s, GETCIVNAME(ActPlayer));
                 *_s++ = ' ';
-                (void)my_strcpy(_s, PText[307]);
+                (void) my_strcpy(_s, PText[307]);
                 WRITE_RP0(256,150,CivFlag,WRITE_Center,3,s);
                 WAITLOOP(false);
                 RECT_RP0_C0(30,80,480,230);
@@ -359,7 +359,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
             MAKEWINBORDER(MyRPort_PTR[0],85,120,425,200,12,6,0);
             _s=my_strcpy(s, PText[310]);
             *_s++ = ' ';
-            (void)my_strcpy(_s, GETCIVNAME(ActPlayer));
+            (void) my_strcpy(_s, GETCIVNAME(ActPlayer));
             WRITE_RP0(256,140,CivFlag,WRITE_Center,3,s);
             WRITE_RP0(256,165,CivFlag,WRITE_Center,3,PText[311]);
             WAITLOOP(false);
@@ -446,7 +446,7 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
                 _s=my_strcpy(s, PText[329]);
                 *_s++ = ' ';
                 _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
-                (void)my_strcpy(_s, PText[330]);
+                (void) my_strcpy(_s, PText[330]);
                 WRITE_RP0(256,150,CivFlag,WRITE_Center,3,s);
             }
             WAITLOOP(false);

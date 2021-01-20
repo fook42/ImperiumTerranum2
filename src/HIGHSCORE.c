@@ -25,14 +25,14 @@ void CREATEHIGHSCORE(char* HScoreFileName)
         HiScore.CivVar[i] = i+1;
         if (7 == i) { HiScore.CivVar[i] = 1; }
     }
-    (void)my_strcpy(HiScore.Player[0], "Oxygenic");
-    (void)my_strcpy(HiScore.Player[1], "Kha`thak");
-    (void)my_strcpy(HiScore.Player[2], "Tomalak");
-    (void)my_strcpy(HiScore.Player[3], "Megalith");
-    (void)my_strcpy(HiScore.Player[4], "Monolith");
-    (void)my_strcpy(HiScore.Player[5], "The One");
-    (void)my_strcpy(HiScore.Player[6], "Dark Blitter");
-    (void)my_strcpy(HiScore.Player[7], "CyberTrace");
+    (void) my_strcpy(HiScore.Player[0], "Oxygenic");
+    (void) my_strcpy(HiScore.Player[1], "Kha`thak");
+    (void) my_strcpy(HiScore.Player[2], "Tomalak");
+    (void) my_strcpy(HiScore.Player[3], "Megalith");
+    (void) my_strcpy(HiScore.Player[4], "Monolith");
+    (void) my_strcpy(HiScore.Player[5], "The One");
+    (void) my_strcpy(HiScore.Player[6], "Dark Blitter");
+    (void) my_strcpy(HiScore.Player[7], "CyberTrace");
     (void) Write(FHandle, &HiScore, sizeof(r_HiScore));
     Close(FHandle);
 }
@@ -57,7 +57,7 @@ void HIGHSCORE()
     SWITCHDISPLAY();
     INITSCREEN(SCREEN_HISCORE);
     WRITE_RP1(210,60,027,(WRITE_Center|WRITE_Shadow),4,"Imperium Terranum Highscores");
-    (void)my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.dat");
+    (void) my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.dat");
     FHandle = OPENSMOOTH(s,MODE_OLDFILE);
     if (0 == FHandle)
     {

@@ -30,7 +30,7 @@ void DISPLAYLOGO(uint8 DL_ActPlayer, uint16 LEdge, uint16 TEdge)
             if (NULL == ActMem) { ActMem = LogoMemA[0]; }
             _s=my_strcpy(FName, PathStr[10]);
             *_s++ = '0'+DL_ActPlayer;
-            (void)my_strcpy(_s, ".img");
+            (void) my_strcpy(_s, ".img");
             FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
             if (0 != FHandle)
             {

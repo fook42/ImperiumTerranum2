@@ -45,9 +45,9 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     _s = my_strcpy(s, PathStr[4]);
     if ((1 == Mode) || (-3 == Mode))
     {
-        (void)my_strcpy( _s, "MOD.HappyEnd" );
+        (void) my_strcpy( _s, "MOD.HappyEnd" );
     } else {
-        (void)my_strcpy( _s, "MOD.DeadEnd" );
+        (void) my_strcpy( _s, "MOD.DeadEnd" );
     }
     FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     if (0 != FHandle)
@@ -78,7 +78,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
         _s=my_strcpy( _s, "HappyEnd.pal" );
     }
     (void) SETCOLOR(MyScreen[0], s);
-    (void)my_strcpy( _s-3, "img" );
+    (void) my_strcpy( _s-3, "img" );
 
     if (!DISPLAYIMAGE(s,0,75,640,360,8,MyScreen[0],0))
     {
@@ -90,10 +90,10 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     if (-1 == Mode)
     {
         _s=my_strcpy(s, _PT_ImJahre);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = dez2out(Year, 0, _s);
-        *_s++=' ';
-        (void)my_strcpy(_s, PText[759]);
+        *_s++ = ' ';
+        (void) my_strcpy(_s, PText[759]);
         if (Save.WorldFlag == WFLAG_FIELD)
         {
             SA13 = (SArr13) {{s,PText[760],PText[761],PText[762],PText[763],PText[764],
@@ -101,9 +101,9 @@ typedef struct SArr13 { char* data[11]; } SArr13;
             t = 11;
         } else {
             _s=my_strcpy(s2, PText[771]);
-            *_s++=' ';
+            *_s++ = ' ';
             _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
-            (void)my_strcpy(_s, PText[772]);
+            (void) my_strcpy(_s, PText[772]);
             SA13 = (SArr13) {{s,s2,        PText[773],PText[774],PText[775],PText[776],
                                 PText[777],PText[778],PText[779],PText[780],NULL}};
             t = 10;
@@ -111,12 +111,12 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     } else if (-2 == Mode)
     {
         _s = dez2out(Year, 0, s);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, PText[782]);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, GETCIVNAME(ActPlayer));
-        *_s++=' ';
-        (void)my_strcpy(_s, PText[783]);
+        *_s++ = ' ';
+        (void) my_strcpy(_s, PText[783]);
         SA13 = (SArr13) {{s,PText[784],PText[785],PText[786],PText[787],PText[788],
                             PText[789],PText[790],PText[791],NULL,NULL}};
         t = 9;
@@ -124,51 +124,51 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     {
         Save.ImperatorState[ActPlayer-1] -= 1500;
         _s = my_strcpy(s, _PT_ImJahre);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = dez2out(Year, 0, _s);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, PText[794]);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, GETCIVNAME(ActPlayer));
-        *_s++=' ';
-        (void)my_strcpy(_s, PText[795]);
+        *_s++ = ' ';
+        (void) my_strcpy(_s, PText[795]);
         SA13 = (SArr13) {{s,PText[796],PText[797],PText[798],PText[799],PText[800],
                             PText[801],PText[802],PText[803],PText[804],NULL}};
         t = 10;
     } else if (1 == Mode)
     {
         _s = my_strcpy(s, _PT_ImJahre);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = dez2out(Year, 0, _s);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, PText[794]);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, GETCIVNAME(ActPlayer));
         if (3 != ActPlayer)
         {
-            *_s++='n';
+            *_s++ = 'n';
         }
-        *_s++=',';
-        *_s++=' ';
-        (void)my_strcpy(_s, PText[806]);
+        *_s++ = ',';
+        *_s++ = ' ';
+        (void) my_strcpy(_s, PText[806]);
         SA13 = (SArr13) {{s,PText[807],PText[808],PText[809],PText[810],PText[811],
                             PText[812],PText[813],PText[814],NULL,NULL}};
         t = 9;
     } else {
         _s = my_strcpy(s, _PT_ImJahre);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = dez2out(Year, 0, _s);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, PText[794]);
-        *_s++=' ';
+        *_s++ = ' ';
         _s = my_strcpy(_s, GETCIVNAME(Mode));
         if (3 != Mode)
         {
-            *_s++='n';
+            *_s++ = 'n';
         }
-        *_s++=',';
-        *_s++=' ';
-        (void)my_strcpy(_s, PText[816]);
+        *_s++ = ',';
+        *_s++ = ' ';
+        (void) my_strcpy(_s, PText[816]);
         SA13 = (SArr13) {{s,PText[817],PText[818],PText[819],PText[820],PText[821],
                             PText[822],PText[823],NULL,NULL,NULL}};
         t = 8;
@@ -194,5 +194,5 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     }
 
     SWITCHDISPLAY();
-    RECTWIN(RPort_PTR,0,0,75,639,434);
+    SetRast(RPort_PTR, 0); // clear Rastport
 }

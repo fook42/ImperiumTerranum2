@@ -46,15 +46,15 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                                 MAKEWINBORDER(RPort_PTR,0,0,350,130,12,6,1);
                                 WRITE(176,16,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,3,PText[208]);
                                 _s=my_strcpy(s, GETCIVNAME(HomeWorld));
-                                *_s++=' ';
-                                (void)my_strcpy(_s, PText[209]);
+                                *_s++ = ' ';
+                                (void) my_strcpy(_s, PText[209]);
                                 WRITE(176,36,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,3,s);
                                 WRITE(176,56,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,3,PText[210]);
                                 WRITE(176,76,           SplitWorld,(1|WRITE_Center),RPort_PTR,3,PText[211]);
                                 _s=my_strcpy( s, GETCIVADJ(GETCIVVAR(SplitWorld)));
                                 _s=my_strcpy(_s, PText[212]);
-                                *_s++='!';
-                                *_s=0;
+                                *_s++ = '!';
+                                *_s = 0;
                                 WRITE(176,96,           SplitWorld,(1|WRITE_Center),RPort_PTR,3,s);
                                 if (Save.PlayMySelf)
                                 {

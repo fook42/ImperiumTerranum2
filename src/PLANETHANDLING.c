@@ -40,7 +40,7 @@ void NEGATIVEANSWER()
         _s=my_strcpy(s, _PT_Die);
         *_s++ = ' ';
         _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
-        (void)my_strcpy(_s, PText[416]);
+        (void) my_strcpy(_s, PText[416]);
         WRITE(171, 20, ActPlayerFlag, WRITE_Center, RPort_PTR,3, s);
         WRITE(171, 45, ActPlayerFlag, WRITE_Center, RPort_PTR,3, PText[417]);
         WAITLOOP(false);
@@ -63,7 +63,7 @@ void POSITIVEANSWER(uint8 CivVar)
         _s=my_strcpy(s, _PT_Die);
         *_s++ = ' ';
         _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
-        (void)my_strcpy(_s, PText[418]);
+        (void) my_strcpy(_s, PText[418]);
         WRITE(171, 20, ActPlayerFlag, WRITE_Center, RPort_PTR,3, s);
         WRITE(171, 45, ActPlayerFlag, WRITE_Center, RPort_PTR,3, PText[419]);
         WAITLOOP(false);
@@ -144,7 +144,7 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
         *_s++ = '0'+Save.CivPlayer[CivVar-1];
         *_s++ = ',';
         *_s++ = ' ';
-        (void)my_strcpy(_s, PText[421]);
+        (void) my_strcpy(_s, PText[421]);
         WRITE(221,20,CivFlag,WRITE_Center,RPort_PTR,3,s2);
         WRITE(221,45,CivFlag,WRITE_Center,RPort_PTR,3,s);
         DrawImage(RPort_PTR,&GadImg1, 20,80);
@@ -224,43 +224,43 @@ void DIPLOMACY()
     Opts = 0;
     if (LEVEL_WAR == Save.WarState[ActPlayer-1][CivVar-1])
     {
-        (void)my_strcpy(OptArr[Opts], PText[423]);           // Frieden ohne Bedingungen
+        (void) my_strcpy(OptArr[Opts], PText[423]);           // Frieden ohne Bedingungen
         OptID[Opts++] = OPT_NONE;
         if (0 != XSystem)
         {
-            (void)my_strcpy(OptArr[Opts], PText[424]);       // Frieden gegen Sonnensystem
+            (void) my_strcpy(OptArr[Opts], PText[424]);       // Frieden gegen Sonnensystem
             OptID[Opts++] = OPT_SYSTEM;
         }
         if (0 != XTech)
         {
-            (void)my_strcpy(OptArr[Opts], PText[425]);       // Frieden gegen Technologie
+            (void) my_strcpy(OptArr[Opts], PText[425]);       // Frieden gegen Technologie
             OptID[Opts++] = OPT_TECH;
         }
-        (void)my_strcpy(OptArr[Opts], PText[426]);           // Frieden gegen Reparationen
+        (void) my_strcpy(OptArr[Opts], PText[426]);           // Frieden gegen Reparationen
         OptID[Opts++] = OPT_MONEY;
     } else
     {
         if (0 != XSystem)
         {
-            (void)my_strcpy(OptArr[Opts], PText[427]);       // Sonnensystem für Frieden
+            (void) my_strcpy(OptArr[Opts], PText[427]);       // Sonnensystem für Frieden
             OptID[Opts++] = OPT_SYSTEM;
         }
         if (0 != XTech)
         {
-            (void)my_strcpy(OptArr[Opts], PText[428]);       // Technologie für Frieden
+            (void) my_strcpy(OptArr[Opts], PText[428]);       // Technologie für Frieden
             OptID[Opts++] = OPT_TECH;
         }
-        (void)my_strcpy(OptArr[Opts], PText[429]);           // Tributzahlungen für Frieden
+        (void) my_strcpy(OptArr[Opts], PText[429]);           // Tributzahlungen für Frieden
         OptID[Opts++] = OPT_MONEY;
-        (void)my_strcpy(OptArr[Opts], PText[430]);           // Gemeinsamen Feldzug anbieten
+        (void) my_strcpy(OptArr[Opts], PText[430]);           // Gemeinsamen Feldzug anbieten
         OptID[Opts++] = OPT_WAR;
         if (0 == Save.CivPlayer[CivVar-1])
         {
-            (void)my_strcpy(OptArr[Opts], PText[431]);       // Entwicklungshilfe leisten
+            (void) my_strcpy(OptArr[Opts], PText[431]);       // Entwicklungshilfe leisten
             OptID[Opts++] = OPT_HELP;
             if (Save.WarPower[CivVar-1] < Save.WarPower[ActPlayer-1])
             {
-                (void)my_strcpy(OptArr[Opts], PText[432]);   // Schiff übergeben
+                (void) my_strcpy(OptArr[Opts], PText[432]);   // Schiff übergeben
                 OptID[Opts++] = OPT_SHIP;
             }
         }
@@ -298,7 +298,7 @@ void DIPLOMACY()
                                 *_s++ = ' ';
                                 _s=my_strcpy(_s, Save.SystemName.data[XSystem-1]);
                                 *_s++ = ' ';
-                                (void)my_strcpy(_s, PText[437]); // "zu übergeben"
+                                (void) my_strcpy(_s, PText[437]); // "zu übergeben"
                                 SYSINFO(XSystem,CivFlag);
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
@@ -314,7 +314,7 @@ void DIPLOMACY()
                                 *_s++ = ' ';
                                 _s=my_strcpy(_s, TechnologyL.data[XTech]);
                                 *_s++ = ' ';
-                                (void)my_strcpy(_s, PText[437]); // "zu übergeben"
+                                (void) my_strcpy(_s, PText[437]); // "zu übergeben"
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
                                     POSITIVEANSWER(CivVar);
@@ -326,7 +326,7 @@ void DIPLOMACY()
                             } break;
             case OPT_MONEY: {
                                 _s = dez2out(XCosts, 0, s2);
-                                (void)my_strcpy(_s, PText[439]);
+                                (void) my_strcpy(_s, PText[439]);
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
                                     POSITIVEANSWER(CivVar);
@@ -348,7 +348,7 @@ void DIPLOMACY()
                                     {
                                         _s=my_strcpy(OptArr[Opts], PText[440]);
                                         *_s++ = ' ';
-                                        (void)my_strcpy(_s, GETCIVNAME(i));
+                                        (void) my_strcpy(_s, GETCIVNAME(i));
                                         OptID[Opts++] = i;
                                     }
                                 }
@@ -365,7 +365,7 @@ void DIPLOMACY()
                                     *_s++ = ' ';
                                     _s=my_strcpy(_s, GETCIVNAME(OptID[Answer]));
                                     *_s++ = ' ';
-                                    (void)my_strcpy(_s, PText[442]);
+                                    (void) my_strcpy(_s, PText[442]);
                                     if (SMALLREQUEST(s2, CivVar, CivFlag))
                                     {
                                         POSITIVEANSWER(CivVar);
@@ -462,7 +462,7 @@ void DIPLOMACY()
                                 {
                                     _s=my_strcpy(OptArr[Opts], PText[440]);
                                     *_s++ = ' ';
-                                    (void)my_strcpy(_s, GETCIVNAME(i));
+                                    (void) my_strcpy(_s, GETCIVNAME(i));
                                     OptID[Opts++] = i;
                                 }
                             }
@@ -517,7 +517,7 @@ void DIPLOMACY()
                                 } else {
                                     i = 0;
                                     _s=my_strcpy(s2, TechnologyL.data[XTech]);
-                                    (void)my_strcpy(_s, ".");
+                                    (void) my_strcpy(_s, ".");
                                     REQUEST(PText[450],s2,ActPlayerFlag,ActPlayerFlag);
                                     Save.TechCosts[CivVar-1].data[XTech] = 0;
                                     Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_ALLIANZ;
@@ -626,17 +626,17 @@ void WRITELOADDATA(int LTOut)
     char*   _s;
 
     _s = dez2out(((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16), 2, s);
-    *_s++=' ';
+    *_s++ = ' ';
     (void) dez2out(ShipData(PLANET_MyShipPtr->SType).MaxLoad, 2, _s);
     WRITE_RP0(128,171,8,1,1,s);
 
     _s = dez2out((PLANET_MyShipPtr->Ladung & MASK_LTRUPPS), 2, s);
-    *_s++=' ';
+    *_s++ = ' ';
     (void) dez2out(ShipData(PLANET_MyShipPtr->SType).MaxLoad, 2, _s);
     WRITE_RP0(243,171,8,1,1,s);
 
     _s = dez2out(it_round((double) PLANET_MyShipPtr->Fracht/ShipData(PLANET_MyShipPtr->SType).MaxLoad*100.0), 3, s);
-    *_s++='%'; *_s = 0;
+    *_s++ = '%'; *_s = 0;
     WRITE_RP0(364,171,8,1,1,s);
 
     if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (PLANET_MyPlanetHeader->Population == 0))
@@ -660,33 +660,33 @@ void WRITELOADDATA(int LTOut)
       && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
     {
         _s = dez2out((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size), 3, s);
-        *_s++='%'; *_s = 0;
+        *_s++ = '%'; *_s = 0;
         WRITE_RP0(353,236,8,1,1,s);
         _s = s;
         if ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)>80)
         {
             if (PLANET_MyPlanetHeader->Class == CLASS_ICE)
             {
-                *_s++=' '; *_s++='I'; *_s++=' '; *_s++=' ';
+                *_s++ = ' '; *_s++ = 'I'; *_s++ = ' '; *_s++ = ' ';
                 CLIPPLANET(CLASS_ICE);
             } else {
-                *_s++='W';
+                *_s++ = 'W';
                 CLIPPLANET(CLASS_WATER);
             }
         } else if (((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)>=55) && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<=80))
         {
-            *_s++='M';
+            *_s++ = 'M';
             CLIPPLANET(CLASS_EARTH);
         } else if (((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)>=21) && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<=54))
         {
-            *_s++='H'; *_s++=' ';
+            *_s++ = 'H'; *_s++ = ' ';
             CLIPPLANET(CLASS_HALFEARTH);
         } else if ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<21)
         {
-            *_s++='D'; *_s++=' ';
+            *_s++ = 'D'; *_s++ = ' ';
             CLIPPLANET(CLASS_DESERT);
         }
-        *_s=0;
+        *_s = 0;
         WRITE_RP0(419,235,ActPlayerFlag,1,3,s);
     }
 }

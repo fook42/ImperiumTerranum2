@@ -47,7 +47,7 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
         }
         MyPlanetHeader->PFlags = 0;
         _s=my_strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
-        (void)my_strcpy(_s, Romanum[i]);
+        (void) my_strcpy(_s, Romanum[i]);
 
         MyPlanetHeader->PosX = (float) (i+i+i+4);
         MyPlanetHeader->PosY = (rand()%2 == 0) ? MyPlanetHeader->PosX : (-MyPlanetHeader->PosX);

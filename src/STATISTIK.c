@@ -80,44 +80,44 @@ void STATISTIK()
     if (0 < Planeten)
     {
         _s = float2out( ((double)(20*Kreativitaet)/Planeten), 0, 2, s);
-        *_s++='%';
+        *_s++ = '%';
         *_s  =0;
         WRITE(355,20,8,WRITE_Right,RPort_PTR,1,s);
 
         _s = float2out( ((double)(20*Produktivitaet)/Planeten), 0, 2, s);
-        *_s++='%';
+        *_s++ = '%';
         *_s  =0;
         WRITE(355,40,8,WRITE_Right,RPort_PTR,1,s);
 
         _s = float2out( ((double)Bio/Planeten/2.0f), 0, 2, s);
-        *_s++='%';
+        *_s++ = '%';
         *_s  =0;
         WRITE(355,60,8,WRITE_Right,RPort_PTR,1,s);
 
         _s = float2out( ((double)Infra/Planeten/2.0f), 0, 2, s);
-        *_s++='%';
+        *_s++ = '%';
         *_s  =0;
         WRITE(355,80,8,WRITE_Right,RPort_PTR,1,s);
 
         _s = float2out( ((double)Ind/2.0f/Planeten), 0, 2, s);
-        *_s++='%';
+        *_s++ = '%';
         *_s  =0;
         WRITE(355,100,8,WRITE_Right,RPort_PTR,1,s);
 
-        (void)dez2out(it_round(Save.Bevoelkerung[ActPlayer-1]/(double) Planeten), 0, s);
+        (void) dez2out(it_round(Save.Bevoelkerung[ActPlayer-1]/(double) Planeten), 0, s);
         WRITE(340,120,8,WRITE_Right,RPort_PTR,1,s);
 
-        (void)dez2out(it_round((double)Groesse/(double)Planeten/10.0f), 0, s);
+        (void) dez2out(it_round((double)Groesse/(double)Planeten/10.0f), 0, s);
         WRITE(340,140,8,WRITE_Right,RPort_PTR,1,s);
 
         _s = float2out( ((double)Eth/Planeten*100.0), 0, 2, s);
-        *_s++='%';
+        *_s++ = '%';
         *_s  =0;
         WRITE(355,160,8,WRITE_Right,RPort_PTR,1,s);
 
         l = it_round((Buildings/Planeten*10.0)+(Bio/Planeten/2.0)+(Infra/Planeten/2.0));
         _s = float2out( ((double)l/3.1), 0, 2, s);
-        *_s++='%';
+        *_s++ = '%';
         *_s  =0;
         WRITE(375,230,8,WRITE_Right,RPort_PTR,1,s);
 
@@ -151,31 +151,31 @@ void STATISTIK()
     }
 
     _s=my_strcpy(s, PText[735]);
-    *_s++=':';
-    *_s++=' ';
-    (void)dez2out(Militaerausgaben[ActPlayer-1], 0, _s);
+    *_s++ = ':';
+    *_s++ = ' ';
+    (void) dez2out(Militaerausgaben[ActPlayer-1], 0, _s);
     WRITE(20,280,12,0,RPort_PTR,3,s);
 
     _s=my_strcpy(s, PText[736]);
-    *_s++=':';
-    *_s++=' ';
+    *_s++ = ':';
+    *_s++ = ' ';
     _s=dez2out((sint32) (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
-    *_s++=' ';
+    *_s++ = ' ';
     (void) my_strcpy(_s, _PT_Jahre);
     WRITE(20,300,12,0,RPort_PTR,3,s);
 
     _s=my_strcpy(s, PText[674]);
-    *_s++=':';
-    *_s++=' ';
+    *_s++ = ':';
+    *_s++ = ' ';
     _s=dez2out(Save.ImperatorState[ActPlayer-1], 0, _s);
-    *_s++=' ';
+    *_s++ = ' ';
     (void) my_strcpy(_s, PText[414]);
     WRITE(20,320,12,0,RPort_PTR,3,s);
 
     // TODO ... debug-display???
     _s=dez2out(MaquesShips, 0, s);
-    *_s++=' ';
-    (void)dez2out(Save.WarPower[8], 0, _s);
+    *_s++ = ' ';
+    (void) dez2out(Save.WarPower[8], 0, _s);
     WRITE( 3, 2,12,0,RPort_PTR,0,s);
     WAITLOOP(false);
 

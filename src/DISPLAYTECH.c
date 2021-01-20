@@ -60,7 +60,7 @@ void DISPLAYTECH(uint8 TechID)
         _s=my_strcpy(my_strcpy( s, PathStr[1]), "NoPic.pal");
         Depth = SETCOLOR(MyScreen[1],s);
     }
-    (void)my_strcpy(_s-3, "img");
+    (void) my_strcpy(_s-3, "img");
     if (!DISPLAYIMAGE(s,0,40,320,256,Depth,MyScreen[1],0)) { }
 
     WRITE_RP1(340,50,1,0,2,PText[223]);
@@ -99,7 +99,7 @@ void DISPLAYTECH(uint8 TechID)
             else                                    { _s=my_strcpy(s, PText[228]); }
             *_s++ = ' ';
             *_s++ = ' ';
-            (void)my_strcpy(_s, Project.data[CivVar]);
+            (void) my_strcpy(_s, Project.data[CivVar]);
             WRITE_RP1(20,l,1,0,3,s);
             l += 20;
         }

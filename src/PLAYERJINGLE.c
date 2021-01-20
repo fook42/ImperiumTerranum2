@@ -13,7 +13,7 @@ void PLAYERJINGLE(uint8 JingleID)
     {
         _s=my_strcpy(FName, PathStr[9]);
         _s = dez2out(JingleID, 0, _s);
-        (void)my_strcpy(_s, ".RAW");
+        (void) my_strcpy(_s, ".RAW");
         FHandle = OPENSMOOTH(FName,MODE_OLDFILE);
         if (0 == FHandle) { return; }
         (void) Seek(FHandle, 0, OFFSET_END);

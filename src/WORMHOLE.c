@@ -42,9 +42,9 @@ void WORMHOLE_INITSOUNDS()
     char* _s;
     
     _s=my_strcpy(s,PathStr[6]);
-    (void)my_strcpy(_s, "Sensor.RAW");
+    (void) my_strcpy(_s, "Sensor.RAW");
     WORMHOLE_LOADSOUND(s, 0);       /*SFX/Sensor.RAW*/
-    (void)my_strcpy(_s, "FightSoundDS.RAW");
+    (void) my_strcpy(_s, "FightSoundDS.RAW");
     WORMHOLE_LOADSOUND(s, 1);       /*SFX/FightsoundDS.RAW*/
 }
 
@@ -58,7 +58,7 @@ bool WORMHOLE_INITIMAGES()
     if (!RAWLOADIMAGE(s,0,0,640,512,4, &ImgBitMapW4))
         { return false; }
 
-    (void)my_strcpy(_s-3, "pal");
+    (void) my_strcpy(_s-3, "pal");
     (void) SETCOLOR(MyScreen[0],s);
     (void) SETCOLOR(MyScreen[1],s);
     return true;
@@ -488,7 +488,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     WRITE_RP0(256,Offset+35,ActPlayerFlag,WRITE_Center,3,PText[468]);
     _s=my_strcpy(s, PText[469]);
     *_s++ = ' ';
-    (void)my_strcpy(_s, Save.SystemName.data[SysID]);
+    (void) my_strcpy(_s, Save.SystemName.data[SysID]);
     WRITE_RP0(256,Offset+57,ActPlayerFlag,WRITE_Center,3,s);
     if (0 == SystemHeader[SysID].Planets)
     {

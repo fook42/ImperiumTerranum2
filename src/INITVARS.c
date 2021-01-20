@@ -117,7 +117,7 @@ void INITVARS()
     Save.WorldFlag  = 0;
     Save.CivilWar   = 0;
 
-    for (i = 0;  i<25; ++i ) { (void)my_strcpy(Save.SystemName.data[i], PText[i+1] ); }
+    for (i = 0;  i<25; ++i ) { (void) my_strcpy(Save.SystemName.data[i], PText[i+1] ); }
 
     memcpy(&Save.TechCosts[0],    &techcosts, sizeof(LongArr42));
     memcpy(&Save.ProjectCosts[0], &projcosts, sizeof(LongArr42));
@@ -125,7 +125,7 @@ void INITVARS()
     for (i = 1;  i<43; ++i ) { strncpy(TechnologyL.data[i], PText[i+29], 30); }
 
     for (i = 1;  i<8;  ++i ) { strncpy(Project.data[i], PText[i+74], 30); }
-    for (i = 8;  i<25; ++i ) { (void)my_strcpy(Project.data[i], ProjectShips[i-8]); }
+    for (i = 8;  i<25; ++i ) { (void) my_strcpy(Project.data[i], ProjectShips[i-8]); }
     for (i = 25; i<43; ++i ) { strncpy(Project.data[i], PText[i+60], 30); }
 
     for (i = 0; i < MAXCIVS; ++i)        // TODO ... added due to shift of Save-array
@@ -181,12 +181,12 @@ void INITVARS()
         LogoSMemL[i] = 0;
         for (j = 0; j<11; ++j)
         {
-            (void)my_strcpy(PNames[i].data[j], PName_def[i][j]);
+            (void) my_strcpy(PNames[i].data[j], PName_def[i][j]);
         }
     }
 
     // fill in the names of solar-system from language-file...
-    for (i = 0; i<9; ++i) { (void)my_strcpy( PNames[1].data[i], PText[105+i]); }
+    for (i = 0; i<9; ++i) { (void) my_strcpy( PNames[1].data[i], PText[105+i]); }
 
     OffsetX = 0;
     OffsetY = 0;

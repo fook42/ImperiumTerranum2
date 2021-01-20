@@ -22,7 +22,7 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->SType-8)*32,32,MyRPort_PTR[0],35,37+i*32,32,32,192);
                 WRITE_RP0(72,45+i*32,12,0,3,Project.data[MyShipPtr->SType]);
 
-                (void)my_strcpy(ShipNames[j], Project.data[MyShipPtr->SType]);
+                (void) my_strcpy(ShipNames[j], Project.data[MyShipPtr->SType]);
 
                 _s = dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 2, s);
                 *_s++ = ' ';

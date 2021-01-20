@@ -229,20 +229,20 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     RECT_RP1(0,0,0,639,90);
 
     _s=my_strcpy(s, _PT_System);
-    *_s++=':';
-    *_s++=' ';
-    (void)my_strcpy(_s, Save.SystemName.data[ActSys-1]);
+    *_s++ = ':';
+    *_s++ = ' ';
+    (void) my_strcpy(_s, Save.SystemName.data[ActSys-1]);
     WRITE_RP1(5,5,1,1,3,s);
 
     _s=my_strcpy(s, _PT_Planet);
-    *_s++=':';
-    *_s++=' ';
-    (void)my_strcpy(_s, MyPlanetHeader->PName);
+    *_s++ = ':';
+    *_s++ = ' ';
+    (void) my_strcpy(_s, MyPlanetHeader->PName);
     WRITE_RP1(5,25,1,1,3,s);
 
     _s=my_strcpy(s, _PT_Klasse);
-    *_s++=':';
-    *_s++=' ';
+    *_s++ = ':';
+    *_s++ = ' ';
     switch ( MyPlanetHeader->Class) {
         case CLASS_DESERT    : _s=my_strcpy(_s, "D (ca. 60% "); break;
         case CLASS_HALFEARTH : _s=my_strcpy(_s, "H (ca. 80% "); break;
@@ -253,23 +253,23 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         default: { }
     }
     _s=my_strcpy(_s, _PT_Besiedlung);
-    *_s++=')';
-    *_s=0;
+    *_s++ = ')';
+    *_s = 0;
     WRITE_RP1(5,45,1,1,3,s);
 
     _s=my_strcpy(s, _PT_Groesse);
-    *_s++=':';
-    *_s++=' ';
+    *_s++ = ':';
+    *_s++ = ' ';
     _s = float2out( (MyPlanetHeader->Size/10.0), 0, 2, _s);
-    (void)my_strcpy(_s, PText[171]);
+    (void) my_strcpy(_s, PText[171]);
     WRITE_RP1(5,65,1,1,3,s);
 
     if (Save.ActTech[ActPlayer-1]>0)
     {
         _s=my_strcpy(s, PText[172]);
-        *_s++=':';
-        *_s++=' ';
-        (void)my_strcpy(_s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
+        *_s++ = ':';
+        *_s++ = ' ';
+        (void) my_strcpy(_s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
         WRITE_RP1(275,5,1,1,3,s);
     } else {
         WRITE_RP1(275,5,1,1,3,PText[173]);
@@ -287,16 +287,16 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         while (NULL != MyShipPtr);
 
         _s=my_strcpy(s, PText[175]);
-        *_s++=':';
-        *_s++=' ';
+        *_s++ = ':';
+        *_s++ = ' ';
         (void) dez2out(i, 0, _s);
         WRITE_RP1(275,45,1,1,3,s);
     }
     if (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & ActPlayerFlag))
     {
         _s=my_strcpy(s, PText[176]);
-        *_s++=' ';
-        (void)my_strcpy(_s, GETCIVNAME(GETCIVVAR(MyPlanetHeader->Ethno)));
+        *_s++ = ' ';
+        (void) my_strcpy(_s, GETCIVNAME(GETCIVVAR(MyPlanetHeader->Ethno)));
         WRITE_RP1(275,65,1,1,3,s);
     }
 
@@ -344,7 +344,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 j = 1;
                 if (MyPlanetHeader->Biosphaere<200)
                 {
-                    (void)my_strcpy(NewProject[j], PText[163]);
+                    (void) my_strcpy(NewProject[j], PText[163]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Biosphaere)*PMoney / 9;
                     ProjectNum[j] = -3;
                     ProjectType[j] = 1;
@@ -352,7 +352,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 }
                 if (MyPlanetHeader->Infrastruktur<200)
                 {
-                    (void)my_strcpy(NewProject[j], PText[164]);
+                    (void) my_strcpy(NewProject[j], PText[164]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Infrastruktur)*PMoney / 9;
                     ProjectNum[j] = -2;
                     ProjectType[j] = 1;
@@ -360,7 +360,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 }
                 if (MyPlanetHeader->Industrie<200)
                 {
-                    (void)my_strcpy(NewProject[j], PText[165]);
+                    (void) my_strcpy(NewProject[j], PText[165]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Industrie)*PMoney / 9;
                     ProjectNum[j] = -1;
                     ProjectType[j] = 1;
@@ -396,7 +396,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     if (DoIt)
                     {
                         ProjectRounds[j] = Save.ProjectCosts[ActPlayer-1].data[i];
-                        (void)my_strcpy(NewProject[j], Project.data[i]);
+                        (void) my_strcpy(NewProject[j], Project.data[i]);
                         ProjectNum[j] = i;
                         if ((7 < i) && (25 > i))
                         {
@@ -479,7 +479,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     MyPlanetHeader->XProjectCosts = ProjectRounds[btx];
                     if (MyPlanetHeader->ProjectID>0)
                     {
-                        (void)my_strcpy(s, Project.data[MyPlanetHeader->ProjectID]);
+                        (void) my_strcpy(s, Project.data[MyPlanetHeader->ProjectID]);
                     }
                 }
                 WRITECURRENTPROJECT(MyPlanetHeader);

@@ -64,7 +64,7 @@ bool DISPLAYIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
             *Colors= CNum;
             Addr += 4;
             _s=my_strcpy(FName, Fn);
-            (void)my_strcpy(_s-3, "pal");
+            (void) my_strcpy(_s-3, "pal");
             FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
             if (0 == FHandle)
             {

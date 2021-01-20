@@ -116,7 +116,7 @@ void GETSAVENAME(char* Title, char* SName)
     SName[0] = 0;   // invalidate the "selected file"-string
 
     _s1=my_strcpy(s, PathStr[8]);
-    (void)my_strcpy(_s1, "IMPT.ID");
+    (void) my_strcpy(_s1, "IMPT.ID");
     FHandle = OPENSMOOTH(s, MODE_OLDFILE);
     if (0 == FHandle)
     {
@@ -135,7 +135,7 @@ void GETSAVENAME(char* Title, char* SName)
             FHandle = Open((CONST_STRPTR) s ,MODE_OLDFILE);
             if (0 == FHandle)
             {
-                (void)my_strcpy(ID[i], PText[525]);      // = "leer"
+                (void) my_strcpy(ID[i], PText[525]);      // = "leer"
             } else {
                 (void) Read(FHandle, &SVersion, 4);   // game-version
                 if (ACTVERSION == SVersion)
@@ -148,7 +148,7 @@ void GETSAVENAME(char* Title, char* SName)
                     *_s1++=' ';
                     _s1=dez2out(SYear, 4, _s1);
                     _s1=my_strcpy(_s1, "     Level: ");
-                    (void)dez2out(SLevel, 0, _s1);
+                    (void) dez2out(SLevel, 0, _s1);
 
                     Close(FHandle);
                 } else {

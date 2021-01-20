@@ -118,7 +118,7 @@ void INIT_SOLARSYSTEM(void)
     
     for(i=0; i < 9; ++i)
     {
-        (void)my_strcpy(SystemHeader[0].PlanetMemA[i].PName, PNames[1].data[i]);
+        (void) my_strcpy(SystemHeader[0].PlanetMemA[i].PName, PNames[1].data[i]);
     }
 
     if (1 < HomePlanets)
@@ -222,7 +222,7 @@ bool INITSTARS()
                 *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH, 1,GETCIVFLAG(k+1),GETCIVFLAG(k+1),"", 13, 0,
                                                   4000, 73,170,165,160,0,0,0,DefaultShip,(ByteArr42*) ProjectMem};
             }
-            (void)my_strcpy(PlanetHeader->PName, PNames[k+1].data[j]);
+            (void) my_strcpy(PlanetHeader->PName, PNames[k+1].data[j]);
             PlanetHeader->Water = PlanetHeader->Water / PlanetHeader->Size;
             PlanetHeader->Size  = (rand()%15)+5;
             PlanetHeader->Water = PlanetHeader->Water * PlanetHeader->Size;

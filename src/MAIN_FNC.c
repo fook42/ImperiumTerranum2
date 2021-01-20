@@ -31,7 +31,7 @@ void MAIN_FNC()
         }
     }
     /* read Paths.txt-File **********************************/
-    (void)my_strcpy(s, "Paths.txt");
+    (void) my_strcpy(s, "Paths.txt");
     FHandle = Open((CONST_STRPTR) s, MODE_OLDFILE);
     if (0 == FHandle)
     {
@@ -291,7 +291,7 @@ void MAIN_FNC()
                     if (0 != Save.CivPlayer[ActPlayer-1])
                     {
                         _s=my_strcpy(s, PathStr[4]);
-                        (void)my_strcpy(_s, "MOD.HappyEnd");
+                        (void) my_strcpy(_s, "MOD.HappyEnd");
                         FHandle = OPENSMOOTH(s,MODE_OLDFILE);
                         if (0 != FHandle)
                         {

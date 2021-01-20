@@ -13,7 +13,7 @@ void INITMENU()
     _s=my_strcpy(_s, "Menu.pal");
     (void) SETCOLOR(MyScreen[1], s);
 
-    (void)my_strcpy(_s-3, "img");
+    (void) my_strcpy(_s-3, "img");
     if (!DISPLAYIMAGE(s,0,0,640,512,6,MyScreen[1],4))
     {
         DisplayBeep(NULL);

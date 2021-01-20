@@ -46,11 +46,11 @@ void FORSCHUNG()
     if (Save.ActTech[ActPlayer-1]>0)
     {
         _s=my_strcpy(s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
-        *_s++=',';
-        *_s++=' ';
+        *_s++ = ',';
+        *_s++ = ' ';
         _s = dez2out((Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
-        *_s++=' ';
-        (void)my_strcpy(_s, _PT_Jahre);
+        *_s++ = ' ';
+        (void) my_strcpy(_s, _PT_Jahre);
         WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,s);
 
         MAKEWINBORDER(RPort_PTR,20,365,492,390,6,12,0);
@@ -77,10 +77,10 @@ void FORSCHUNG()
                 l++;
                 posy=415+l*18;
                 WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR,2, Project.data[i]);
-                (void)dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-                (void)dez2out(ShipData(i).MaxMove,0,s);     WRITE(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-                (void)dez2out(ShipData(i).MaxShield,0,s);   WRITE(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-                (void)dez2out(ShipData(i).WeaponPower,0,s); WRITE(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+                (void) dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+                (void) dez2out(ShipData(i).MaxMove,0,s);     WRITE(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+                (void) dez2out(ShipData(i).MaxShield,0,s);   WRITE(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+                (void) dez2out(ShipData(i).WeaponPower,0,s); WRITE(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
             }
         }
     }

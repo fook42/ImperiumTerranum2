@@ -58,7 +58,7 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
         _s=my_strcpy(_s, _PT_Planet);
         *_s++ = ':';
         *_s++ = ' ';
-        (void)my_strcpy(_s, MyPlanetHeader->PName);
+        (void) my_strcpy(_s, MyPlanetHeader->PName);
 
         do
         {

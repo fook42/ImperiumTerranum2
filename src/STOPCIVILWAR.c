@@ -40,7 +40,7 @@ void STOPCIVILWAR(uint8 EndText)
         *_s++ = ' ';
         _s=my_strcpy(_s, GETCIVNAME(CivVar+1));
         *_s++ = ' ';
-        (void)my_strcpy(_s, PText[216]);
+        (void) my_strcpy(_s, PText[216]);
         
         if (0 != Save.CivPlayer[CivVar])
         {

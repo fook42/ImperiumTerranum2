@@ -21,7 +21,7 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
     GPN_Window = OpenWindow(&GPN_NewWindow);
     if (NULL == GPN_Window)
     {
-        (void)my_strcpy(PName, "Player X");
+        (void) my_strcpy(PName, "Player X");
         ScreenToFront(MyScreen[1]);
         return;
     }
@@ -38,7 +38,7 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
         _s=my_strcpy(s, _PTx_Player);
         *_s++ = ' ';
         *_s++ = Save.CivPlayer[GPN_ActPlayer]+'0';
-        (void)my_strcpy(_s, PText[162]);
+        (void) my_strcpy(_s, PText[162]);
         WRITE(320,150,2,WRITE_Center,RPort_PTR,3,s);
     }
     MAKEWINBORDER(RPort_PTR,100,200,540,230,1,3,1);

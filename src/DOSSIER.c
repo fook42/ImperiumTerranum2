@@ -60,7 +60,7 @@ void DOSSIER()
              || (Save.SSMoney[ActPlayer-1][i] > (Save.WarPower[i]*39)))
             {
                 _s = dez2out(Save.Bevoelkerung[i], 0, s);
-                (void)my_strcpy(_s, "Mio");
+                (void) my_strcpy(_s, "Mio");
                 WRITE(275, posy,civ_color,WRITE_Right,RPort_PTR,2,s);
 
                 (void) dez2out(Save.WarPower[i], 0, s);

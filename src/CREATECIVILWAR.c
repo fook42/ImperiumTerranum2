@@ -20,10 +20,10 @@ void CREATECIVILWAR(uint8 CivVar)
     if  (0 == Save.WorldFlag)
     {
         _s=my_strcpy(s, PText[385]);
-        *_s++=' ';
+        *_s++ = ' ';
         _s=my_strcpy(_s, GETCIVNAME(CivVar));
-        *_s++=' ';
-        (void)my_strcpy(_s, PText[386]);
+        *_s++ = ' ';
+        (void) my_strcpy(_s, PText[386]);
         --CivVar; // to shift the arrays ...
         if (0 != Save.CivPlayer[CivVar])
         {

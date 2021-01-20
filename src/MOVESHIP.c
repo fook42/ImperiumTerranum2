@@ -346,7 +346,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
 
                                                     _s=my_strcpy(s, PText[470]);
                                                     *_s++ = ' ';
-                                                    (void)my_strcpy(_s, MyPlanetHeader->PName);
+                                                    (void) my_strcpy(_s, MyPlanetHeader->PName);
 
                                                     _s=my_strcpy(s2, PText[471]);
                                                     *_s++ = ' ';
@@ -478,9 +478,9 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 if ((MyShipPtr->Moving >= 0) && (OldMoving != MyShipPtr->Moving))
                 {
                     _s = dez2out(MyShipPtr->Moving, 3, s);
-                    *_s++='-';
+                    *_s++ = '-';
                     _s = dez2out(it_round((MyShipPtr->Shield+MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, _s);
-                    *_s++='%'; *_s=0;
+                    *_s++ = '%'; *_s = 0;
                     WRITE_RP0(521,293,GETCIVFLAG(ActPlayer),1,1,s);
                     OldMoving = MyShipPtr->Moving;
                 }
@@ -786,7 +786,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             *_s++ = '-';
             if (SHIPTYPE_FLEET == MyShipPtr->SType)
             {
-                (void)my_strcpy(_s, "----");
+                (void) my_strcpy(_s, "----");
             } else {
                 _s = dez2out(it_round((MyShipPtr->Shield+MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, _s);
                 *_s++ = '%';

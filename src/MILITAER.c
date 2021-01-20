@@ -41,13 +41,13 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
     }
     s[0]=' ';
     s[1]='-';
-    (void)dez2out(XState, 0, s+2);
+    (void) dez2out(XState, 0, s+2);
     WRITE(230,240,8,(1|WRITE_Right),RPort,1,s);
     s[1]='+';
-    (void)dez2out(Fight, 0, s+2);
+    (void) dez2out(Fight, 0, s+2);
     WRITE(230,265,8,(1|WRITE_Right),RPort,1,s);
     _s = dez2out(Costs, 0, s+2);
-    *_s++='%'; *_s=0;
+    *_s++ = '%'; *_s = 0;
     WRITE(244,290,8,(1|WRITE_Right),RPort,1,s);
 }
 

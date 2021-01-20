@@ -77,14 +77,14 @@ void STARTROTATEPLANETS()
                         *_s++ = ' ';
                         _s=my_strcpy(_s, GETCIVNAME(i+1));
                         *_s++ = ' ';
-                        (void)my_strcpy(_s, PText[601]);
+                        (void) my_strcpy(_s, PText[601]);
                     }
                     else if ((Save.WarState[ActPlayer][i] == LEVEL_PEACE)
                             && (Save.LastWarState[ActPlayer][i] == LEVEL_WAR))
                     {
                         _s=my_strcpy(s, GETCIVNAME(i+1));
                         *_s++ = ' ';
-                        (void)my_strcpy(_s, PText[647]);
+                        (void) my_strcpy(_s, PText[647]);
                     }
                     else if (Save.WarState[ActPlayer][i] == LEVEL_WAR)
                     {
@@ -94,7 +94,7 @@ void STARTROTATEPLANETS()
                         *_s++ = ' ';
                         _s=my_strcpy(_s, GETCIVNAME(ActPlayer+1));
                         *_s++ = ' ';
-                        (void)my_strcpy(_s, PText[649]);
+                        (void) my_strcpy(_s, PText[649]);
                     }
                     else if (Save.WarState[ActPlayer][i] == LEVEL_ALLIANZ)
                     {
@@ -103,7 +103,7 @@ void STARTROTATEPLANETS()
                         _s=my_strcpy(_s, PText[650]);
                         *_s++ = ' ';
                         _s=my_strcpy(_s, GETCIVNAME(ActPlayer+1));
-                        (void)my_strcpy(_s, PText[651]);
+                        (void) my_strcpy(_s, PText[651]);
                     }
                     else
                     {
@@ -126,7 +126,7 @@ void STARTROTATEPLANETS()
         {
             _s=my_strcpy(s, GETCIVNAME(FLAG_OTHER));
             *_s++ = ' ';
-            (void)my_strcpy(_s, PText[655]);
+            (void) my_strcpy(_s, PText[655]);
             CREATEINFOBOX(&SRP_Window, &RPort_PTR);
             j += 18;
             WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
@@ -145,7 +145,7 @@ void STARTROTATEPLANETS()
             {
                 _s=my_strcpy(s, GETCIVNAME(FLAG_OTHER));
                 *_s++ = ' ';
-                (void)my_strcpy(_s, PText[657]);
+                (void) my_strcpy(_s, PText[657]);
                 CREATEINFOBOX(&SRP_Window, &RPort_PTR);
                 j += 18;
                 WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
@@ -157,7 +157,7 @@ void STARTROTATEPLANETS()
             *_s++ = ' ';
             _s=my_strcpy(_s, GetPlanet[ActPlayer]->PName);
             *_s++ = ' ';
-            (void)my_strcpy(_s, PText[658]);
+            (void) my_strcpy(_s, PText[658]);
             CREATEINFOBOX(&SRP_Window, &RPort_PTR);
             j += 18;
             WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
@@ -168,7 +168,7 @@ void STARTROTATEPLANETS()
             {
                 _s = dez2out(Verschrottung[ActPlayer], 0, s);
                 *_s++ = ' ';
-                (void)my_strcpy(_s, PText[659]);
+                (void) my_strcpy(_s, PText[659]);
                 _s = s;
             } else {
                 _s = PText[660];
@@ -183,7 +183,7 @@ void STARTROTATEPLANETS()
         {
             _s=my_strcpy(s, GETCIVNAME(ActPlayer+1));
             *_s++ = ' ';
-            (void)my_strcpy(_s, PText[662]);
+            (void) my_strcpy(_s, PText[662]);
             CREATEINFOBOX(&SRP_Window, &RPort_PTR);
             j += 18;
             WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
