@@ -30,14 +30,14 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     if (NULL == IMemA[0])
     {
         puts("not enough chip-memory (225KB) - exit!\n");
-        return;
+        return; // @TODO .. cleanup and free all memory!
     }
 
     MyScreen[0] = OPENCINEMA(8);
     if (NULL == MyScreen[0])
     {
         puts("can not open screen - exit!\n");
-        return;
+        return; // @TODO .. cleanup and free all memory!
     }
 
     RPort_PTR = &(MyScreen[0]->RastPort);
@@ -67,15 +67,15 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     {
         if (Save.WorldFlag == WFLAG_FIELD)
         {
-            (void)my_strcpy( _s, "FieldEnd.pal" );
+            _s=my_strcpy( _s, "FieldEnd.pal" );
         } else {
-            (void)my_strcpy( _s, "DeadEnd.pal" );
+            _s=my_strcpy( _s, "DeadEnd.pal" );
         }
     } else if (-2 == Mode)
     {
-        (void)my_strcpy( _s, "BigBang.pal" );
+        _s=my_strcpy( _s, "BigBang.pal" );
     } else {
-        (void)my_strcpy( _s, "HappyEnd.pal" );
+        _s=my_strcpy( _s, "HappyEnd.pal" );
     }
     (void) SETCOLOR(MyScreen[0], s);
     (void)my_strcpy( _s-3, "img" );
@@ -83,7 +83,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     if (!DISPLAYIMAGE(s,0,75,640,360,8,MyScreen[0],0))
     {
         puts("can not display image - exit!\n");
-        return;
+        return; // @TODO .. cleanup and free all memory!
     }
 
     SetRGB4(&(MyScreen[0]->ViewPort),255,7,7,7);

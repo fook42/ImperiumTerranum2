@@ -43,7 +43,6 @@ void DISPLAYTECH(uint8 TechID)
     ModC = GETTHESOUND(0);
     RECT_RP1(0,0,0,639,511);        // clear the screen
 
-    s[0]=0;
     if      ((TechID>= 1) && (TechID<=18)) { _s=my_strcpy(s, PathStr[1]); }
     else if ((TechID>=19) && (TechID<=38)) { _s=my_strcpy(s, PathStr[2]); }
     else if ((TechID>=39) && (TechID<=42)) { _s=my_strcpy(s, PathStr[3]); }
@@ -54,16 +53,14 @@ void DISPLAYTECH(uint8 TechID)
     } else {
         _s=my_strcpy(_s, Technology[TechID-1]);
     }
-    (void)my_strcpy(_s, ".pal");
+    _s=my_strcpy(_s, ".pal");
     Depth = SETCOLOR(MyScreen[1],s);
     if (0 == Depth)
     {
-        _s=my_strcpy( s, PathStr[1]);
-        _s=my_strcpy(_s, "NoPic.pal");
+        _s=my_strcpy(my_strcpy( s, PathStr[1]), "NoPic.pal");
         Depth = SETCOLOR(MyScreen[1],s);
     }
     (void)my_strcpy(_s-3, "img");
-
     if (!DISPLAYIMAGE(s,0,40,320,256,Depth,MyScreen[1],0)) { }
 
     WRITE_RP1(340,50,1,0,2,PText[223]);
@@ -100,8 +97,8 @@ void DISPLAYTECH(uint8 TechID)
             if       (CivVar < 8)                   { _s=my_strcpy(s, PText[226]); }
             else if ((CivVar > 7) && (CivVar < 25)) { _s=my_strcpy(s, PText[227]); }
             else                                    { _s=my_strcpy(s, PText[228]); }
-            *_s++=' ';
-            *_s++=' ';
+            *_s++ = ' ';
+            *_s++ = ' ';
             (void)my_strcpy(_s, Project.data[CivVar]);
             WRITE_RP1(20,l,1,0,3,s);
             l += 20;
