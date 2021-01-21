@@ -11,7 +11,6 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     r_PlanetHeader* PlanetHeader;
     uint8           Leave, j;
     uint8           BelongsTo, DrawMode;
-    char            s[8];
     int             Sunleft, Sunwidth;
 
 /*    OffsetX,Y = centre of current view */
