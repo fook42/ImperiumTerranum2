@@ -270,7 +270,7 @@ bool INITSTARS()
             MyWormHole[j].System[0] = 0;
             MyWormHole[j].System[1] = 0;
         } else {
-            /* if the wormhole is valid, the position will be detemined */
+            /* if the wormhole is valid, the position will be determined */
             for (i = 0; i < 2; ++i)
             {
                 /* pick any number  4 <= x <= 35 */
