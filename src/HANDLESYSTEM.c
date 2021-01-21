@@ -505,6 +505,4 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
         RECT_RP0_C0(522,9,629,117);
         DRAWSTARS(MODE_REDRAW,ActPlayer);
     }
-    // Printf("## HANDLESYSTEM <<<< ##\n");
-
 }
