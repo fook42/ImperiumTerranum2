@@ -11,6 +11,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     r_PlanetHeader* PlanetHeader;
     uint8           Leave, j;
     uint8           BelongsTo, DrawMode;
+    char            s[8];
 
 /*    OffsetX,Y = centre of current view */
     OldX = OffsetX;
@@ -53,6 +54,13 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     Move(MyRPort_PTR[0],y,9);
     Draw(MyRPort_PTR[0],y,116);
 
+    SetAPen(MyRPort_PTR[0], 0);
+    RectFill(MyRPort_PTR[0], 518, 300, 630, 360);
+    (void)dez2out(OffsetX,0,s);
+    WRITE_RP0(576,300,8,(WRITE_Center|WRITE_Shadow),3,s);
+    (void)dez2out(OffsetY,0,s);
+    WRITE_RP0(576,330,8,(WRITE_Center|WRITE_Shadow),3,s);
+
     if ((OffsetY>-9) && (OffsetY<8) && (OffsetX>-9) && (OffsetX<8))  // draw the sun to the main view
     {
         if (OffsetY>-8)
@@ -67,7 +75,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap7,320,0,MyRPort_PTR[0],272+(OffsetX*32),240+(OffsetY*32),32,32,192); // upper right hemisphere
             } else {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,336,0,MyRPort_PTR[0],288+(OffsetX*32),240+(OffsetY*32),16,32,192); // upper right hemisphere/2
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,320,0,MyRPort_PTR[0],272+(OffsetX*32),240+(OffsetY*32),16,32,192); // upper right hemisphere/2
             }
         }
         if (OffsetY<7)
@@ -82,7 +90,7 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap7,384,0,MyRPort_PTR[0],272+(OffsetX*32),272+(OffsetY*32),32,32,192); // lower right hemisphere
             } else {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,390,0,MyRPort_PTR[0],288+(OffsetX*32),272+(OffsetY*32),16,32,192); // lower right hemisphere/2
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,384,0,MyRPort_PTR[0],272+(OffsetX*32),272+(OffsetY*32),16,32,192); // lower right hemisphere/2
             }
         }
     }
