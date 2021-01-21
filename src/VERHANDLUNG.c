@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void VERHANDLUNG_INIT(uint8 CivFlag, char* CivStr, uint8 VI_Mode)
+void VERHANDLUNG_INIT(int CivFlag, char* CivStr, int VI_Mode)
 {
     MAKEWINBORDER(MyRPort_PTR[0],30,80,480,230,12,6,0);
     WRITE_RP0(256,90,CivFlag,WRITE_Center,3,CivStr);
@@ -16,7 +16,7 @@ void VERHANDLUNG_INIT(uint8 CivFlag, char* CivStr, uint8 VI_Mode)
     }
 }
 
-void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
+void VERHANDLUNG(int CivFlag, int Mode)
 {
     typedef struct TextArr4 {
         char*   data[4];
@@ -26,9 +26,10 @@ void VERHANDLUNG(uint8 CivFlag, uint8 Mode)
     char        s[56], s2[56];
     char*       CivStr = NULL;
     char*       _s;
-    uint16      ypos;
-    uint8       XSystem, XTech, CivVar, i;
+    int         ypos;
+    uint8       XSystem, XTech, CivVar;
     uint32      XCosts;
+    int         i;
 
     CivVar = GETCIVVAR(CivFlag);
     if ((WFLAG_CEBORC == Save.WorldFlag) && (FLAG_OTHER == CivFlag)) { return; }

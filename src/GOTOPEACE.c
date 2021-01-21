@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void GOTOPEACE(uint8 CivVar1, uint8 CivVar2)
+void GOTOPEACE(int CivVar1, int CivVar2)
 {
     const int GP_ActPlayer = ActPlayer-1;
 

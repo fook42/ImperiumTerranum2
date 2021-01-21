@@ -13,7 +13,7 @@ const uint8 CIVADJs[] ={0, 115, 116, 117, 118, 119, 120, 121};
 const uint8 CIVADJs8[]={122, 123};
 
 
-uint8 GETCIVFLAG(uint8 CivVar)
+uint8 GETCIVFLAG(int CivVar)
 {
     if ((0 < CivVar) && ((sizeof(CIVFLAGs)/sizeof(CIVFLAGs[0])) > CivVar))
     {
@@ -24,7 +24,7 @@ uint8 GETCIVFLAG(uint8 CivVar)
 }
 
 /* -------------------------------------------------------- */
-uint8 GETCIVVAR(uint8 CivFlag)
+uint8 GETCIVVAR(int CivFlag)
 {
     uint8 Result;
 
@@ -44,7 +44,7 @@ uint8 GETCIVVAR(uint8 CivFlag)
 }
 /* -------------------------------------------------------- */
 
-char* GETCIVADJ(uint8 CivVar)
+char* GETCIVADJ(int CivVar)
 {
     if (0 < CivVar)
     {
@@ -65,7 +65,7 @@ char* GETCIVADJ(uint8 CivVar)
     }
 }
 /* -------------------------------------------------------- */
-char* GETCIVNAME(uint8 CivVar)
+char* GETCIVNAME(int CivVar)
 {
    char* Result;
    switch (CivVar) {
@@ -89,7 +89,7 @@ char* GETCIVNAME(uint8 CivVar)
 }
 
 /* -------------------------------------------------------- */
-char* GETMYADJ(uint8 CivFlag, bool* DconDone)
+char* GETMYADJ(int CivFlag, bool* DconDone)
 {
     char* Result;
     switch (CivFlag) {

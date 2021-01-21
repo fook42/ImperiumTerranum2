@@ -15,22 +15,22 @@ BOOL getMyScreenToolTypes(BYTE* waName, ULONG* Hires_ID_PTR, ULONG* Lowres_ID_PT
 BOOL setMyScreenToolTypes(BYTE* waName, ULONG Hires_ID, ULONG Lowres_ID);
 
 int it_round(double x);
-char* dez2out(sint32 value, uint8 digits, char* dest);
-char* float2out(double fvalue, uint8 dezdigits, uint8 flodigits, char* dest);
-char* hex2out(sint32 dez, uint8 digits, char* dest);
+char* dez2out(int value, int digits, char* dest);
+char* float2out(double fvalue, int dezdigits, int flodigits, char* dest);
+char* hex2out(int dez, int digits, char* dest);
 ULONG string2hex(char* in_string);
 char* my_strcpy(char* destination, const char* source);
 
-bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint8 Depth);
+bool FillITBitMap(struct ITBitMap* ITBMap, int BytesPerRow, int Rows, int Depth);
 
-uint8 GETCIVFLAG(uint8 CivVar);
-uint8 GETCIVVAR(uint8 CivFlag);
-char* GETCIVADJ(uint8 CivVar);
-char* GETCIVNAME(uint8 CivVar);
-char* GETMYADJ(uint8 CivFlag, bool* DconDone);
+uint8 GETCIVFLAG(int CivVar);
+uint8 GETCIVVAR(int CivFlag);
+char* GETCIVADJ(int CivVar);
+char* GETCIVNAME(int CivVar);
+char* GETMYADJ(int CivFlag, bool* DconDone);
 
 void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr);
-void AUTOVERHANDLUNG(uint8 CivFlag1,uint8 CivFlag2,uint8 ActSys,uint8 Mode);
+void AUTOVERHANDLUNG(int CivFlag1,int CivFlag2,int ActSys,int Mode);
 bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys);
 
 void BOX(struct RastPort* RPort, WORD Left, WORD Top, WORD Right, WORD Bottom);
@@ -49,7 +49,7 @@ void CLICKRECT(struct RastPort* RPort, uint16 Left, uint16 Top, uint16 Right, ui
 
 void CLOCK();
 void CLOSEMYSCREENS();
-void CREATECIVILWAR(uint8 CivVar);
+void CREATECIVILWAR(int CivVar);
 void CREATEJAHADR(uint8 CJ_ActPlayer);
 bool CREATEMAQUESSHIP(uint8 SysID, uint8 ShipID);
 void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets);
@@ -102,8 +102,8 @@ uint8 GETRAWCODE();
 APTR GETTHESOUND(uint8 MID);
 uint8 GOTONEXTPLANET(uint8 ActSys, r_ShipHeader* MyShipPtr);
 uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* ShipPtr);
-void GOTOPEACE(uint8 CivVar1, uint8 CivVar2);
-void GOTOWAR(uint8 CivFlag1, uint8 CivFlag2);
+void GOTOPEACE(int CivVar1, int CivVar2);
+void GOTOWAR(int CivFlag1, int CivFlag2);
 // >>> HANDLEKNOWNPLANET
 void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader);
 void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader,ByteArr42* ActPProjects);
@@ -122,16 +122,16 @@ uint8 GETCOLOR(uint8 Col);
 void HIGHSCORE();
 // <<<
 void INFORMUSER();
-bool INITDESK(uint8 Mode);
+bool INITDESK(int Mode);
 bool INITLANG();
 void INITMENU();
-void INITSCREEN(uint8 Mode);
+void INITSCREEN(int Mode);
 void INITSOUNDS();
 bool INITSTARS();
 void INITSTDTAGS();
 void INITVARS();
 void KILLFLEET(r_ShipHeader* MyShipPtr);
-void KLICKGAD(const uint16 x, const uint16 y);
+void KLICKGAD(const int x, const int y);
 void LINKSHIP(r_ShipHeader* SPtr, r_ShipHeader* TPtr, uint8 Mode);
 void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys);
 // >>> LOADMOD
@@ -171,17 +171,17 @@ struct Screen* OPENCINEMA(uint8 Depth);
 bool OPENMAINSCREENS();
 BPTR OPENSMOOTH(char* FName, uint32 FMode);
 // >>> OPTIONMENU
-void CHECKGADS(uint8 GadID);
+void CHECKGADS(int GadID);
 void OPTION_REDUCECOSTS(void);
 void OPTION_MULTIPLAYER(void);
-void OPTIONMENU(uint8 Mode);
+void OPTIONMENU(int Mode);
 // <<<
 // >>> ORBITINFO
 int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr);
 void SETFLEETPOSITION(uint8 ActSys, r_ShipHeader* StShipPtr, r_ShipHeader* MyShipPtr);
 void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX, sint8 XPosY);
 // <<<
-void PEACEINFO(uint8 CivVar1, uint8 CivVar2, uint8 CivFlag1, uint8 CivFlag2);
+void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2);
 bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* _MyShipPtr);
 void PLANETINFO(uint8 ActSys);
 void PLAYERHIGHSCORE(uint8 PHS_ActPlayer);
@@ -197,7 +197,7 @@ void REFRESHDISPLAY();
 void REFRESHSHIPS(r_ShipHeader* ShipPtr, uint8 SysID, uint8 Mode);
 void REGIERUNG();
 void REMOVEPLAYER(uint8 RP_ActPlayer);
-void REQUEST(char* s1, char* s2, uint8 c1, uint8 c2);
+void REQUEST(char* s1, char* s2, int c1, int c2);
 void ROTATEPLANETS(uint8 ActSys);
 uint8 SETCOLOR(struct Screen* SC_Screen, char* FName);
 bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet, sint16* TheProject, uint8 ActSys, char** s1, char** s2, bool* PlanetLose);
@@ -221,14 +221,14 @@ void STATISTIK();
 void STOPCIVILWAR(uint8 EndText);
 void SUPPORTCIVI(uint32 XValue);
 void SWITCHDISPLAY();
-void SYSINFO(uint8 SysID, uint8 ThePlayerFlag);
+void SYSINFO(int SysID, uint8 ThePlayerFlag);
 void SYSTEMINFO(uint8 ActSys);
 void SYSTEMTOENEMY(uint8 ActSys, uint8 NewOwner, uint8 OldOwner);
 bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2);
 void UNPACK(uint8* Anfang, uint8* PackedD, uint32 Laenge, uint8 Mode);
 // >>> VERHANDLUNG ---
-void VERHANDLUNG_INIT(uint8 CivFlag, char* CivStr, uint8 Mode);
-void VERHANDLUNG(uint8 CivFlag, uint8 Mode);
+void VERHANDLUNG_INIT(int CivFlag, char* CivStr, int Mode);
+void VERHANDLUNG(int CivFlag, int Mode);
 // <<<
 void WAITLOOP(bool no_wait);
 // >>> WORMHOLE ---
@@ -241,17 +241,17 @@ bool WORMEXIT(bool _WORMEXIT, r_ShipHeader* MyShipPtr, uint8 ActSys);
 bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys);
 bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys);
 // <<<
-void WRITE(const uint16 IPosX, const uint16 IPosY, const uint8 Color, const uint8 DMode, struct RastPort* RPort, const uint8 TA, const char* WText);
+void WRITE(const int IPosX, const int IPosY, const int Color, const int DMode, struct RastPort* RPort, const int TA, const char* WText);
 void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove);
 
 //--------------------------------
-void RECT_RP0_C0(const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge);
-void RECT_RP1(const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge);
-void RECTWIN(struct RastPort* RPort, const uint16 Color, const uint16 LEdge, const uint16 TEdge, const uint16 REdge, const uint16 BEdge);
-void MAKEWINBORDER(struct RastPort* RPort, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge, uint8 Col1, uint8 Col2, uint8 Darken);
-void KLICKWINGAD(struct RastPort* RPort, const uint16 x, const uint16 y);
-struct Window* MAKEWINDOW(uint16 LEdge, uint16 TEdge, uint16 SizeX, uint16 SizeY, struct Screen* onScreen);
-void WRITE_RP0(const uint16 IPosX, const uint16 IPosY, const uint8 Color, const uint8 DMode, const uint8 TA, const char* WText);
-void WRITE_RP1(const uint16 IPosX, const uint16 IPosY, const uint8 Color, const uint8 DMode, const uint8 TA, const char* WText);
+void RECT_RP0_C0(const int LEdge, const int TEdge, const int REdge, const int BEdge);
+void RECT_RP1(const int Color, const int LEdge, const int TEdge, const int REdge, const int BEdge);
+void RECTWIN(struct RastPort* RPort, const int Color, const int LEdge, const int TEdge, const int REdge, const int BEdge);
+void MAKEWINBORDER(struct RastPort* RPort, int LEdge, int TEdge, int REdge, int BEdge, int Col1, int Col2, int Darken);
+void KLICKWINGAD(struct RastPort* RPort, const int x, const int y);
+struct Window* MAKEWINDOW(int LEdge, int TEdge, int SizeX, int SizeY, struct Screen* onScreen);
+void WRITE_RP0(const int IPosX, const int IPosY, const int Color, const int DMode, const int TA, const char* WText);
+void WRITE_RP1(const int IPosX, const int IPosY, const int Color, const int DMode, const int TA, const char* WText);
 
 #endif

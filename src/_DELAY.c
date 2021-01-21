@@ -11,9 +11,9 @@ int it_round(double x)
     return (int) (x+0.5f);
 }
 
-char* dez2out(sint32 value, uint8 digits, char* dest)
+char* dez2out(int value, int digits, char* dest)
 {
-    const sint32 _dez[]={1,10,100,1000,10000,100000,1000000,10000000};
+    const int _dez[]={1,10,100,1000,10000,100000,1000000,10000000};
     uint8        c;
     bool         show = true;
 
@@ -41,17 +41,17 @@ char* dez2out(sint32 value, uint8 digits, char* dest)
     return dest;
 }
 
-char* float2out(double fvalue, uint8 dezdigits, uint8 flodigits, char* dest)
+char* float2out(double fvalue, int dezdigits, int flodigits, char* dest)
 {
     char* _ftemp;
-    sint32 temp = (sint32) fvalue;
+    int temp = (int) fvalue;
 
     _ftemp = dez2out(temp, dezdigits, dest);
     *_ftemp++='.';
     return dez2out(it_round((fvalue-temp)*pow(10.0f,flodigits)), flodigits, _ftemp);
 }
 
-char* hex2out(sint32 dez, uint8 digits, char* dest)
+char* hex2out(int dez, int digits, char* dest)
 {
     uint8 c;
     bool show = true;
@@ -74,11 +74,11 @@ char* hex2out(sint32 dez, uint8 digits, char* dest)
     return dest;
 }
 
-bool FillITBitMap(struct ITBitMap* ITBMap, uint16 BytesPerRow, uint16 Rows, uint8 Depth)
+bool FillITBitMap(struct ITBitMap* ITBMap, int BytesPerRow, int Rows, int Depth)
 {
     PLANEPTR PlaneMemA;
-    uint32   BPRows= BytesPerRow*Rows;
-    uint8    i;
+    int    BPRows= BytesPerRow*Rows;
+    int    i;
 
     ITBMap->MemL = BPRows*Depth;
     ITBMap->MemA = AllocMem(ITBMap->MemL, MEMF_CHIP | MEMF_CLEAR);

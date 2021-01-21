@@ -5,9 +5,9 @@
 
 void DOHUMANITY()
 {
-    uint8   Smallest, Biggest, i, Ende;
+    int  Smallest, Biggest, i, Ende;
     uint32  SmallValue, BigValue;
-    sint16  Direction;
+    int  Direction;
 
     Smallest = 1;
     Biggest = 1;

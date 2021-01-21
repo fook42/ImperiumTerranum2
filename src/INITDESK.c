@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-bool INITDESK(uint8 Mode)
+bool INITDESK(int Mode)
 {
     char    s[50];
     char*   _s;

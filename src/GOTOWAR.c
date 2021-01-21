@@ -3,9 +3,9 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void GOTOWAR(uint8 CivFlag1, uint8 CivFlag2)
+void GOTOWAR(int CivFlag1, int CivFlag2)
 {
-    uint8   CivVar1,CivVar2;
+    int     CivVar1,CivVar2;
     struct Window* GTW_Window;
     struct RastPort* RPort_PTR;
 

@@ -6,7 +6,7 @@
 bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, ITBitMap* DestBitMap)
 {
     BPTR            FHandle;
-    uint32          ISize, piclen;
+    int             ISize, piclen;
     PLANEPTR        plane_PTR;
     int             i;
     bool            _RAWLOADIMAGE = false;

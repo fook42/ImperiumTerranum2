@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void MAKEWINBORDER(struct RastPort* RPort, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge, uint8 Col1, uint8 Col2, uint8 Darken)
+void MAKEWINBORDER(struct RastPort* RPort, int LEdge, int TEdge, int REdge, int BEdge, int Col1, int Col2, int Darken)
 {
     if (1 != Darken)
     {
@@ -22,9 +22,10 @@ void MAKEWINBORDER(struct RastPort* RPort, uint16 LEdge, uint16 TEdge, uint16 RE
     RectFill(RPort, REdge-1,TEdge+1,REdge,  BEdge-1);
 }
 
-struct Window* MAKEWINDOW(uint16 LEdge, uint16 TEdge, uint16 SizeX, uint16 SizeY, struct Screen* onScreen)
+struct Window* MAKEWINDOW(int LEdge, int TEdge, int SizeX, int SizeY, struct Screen* onScreen)
 {
-    struct NewWindow MK_NeuWindow = {LEdge,TEdge,SizeX,SizeY,0,0,RAWKEY,SMART_REFRESH+BORDERLESS,NULL,NULL,NULL,onScreen,NULL,0,0,0,0,CUSTOMSCREEN};
+    struct NewWindow MK_NeuWindow = {(WORD) LEdge,(WORD) TEdge,(WORD) SizeX,(WORD) SizeY,0,0,
+                                    RAWKEY,SMART_REFRESH+BORDERLESS,NULL,NULL,NULL,onScreen,NULL,0,0,0,0,CUSTOMSCREEN};
 
     return( OpenWindow( &MK_NeuWindow ) );
 }

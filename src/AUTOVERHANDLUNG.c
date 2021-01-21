@@ -3,9 +3,9 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void AUTOVERHANDLUNG(uint8 CivFlag1, uint8 CivFlag2, uint8 ActSys, uint8 Mode)
+void AUTOVERHANDLUNG(int CivFlag1, int CivFlag2, int ActSys, int Mode)
 {
-    uint8   CivVar1, CivVar2;
+    int     CivVar1, CivVar2;
 
     if ((WFLAG_CEBORC == Save.WorldFlag)
         && ((FLAG_OTHER == CivFlag1) || (FLAG_OTHER == CivFlag2)))
@@ -19,7 +19,7 @@ void AUTOVERHANDLUNG(uint8 CivFlag1, uint8 CivFlag2, uint8 ActSys, uint8 Mode)
     {
         return;
     }
-    if ((CivVar1 == ActPlayer) || (CivVar2 == ActPlayer))
+    if (((uint8) CivVar1 == ActPlayer) || ((uint8) CivVar2 == ActPlayer))
     {
         INFORMUSER();
     }

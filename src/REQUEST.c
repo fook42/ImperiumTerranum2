@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void REQUEST(char* s1, char* s2, uint8 c1, uint8 c2)
+void REQUEST(char* s1, char* s2, int c1, int c2)
 {
     struct Window* REQ_Window;
 

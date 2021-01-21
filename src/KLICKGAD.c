@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void KLICKGAD(const uint16 x, const uint16 y)
+void KLICKGAD(const int x, const int y)
 {
     /* saves 1 argument to be specified in the calls of KLICKGAD */
     ClipBlit(MyRPort_PTR[0],x,y,&(XScreen->RastPort),0,0,116,20,192);
@@ -12,7 +12,7 @@ void KLICKGAD(const uint16 x, const uint16 y)
     ClipBlit(&(XScreen->RastPort),0,0,MyRPort_PTR[0],x,y,116,20,192);
 }
 
-void KLICKWINGAD(struct RastPort* RPort, const uint16 x, const uint16 y)
+void KLICKWINGAD(struct RastPort* RPort, const int x, const int y)
 {
     ClipBlit(RPort,x,y,&(XScreen->RastPort),0,0,116,20,192);
     DrawImage(RPort,&GadImg2,x,y);

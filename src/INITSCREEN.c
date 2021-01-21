@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void INITSCREEN(uint8 Mode)
+void INITSCREEN(int Mode)
 {
     char    s[40];
 

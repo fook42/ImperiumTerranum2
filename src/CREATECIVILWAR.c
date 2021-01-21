@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void CREATECIVILWAR(uint8 CivVar)
+void CREATECIVILWAR(int CivVar)
 {
     int     i,j;
     uint8   CivFlag;
@@ -47,8 +47,8 @@ void CREATECIVILWAR(uint8 CivVar)
         }
         ++CivVar; // to shift the arrays ...
     }
-    Save.WorldFlag = CivFlag;
-    Save.CivilWar = CivVar;
+    Save.WorldFlag = (uint8) CivFlag;
+    Save.CivilWar = (uint8) CivVar;
     SETWORLDCOLORS();
     for(i = 0; i < Save.Systems; ++i)
     {

@@ -3,10 +3,9 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void CHECKGADS(uint8 GadID)
+void CHECKGADS(int GadID)
 {
-    uint8   i;
-    uint16  y;
+    int     i, y;
     char    txt[4];
     // new audio options
     if ((0 == GadID) || (8 == GadID))
@@ -284,10 +283,9 @@ void OPTION_MULTIPLAYER(void)
 }
 
 
-void OPTIONMENU(uint8 Mode)
+void OPTIONMENU(int Mode)
 {
-    uint8   i;
-    uint16  y;
+    int     i, y;
     const sint32 bitmap_srcCord[5][2] = { {384,448},{384,448},{384,512},{384,448},{576,512} };
     const char*  button_txt[5] = {_PTx_Player, PText[514], PText[515], PText[516], PText[517]};
 

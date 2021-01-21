@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void PEACEINFO(uint8 CivVar1, uint8 CivVar2, uint8 CivFlag1, uint8 CivFlag2)
+void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2)
 {
     struct Window* PEI_Window;
     struct RastPort* RPort_PTR;
@@ -26,7 +26,7 @@ void PEACEINFO(uint8 CivVar1, uint8 CivVar2, uint8 CivFlag1, uint8 CivFlag2)
         WAITLOOP(Save.PlayMySelf);
         CloseWindow(PEI_Window);
     }
-    if ((Save.WorldFlag >= CivFlag1) && (Save.WorldFlag <= CivFlag2)
+    if ((Save.WorldFlag >= (uint8) CivFlag1) && (Save.WorldFlag <= (uint8) CivFlag2)
         && ((CivVar1 == 8) || (CivVar2 == 8)))
     {
         STOPCIVILWAR(0);

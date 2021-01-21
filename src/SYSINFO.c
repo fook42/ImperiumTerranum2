@@ -3,13 +3,13 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void SYSINFO(uint8 SysID, uint8 ThePlayerFlag)
+void SYSINFO(int SysID, uint8 ThePlayerFlag)
 {
     r_PlanetHeader* MyPlanetHeader;
     ByteArr42*      ActPProject;
     uint32  SysPop,Buildings;
-    uint8   MyPlanets;
-    uint8   i,j;
+    int     MyPlanets;
+    int     i,j;
     char    s[80];
     char*   _s;
 
