@@ -74,7 +74,7 @@ char* hex2out(int dez, int digits, char* dest)
     return dest;
 }
 
-bool FillITBitMap(struct ITBitMap* ITBMap, int BytesPerRow, int Rows, int Depth)
+bool FillITBitMap(struct ITBitMap* ITBMap, const int BytesPerRow, const int Rows, const int Depth)
 {
     PLANEPTR PlaneMemA;
     int    BPRows= BytesPerRow*Rows;

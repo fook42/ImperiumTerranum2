@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void FINANZEN_WRITEDATA(struct RastPort* RPort, uint8 Mode, uint8 FWD_ActPlayer)
+void FINANZEN_WRITEDATA(struct RastPort* RPort, const int Mode, const int FWD_ActPlayer)
 {
     char    s[5];
 

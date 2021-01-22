@@ -5,7 +5,7 @@
 
 void DISPLAYSTATE()
 {
-    uint32  punkte;
+    int     punkte;
     char    s[10];
     char    Txt_Sep[]= "-------\0";
 
@@ -13,7 +13,8 @@ void DISPLAYSTATE()
     SetRGB4(MyVPort_PTR[1],0,0,0,3);
     SetRGB4(MyVPort_PTR[1],1,12,12,15);
     SetRGB4(MyVPort_PTR[1],2,15,0,3);
-    RECT_RP1(0,0,0,639,511);
+
+    SetRast(MyRPort_PTR[1], 0); // clear Rastport
     WRITE_RP1(320,40,1,WRITE_Center,4,_PT_HighscoreImpstatus);
 
     WRITE_RP1(100,130,1,0,3,_PT_erreichtePunktzahl);

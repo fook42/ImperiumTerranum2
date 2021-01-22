@@ -27,11 +27,11 @@ const char* const Technology[] =
             "Weltformel",              "energetische Intelligenz" };
 
 
-void DISPLAYTECH(uint8 TechID)
+void DISPLAYTECH(const int TechID)
 {
     char    s[50];
     char*   _s;
-    uint8   Depth, CivVar, Offset=0;
+    int     Depth, CivVar, Offset=0;
     uint16  l;
     APTR    ModC = NULL;
 
@@ -41,7 +41,7 @@ void DISPLAYTECH(uint8 TechID)
     }
     SWITCHDISPLAY();
     ModC = GETTHESOUND(0);
-    RECT_RP1(0,0,0,639,511);        // clear the screen
+    SetRast(MyRPort_PTR[1], 0); // clear the screen
 
     if      ((TechID>= 1) && (TechID<=18)) { _s=my_strcpy(s, PathStr[1]); }
     else if ((TechID>=19) && (TechID<=38)) { _s=my_strcpy(s, PathStr[2]); }

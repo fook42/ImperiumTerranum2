@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void LOADMOD(char* FName, uint8 MID)
+void LOADMOD(char* FName, int MID)
 {
     BPTR    FHandle;
 
@@ -33,6 +33,7 @@ LONG GETMIDIPLAYER(struct MMD0 *module)
         if(module->song->sample[count].midich)
         {
             midi = 1;
+            break;
         }
     }
     return !(GetPlayer(midi));

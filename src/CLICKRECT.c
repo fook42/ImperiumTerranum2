@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void CLICKRECT(struct RastPort* RPort, uint16 Left, uint16 Top, uint16 Right, uint16 Bottom, uint8 Color)
+void CLICKRECT(struct RastPort* RPort, int Left, int Top, int Right, int Bottom, const int Color)
 {
     Left+=3;
     Top+=3;
@@ -15,4 +15,3 @@ void CLICKRECT(struct RastPort* RPort, uint16 Left, uint16 Top, uint16 Right, ui
     SetAPen(RPort,0);
     BOX(RPort,Left,Top,Right,Bottom);
 }
-

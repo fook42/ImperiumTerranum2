@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void DISPLAYLOGO(uint8 DL_ActPlayer, uint16 LEdge, uint16 TEdge)
+void DISPLAYLOGO(const int DL_ActPlayer, const int LEdge, const int TEdge)
 {
     char    FName[60];
     char*   _s;
@@ -47,6 +47,6 @@ void DISPLAYLOGO(uint8 DL_ActPlayer, uint16 LEdge, uint16 TEdge)
             CopyMemQuick(LogoMemA[DL_ActPlayer], LogoMemA[0], LOGOSIZE);
         }
         stImg.ImageData = (UWORD*) LogoMemA[0];
-        DrawImage(&(MyScreen[0]->RastPort), &stImg, LEdge, TEdge);
+        DrawImage(&(MyScreen[0]->RastPort), &stImg, (WORD) LEdge, (WORD) TEdge);
     }
 }

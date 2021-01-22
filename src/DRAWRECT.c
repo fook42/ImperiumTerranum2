@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void DRAWRECT(uint32 x, uint32 y, r_ShipHeader* MyShipPtr, uint32 color)
+void DRAWRECT(const int x, const int y, const r_ShipHeader* MyShipPtr, const int color)
 {
     SetAPen(MyRPort_PTR[0], color);
     // paint on main-screen

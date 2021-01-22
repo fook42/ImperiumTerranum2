@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void REQUEST(char* s1, char* s2, int c1, int c2)
+void REQUEST(const char* text1, const char* text2, const int color1, const int color2)
 {
     struct Window* REQ_Window;
 
@@ -13,8 +13,8 @@ void REQUEST(char* s1, char* s2, int c1, int c2)
     {
         MAKEWINBORDER(REQ_Window->RPort,0,0,440,80,12,6,1);
 
-        WRITE(221,20,c1,WRITE_Center,REQ_Window->RPort,3,s1);
-        WRITE(221,45,c2,WRITE_Center,REQ_Window->RPort,3,s2);
+        WRITE(221, 20, color1, WRITE_Center, REQ_Window->RPort, 3, text1);
+        WRITE(221, 45, color2, WRITE_Center, REQ_Window->RPort, 3, text2);
         if (Save.PlayMySelf) { Delay(PAUSE); }
         WAITLOOP(Save.PlayMySelf);
         CloseWindow(REQ_Window);
