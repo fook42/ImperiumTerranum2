@@ -63,16 +63,10 @@ const LongArr42 techcosts =
         55000,85000,135000}};
 
 const LongArr42 projcosts =
-    {{ 0,  92010, 184020, 276030,
-        368040, 561050, 664060,
-        795000,
-        15080,17090,22100,25110,
-        28120,31130,34140,37150,
-        39160,43170,49180,55190,
-        63200,70210,78220,86230,
-        96240,
-        45250,12260,17270,45280,
-        50290, 19300, 55310,
+    {{ 0,  92010, 184020, 276030, 368040, 561050, 664060, 795000,
+        15080, 17090, 22100, 25110, 28120, 31130, 34140, 37150,
+        39160, 43170, 49180, 55190, 63200, 70210, 78220, 86230, 96240,
+        45250, 12260, 17270, 45280, 50290, 19300, 55310,
         35320, 50330, 55340,
         30350, 25360, 25370,
         50380, 35390,130400,
@@ -122,11 +116,11 @@ void INITVARS()
     memcpy(&Save.TechCosts[0],    &techcosts, sizeof(LongArr42));
     memcpy(&Save.ProjectCosts[0], &projcosts, sizeof(LongArr42));
 
-    for (i = 1;  i<43; ++i ) { strncpy(TechnologyL.data[i], PText[i+29], 30); }
+    for (i = 1;  i<43; ++i ) { (void) my_strcpy(TechnologyL.data[i], PText[i+29]); }
 
-    for (i = 1;  i<8;  ++i ) { strncpy(Project.data[i], PText[i+74], 30); }
+    for (i = 1;  i<8;  ++i ) { (void) my_strcpy(Project.data[i], PText[i+74]); }
     for (i = 8;  i<25; ++i ) { (void) my_strcpy(Project.data[i], ProjectShips[i-8]); }
-    for (i = 25; i<43; ++i ) { strncpy(Project.data[i], PText[i+60], 30); }
+    for (i = 25; i<43; ++i ) { (void) my_strcpy(Project.data[i], PText[i+60]); }
 
     for (i = 0; i < MAXCIVS; ++i)        // TODO ... added due to shift of Save-array
     {

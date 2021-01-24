@@ -500,8 +500,8 @@ void MAININTRO()
         "Special Effects",              "Oxygenic",
         "Credits go to",                "Adam Benjamin   Rikard Cederlund",
         "Jakob Gaardsted   Andy Jones", "George Moore",
-        "Surround-Sounds created with", "WaveTracer DSï¿½",
-        "Colors in Technicolorï¿½",       "Panaflexï¿½ Camera and Lenses by Panavisionï¿½"};
+        "Surround-Sounds created with", "WaveTracer DS®",
+        "Colors in Technicolor®",       "Panaflex® Camera and Lenses by Panavision®"};
     const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3};
 
     r_Coords_t* ShipX;

@@ -5,7 +5,8 @@
 
 const char* const Romanum[] = {" I"," II"," III"," IV"," V"," VI"," VII"," VIII"," IX"," X"," XI"};
 
-void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
+// create a new starsystem (ActSys) with >= "minHomePlanets" planets
+void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanets)
 {
     int     i,j,l;
     double  sin_rot,cos_rot,d;
@@ -13,18 +14,22 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
     char*   _s;
     r_PlanetHeader* MyPlanetHeader;
 
+    // give credits to the discoverer
     Save.ImperatorState[CivVar] += 50;
-    SystemHeader[ActSys].Planets    = (rand()%(MAXPLANETS-3))+4;
+
+    SystemHeader[ActSys].Planets    = (rand()%(MAXPLANETS-3))+4; // 4..MAXPLANETS
     if (minHomePlanets > SystemHeader[ActSys].Planets) { SystemHeader[ActSys].Planets = minHomePlanets; }
     SystemHeader[ActSys].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[ActSys].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
     if (NULL == SystemHeader[ActSys].PlanetMemA)
     {
+        // no memory, no planets
         SystemHeader[ActSys].Planets = 0;
         return;
     }
     life_possible = 0;
     for (i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
+        // create new planet
         MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
 
         MyPlanetHeader->Class = rand()%CLASS_MAX_TYPES;
@@ -35,6 +40,8 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
             ++life_possible;
         }
         MyPlanetHeader->Size = (rand()%206)+1;
+
+        // each class has its specific water-ammount
         switch (MyPlanetHeader->Class)
         {
             case CLASS_DESERT:    MyPlanetHeader->Water = MyPlanetHeader->Size*13; break;
@@ -46,6 +53,8 @@ void CREATENEWSYSTEM(uint8 ActSys,uint8 CivVar, uint8 minHomePlanets)
             default:              MyPlanetHeader->Water = 0;
         }
         MyPlanetHeader->PFlags = 0;
+
+        // generate the name by using the systemname + romanum-number (I, II, III...etc)
         _s=my_strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
         (void) my_strcpy(_s, Romanum[i]);
 
