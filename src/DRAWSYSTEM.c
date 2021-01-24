@@ -5,7 +5,7 @@
 
 void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
 {
-    sint16          x,y,i;
+    int             x,y,i;
     r_ShipHeader*   MyShipPtr;
     r_ShipHeader*   UseShipPtr;
     r_PlanetHeader* PlanetHeader;
@@ -54,29 +54,25 @@ void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr)
     Move(MyRPort_PTR[0],y,9);
     Draw(MyRPort_PTR[0],y,116);
 
-    if ((OffsetY>-9) && (OffsetY<8) && (OffsetX>-9) && (OffsetX<8))  // draw the sun to the main view
+    if ((OffsetY>-9) && (OffsetY<8) && (OffsetX>-10) && (OffsetX<9))  // draw the sun to the main view
     {
-        if (OffsetX>-8)
-        {
-            Sunleft=0;
-            Sunwidth=32;
-        } else {    // Offset == -9 ... sun is on left border
-            Sunleft=16;
-            Sunwidth=16;
-        }
-        if (OffsetX<7)
-        {
-            Sunwidth+=32;
-        } else {    // Offset == 8 ... sun is on right border
-            Sunwidth+=16;
-        }
+        if      (OffsetX==-9)   { Sunleft=48; Sunwidth=16; }
+        else if (OffsetX==-8)   { Sunleft=16; Sunwidth=48; }
+        else if (OffsetX==7)    { Sunleft=0;  Sunwidth=48; }
+        else if (OffsetX==8)    { Sunleft=0;  Sunwidth=16; }
+        else                    { Sunleft=0;  Sunwidth=64; }
+
         if (OffsetY>-8)
         {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft,0,MyRPort_PTR[0],240+Sunleft+(OffsetX*32),240+(OffsetY*32),Sunwidth,32,192); // upper hemisphere
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft, 0,MyRPort_PTR[0],240+Sunleft+(OffsetX*32),240+(OffsetY*32),Sunwidth,32,192); // upper hemisphere
+        } else {
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft,16,MyRPort_PTR[0],240+Sunleft+(OffsetX*32),256+(OffsetY*32),Sunwidth,16,192); // upper hemisphere
         }
         if (OffsetY<7)
         {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft,0,MyRPort_PTR[0],240+Sunleft+(OffsetX*32),272+(OffsetY*32),Sunwidth,32,192); // lower hemisphere
+        } else {
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft,0,MyRPort_PTR[0],240+Sunleft+(OffsetX*32),272+(OffsetY*32),Sunwidth,16,192); // lower hemisphere
         }
     }
 
