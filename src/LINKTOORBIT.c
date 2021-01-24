@@ -3,14 +3,14 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys)
+void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, int ActSys)
 {
     sint16  x,y;
     if (0 == (MyShipPtr->Ladung & MASK_SIEDLER))
     {
         LINKSHIP(MyShipPtr, &MyPlanetHeader->FirstShip,1);
     }
-    if (((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) != 0) || (MyShipPtr->Owner == ActPlayerFlag))
+    if (((SystemFlags[ActPlayer-1][ActSys] & FLAG_KNOWN) != 0) || (MyShipPtr->Owner == ActPlayerFlag))
     {
         x = 256+(MyShipPtr->PosX+OffsetX)*32;
         y = 256+(MyShipPtr->PosY+OffsetY)*32;

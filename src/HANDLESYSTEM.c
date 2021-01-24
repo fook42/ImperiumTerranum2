@@ -234,7 +234,7 @@ void SEARCHOBJECT(uint8* ActSys)
     CloseWindow(SEO_Window);
     if (RMB_PRESSED)
     {
-        PLAYSOUND(1,300);
+        PLAYSOUND(0,300);
         return;
     }
     b = false;
@@ -289,7 +289,7 @@ void SEARCHOBJECT(uint8* ActSys)
                 while(RMB_NOTPRESSED && LMB_NOTPRESSED);
                 if (LMB_PRESSED)
                 {
-                    PLAYSOUND(1,300);
+                    PLAYSOUND(0,300);
                     if (ThisP >= 36)
                     {
                         LastSys = HANDLESYSTEM_DRAWSHIPS(Mode, LastSys, PSys, ShipPos);
@@ -346,7 +346,7 @@ void SEARCHOBJECT(uint8* ActSys)
                 while(RMB_NOTPRESSED && LMB_NOTPRESSED);
                 if (LMB_PRESSED)
                 {
-                    PLAYSOUND(1,300);
+                    PLAYSOUND(0,300);
                     if (37 < ThisP)
                     {
                         LastSys = DRAWPLANETS(Mode, LastSys, PSys, PNum, PCol);
@@ -368,7 +368,7 @@ void SEARCHOBJECT(uint8* ActSys)
     }
     if (RMB_PRESSED)
     {
-        PLAYSOUND(1,300);
+        PLAYSOUND(0,300);
         DRAWSYSTEM(MODE_REDRAW,*ActSys,NULL);
     }
 }
@@ -415,7 +415,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                 {
                     if ((MouseY(0)>=9) && (MouseY(0)<=117)) // click to mini map
                     {
-                        PLAYSOUND(1,300);
+                        PLAYSOUND(0,300);
                         OffsetX = 576-MouseX(0);
                         OffsetY =  63-MouseY(0);
                         DRAWSYSTEM(MODE_REDRAW,*ActSys,NULL);
@@ -427,7 +427,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                 } else if ((MouseX(0)>=0) && (MouseX(0)<=511)
                         && (MouseY(0)>=0) && (MouseY(0)<=511))      // click to main view
                 {
-                    PLAYSOUND(1,300);
+                    PLAYSOUND(0,300);
                     if (FINDOBJECT(*ActSys-1, MouseX(0), MouseY(0), NULL))
                     {
                         switch (ObjType) {
@@ -474,7 +474,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                 if ((MouseX(0)>=0) && (MouseX(0)<=511)
                  && (MouseY(0)>=0) && (MouseY(0)<=511))             // click to main view
                 {
-                    PLAYSOUND(1,300);
+                    PLAYSOUND(0,300);
                     if (FINDOBJECT(*ActSys-1, MouseX(0), MouseY(0), NULL))
                     {
                         switch (ObjType) {

@@ -3,23 +3,23 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void LOADSOUND(char* FName, uint8 SID)
+void LOADSOUND(char* FName, const int SoundID)
 {
-    uint32  l;
+    int     Filesize;
     BPTR    FHandle;
 
     FHandle = OPENSMOOTH( FName, MODE_OLDFILE );
     if (0 == FHandle) { return; }
 
     (void) Seek(FHandle, 0, OFFSET_END);
-    l = Seek(FHandle, 0, OFFSET_BEGINNING);
-    SoundSize[SID] = l / 2;
-    SoundMemA[SID] = (UWORD*) AllocMem(l, MEMF_CHIP+MEMF_CLEAR);
-    if (NULL == SoundMemA[SID])
+    Filesize = Seek(FHandle, 0, OFFSET_BEGINNING);
+    SoundSize[SoundID] = (UWORD) (Filesize >> 1);
+    SoundMemA[SoundID] = (UWORD*) AllocMem(Filesize, MEMF_CHIP);
+    if (NULL == SoundMemA[SoundID])
     {
         Close( FHandle );
         return;
     }
-    (void) Read(FHandle, SoundMemA[SID], l);
+    (void) Read(FHandle, SoundMemA[SoundID], Filesize);
     Close(FHandle);
 }

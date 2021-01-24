@@ -13,7 +13,7 @@ void WAITLOOP(bool no_wait)
     }
     while ((64 != RawCode) && (67 != RawCode) && (68 != RawCode) && LMB_NOTPRESSED && RMB_NOTPRESSED && (!no_wait));
 
-    PLAYSOUND(1,300);
+    PLAYSOUND(0,300);
 
     do
     {

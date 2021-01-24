@@ -203,7 +203,7 @@ void MAIN_FNC()
                 if ((MouseX(0) >= 0) && (MouseX(0) <= 512)
                         && (MouseY(0) >= 0) && (MouseY(0) <= 512))
                 {
-                    PLAYSOUND(1,300);
+                    PLAYSOUND(0,300);
                     if ((SystemFlags[ActPlayer-1][LastSystem-1] & FLAG_KNOWN) == FLAG_KNOWN)
                     {
                         HANDLESYSTEM(&LastSystem,NULL);
@@ -425,7 +425,7 @@ void MAIN_FNC()
                 }
                 j = 1;
             }
-            PLAYSOUND(1,300);
+            PLAYSOUND(0,300);
             PLAYERHIGHSCORE(j);
         }
     }

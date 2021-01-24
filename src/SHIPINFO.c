@@ -169,7 +169,7 @@ void SHIPINFO(uint8 ActSys)
         Delay(RDELAY);
         if (LMB_PRESSED)
         {
-            PLAYSOUND(1,300);
+            PLAYSOUND(0,300);
             if ((454<MouseY(1)) && (481>MouseY(1)))
             {
                 if ((379<MouseX(1)) && (411>MouseX(1))
@@ -214,7 +214,7 @@ void SHIPINFO(uint8 ActSys)
         StopPlayer();
         FreeMem(ModC,ModL);
     }
-    PLAYSOUND(1,300);
+    PLAYSOUND(0,300);
     ScreenToFront(MyScreen[0]);
 }
 

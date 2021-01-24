@@ -57,7 +57,7 @@ void DISPLAYSTATE()
         Delay(RDELAY);
     }
     while (LMB_NOTPRESSED && RMB_NOTPRESSED);
-    PLAYSOUND(1,300);
+    PLAYSOUND(0,300);
     do
     {
         Delay(RDELAY);

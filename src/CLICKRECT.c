@@ -11,7 +11,7 @@ void CLICKRECT(struct RastPort* RPort, int Left, int Top, int Right, int Bottom,
     Bottom-=3;
     SetAPen(RPort,Color);
     BOX(RPort,Left,Top,Right,Bottom);
-    PLAYSOUND(1,300);
+    PLAYSOUND(0,300);
     SetAPen(RPort,0);
     BOX(RPort,Left,Top,Right,Bottom);
 }

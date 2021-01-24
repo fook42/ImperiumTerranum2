@@ -5,7 +5,7 @@
 
 void SMALLGAMEEXIT()
 {
-    uint8   i;
+    int     i;
 
     custom.dmacon = BITCLR | DMAF_AUDIO; // 0x000F
 
@@ -24,21 +24,21 @@ void SMALLGAMEEXIT()
         FreeMem(ImgBitMap8.MemA, ImgBitMap8.MemL); ImgBitMap8.MemA = NULL;
     }
 
-    for (i = 0; i< MODULES; i++)
+    for (i = 0; i< MODULES; ++i)
     {
         if (NULL != ModMemA[i])
         {
             FreeMem(ModMemA[i], ModMemL[i]);       ModMemA[i] = NULL;
         }
     }
-    for (i = 0; i< CACHES; i++)
+    for (i = 0; i< CACHES; ++i)
     {
         if (NULL != CacheMemA[i])
         {
             FreeMem(CacheMemA[i], CacheMemL[i]);   CacheMemA[i] = NULL;
         }
     }
-    for (i = 0; i<(MAXCIVS-1); i++)
+    for (i = 0; i<(MAXCIVS-1); ++i)
     {
         if (NULL != LogoMemA[i])
         {

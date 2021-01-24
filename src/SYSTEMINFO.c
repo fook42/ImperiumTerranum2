@@ -84,14 +84,14 @@ void SYSTEMINFO(uint8 ActSys)
                         if (LMB_PRESSED)
                         {
                             SysID = LastSystem;
-                            PLAYSOUND(1,300);
+                            PLAYSOUND(0,300);
                         } else {
                             WRITEGALAXYDATA(ActSys,ShipData(MyShipPtr->SType).MaxMove);
                         }
                     }
                     while((RMB_NOTPRESSED) && (0 == SysID));
 
-                    if (RMB_PRESSED) { PLAYSOUND(1,300); }
+                    if (RMB_PRESSED) { PLAYSOUND(0,300); }
                     if ((0 < SysID) && (MAXSYSTEMS >= SysID) && (ActSys != SysID))
                     {
                         if (0 == SystemHeader[SysID-1].Planets) { CREATENEWSYSTEM(SysID-1, 0, 1); }
@@ -125,7 +125,7 @@ void SYSTEMINFO(uint8 ActSys)
 
                     x = 256+(UseShipPtr->PosX+OffsetX)*32;
                     y = 256+(UseShipPtr->PosY+OffsetY)*32;
-                    PLAYSOUND(2,1100);
+                    PLAYSOUND(1,1100);
                     // show explosion-animation
                     if ((x>=0) && (x<481) && (y>=0) && (y<481))
                     {
@@ -236,7 +236,7 @@ void SYSTEMINFO(uint8 ActSys)
         }
         if (RMB_PRESSED)
         {
-            PLAYSOUND(1,300);
+            PLAYSOUND(0,300);
             b = true;
         }
     }

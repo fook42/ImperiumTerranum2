@@ -153,7 +153,7 @@ void LANDING_DRAWFIRE()
                 case ID_CITY2:      ++CityHit; break;
                 default:            ++BioHit;
             }
-            PLAYSOUND(2,800);
+            PLAYSOUND(1,800);
             LandID[HitX][HitY] = ID_DESTROYED;
             BltBitMapRastPort((struct BitMap*) &ImgBitMap5, ID_DESTROYED,0,MyRPort_PTR[AScr],HitX*32,HitY*32-Moved[AScr],32,32,192);
         } else {
@@ -254,7 +254,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                 if ((ID_SDI == LandID[i][7]) || (ID_SPHALANX == LandID[i][7]))
                 {
                     SetRGB32(MyVPort_PTR[AScr],0,0xFF000000,0xFF000000,0xFF000000);
-                    PLAYSOUND(2,400);
+                    PLAYSOUND(1,400);
                     ShipShield -= GroundWeapon;
                     if (0  >  ShipShield) { ShipShield = 0; }
                     if ((0 <= ShipShield) && (255 >= ShipShield))
@@ -344,7 +344,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         }
         SetRGB32(MyVPort_PTR[0],0,0xFF000000,0xFF000000,0xFF000000);
         RECT_RP0_C0(0,0,255,255);
-        PLAYSOUND(2,1000);
+        PLAYSOUND(1,1000);
         if (Audio_enable)
         {
             SPAddrC = SoundMemA[2];              SPFreqC = 900; SPLengthC = SoundSize[2] / 2; SPVolC = 64;

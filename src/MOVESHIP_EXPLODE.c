@@ -18,7 +18,7 @@ void MOVESHIP_EXPLODE(uint8 ActSys, r_ShipHeader* MyShipPtr)
                     && (Save.CivPlayer[GETCIVVAR(SystemFlags[0][ActSys])-1] != 0)))
             {
                 MOVESHIP_DRAWSCENE((ActSys+1), MyShipPtr);
-                PLAYSOUND(2,1100);
+                PLAYSOUND(1,1100);
                 MOVESHIP_x = 256+(MyShipPtr->PosX+OffsetX)*32;
                 MOVESHIP_y = 256+(MyShipPtr->PosY+OffsetY)*32;
                 if ((MyShipPtr->PosX != 0) || (MyShipPtr->PosY != 0))

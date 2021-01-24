@@ -62,7 +62,7 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
             ActPProjects->data[34] = 0;
             if (Visible)
             {
-                PLAYSOUND(2,1100);
+                PLAYSOUND(1,1100);
             }
         } else {
             ActPProjects->data[34] = it_round(LandShield*100.0/9.0/10.0);
@@ -89,7 +89,7 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
             ActPProjects->data[40] = 0;
             if (Visible)
             {
-                PLAYSOUND(2,1100);
+                PLAYSOUND(1,1100);
             }
         } else {
             ActPProjects->data[40] = it_round(LandShield*100.0/49.0/10.0);

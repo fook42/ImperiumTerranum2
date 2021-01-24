@@ -1212,7 +1212,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         }
                         if (LMB_PRESSED)
                         {
-                            PLAYSOUND(1,300);
+                            PLAYSOUND(0,300);
                             if (i>0)
                             {
                                 if (NewTech[i]>0)

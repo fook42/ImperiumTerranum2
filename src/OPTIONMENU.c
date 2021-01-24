@@ -219,7 +219,7 @@ void OPTION_MULTIPLAYER(void)
                         b = true;
                         Save.CivPlayer[j] = i+1;
                         CLICKRECT(MyRPort_PTR[1], 100, offset, 540, offset+30, 40);
-                        PLAYERJINGLE(j+1);
+                        PLAYERJINGLE(j);
                     }
                     offset += 50;
                 }
@@ -347,7 +347,7 @@ void OPTIONMENU(int Mode)
         Delay(RDELAY);
         if (LMB_PRESSED)
         {
-            PLAYSOUND(1,300);
+            PLAYSOUND(0,300);
             if ((MouseX(1)>=440) && (MouseX(1)<=574) && (MouseY(1)>=431) && (MouseY(1)<=454))
             {
                 if      (MouseX(1) < 507) { Audio_enable = true; }
@@ -407,7 +407,7 @@ void OPTIONMENU(int Mode)
     while (RMB_NOTPRESSED);
 
     while (RMB_PRESSED) {};
-    PLAYSOUND(1,300);
+    PLAYSOUND(0,300);
 
     ScreenToFront(XScreen);
 

@@ -132,18 +132,17 @@ void INITVARS();
 void KILLFLEET(r_ShipHeader* MyShipPtr);
 void KLICKGAD(const int x, const int y);
 void LINKSHIP(r_ShipHeader* SPtr, r_ShipHeader* TPtr, uint8 Mode);
-void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys);
+void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, int ActSys);
 // >>> LOADMOD
 void LOADMOD(char* FName, int MID);
 LONG GETMIDIPLAYER(struct MMD0 *module);
 // <<<
-void LOADSOUND(char* FName, uint8 SID);
+void LOADSOUND(char* FName, const int SoundID);
 // >>> MAININTRO
 void MAININTRO();
 void SETDARKCOLOR(char* FName, r_Col_t* Colors);
 // void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module);
 void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL);
-// bool LOADSOUNDS();
 bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, uint32* SMemL);
 int ff_round(long int value);
 void ROTATEpX(VectorObj_t* actObject);
@@ -184,8 +183,8 @@ void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2);
 bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* _MyShipPtr);
 void PLANETINFO(uint8 ActSys);
 void PLAYERHIGHSCORE(uint8 PHS_ActPlayer);
-void PLAYERJINGLE(uint8 JingleID);
-void PLAYSOUND(uint8 SID, uint16 SRate);
+void PLAYERJINGLE(const int JingleID);
+void PLAYSOUND(const int SoundID, const int SoundRate);
 void PRINTGLOBALINFOS(uint8 PGI_ActPlayer);
 void PROJEKTE();
 void PUMPUPTHELEVEL();
@@ -231,7 +230,7 @@ void VERHANDLUNG(int CivFlag, int Mode);
 // <<<
 void WAITLOOP(bool no_wait);
 // >>> WORMHOLE ---
-void WORMHOLE_LOADSOUND(char* FName, uint8 SID);
+void WORMHOLE_LOADSOUND(char* FName, const int SoundID);
 void WORMHOLE_INITSOUNDS();
 bool WORMHOLE_INITIMAGES();
 void TRAVEL();
