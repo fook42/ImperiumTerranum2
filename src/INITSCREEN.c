@@ -7,10 +7,10 @@ void INITSCREEN(int Mode)
 {
     char    s[40];
 
+    if (Screen2 == Mode) { return; }
     switch(Mode) {
         case SCREEN_PLANET:
                             SetRast(MyRPort_PTR[1], 0);     // fill a complete RastPort with color..
-                            // = RECT_RP1(0,0,0,639,511);
                             (void) my_strcpy(my_strcpy(s, PathStr[0]), "PlanetDesk.img");
                             if (!DISPLAYIMAGE(s,0,94,384,394,8,MyScreen[1],2)) { return; }
                             WRITE_RP1( 62,126,2,           0,3,_PT_Biosphaere);

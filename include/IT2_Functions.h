@@ -54,6 +54,7 @@ void CREATEJAHADR(uint8 CJ_ActPlayer);
 bool CREATEMAQUESSHIP(uint8 SysID, uint8 ShipID);
 void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanets);
 void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum);
+bool READPATHS();
 void CREATEPATHS();
 void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr);
 // >>> DISKMENU
