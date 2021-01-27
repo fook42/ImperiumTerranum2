@@ -3,6 +3,32 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+bool READPATHS()
+{
+    BPTR    FHandle;
+    bool    status = false;
+
+    FHandle = Open((CONST_STRPTR) "Paths.txt", MODE_OLDFILE);
+    if (0 != FHandle)
+    {
+        (void)     Seek(FHandle, 0, OFFSET_END);
+        PathMemL = Seek(FHandle, 0, OFFSET_BEGINNING);
+        PathMemA = (uint8*) AllocMem(PathMemL, MEMF_CLEAR);
+        if (NULL != PathMemA)
+        {
+            (void) Read(FHandle, PathMemA, PathMemL);
+            status = true;
+        } else {
+            puts("Nicht genug Speicher vorhanden!\n");
+        }
+        Close(FHandle);
+    } else {
+        puts("Kann Datei \"Paths.txt\" nicht finden!\n");
+    }
+    return status;
+}
+
+
 void CREATEPATHS()
 {
     uint8*  btx;

@@ -31,30 +31,11 @@ void MAIN_FNC()
         }
     }
     /* read Paths.txt-File **********************************/
-    (void) my_strcpy(s, "Paths.txt");
-    FHandle = Open((CONST_STRPTR) s, MODE_OLDFILE);
-    if (0 == FHandle)
+    if (!READPATHS())
     {
-        Printf("Kann Datei \"");
-        Printf(s);
-        Printf("\" nicht finden!\n");
-        Printf("Can`t find file \"");
-        Printf(s);
-        Printf("\" !\n");
+        GAMEEXIT();
         return;
     }
-    (void)     Seek(FHandle, 0, OFFSET_END);
-    PathMemL = Seek(FHandle, 0, OFFSET_BEGINNING);
-    PathMemA = (uint8*) AllocMem(PathMemL, MEMF_CLEAR);
-    if (NULL == PathMemA)
-    {
-        puts("Nicht genug Speicher vorhanden!\n");
-        puts(Txt_notEnoughMem);
-        Close(FHandle);
-        return;
-    }
-    (void) Read(FHandle, PathMemA, PathMemL);
-    Close(FHandle);
     CREATEPATHS();
 
     /************************************/
@@ -389,9 +370,9 @@ void MAIN_FNC()
                     j = i+1;
                     if ((MAXCIVS-2) == i)
                     {
-                        while (2400 < Save.ImperatorState[i])
+                        while (2400 < Save.ImperatorState[(MAXCIVS-2)])
                         {
-                            Save.ImperatorState[i] -= rand()%250;
+                            Save.ImperatorState[(MAXCIVS-2)] -= rand()%250;
                         }
                     }
                     if ((i == 0) && (Save.ProjectCosts[0].data[5]>0))
