@@ -92,7 +92,7 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr);
 bool FINDMAQUESSHIP(uint8 ActSys, r_ShipHeader* MyShipPtr);
 uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s);
 uint8 FINDNEXTPLANET(uint8 ActSys, r_ShipHeader* ShipPtr);
-bool FINDOBJECT(uint8 ActSys, sint16 GetX, sint16 GetY, void* ExcludeObj);
+bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeObj);
 uint8 FIRSTMENU();
 void FORSCHUNG();
 void FREESYSTEMMEMORY();

@@ -14,7 +14,6 @@ void ROTATEPLANETS(uint8 ActSys)
 
     uint32      SystemOwn[MAXCIVS+1];
     uint32      l, PMoney;
-    bool        vonNeuMannSonde_exists;
     bool        b, FreeSystem;
     ByteArr42*  ActPProjects;
     sint16      FromX, FromY;
@@ -51,7 +50,6 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    vonNeuMannSonde_exists = true;
     if (1 == ActPlayer)
     {
         MaquesShips = 0;
@@ -62,13 +60,16 @@ void ROTATEPLANETS(uint8 ActSys)
             Militaerausgaben[i] = 0;
         }
     }
-    for(i = 0; i < Save.Systems; ++i)
+
+    if (Save.ProjectCosts[ActPlayer-1].data[39] <= 0)
     {
-        if ((Save.ProjectCosts[ActPlayer-1].data[39] <= 0) && (vonNeuMannSonde_exists)
-          && (SystemHeader[i].vNS != FLAG_KNOWN) && ((rand()%5) == 0))
+        for(i = 0; i < Save.Systems; ++i)
         {
-            SystemHeader[i].vNS = FLAG_KNOWN;
-            vonNeuMannSonde_exists = false;
+            if ((SystemHeader[i].vNS != FLAG_KNOWN) && ((rand()%5) == 0))
+            {
+                SystemHeader[i].vNS = FLAG_KNOWN;
+                break;
+            }
         }
     }
 

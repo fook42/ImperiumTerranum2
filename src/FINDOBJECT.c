@@ -3,12 +3,12 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-bool FINDOBJECT(uint8 ActSys, sint16 GetX, sint16 GetY, void* ExcludeObj)
+bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeObj)
 {
     r_ShipHeader*   ActShipPtr;
     r_PlanetHeader* PlanetHeader;
-    sint16          x,y;
-    uint8           i,j;
+    int             x,y;
+    int             i,j;
 
     ObjPtr = NULL;
     ObjType = 0;
