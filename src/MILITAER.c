@@ -56,7 +56,7 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 void MILITAER()
 {
     char    s[40];
-    const char Txt_notavail[] = {"--- (benötigt \0"};
+    const char Txt_notavail[] = {"--- (ben�tigt \0"};
     char*   _s;
     int     i;
     uint16  ypos;

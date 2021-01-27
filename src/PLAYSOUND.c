@@ -20,7 +20,8 @@ void PLAYSOUND(const int SoundID, const int SoundRate)
             SPAddrB = SoundMemA[0]; SPFreqB = (UWORD) SoundRate; SPLengthB = SoundSize[0]; SPVolB = (UWORD) (Volume);
 
             custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1; // 0x8003 .. playback audio on channel 0+1
-            
+
+            WaitTOF();
             WaitTOF();
 
             SPAddrA = ZeroSound; SPLengthA = 1;
@@ -62,6 +63,7 @@ void PLAYSOUND(const int SoundID, const int SoundRate)
 
             custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1; // 0x8003 .. playback audio on channel 0+1
 
+            WaitTOF();
             WaitTOF();
 
             SPAddrA = ZeroSound; SPLengthA = 1;

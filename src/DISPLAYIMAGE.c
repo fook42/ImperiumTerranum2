@@ -11,7 +11,8 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     uint8   realCacheNum=0;
     uint16  CNum, i;
     uint16  CNum3;
-    uint32  ISize, l=0, Addr;
+    uint32  ISize, l=0; // , Addr;
+    APTR    Addr;
     uint32* Size;
     uint16* Colors;
     r_Col_t*  RGB;
@@ -34,12 +35,19 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
         }
         (void)  Seek(FHandle, 0, OFFSET_END);
         ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
-        (void) Read(FHandle, (IMemA[0]+IMemL[0]-ISize-250), ISize);
+        Addr = (APTR) (IMemA[0]+IMemL[0]-ISize-250);   // start at 250+FileSize Bytes from the end (!) of IMem-Area
+        (void) Read(FHandle, Addr, ISize);
         l = (Width*Height*Depth)>>3;
-        UNPACK(IMemA[0], IMemA[0]+IMemL[0]-ISize-250, l, 0);
+        UNPACK(IMemA[0], (uint8*) Addr, l, 0);
         Close(FHandle);
     }
-    CNum =1<<Depth;     // 2 -> 4, 3 -> 8 ... 8 -> 256
+    if (1==Depth)
+    {
+        CNum = 1;
+    } else {
+        CNum = 1<<Depth;     // 2 -> 4, 3 -> 8 ... 8 -> 256
+    }
+    
     CNum3=3*CNum;       // 2 -> 12,3 -> 24... 8 -> 768
 
     if (true == ImageIsValid)
@@ -56,12 +64,12 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
 
         if (NULL != CacheMemA[realCacheNum])
         {
-            Addr = (uint32) CacheMemA[realCacheNum];
-            Size = (uint32*) Addr;
-            *Size= l;
+            Addr = (APTR) CacheMemA[realCacheNum];
+            // Size = (uint32*) Addr;
+            *((uint32*) Addr) = l;
             Addr += 4;
-            Colors = (uint16*) Addr;
-            *Colors= CNum;
+            // Colors = (uint16*) Addr;
+            *((uint16*) Addr) = CNum;
             Addr += 4;
             _s=my_strcpy(FName, Fn);
             (void) my_strcpy(_s-3, "pal");
@@ -71,10 +79,10 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
                 return false;
             }
             (void) Seek(FHandle, 8, OFFSET_BEGINNING);
-            (void) Read(FHandle, (uint8*) Addr, CNum3);
+            (void) Read(FHandle, Addr, CNum3);
             Close(FHandle);
             Addr += CNum3;
-            memcpy((void*) Addr, IMemA[0], (*Size));
+            memcpy((void*) Addr, IMemA[0], l);
             ImageIsValid = true;
         } else {
             (void) SETCOLOR(DI_Screen, FName);
@@ -82,7 +90,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     }
     if (true == ImageIsValid)
     {
-        Addr = (uint32) CacheMemA[realCacheNum];
+        Addr = (APTR) CacheMemA[realCacheNum];
         Addr += 4;
         Colors = (uint16*) Addr;
         Addr += 4;

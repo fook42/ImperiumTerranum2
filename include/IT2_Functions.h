@@ -189,7 +189,7 @@ void PRINTGLOBALINFOS(uint8 PGI_ActPlayer);
 void PROJEKTE();
 void PUMPUPTHELEVEL();
 void QUOTEPICARD();
-bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, ITBitMap* DestBitMap);
+bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, ITBitMap* DestBitMap);
 // ***** void RECT(struct Screen* XScreen, uint16 Color, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge);
 void REFRESHDISPLAY();
 void REFRESHSHIPS(r_ShipHeader* ShipPtr, uint8 SysID, uint8 Mode);
@@ -223,7 +223,7 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag);
 void SYSTEMINFO(uint8 ActSys);
 void SYSTEMTOENEMY(uint8 ActSys, uint8 NewOwner, uint8 OldOwner);
 bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2);
-void UNPACK(uint8* Anfang, uint8* PackedD, uint32 Laenge, uint8 Mode);
+void UNPACK(uint8* Anfang, uint8* PackedD, const int Laenge, const int Mode);
 // >>> VERHANDLUNG ---
 void VERHANDLUNG_INIT(int CivFlag, char* CivStr, int Mode);
 void VERHANDLUNG(int CivFlag, int Mode);
