@@ -135,7 +135,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     SystemHeader[i].FirstShip.SType = 0;
                 }
             }
-            REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip,i+1,1);
+            REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip, i, 1);
         }
     }
 
@@ -179,10 +179,12 @@ void ROTATEPLANETS(uint8 ActSys)
                         if (0 < PlanetHeader->Infrastruktur)
                         {
                             PlanetHeader->Infrastruktur = abs(PlanetHeader->Infrastruktur-(rand()%7));
+                            // @TODO .. can change from 100% -> 6%  .. better reduce rand-value
                         }
                         if (0 < PlanetHeader->Industrie)
                         {
                             PlanetHeader->Industrie = abs(PlanetHeader->Industrie-(rand()%7));
+                            // @TODO .. can change from 100% -> 6%  .. better reduce rand-value
                         }
                     } else if ((CivVar<=MAXCIVS) && (NULL != PlanetHeader->ProjectPtr))
                     {
@@ -217,7 +219,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         PlanetHeader->FirstShip.NextShip->Owner = 0;
                     }
-                    REFRESHSHIPS(PlanetHeader->FirstShip.NextShip, i+1, 0);
+                    REFRESHSHIPS(PlanetHeader->FirstShip.NextShip, i, 0);
                     d = 1.0/((j*3.0)+1);
                     sin_rot = sin(d);
                     cos_rot = cos(d);

@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void REFRESHSHIPS(r_ShipHeader* ShipPtr, uint8 SysID, uint8 Mode)
+void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
 {
     r_ShipHeader*   ActShipPtr;
     r_ShipHeader*   BehindShipPtr;
@@ -66,12 +66,12 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, uint8 SysID, uint8 Mode)
         }
         if (ActShipPtr->Moving >= 0)
         {
-            SystemFlags[CivVar-1][SysID-1] |= FLAG_KNOWN;
+            SystemFlags[CivVar-1][SysID] |= FLAG_KNOWN;
             for(i = 0; i < MAXCIVS; i++)
             {
                 if (Save.WarState[i][CivVar-1] == LEVEL_ALLIANZ)
                 {
-                    SystemFlags[i][SysID-1] |= FLAG_KNOWN;
+                    SystemFlags[i][SysID] |= FLAG_KNOWN;
                 }
             }
             ActShipPtr->Moving = ShipData(UseShipPtr->SType).MaxMove;

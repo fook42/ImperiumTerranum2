@@ -11,21 +11,32 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     uint8   realCacheNum=0;
     uint16  CNum, i;
     uint16  CNum3;
-    uint32  ISize, l=0; // , Addr;
+    uint32  ImgSize_packed, ImgSize=0; // , Addr;
     APTR    Addr;
-    uint32* Size;
     uint16* Colors;
     r_Col_t*  RGB;
     bool    ImageIsValid = false;
+
+    if (1==Depth)
+    {
+        CNum = 1;
+    } else {
+        CNum = 1<<Depth;     // 2 -> 4, 3 -> 8 ... 8 -> 256
+    }
+    CNum3=3*CNum;       // 2 -> 12,3 -> 24... 8 -> 768
 
     if (0 != CacheNum)
     {
         realCacheNum = CacheNum-1;
         if (NULL != CacheMemA[realCacheNum])
         {
-            ImageIsValid = true;
+            if (0 != *CacheMemA[realCacheNum])
+            {
+                ImageIsValid = true;
+            }
         }
     }
+    // fill IMemA[0] with image data .. either load from file or copy from cache
     if (false == ImageIsValid)
     {
         FHandle = OPENSMOOTH(Fn, MODE_OLDFILE);
@@ -34,41 +45,31 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
             return false;
         }
         (void)  Seek(FHandle, 0, OFFSET_END);
-        ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
-        Addr = (APTR) (IMemA[0]+IMemL[0]-ISize-250);   // start at 250+FileSize Bytes from the end (!) of IMem-Area
-        (void) Read(FHandle, Addr, ISize);
-        l = (Width*Height*Depth)>>3;
-        UNPACK(IMemA[0], (uint8*) Addr, l, 0);
+        ImgSize_packed = Seek(FHandle, 0, OFFSET_BEGINNING);
+        Addr = (APTR) (IMemA[0]+IMemL[0]-ImgSize_packed-250);   // start at 250+FileSize Bytes from the end (!) of IMem-Area
+        (void) Read(FHandle, Addr, ImgSize_packed);
+        ImgSize = (Width*Height*Depth)>>3;    // w*h*depth/8 = num of bytes for uncompressed imagedata
+        UNPACK(IMemA[0], (uint8*) Addr, ImgSize, 0);
         Close(FHandle);
-    }
-    if (1==Depth)
-    {
-        CNum = 1;
     } else {
-        CNum = 1<<Depth;     // 2 -> 4, 3 -> 8 ... 8 -> 256
-    }
-    
-    CNum3=3*CNum;       // 2 -> 12,3 -> 24... 8 -> 768
 
-    if (true == ImageIsValid)
-    {
-        memcpy(IMemA[0], (CacheMemA[realCacheNum]+CNum3+8), (CacheMemL[realCacheNum]-CNum3-8));
+        memcpy(IMemA[0], (CacheMemA[realCacheNum]+CNum3+8), *((uint32*)CacheMemA[realCacheNum]));
     }
+
     struct Image DI_Img = {0, 0, (WORD) Width, (WORD) Height, (WORD) Depth, (UWORD*) IMemA[0], CNum-1, 0, NULL};
     DrawImage(&(DI_Screen->RastPort), &DI_Img,(WORD) LEdge,(WORD) TEdge);
 
+    // if Image was not in cache, store it there, together with colorpalette-data
     if ((0 != CacheNum) && (false == ImageIsValid))
     {
-        CacheMemL[realCacheNum] = l+CNum3+8;
+        CacheMemL[realCacheNum] = ImgSize+CNum3+8;
         CacheMemA[realCacheNum] = AllocMem(CacheMemL[realCacheNum], MEMF_FAST);
 
         if (NULL != CacheMemA[realCacheNum])
         {
             Addr = (APTR) CacheMemA[realCacheNum];
-            // Size = (uint32*) Addr;
-            *((uint32*) Addr) = l;
+            *((uint32*) Addr) = ImgSize;
             Addr += 4;
-            // Colors = (uint16*) Addr;
             *((uint16*) Addr) = CNum;
             Addr += 4;
             _s=my_strcpy(FName, Fn);
@@ -82,7 +83,8 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
             (void) Read(FHandle, Addr, CNum3);
             Close(FHandle);
             Addr += CNum3;
-            memcpy((void*) Addr, IMemA[0], l);
+            memcpy((void*) Addr, IMemA[0], ImgSize);
+
             ImageIsValid = true;
         } else {
             (void) SETCOLOR(DI_Screen, FName);

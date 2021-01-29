@@ -118,7 +118,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr);
 // <<<
 // >>> HIGHSCORE
 void CREATEHIGHSCORE(char* HScoreFileName);
-uint8 GETCOLOR(uint8 Col);
+uint8 GETCOLOR(const int Col);
 void HIGHSCORE();
 // <<<
 void INFORMUSER();
@@ -193,12 +193,12 @@ void QUOTEPICARD();
 bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, ITBitMap* DestBitMap);
 // ***** void RECT(struct Screen* XScreen, uint16 Color, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge);
 void REFRESHDISPLAY();
-void REFRESHSHIPS(r_ShipHeader* ShipPtr, uint8 SysID, uint8 Mode);
+void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode);
 void REGIERUNG();
 void REMOVEPLAYER(uint8 RP_ActPlayer);
 void REQUEST(const char* text1, const char* text2, const int color1, const int color2);
 void ROTATEPLANETS(uint8 ActSys);
-uint8 SETCOLOR(struct Screen* SC_Screen, char* FName);
+int SETCOLOR(struct Screen* SC_Screen, char* FName);
 bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet, sint16* TheProject, uint8 ActSys, char** s1, char** s2, bool* PlanetLose);
 void SETWORLDCOLORS();
 // >>> SHIPINFO
