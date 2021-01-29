@@ -7,6 +7,7 @@ void AUTOVERHANDLUNG(int CivFlag1, int CivFlag2, int ActSys, int Mode)
 {
     int     CivVar1, CivVar2;
 
+    // no negotiations when Ceborgs are active or unknown civilization
     if ((WFLAG_CEBORC == Save.WorldFlag)
         && ((FLAG_OTHER == CivFlag1) || (FLAG_OTHER == CivFlag2)))
     {
@@ -14,8 +15,9 @@ void AUTOVERHANDLUNG(int CivFlag1, int CivFlag2, int ActSys, int Mode)
     }
     CivVar1 = GETCIVVAR(CivFlag1);
     CivVar2 = GETCIVVAR(CivFlag2);
-    if ((0 == CivVar1) || (9 == CivVar1)
-     || (0 == CivVar2) || (9 == CivVar2))
+    // no negotiations when unknown civ or maques involved
+    if ((CIVVAR_NONE == CivVar1) || (CIVVAR_MAQUES == CivVar1)
+     || (CIVVAR_NONE == CivVar2) || (CIVVAR_MAQUES == CivVar2))
     {
         return;
     }
@@ -24,8 +26,8 @@ void AUTOVERHANDLUNG(int CivFlag1, int CivFlag2, int ActSys, int Mode)
         INFORMUSER();
     }
 
-    CivVar1--;
-    CivVar2--;
+    --CivVar1;
+    --CivVar2;
     if ((!Save.PlayMySelf)
         && ((0 != Save.CivPlayer[CivVar1]) || (0 != Save.CivPlayer[CivVar2])))
     {

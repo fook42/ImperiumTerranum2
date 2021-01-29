@@ -327,7 +327,7 @@ void KILLSHIP(uint8 Ship, uint8 Phase)
     if (0 == Phase)
     {
         WaitTOF();
-        PLAYSOUND(2,1100);
+        PLAYSOUND(1,1100);
         BltBitMapRastPort((struct BitMap*) &ImgBitMap4,0,0,MyRPort_PTR[AScr],x[Ship],y[Ship],32,32,192);
         WaitTOF();
     } else if (16 == Phase)
@@ -507,7 +507,7 @@ uint8 SMALLSHIPFIGHT(r_ShipHeader* ShipPtr1, r_ShipHeader* ShipPtr2, r_ShipHeade
                 {
                     if (MODE_ALL == Mode)
                     {
-                        if (Visible) { PLAYSOUND(2,900); }
+                        if (Visible) { PLAYSOUND(1,900); }
                         Delay(20);
                     } else {
                         ShipPtr2->PosX = ShipPtr02->PosX;

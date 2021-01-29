@@ -215,7 +215,7 @@ void GETSAVENAME(char* Title, char* SName)
         }
     }
     while ((-1 > selected) || (5 < selected) || (!mouse_b));
-    PLAYSOUND(1,300);
+    PLAYSOUND(0,300);
 
     if (-1 < selected)
     {
@@ -527,7 +527,7 @@ bool DISKMENU(uint8 Autoselect)
     while ((!leave_dialog) && RMB_NOTPRESSED && (DISKMENU_PROMPT == Autoselect));
     if (RMB_PRESSED)
     {
-        PLAYSOUND(1,300);
+        PLAYSOUND(0,300);
     }
     if (NULL != DIS_Window)
     {

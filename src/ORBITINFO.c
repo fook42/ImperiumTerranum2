@@ -149,14 +149,14 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
                 i = DRAWSHIPS(i, ShipNames, MyShipPtr);
             } else if ((MouseX(0)>=60) && (MouseX(0)<=370))
             {
-                PLAYSOUND(1,300);
+                PLAYSOUND(0,300);
                 SelShip += ShipFactor*12;
                 b = true;
             }
         }
     }
     while ((!b) && RMB_NOTPRESSED);
-    if (RMB_PRESSED) { PLAYSOUND(1,300); }
+    if (RMB_PRESSED) { PLAYSOUND(0,300); }
     RECT_RP0_C0(20,30,422,482);
 // CloseWindow()
     if (b)

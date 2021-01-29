@@ -190,6 +190,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                 MyShipPtr->Moving = 0;
                                                 if (OtherShipPtr->Owner != MyShipPtr->Owner)
                                                 {
+                                                    // if the ship in orbit is not of the same owner (=foreign ship)
+                                                    // start the fight...
                                                     Delay(20);
                                                     if (BIGSHIPFIGHT(MyShipPtr,OtherShipPtr,MODE_ALL,ActSys) == 1)
                                                     {
@@ -200,7 +202,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     AUTOVERHANDLUNG(MyShipPtr->Owner,MyPlanetHeader->PFlags,ActSys,0);
                                                     return;
                                                 }
-                                                LINKTOORBIT(MyPlanetHeader, MyShipPtr, ActSys);
+                                                LINKTOORBIT(MyPlanetHeader, MyShipPtr, ActSys-1);
                                                 return;
                                             } else if (0 == (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
                                             {
@@ -288,7 +290,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     return;
                                                 }
                                                 /**** Eigener Planet, Schiff ohne Siedler, kein Wassertransport ****/
-                                                LINKTOORBIT(MyPlanetHeader, MyShipPtr, ActSys);
+                                                LINKTOORBIT(MyPlanetHeader, MyShipPtr, ActSys-1);
                                                 return;
                                             } else if ((Save.WarState[CivVar-1][GETCIVVAR(MyPlanetHeader->PFlags)-1]==LEVEL_WAR)
                                                     || (Save.WarState[CivVar-1][GETCIVVAR(MyPlanetHeader->PFlags)-1]==LEVEL_COLDWAR))
@@ -332,7 +334,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     }
                                                     if (Visible)
                                                     {
-                                                        PLAYSOUND(2,1300);
+                                                        PLAYSOUND(1,1300);
                                                         REFRESHDISPLAY();
                                                         Delay(20);
                                                     }
@@ -540,7 +542,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             {
                 if (FINDOBJECT(ActSys-1,MouseX(0),MouseY(0),NULL))
                 {   // clicked on something?
-                    PLAYSOUND(1,300);
+                    PLAYSOUND(0,300);
                     switch (ObjType) {
                         case TYPE_PLANET:   PLANETINFO(ActSys); break;
                         case TYPE_SHIP:     if (SHIPTYPE_FLEET == MyShipPtr->SType)
@@ -589,7 +591,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         {
                             switch (ObjType) {
                                 case TYPE_PLANET:   {
-                                                        PLAYSOUND(1,300);
+                                                        PLAYSOUND(0,300);
                                                         if (!PLANETHANDLING(ActSys,MyShipPtr))
                                                         {
                                                             MyShipPtr->Moving = 0;
@@ -664,7 +666,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         } else {
                                                             MyShipPtr->PosX = MOVESHIP_FromX;
                                                             MyShipPtr->PosY = MOVESHIP_FromY;
-                                                            PLAYSOUND(1,600);
+                                                            PLAYSOUND(0,600);
                                                         }
                                                     } break;
                                 case TYPE_STARGATE: {
@@ -682,7 +684,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                                         SysID = LastSystem;
                                                                     }
                                                                 }
-                                                                PLAYSOUND(1,300);
+                                                                PLAYSOUND(0,300);
                                                             } else {
                                                                 WRITEGALAXYDATA(0,TARGET_STARGATE);
                                                             }
@@ -692,7 +694,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         {
                                                             MyShipPtr->PosX = MOVESHIP_FromX;
                                                             MyShipPtr->PosY = MOVESHIP_FromY;
-                                                            PLAYSOUND(1,300);
+                                                            PLAYSOUND(0,300);
                                                             DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                                                         }
                                                         if ((0 != SysID) && (ActSys != SysID))
@@ -765,7 +767,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 if ((MouseX(0)>613) && (-42 < OffsetX)) { OffsetX -= 2; }
                 DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
             } else {
-                PLAYSOUND(1,300);
+                PLAYSOUND(0,300);
                 if (FINDOBJECT(ActSys-1,MOVESHIP_x+16,MOVESHIP_y+16,NULL))
                 {
                     if (TYPE_SHIP == ObjType)

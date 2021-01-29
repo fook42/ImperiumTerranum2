@@ -14,7 +14,6 @@ void ROTATEPLANETS(uint8 ActSys)
 
     uint32      SystemOwn[MAXCIVS+1];
     uint32      l, PMoney;
-    bool        vonNeuMannSonde_exists;
     bool        b, FreeSystem;
     ByteArr42*  ActPProjects;
     sint16      FromX, FromY;
@@ -51,7 +50,6 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    vonNeuMannSonde_exists = true;
     if (1 == ActPlayer)
     {
         MaquesShips = 0;
@@ -62,13 +60,16 @@ void ROTATEPLANETS(uint8 ActSys)
             Militaerausgaben[i] = 0;
         }
     }
-    for(i = 0; i < Save.Systems; ++i)
+
+    if (Save.ProjectCosts[ActPlayer-1].data[39] <= 0)
     {
-        if ((Save.ProjectCosts[ActPlayer-1].data[39] <= 0) && (vonNeuMannSonde_exists)
-          && (SystemHeader[i].vNS != FLAG_KNOWN) && ((rand()%5) == 0))
+        for(i = 0; i < Save.Systems; ++i)
         {
-            SystemHeader[i].vNS = FLAG_KNOWN;
-            vonNeuMannSonde_exists = false;
+            if ((SystemHeader[i].vNS != FLAG_KNOWN) && ((rand()%5) == 0))
+            {
+                SystemHeader[i].vNS = FLAG_KNOWN;
+                break;
+            }
         }
     }
 
@@ -134,7 +135,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     SystemHeader[i].FirstShip.SType = 0;
                 }
             }
-            REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip,i+1,1);
+            REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip, i, 1);
         }
     }
 
@@ -178,10 +179,12 @@ void ROTATEPLANETS(uint8 ActSys)
                         if (0 < PlanetHeader->Infrastruktur)
                         {
                             PlanetHeader->Infrastruktur = abs(PlanetHeader->Infrastruktur-(rand()%7));
+                            // @TODO .. can change from 100% -> 6%  .. better reduce rand-value
                         }
                         if (0 < PlanetHeader->Industrie)
                         {
                             PlanetHeader->Industrie = abs(PlanetHeader->Industrie-(rand()%7));
+                            // @TODO .. can change from 100% -> 6%  .. better reduce rand-value
                         }
                     } else if ((CivVar<=MAXCIVS) && (NULL != PlanetHeader->ProjectPtr))
                     {
@@ -216,7 +219,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         PlanetHeader->FirstShip.NextShip->Owner = 0;
                     }
-                    REFRESHSHIPS(PlanetHeader->FirstShip.NextShip, i+1, 0);
+                    REFRESHSHIPS(PlanetHeader->FirstShip.NextShip, i, 0);
                     d = 1.0/((j*3.0)+1);
                     sin_rot = sin(d);
                     cos_rot = cos(d);
@@ -1212,7 +1215,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         }
                         if (LMB_PRESSED)
                         {
-                            PLAYSOUND(1,300);
+                            PLAYSOUND(0,300);
                             if (i>0)
                             {
                                 if (NewTech[i]>0)

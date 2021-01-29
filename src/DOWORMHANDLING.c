@@ -36,7 +36,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
             MOVESHIP_ToY = 256+((MyShipPtr->PosY+OffsetY)*32);
             DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
         }
-        PLAYSOUND(3,280);
+        PLAYSOUND(2,280);
         for (i = 15; i>=0; --i)
         {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);

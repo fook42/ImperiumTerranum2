@@ -54,6 +54,7 @@ void CREATEJAHADR(uint8 CJ_ActPlayer);
 bool CREATEMAQUESSHIP(uint8 SysID, uint8 ShipID);
 void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanets);
 void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum);
+bool READPATHS();
 void CREATEPATHS();
 void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr);
 // >>> DISKMENU
@@ -91,7 +92,7 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr);
 bool FINDMAQUESSHIP(uint8 ActSys, r_ShipHeader* MyShipPtr);
 uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s);
 uint8 FINDNEXTPLANET(uint8 ActSys, r_ShipHeader* ShipPtr);
-bool FINDOBJECT(uint8 ActSys, sint16 GetX, sint16 GetY, void* ExcludeObj);
+bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeObj);
 uint8 FIRSTMENU();
 void FORSCHUNG();
 void FREESYSTEMMEMORY();
@@ -117,7 +118,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr);
 // <<<
 // >>> HIGHSCORE
 void CREATEHIGHSCORE(char* HScoreFileName);
-uint8 GETCOLOR(uint8 Col);
+uint8 GETCOLOR(const int Col);
 void HIGHSCORE();
 // <<<
 void INFORMUSER();
@@ -132,18 +133,17 @@ void INITVARS();
 void KILLFLEET(r_ShipHeader* MyShipPtr);
 void KLICKGAD(const int x, const int y);
 void LINKSHIP(r_ShipHeader* SPtr, r_ShipHeader* TPtr, uint8 Mode);
-void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys);
+void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, int ActSys);
 // >>> LOADMOD
 void LOADMOD(char* FName, int MID);
 LONG GETMIDIPLAYER(struct MMD0 *module);
 // <<<
-void LOADSOUND(char* FName, uint8 SID);
+void LOADSOUND(char* FName, const int SoundID);
 // >>> MAININTRO
 void MAININTRO();
 void SETDARKCOLOR(char* FName, r_Col_t* Colors);
 // void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module);
 void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL);
-// bool LOADSOUNDS();
 bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, uint32* SMemL);
 int ff_round(long int value);
 void ROTATEpX(VectorObj_t* actObject);
@@ -184,21 +184,21 @@ void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2);
 bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* _MyShipPtr);
 void PLANETINFO(uint8 ActSys);
 void PLAYERHIGHSCORE(uint8 PHS_ActPlayer);
-void PLAYERJINGLE(uint8 JingleID);
-void PLAYSOUND(uint8 SID, uint16 SRate);
+void PLAYERJINGLE(const int JingleID);
+void PLAYSOUND(const int SoundID, const int SoundRate);
 void PRINTGLOBALINFOS(uint8 PGI_ActPlayer);
 void PROJEKTE();
 void PUMPUPTHELEVEL();
 void QUOTEPICARD();
-bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, ITBitMap* DestBitMap);
+bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, ITBitMap* DestBitMap);
 // ***** void RECT(struct Screen* XScreen, uint16 Color, uint16 LEdge, uint16 TEdge, uint16 REdge, uint16 BEdge);
 void REFRESHDISPLAY();
-void REFRESHSHIPS(r_ShipHeader* ShipPtr, uint8 SysID, uint8 Mode);
+void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode);
 void REGIERUNG();
 void REMOVEPLAYER(uint8 RP_ActPlayer);
 void REQUEST(const char* text1, const char* text2, const int color1, const int color2);
 void ROTATEPLANETS(uint8 ActSys);
-uint8 SETCOLOR(struct Screen* SC_Screen, char* FName);
+int SETCOLOR(struct Screen* SC_Screen, char* FName);
 bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet, sint16* TheProject, uint8 ActSys, char** s1, char** s2, bool* PlanetLose);
 void SETWORLDCOLORS();
 // >>> SHIPINFO
@@ -224,14 +224,14 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag);
 void SYSTEMINFO(uint8 ActSys);
 void SYSTEMTOENEMY(uint8 ActSys, uint8 NewOwner, uint8 OldOwner);
 bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2);
-void UNPACK(uint8* Anfang, uint8* PackedD, uint32 Laenge, uint8 Mode);
+void UNPACK(uint8* Anfang, uint8* PackedD, const int Laenge, const int Mode);
 // >>> VERHANDLUNG ---
 void VERHANDLUNG_INIT(int CivFlag, char* CivStr, int Mode);
 void VERHANDLUNG(int CivFlag, int Mode);
 // <<<
 void WAITLOOP(bool no_wait);
 // >>> WORMHOLE ---
-void WORMHOLE_LOADSOUND(char* FName, uint8 SID);
+void WORMHOLE_LOADSOUND(char* FName, const int SoundID);
 void WORMHOLE_INITSOUNDS();
 bool WORMHOLE_INITIMAGES();
 void TRAVEL();

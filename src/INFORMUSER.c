@@ -28,7 +28,7 @@ void INFORMUSER()
             RECT_RP0_C0(0,0,511,511);
         }
         s[7]=Save.CivPlayer[ActPlayer-1]+'0';
-        PLAYERJINGLE(ActPlayer);
+        PLAYERJINGLE(ActPlayer-1);
 
         MAKEWINBORDER(MyRPort_PTR[0],35,80,475,290,12,6,0);
         WRITE_RP0(256,100,           12,WRITE_Center,3,PText[207]);

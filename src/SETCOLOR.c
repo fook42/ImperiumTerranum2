@@ -3,14 +3,14 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-uint8 SETCOLOR(struct Screen* SC_Screen, char* FName)
+int SETCOLOR(struct Screen* SC_Screen, char* FName)
 {
     uint32  AddrX, AddrEnd, l, ISize;
     int     i;
     uint32* ColorID;
     r_Col_t*  Col;
     BPTR    FHandle;
-    uint8   _SETCOLOR = 0;
+    int     _SETCOLOR = 0;
 
     FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
     if (0 != FHandle)
@@ -30,12 +30,12 @@ uint8 SETCOLOR(struct Screen* SC_Screen, char* FName)
 
         if (_COLOR_CMAP_TEXT_ == (*ColorID))
         {
-            AddrX = AddrX+4;
+            AddrX += 4;
             i = 0;
             do
             {
                 Col = (r_Col_t*) AddrX;
-                AddrX = AddrX+sizeof(r_Col_t);
+                AddrX += sizeof(r_Col_t);
                 SetRGB32(&(SC_Screen->ViewPort), i, (Col->r)<<24, (Col->g)<<24, (Col->b)<<24);
                 i++;
             }

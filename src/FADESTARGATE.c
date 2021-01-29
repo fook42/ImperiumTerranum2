@@ -23,7 +23,7 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
         {
             DRAWMOVINGSHIP(MyShipPtr, ActSys);
         }
-        PLAYSOUND(3,250);
+        PLAYSOUND(2,250);
         if ((MOVESHIP_ToX>=0) && (MOVESHIP_ToX<=478) && (MOVESHIP_ToY>=0) && (MOVESHIP_ToY<=478))
         {
             for(i = 1; i <= 1800; i++)

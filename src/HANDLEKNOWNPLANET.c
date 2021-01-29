@@ -463,7 +463,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
 
                         if (LMB_PRESSED)
                         {
-                            PLAYSOUND(1,300);
+                            PLAYSOUND(0,300);
                             if (btx>0) { MyPlanetHeader->ProjectID = ProjectNum[btx]; }
                         }
                     }
@@ -473,7 +473,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 {
                     /* cancel any project-work .. */
                     MyPlanetHeader->ProjectID = 0;
-                    PLAYSOUND(1,300);
+                    PLAYSOUND(0,300);
                 } else {
                     /* new project selected .. */
                     MyPlanetHeader->XProjectCosts = ProjectRounds[btx];
@@ -544,7 +544,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         }
     }
     while (RMB_NOTPRESSED && (64 != RawCode) && (67 != RawCode) && (68 != RawCode));
-    PLAYSOUND(1,300);
+    PLAYSOUND(0,300);
     CLEARINTUITION();
     ScreenToFront(MyScreen[0]);
 }

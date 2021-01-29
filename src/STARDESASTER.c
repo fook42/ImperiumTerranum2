@@ -67,7 +67,7 @@ void FUCKSYSTEM(uint8 ActSys)
     for(i = 1; i <= 5; i++)
     {
         SetRGB32(&(MyScreen[0]->ViewPort),0,0xFF000000,0xFF000000,0xFF000000);
-        PLAYSOUND(2,1200+rand()%250);
+        PLAYSOUND(1,1200+rand()%250);
         Delay((rand()%10)+1);
         SetRGB32(&(MyScreen[0]->ViewPort),0,0,0,0);
         Delay((rand()%10)+1);
@@ -94,7 +94,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
     // MyShipPtr = ShipPtr;
     if (WFLAG_FIELD == Save.WorldFlag)
     {
-        PLAYSOUND(3,420);
+        PLAYSOUND(2,420);
         Save.Systems = MAXSYSTEMS;
         Save.WorldFlag = 0;
 
@@ -122,7 +122,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
     switch(rand()%5) {
         case 0: FUCKSYSTEM(ActSys); break;  /* SONNENSYS ZERSTÖRT */
         case 1: {        /* NEUVERTEILUNG DER KRÄFTE */
-                    PLAYSOUND(3,420);
+                    PLAYSOUND(2,420);
                     Year = Year-(rand()%250)+75;
                     STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
                     RPort_PTR = STD_Window->RPort;
@@ -211,7 +211,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     CloseWindow(STD_Window);
                 } break;
         case 2: {   /* CEBORCS */
-                    PLAYSOUND(3,420);
+                    PLAYSOUND(2,420);
                     CEBORCATTACK(0);
                     STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
                     if (NULL != STD_Window)
@@ -227,7 +227,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
 
                 } break;
         case 3: {   /* DCON-IMPERIUM */
-                    PLAYSOUND(3,420);
+                    PLAYSOUND(2,420);
                     STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
                     RPort_PTR = STD_Window->RPort;
                     MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
@@ -317,7 +317,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     CloseWindow(STD_Window);
                 } break;
         case 4: {   /* ZEIT-ANOMALIE */
-                    PLAYSOUND(3,420);
+                    PLAYSOUND(2,420);
                     Save.WorldFlag = WFLAG_FIELD;
                     STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
                     if (NULL != STD_Window)

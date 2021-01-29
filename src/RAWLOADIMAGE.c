@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Depth, ITBitMap* DestBitMap)
+bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, ITBitMap* DestBitMap)
 {
     BPTR            FHandle;
     int             ISize, piclen;
@@ -12,7 +12,7 @@ bool RAWLOADIMAGE(char* Fn, int LEdge, int TEdge, int Width, int Height, int Dep
     bool            _RAWLOADIMAGE = false;
     struct BitMap   MyBitMap;
 
-    FHandle = OPENSMOOTH(Fn, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
     if (0 != FHandle)
     {
         (void)  Seek(FHandle, 0, OFFSET_END);

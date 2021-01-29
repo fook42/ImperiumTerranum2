@@ -5,7 +5,7 @@
 
 void INITSOUNDS()
 {
-    char    s[50];
+    char    s[40];
     char*   _s;
 
     _s=my_strcpy(s, PathStr[6]);

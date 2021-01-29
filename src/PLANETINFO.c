@@ -153,7 +153,7 @@ typedef struct SArr6 {
             }
         }
         while (LMB_NOTPRESSED && RMB_NOTPRESSED);
-        PLAYSOUND(1,300);
+        PLAYSOUND(0,300);
         CloseWindow(PLI_Window);
     } else {
         HANDLEKNOWNPLANET(ActSys, 0, PlanetHeader);

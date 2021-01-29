@@ -80,7 +80,7 @@ void FINANZEN()
         Delay(RDELAY);
         if (LMB_PRESSED)
         {
-            PLAYSOUND(1,300);
+            PLAYSOUND(0,300);
             if ((FIN_Window->MouseY>=65) && (FIN_Window->MouseY<=88))
             {
                 if ((FIN_Window->MouseX>=240) && (FIN_Window->MouseX<=270))
@@ -123,7 +123,7 @@ void FINANZEN()
                 {
                    Save.JSteuer[ActPlayer]--;
                    FINANZEN_WRITEDATA(RPort_PTR, 1, ActPlayer);
-                   PLAYSOUND(1,300);
+                   PLAYSOUND(0,300);
                    Delay(10);
                 }
                 ActPlayer++;    // TODO ... due to shifted Save-array...

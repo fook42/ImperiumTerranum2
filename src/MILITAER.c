@@ -56,7 +56,7 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 void MILITAER()
 {
     char    s[40];
-    const char Txt_notavail[] = {"--- (benötigt \0"};
+    const char Txt_notavail[] = {"--- (ben�tigt \0"};
     char*   _s;
     int     i;
     uint16  ypos;
@@ -116,7 +116,7 @@ void MILITAER()
 //        Delay(RDELAY);
         if (LMB_PRESSED)
         {
-            PLAYSOUND(1,300);
+            PLAYSOUND(0,300);
             if ((MIL_Window->MouseX>=20) && (MIL_Window->MouseX<=390))
             {
                 if      ((MIL_Window->MouseY>= 50) && (MIL_Window->MouseY<= 75)) { DRAWDATA(RPort_PTR, 1); }

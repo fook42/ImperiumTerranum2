@@ -119,7 +119,7 @@ uint8 GETOPTION(uint8 Opts, char (*OptArr)[40], uint8 CivFlag)
         while ((LMB_NOTPRESSED) && (RMB_NOTPRESSED));
         ++Pos;
         if (RMB_PRESSED) { Pos = 0; }
-        PLAYSOUND(1,300);
+        PLAYSOUND(0,300);
         CloseWindow(GOP_Window);
     }
     return ((uint8) Pos);
@@ -172,9 +172,9 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
     return _SMALLREQUEST;
 }
 
-void CALLOTHERPLAYER(uint8 CivVar, uint8 CivFlag)
+void CALLOTHERPLAYER(const int CivVar, const int CivFlag)
 {
-    PLAYERJINGLE(CivVar);
+    PLAYERJINGLE(CivVar-1);
     MAKEBORDER(MyScreen[0],35,80,475,290,12,6,0);
     WRITE_RP0(256, 95,12,WRITE_Center,3,PText[422]);
     WRITE_RP0(256,125,12,WRITE_Center,3,"-");
@@ -559,7 +559,7 @@ void DIPLOMACY()
         case OPT_SHIP:  {
                             if (PLANET_MyShipPtr->SType == SHIPTYPE_FLEET)
                             {
-                                PLAYSOUND(1,600);
+                                PLAYSOUND(0,600);
                             } else {
                                 PLANET_MyShipPtr->Owner = CivFlag;
                                 PLANET_MyShipPtr->Moving = 0;
@@ -900,7 +900,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                             && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
                                             && (PLANET_MyShipPtr->Fracht == 0))
                                             {
-                                                PLAYSOUND(1,300);
+                                                PLAYSOUND(0,300);
                                                 ActPProjects->data[26]--;
                                                 PLANET_MyShipPtr->Ladung += 16;
                                                 SOut--;
@@ -910,7 +910,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                             && ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER)>0)
                                             && (PLANET_MyShipPtr->Fracht == 0))
                                             {
-                                                PLAYSOUND(1,300);
+                                                PLAYSOUND(0,300);
                                                 ActPProjects->data[26]++;
                                                 PLANET_MyShipPtr->Ladung -= 16;
                                                 SOut++;
@@ -930,7 +930,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                             && (PLANET_MyShipPtr->Fracht == 0)
                                             && (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (LTOut>0)))
                                             {
-                                                PLAYSOUND(1,300);
+                                                PLAYSOUND(0,300);
                                                 --(ActPProjects->data[27]);
                                                 ++(PLANET_MyShipPtr->Ladung);
                                                 --LTOut;
@@ -940,7 +940,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                             && ((PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)>0)
                                             && (PLANET_MyShipPtr->Fracht == 0))
                                             {
-                                                PLAYSOUND(1,300);
+                                                PLAYSOUND(0,300);
                                                 ++(ActPProjects->data[27]);
                                                 --(PLANET_MyShipPtr->Ladung);
                                                 ++LTOut;
@@ -986,7 +986,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                 }
                             }
                             while (RMB_NOTPRESSED);
-                            PLAYSOUND(1,300);
+                            PLAYSOUND(0,300);
                             RECT_RP0_C0(42,148,469,273);
                             REFRESHDISPLAY();
                             if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) != ActPlayerFlag)
@@ -1056,7 +1056,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
         }
     }
     while ((!b) && (RMB_NOTPRESSED));
-    if (RMB_PRESSED) { PLAYSOUND(1,300); }
+    if (RMB_PRESSED) { PLAYSOUND(0,300); }
     RECT_RP0_C0(194,119,318,280);
     REFRESHDISPLAY();
 

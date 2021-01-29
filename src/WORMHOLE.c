@@ -9,28 +9,29 @@ sint32  WORMHOLE_ShipShield;
 
 ITBitMap ImgBitMapW4;
 uint16* WHSoundMemA[2]; // 0..1
-uint32  WHSoundMemL[2]; // 0..1
+int     WHSoundMemL[2]; // 0..1
 bool    Error;
 
-void WORMHOLE_LOADSOUND(char* FName, uint8 SID)
+void WORMHOLE_LOADSOUND(char* FName, const int SoundID)
 {
-    uint32  size;
+    int     Filesize;
     BPTR    FHandle;
 
     FHandle = OPENSMOOTH(FName,MODE_OLDFILE);
     if (0 != FHandle)
     {
         (void) Seek(FHandle, 0, OFFSET_END);
-        size = Seek(FHandle, 0, OFFSET_BEGINNING);
-        WHSoundMemL[SID] = size >> 1;
-        if (0 == SID)
+        Filesize = Seek(FHandle, 0, OFFSET_BEGINNING);
+        Filesize = Filesize >> 1;
+        if (0 == SoundID)
         {
-            WHSoundMemL[SID] += STEPS*3;
+            Filesize += STEPS*3;
         }
-        WHSoundMemA[SID] = (uint16*) AllocMem(WHSoundMemL[SID]<<1, MEMF_CHIP | MEMF_CLEAR);
-        if (NULL != WHSoundMemA[SID])
+        WHSoundMemA[SoundID] = (uint16*) AllocMem(Filesize*2, MEMF_CHIP);
+        if (NULL != WHSoundMemA[SoundID])
         {
-            (void) Read(FHandle, (APTR) WHSoundMemA[SID], WHSoundMemL[SID]<<1);
+            (void) Read(FHandle, (APTR) WHSoundMemA[SoundID], Filesize*2);
+            WHSoundMemL[SoundID] = Filesize;
         }
         Close(FHandle);
     }
@@ -44,6 +45,7 @@ void WORMHOLE_INITSOUNDS()
     _s=my_strcpy(s,PathStr[6]);
     (void) my_strcpy(_s, "Sensor.RAW");
     WORMHOLE_LOADSOUND(s, 0);       /*SFX/Sensor.RAW*/
+
     (void) my_strcpy(_s, "FightSoundDS.RAW");
     WORMHOLE_LOADSOUND(s, 1);       /*SFX/FightsoundDS.RAW*/
 }
@@ -80,9 +82,9 @@ void TRAVEL()
 
     if (Audio_enable)
     {
-        SPAddrA = WHSoundMemA[0];                SPLengthA = WHSoundMemL[0];     SPVolA = 45; SPFreqA = 300;
-        SPAddrC = WHSoundMemA[1];                SPLengthC = WHSoundMemL[1] / 2; SPVolC = 64; SPFreqC = 400;
-        SPAddrD = WHSoundMemA[1]+WHSoundMemL[1]; SPLengthD = WHSoundMemL[1] / 2; SPVolD = 64; SPFreqD = 400;
+        SPAddrA = WHSoundMemA[0];                SPLengthA = WHSoundMemL[0];      SPVolA = 45; SPFreqA = 300;
+        SPAddrC = WHSoundMemA[1];                SPLengthC = WHSoundMemL[1] >> 1; SPVolC = 64; SPFreqC = 400;
+        SPAddrD = WHSoundMemA[1]+WHSoundMemL[1]; SPLengthD = WHSoundMemL[1] >> 1; SPVolD = 64; SPFreqD = 400;
         SPAddrB = 0; SPLengthB = 1;
         custom.dmacon = BITSET | DMAF_AUDIO;
     }
@@ -265,7 +267,7 @@ void TRAVEL()
                 random_wert = (rand()%5)+5;
                 for(j = 0; j < random_wert; ++j)
                 {
-                    PLAYSOUND(2,1100);
+                    PLAYSOUND(1,1100);
                     SetRGB4(MyVPort_PTR[1-AScr],0,8,8,15);
                     Delay(3);
                     SetRGB4(MyVPort_PTR[1-AScr],0,0,0,3);
@@ -362,7 +364,7 @@ bool WORMEXIT(bool _WORMEXIT, r_ShipHeader* MyShipPtr, uint8 ActSys)
     {
         if (NULL != WHSoundMemA[i])
         {
-            FreeMem((APTR) WHSoundMemA[i], WHSoundMemL[i]<<1);
+            FreeMem((APTR) WHSoundMemA[i], WHSoundMemL[i] << 1);
             WHSoundMemA[i] = NULL;
         }
     }
@@ -468,7 +470,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
         MOVESHIP_ToY = 256+(MyShipPtr->PosY+OffsetY)*32;
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     }
-    PLAYSOUND(3,250);
+    PLAYSOUND(2,250);
     Delay(7);
     for (i = 15; i>=0; i--)
     {
@@ -508,7 +510,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     RECT_RP0_C0(70,Offset,440,Offset+85);
     REFRESHDISPLAY();
 
-    PLAYSOUND(3,250);
+    PLAYSOUND(2,250);
     Delay(7);
     for(i = 0; i < 16; ++i)
     {
