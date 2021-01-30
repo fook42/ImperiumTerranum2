@@ -50,7 +50,7 @@ void CLICKRECT(struct RastPort* RPort, int Left, int Top, int Right, int Bottom,
 void CLOCK();
 void CLOSEMYSCREENS();
 void CREATECIVILWAR(int CivVar);
-void CREATEJAHADR(uint8 CJ_ActPlayer);
+void CREATEJAHADR(const int CJ_ActPlayer);
 bool CREATEMAQUESSHIP(uint8 SysID, uint8 ShipID);
 void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanets);
 void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum);
@@ -195,7 +195,7 @@ bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width
 void REFRESHDISPLAY();
 void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode);
 void REGIERUNG();
-void REMOVEPLAYER(uint8 RP_ActPlayer);
+void REMOVEPLAYER(const int RP_ActPlayer);
 void REQUEST(const char* text1, const char* text2, const int color1, const int color2);
 void ROTATEPLANETS(uint8 ActSys);
 int SETCOLOR(struct Screen* SC_Screen, char* FName);

@@ -296,7 +296,7 @@ void MAIN_FNC()
                         REFRESHDISPLAY();
                         // CloseWin
 
-                        REMOVEPLAYER(ActPlayer);
+                        REMOVEPLAYER(ActPlayer-1);
                         DISPLAYSTATE();
                         PLAYERHIGHSCORE(ActPlayer);
 

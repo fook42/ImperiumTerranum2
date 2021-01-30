@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void CREATEJAHADR(uint8 CJ_ActPlayer)
+void CREATEJAHADR(const int CJ_ActPlayer)
 {
     int i,j;
     r_PlanetHeader* MyPlanetHeader;
@@ -36,38 +36,38 @@ void CREATEJAHADR(uint8 CJ_ActPlayer)
     }
     for(i = 0; i < Save.Systems; ++i)
     {
+        if (0 == SystemHeader[i].Planets) { continue; }
         for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-            if (NULL != MyPlanetHeader)
+            if (NULL == MyPlanetHeader) { continue; }
+
+            if (GETCIVVAR(MyPlanetHeader->PFlags) == (CJ_ActPlayer+1))
             {
-                if (GETCIVVAR(MyPlanetHeader->PFlags) == (CJ_ActPlayer+1))
+                MyPlanetHeader->PFlags = FLAG_OTHER;
+                MyPlanetHeader->Ethno = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
+                Save.Bevoelkerung[7] += MyPlanetHeader->Population;
+                MyPlanetHeader->Biosphaere    = 200;
+                MyPlanetHeader->Infrastruktur = 200;
+                MyPlanetHeader->Industrie     = 200;
+                if (NULL != MyPlanetHeader->ProjectPtr)
                 {
-                    MyPlanetHeader->PFlags = FLAG_OTHER;
-                    MyPlanetHeader->Ethno = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
-                    Save.Bevoelkerung[7] += MyPlanetHeader->Population;
-                    MyPlanetHeader->Biosphaere    = 200;
-                    MyPlanetHeader->Infrastruktur = 200;
-                    MyPlanetHeader->Industrie     = 200;
-                    if (NULL != MyPlanetHeader->ProjectPtr)
-                    {
-                        MyPlanetHeader->ProjectPtr->data[1]  = 1;
-                        MyPlanetHeader->ProjectPtr->data[25] = 1;
-                        MyPlanetHeader->ProjectPtr->data[30] = 1;
-                        MyPlanetHeader->ProjectPtr->data[32] = 1;
-                        MyPlanetHeader->ProjectPtr->data[26] = MyPlanetHeader->ProjectPtr->data[26] | 16;
-                        MyPlanetHeader->ProjectPtr->data[27] = MyPlanetHeader->ProjectPtr->data[27] | 16;
-                    }
-                    MyPlanetHeader->ProjectID = 0;
-
-                    MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
-                    while (NULL != MyShipPtr)
-                    {
-                        MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
-                        MyShipPtr = MyShipPtr->NextShip;
-                    }
-
+                    MyPlanetHeader->ProjectPtr->data[1]  = 1;
+                    MyPlanetHeader->ProjectPtr->data[25] = 1;
+                    MyPlanetHeader->ProjectPtr->data[30] = 1;
+                    MyPlanetHeader->ProjectPtr->data[32] = 1;
+                    MyPlanetHeader->ProjectPtr->data[26] |= 16;
+                    MyPlanetHeader->ProjectPtr->data[27] |= 16;
                 }
+                MyPlanetHeader->ProjectID = 0;
+
+                MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
+                while (NULL != MyShipPtr)
+                {
+                    MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
+                    MyShipPtr = MyShipPtr->NextShip;
+                }
+
             }
         }
     }

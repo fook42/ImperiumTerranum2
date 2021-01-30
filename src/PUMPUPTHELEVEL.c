@@ -6,7 +6,7 @@
 void PUMPUPTHELEVEL()
 {
     bool    b = false;
-    uint8   i,j;
+    int     i, j;
 
     do
     {

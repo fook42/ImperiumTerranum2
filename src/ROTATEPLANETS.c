@@ -1597,20 +1597,21 @@ void ROTATEPLANETS(uint8 ActSys)
     }
 
 /* *** WIEDERAUFERSTEHUNG ZIVI *** */
+    --ActPlayer;
     NewPNames = (rand()%MAXPLANETS);    // aus INITVARS.c hierher.. nur hier benoetigt!
-    if (((ActPlayer != 1) || (MultiPlayer)) && (Save.WorldFlag != WFLAG_CEBORC)
-        && (ActPlayer <= (MAXCIVS-2)) && (Save.Bevoelkerung[ActPlayer-1] <= 0))
+    if (((ActPlayer != 0) || (MultiPlayer)) && (Save.WorldFlag != WFLAG_CEBORC)
+        && (ActPlayer < (MAXCIVS-2)) && (Save.Bevoelkerung[ActPlayer] <= 0))
     {
         j = rand()%Save.Systems;
         if (0 == (SystemFlags[0][j] & FLAG_CIV_MASK))
         {
             if (0 == SystemHeader[j].Planets)
             {
-                CREATENEWSYSTEM(j, ActPlayer-1, 1);
+                CREATENEWSYSTEM(j, ActPlayer, 1);
             }
             for(k = 0; k < SystemHeader[j].Planets; k++)
             {
-                if (0 == Save.Bevoelkerung[ActPlayer-1])
+                if (0 == Save.Bevoelkerung[ActPlayer])
                 {
                     PlanetHeader = &(SystemHeader[j].PlanetMemA[k]);
                     if ((PlanetHeader->Class==CLASS_WATER) || (PlanetHeader->Class==CLASS_ICE)
@@ -1618,7 +1619,7 @@ void ROTATEPLANETS(uint8 ActSys)
                       ||(PlanetHeader->Class==CLASS_STONES))
                     {
                         SystemHeader[j].vNS = 0;
-                        Save.CivPlayer[ActPlayer-1] = 0;
+                        Save.CivPlayer[ActPlayer] = 0;
                         (void) my_strcpy(PlanetHeader->PName, PNames[0].data[NewPNames]);
                         NewPNames++;
                         if (NewPNames >= MAXPLANETS) { NewPNames = 0; }
@@ -1630,7 +1631,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         {
                             PlanetHeader->Population = PlanetHeader->Size*500;
                         }
-                        Save.Bevoelkerung[ActPlayer-1] = PlanetHeader->Population;
+                        Save.Bevoelkerung[ActPlayer] = PlanetHeader->Population;
                         PlanetHeader->Biosphaere = 200;
                         PlanetHeader->Infrastruktur = 190;
                         PlanetHeader->Industrie = 180;
@@ -1639,38 +1640,45 @@ void ROTATEPLANETS(uint8 ActSys)
                         PlanetHeader->ProjectPtr->data[26] = 5;
                         for(i = 0; i < (MAXCIVS-1); i++)
                         {
-                            if (i != (ActPlayer-1))
+                            if (i != (ActPlayer))
                             {
-                                Save.WarState[ActPlayer-1][i] = LEVEL_UNKNOWN;
-                                Save.WarState[i][ActPlayer-1] = LEVEL_UNKNOWN;
+                                Save.WarState[ActPlayer][i] = LEVEL_UNKNOWN;
+                                Save.WarState[i][ActPlayer] = LEVEL_UNKNOWN;
                             }
                         }
-                        Save.WarState[ActPlayer-1][ActPlayer-1] = LEVEL_PEACE;
+                        Save.WarState[ActPlayer][ActPlayer] = LEVEL_PEACE;
                     }
                 }
             }
             if ((Year<2120) && ((rand()%50) == 0))
             {
-                CREATEJAHADR(ActPlayer-1);
+                CREATEJAHADR(ActPlayer);
             }
         }
     }
-    if (((rand()%219) == 0) && ((rand()%219) == 0))
-        { CEBORCATTACK(0); }
+    if (0 == (rand()%219))
+    {
+        if (0 == (rand()%219))
+        {
+            CEBORCATTACK(0);
+        }
+    }
 
     if (((rand()%240) == 0) && ((rand()%50) == 0))
     {
         l = 0;
         for(i = 0; i < (MAXCIVS-2); i++)
         {
-            if ((i != (ActPlayer-1)) && (Save.WarState[ActPlayer-1][1] != LEVEL_UNKNOWN))
+            if ((i != ActPlayer) && (Save.WarState[ActPlayer][1] != LEVEL_UNKNOWN))
             {
                 l = 1;
+                break;
             }
         }
-        if (l == 0)
+        if (0 == l)
         {
-            CREATEJAHADR(ActPlayer-1);
+            CREATEJAHADR(ActPlayer);
         }
     }
+    ++ActPlayer;
 }

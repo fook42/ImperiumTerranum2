@@ -32,7 +32,7 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
             {
                 GETPLAYERNAME(PHS_ActPlayer, HiScore.Player[7]);
             } else {
-                (void) my_strcpy(HiScore.Player[7], GETCIVNAME(PHS_ActPlayer+1));
+                (void) my_strcpy(HiScore.Player[7], GETCIVNAME(PHS_ActPlayer));
             }
             for (i = 7; i > 0; --i)
             {
