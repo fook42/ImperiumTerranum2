@@ -6,8 +6,8 @@
 void QUOTEPICARD()
 {
     const char* Txt_Picard[] = {"Ich frage mich, ob es Kaiser Honorius klar",
-                                "war, als er sah, dass die Westgoten den siebten",
-                                "Hügel Roms überwanden, dass das Römische Reich",
+                                "war, als er sah, daß die Westgoten den siebten",
+                                "Hügel Roms überwanden, daß das Römische Reich",
                                 "fallen würde ... Das hier ist nur eine weitere",
                                 "Episode der Geschichte. Wird hier unsere",
                                 "Zivilisation enden?",
