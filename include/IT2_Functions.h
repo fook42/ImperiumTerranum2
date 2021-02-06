@@ -81,8 +81,8 @@ void DRAWMOVINGSHIP(r_ShipHeader* MyShipPtr, uint8 ActSys);
 // <<<
 void DRAWRECT(const int x, const int y, const r_ShipHeader* MyShipPtr, const int color);
 
-void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer);
-void DRAWSYSTEM(uint8 Mode, uint8 ActSys, r_ShipHeader* ActShipPtr);
+void DRAWSTARS(const int Mode, int DS_ActPlayer);
+void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr);
 void ENDSEQUENZ(sint16 Mode);
 bool EXISTSPLANET(uint8 CivVar, uint8 ActSys, uint8 Mode);
 void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr);
@@ -182,7 +182,7 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
 // <<<
 void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2);
 bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* _MyShipPtr);
-void PLANETINFO(uint8 ActSys);
+void PLANETINFO(const int ActSys);
 void PLAYERHIGHSCORE(uint8 PHS_ActPlayer);
 void PLAYERJINGLE(const int JingleID);
 void PLAYSOUND(const int SoundID, const int SoundRate);

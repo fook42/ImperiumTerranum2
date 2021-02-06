@@ -500,8 +500,8 @@ void MAININTRO()
         "Special Effects",              "Oxygenic",
         "Credits go to",                "Adam Benjamin   Rikard Cederlund",
         "Jakob Gaardsted   Andy Jones", "George Moore",
-        "Surround-Sounds created with", "WaveTracer DS®",
-        "Colors in Technicolor®",       "Panaflex® Camera and Lenses by Panavision®"};
+        "Surround-Sounds created with", "WaveTracer DSï¿½",
+        "Colors in Technicolorï¿½",       "Panaflexï¿½ Camera and Lenses by Panavisionï¿½"};
     const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3};
 
     r_Coords_t* ShipX;
@@ -563,6 +563,7 @@ void MAININTRO()
         AScr = 1-AScr;
         BltBitMapRastPort((struct BitMap*) &IntroBitMap,0,0,MyRPort_PTR[AScr],640-xpos,340,xpos,90,192);
         xpos += 5;
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
     }
     xpos = 590;
@@ -572,6 +573,7 @@ void MAININTRO()
         AScr = 1-AScr;
         BltBitMapRastPort((struct BitMap*) &IntroBitMap, 0,0,MyRPort_PTR[AScr],xpos   ,340,49,90,192);
         BltBitMapRastPort((struct BitMap*) &IntroBitMap,41,0,MyRPort_PTR[AScr],xpos+49,340, 5,90,192);
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
         if (LMB_PRESSED)
             { goto leave_intro; }
@@ -584,6 +586,7 @@ void MAININTRO()
         AScr = 1-AScr;
         BltBitMapRastPort((struct BitMap*) &IntroBitMap,50,0,MyRPort_PTR[AScr],640-xpos,340,xpos,90,192);
         xpos += 5;
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
     }
     SetAPen(MyRPort_PTR[  AScr],0);
@@ -595,6 +598,7 @@ void MAININTRO()
         AScr = 1-AScr;
         BltBitMapRastPort((struct BitMap*) &IntroBitMap,50,0,MyRPort_PTR[AScr],xpos,340,41,90,192);
         RectFill(MyRPort_PTR[AScr],xpos+41,340,xpos+50,430);
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
         if (LMB_PRESSED) { goto leave_intro; }
     }
@@ -623,7 +627,7 @@ void MAININTRO()
 
     custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1; // 0x8003
 
-    for (i = 1; i<=64; i++)
+    for (i = 0; i<65; ++i)
     {
         SPVolA = i;
         SPVolB = i;
@@ -634,8 +638,11 @@ void MAININTRO()
     for (i = 0; i<2; i++)
     {
         AScr = 1-AScr;
-        SetAPen(MyRPort_PTR[AScr],0);
+/*        SetAPen(MyRPort_PTR[AScr],0);
         RectFill(MyRPort_PTR[AScr],0,335,640,430);
+        WaitTOF();
+*/
+        SetRast(MyRPort_PTR[AScr],0);   // maybe faster than RectFill ?
         ScreenToFront(MyScreen[AScr]);
     }
 
@@ -646,10 +653,11 @@ void MAININTRO()
     }
     InitTmpRas(&MyTmpRas, MyRastPtr, 21000);
     InitArea(&MyAI, (APTR) IMemA[0], 200);
-    MyScreen[0]->RastPort.TmpRas = &MyTmpRas;
-    MyScreen[1]->RastPort.TmpRas = &MyTmpRas;
-    MyScreen[0]->RastPort.AreaInfo = &MyAI;
-    MyScreen[1]->RastPort.AreaInfo = &MyAI;
+    
+    MyRPort_PTR[0]->TmpRas = &MyTmpRas;
+    MyRPort_PTR[1]->TmpRas = &MyTmpRas;
+    MyRPort_PTR[0]->AreaInfo = &MyAI;
+    MyRPort_PTR[1]->AreaInfo = &MyAI;
 
 /**** new .. alloc mem for vectorObj .. free this later ***/
     IntroMemL = sizeof(VectorObj_t)*NUM_VECTOROBJ;
@@ -671,6 +679,7 @@ void MAININTRO()
     (void) my_strcpy(_s, "Frame1.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRESENTS");
+    WaitTOF();
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,75,192);
 
     /* T */
@@ -738,6 +747,7 @@ void MAININTRO()
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
     WRITE(320,205,31,WRITE_Center,MyRPort_PTR[AScr],4,"A");
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRODUCTION");
+    WaitTOF();
     ClipBlit(MyRPort_PTR[AScr],0,200,MyRPort_PTR[1-AScr],0,200,640,100,192);
 
     /* V */
@@ -795,6 +805,7 @@ void MAININTRO()
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame3.img");
     if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_intro; }
+    WaitTOF();
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,37,192);
 
     /* I */
@@ -897,6 +908,7 @@ void MAININTRO()
 
     custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
     WaitTOF();
+    WaitTOF();
 
     SPLengthD = 1;
     SPLengthC = 1;
@@ -968,6 +980,7 @@ void MAININTRO()
                                            (Colors[i].g*dFactor)<<12,
                                            (Colors[i].b*dFactor)<<12);
         }
+        WaitTOF();
         --k;
     }
     while (0 != k);
@@ -979,6 +992,7 @@ void MAININTRO()
         SetRGB32(MyVPort_PTR[  AScr], i, Colors[i].r<<24, Colors[i].g<<24, Colors[i].b<<24);
     }
     ScrollRaster(MyRPort_PTR[AScr],0,-4,0,75,639,434);
+    WaitTOF();
 
     for (i = 0; i<6; ++i)
     {
@@ -986,6 +1000,7 @@ void MAININTRO()
         AScr = 1-AScr;
         actRastPort = MyRPort_PTR[AScr];
         ScrollRaster(actRastPort,0,-8,0,75,639,434);
+        WaitTOF();
         ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
         if (LMB_PRESSED)
             { goto leave_intro; }
@@ -999,6 +1014,7 @@ void MAININTRO()
         ScrollRaster(actRastPort,0,-8,0,75,639,434);
         ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
         BltBitMapRastPort(&MyBitMap,0,136-i*4,actRastPort,380,75,160,8,192);
+        WaitTOF();
         if (LMB_PRESSED)
             { goto leave_intro; }
     }
@@ -1009,6 +1025,7 @@ void MAININTRO()
     ScrollRaster(actRastPort,0,-8,0,75,639,434);
     ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
     BltBitMapRastPort(&MyBitMap,0,0,actRastPort,380,79,160,4,192);
+    WaitTOF();
 
     for (i = 0; i<14; ++i)
     {
@@ -1016,6 +1033,7 @@ void MAININTRO()
         AScr = 1-AScr;
         actRastPort = MyRPort_PTR[AScr];
         ScrollRaster(actRastPort,0,-8,0,75,639,434);
+        WaitTOF();
         ClipBlit(actRastPort,0,270,actRastPort,0,75,640,8,192);
         if (LMB_PRESSED)
             { goto leave_intro; }
@@ -1042,11 +1060,14 @@ void MAININTRO()
 
     (void) my_strcpy(_s, "Frame6.img");
     if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[AScr],0)) { goto leave_intro; }
+    ScreenToFront(MyScreen[AScr]);
     MyBitMap = (struct BitMap) { 80, 360, 1, 7, 0, \
                             {(PLANEPTR) (IMemA[0]),       (PLANEPTR) (IMemA[0]+28800), (PLANEPTR) (IMemA[0]+57600), \
                              (PLANEPTR) (IMemA[0]+86400), (PLANEPTR) (IMemA[0]+115200),(PLANEPTR) (IMemA[0]+144000), \
                              (PLANEPTR) (IMemA[0]+172800)}};
     BltBitMapRastPort(&MyBitMap,0,0,MyRPort_PTR[1-AScr],0,75,640,360,192);
+    WaitTOF();
+    ScreenToFront(MyScreen[1-AScr]);
 
     MyRastPtr = AllocRaster(640,360);
     if (NULL == MyRastPtr)
@@ -1055,10 +1076,10 @@ void MAININTRO()
     }
     InitTmpRas(&MyTmpRas,MyRastPtr,21000);
     InitArea(&MyAI, (APTR) IMemA[1], 200);
-    MyScreen[0]->RastPort.TmpRas = &MyTmpRas;
-    MyScreen[1]->RastPort.TmpRas = &MyTmpRas;
-    MyScreen[0]->RastPort.AreaInfo = &MyAI;
-    MyScreen[1]->RastPort.AreaInfo = &MyAI;
+    MyRPort_PTR[0]->TmpRas = &MyTmpRas;
+    MyRPort_PTR[1]->TmpRas = &MyTmpRas;
+    MyRPort_PTR[0]->AreaInfo = &MyAI;
+    MyRPort_PTR[1]->AreaInfo = &MyAI;
 
 /**** new .. alloc mem for r_Coords .. free this later ***/
     IntroMemL = sizeof(r_Coords_t)*3;
@@ -1124,6 +1145,7 @@ void MAININTRO()
     ISize = 0;
     do
     {
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
         actRastPort = MyRPort_PTR[AScr];

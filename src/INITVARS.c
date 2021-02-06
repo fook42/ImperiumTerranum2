@@ -124,7 +124,7 @@ void INITVARS()
 
     for (i = 0; i < MAXCIVS; ++i)        // TODO ... added due to shift of Save-array
     {
-        Warnung[i+1] = 0; // TODO ... arrays should also be shifted..
+        Warnung[i] = 0;
         LastDisplay[i+1] = 0; // TODO ... arrays should also be shifted..
 
         AllCreative[i] = 1;

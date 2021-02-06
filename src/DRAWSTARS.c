@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void DRAWSTARS(uint8 Mode, uint8 DS_ActPlayer)
+void DRAWSTARS(const int Mode, int DS_ActPlayer)
 {
     int             i, j;
     r_ShipHeader*   MyShipPtr;

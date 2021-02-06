@@ -346,6 +346,7 @@ uint8 DIS_LOADGAME()
                     if (0 != Save.CivPlayer[i])
                     {
                         MultiPlayer = true;
+                        break;
                     }
                 }
                 ActPlayerFlag = GETCIVFLAG(ActPlayer);
@@ -477,6 +478,7 @@ bool DISKMENU(uint8 Autoselect)
                     loadreturn = DIS_LOADGAME();
                     if (LOAD_OKAY == loadreturn)
                     {
+                        // missing this : LastPlayer:=0;  (static variable inside INFORMUSER ... used to be global in pascal)
                         Informed = false;
                         CloseWindow(DIS_Window);
                         DIS_Window = NULL;

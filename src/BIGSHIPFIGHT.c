@@ -32,7 +32,7 @@ const sint8 my[] = {-2,-2,-2,-1,0,1,2,2,2,2,2,1,0,-1,-2,-2};
 uint8   Rotation;
 
 // BSFSoundSize, BSFSoundMemA
-bool LOADSAMPLE(char* FName, uint8 SID)
+bool LOADSAMPLE(char* FName, const int SID)
 {
     uint32  size;
     BPTR    FHandle;

@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void PLANETINFO(uint8 ActSys)
+void PLANETINFO(const int ActSys)
 {
 typedef struct SArr6 {
     char*    data[6];
@@ -13,8 +13,8 @@ typedef struct SArr6 {
     char    s[60];
     char*   _s;
     sint32  l;
-    uint8   i,j;
-    uint8   x,y;
+    int     i, color;
+    int     x, y;
     r_PlanetHeader* PlanetHeader;
     struct Window* PLI_Window;
     struct RastPort* RPort_PTR;
@@ -30,14 +30,16 @@ typedef struct SArr6 {
         RPort_PTR = PLI_Window->RPort;
         MAKEWINBORDER(RPort_PTR,0,0,347,197,12,6,1);
         MAKEWINBORDER(RPort_PTR,9,9, 80, 80,12,6,1);
-        j = 12;
+        color = 12;
         if (0 < PlanetHeader->PFlags)
         {
-            j = PlanetHeader->PFlags;
+            color = PlanetHeader->PFlags;
         }
+        WRITE(89,13,color,0,RPort_PTR,3,PlanetHeader->PName);
+
         _s = float2out( ((double)PlanetHeader->Size/10.0), 0, 2, s);
         (void) my_strcpy(_s, PText[171]);
-        WRITE(89,33,j,0,RPort_PTR,3,s);
+        WRITE(89,33,color,0,RPort_PTR,3,s);
 
         _s=my_strcpy(s, _PT_Klasse);
         *_s++ = ' ';
@@ -55,10 +57,10 @@ typedef struct SArr6 {
         }
         *_s++ = '-';
         (void) my_strcpy(_s, _PT_Planet);
-        WRITE(89,53,j,0,RPort_PTR,3,s);
+        WRITE(89,53,color,0,RPort_PTR,3,s);
+
         i = it_round((double) (abs(PlanetHeader->PosX)+abs(PlanetHeader->PosY))/3.4f);
         l = ((sint32) (13-i)*(13-i)*(13-i) / 3) -270;
-        WRITE(89,13,j,0,RPort_PTR,3,PlanetHeader->PName);
         if ((PlanetHeader->Class==CLASS_SATURN) || (PlanetHeader->Class==CLASS_GAS))
         {
             _s=my_strcpy(s, PText[332]);
@@ -125,11 +127,11 @@ typedef struct SArr6 {
                                     } break;
             default: { }
         }
-        j = 0;
+        y = 0;
         for(i = 0; i < 6; ++i)
         {
-            WRITE(9,j+87,12,0,RPort_PTR,2,SA6.data[i]);
-            j += 17;
+            WRITE(9,y+87,12,0,RPort_PTR,2,SA6.data[i]);
+            y += 17;
         }
 
         x = 0;
@@ -138,7 +140,7 @@ typedef struct SArr6 {
         do
         {
             Delay(RDELAY);
-            if ((x<32) && (y<32))
+            if (y<32)
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x<<1)+12,(y<<1)+12,1,1,192);
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x<<1)+13,(y<<1)+12,1,1,192);

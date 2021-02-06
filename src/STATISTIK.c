@@ -24,6 +24,8 @@ void STATISTIK()
     RPort_PTR = STA_Window->RPort;
     MAKEWINBORDER(RPort_PTR,0,0,490,360,12,6,1);
 
+    --ActPlayer; // to shift the array
+
     Produktivitaet = 0;
     Kreativitaet = 0;
     Planeten = 0;
@@ -36,7 +38,7 @@ void STATISTIK()
 
     for (i = 0; i < Save.Systems; ++i)
     {
-        if (SystemFlags[ActPlayer-1][i] & FLAG_KNOWN)
+        if (SystemFlags[ActPlayer][i] & FLAG_KNOWN)
         {
             for (j = 0; j < SystemHeader[i].Planets; ++j)
             {
@@ -104,7 +106,7 @@ void STATISTIK()
         *_s  =0;
         WRITE(355,100,8,WRITE_Right,RPort_PTR,1,s);
 
-        (void) dez2out(it_round(Save.Bevoelkerung[ActPlayer-1]/(double) Planeten), 0, s);
+        (void) dez2out(it_round(Save.Bevoelkerung[ActPlayer]/(double) Planeten), 0, s);
         WRITE(340,120,8,WRITE_Right,RPort_PTR,1,s);
 
         (void) dez2out(it_round((double)Groesse/(double)Planeten/10.0f), 0, s);
@@ -153,13 +155,13 @@ void STATISTIK()
     _s=my_strcpy(s, PText[735]);
     *_s++ = ':';
     *_s++ = ' ';
-    (void) dez2out(Militaerausgaben[ActPlayer-1], 0, _s);
+    (void) dez2out(Militaerausgaben[ActPlayer], 0, _s);
     WRITE(20,280,12,0,RPort_PTR,3,s);
 
     _s=my_strcpy(s, PText[736]);
     *_s++ = ':';
     *_s++ = ' ';
-    _s=dez2out((sint32) (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
+    _s=dez2out((sint32) (Save.TechCosts[ActPlayer].data[Save.ActTech[ActPlayer]] / (AllCreative[ActPlayer]+1)), 0, _s);
     *_s++ = ' ';
     (void) my_strcpy(_s, _PT_Jahre);
     WRITE(20,300,12,0,RPort_PTR,3,s);
@@ -167,7 +169,7 @@ void STATISTIK()
     _s=my_strcpy(s, PText[674]);
     *_s++ = ':';
     *_s++ = ' ';
-    _s=dez2out(Save.ImperatorState[ActPlayer-1], 0, _s);
+    _s=dez2out(Save.ImperatorState[ActPlayer], 0, _s);
     *_s++ = ' ';
     (void) my_strcpy(_s, PText[414]);
     WRITE(20,320,12,0,RPort_PTR,3,s);
@@ -180,4 +182,6 @@ void STATISTIK()
     WAITLOOP(false);
 
     CloseWindow(STA_Window);
+
+    ++ActPlayer; // to shift the array
 }

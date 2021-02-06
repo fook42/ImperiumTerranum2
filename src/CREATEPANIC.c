@@ -82,9 +82,9 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         ModC = GETTHESOUND(3);
         ModL = ModMemL[3];
     } else {
-        if ((0 != (rand()%80)) && (0 == Warnung[ActPlayer])) { return; }
+        if ((0 != (rand()%80)) && (0 == Warnung[ActPlayer-1])) { return; }
         MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*0.895);
-        if (0 != Warnung[ActPlayer])
+        if (0 != Warnung[ActPlayer-1])
         {
             i = rand()%20;
             if ((2 == i) || (3 == i))
@@ -98,7 +98,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         case 0: if (0 == ActPProjects->data[28])
             {   /*kontinentale Union*/
                 TheProject = 28;
-                _s1 = PText[562];
+                _s1 = PText[562];   // Bürgerkrieg ausgebrochen
             } else {
                 return;
             }; break;
@@ -106,33 +106,33 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         case 1: if (0 == ActPProjects->data[29])
             {   /*globale Union*/
                 TheProject = 29;
-                _s1 = PText[563];
+                _s1 = PText[563];   // Kriege zwischen den Nationen
             } else {
                 return;
             }; break;
 
         case 2: if (0 != Save.ProjectCosts[ActPlayer-1].data[4])
             {
-                _s1 = PText[564];
+                _s1 = PText[564];   // Massenepidemie durch unbekannten Virus
             } else {
                 return;
             }; break;
 
-        case 3: _s1 = PText[565];
+        case 3: _s1 = PText[565];   // Klimakatastrophe durch Kometeneinschläge
                 break;
         default: if ( ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) != MyPlanetHeader->Ethno)
                      && (NULL == MyPlanetHeader->FirstShip.NextShip)
                      && (0 == GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1]))
             {
-                if ((0 != Warnung[ActPlayer]) && (0 != (rand()%10))) { return; }
+                if ((0 != Warnung[ActPlayer-1]) && (0 != (rand()%10))) { return; }
                 GetPlanet[   GETCIVVAR(MyPlanetHeader->Ethno)-1] = MyPlanetHeader;
                 GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1] = ActSys;
                 memcpy(&OldPlanet, MyPlanetHeader, sizeof(r_PlanetHeader));
                 if (0 != Save.CivPlayer[ActPlayer-1]) { TheProject = -1; }
-                _s1 = PText[566];
+                _s1 = PText[566];   // Schwere ethnische Konflikte ausgebrochen
                 if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
                 {
-                    _s2 = PText[567];
+                    _s2 = PText[567];   // Unabhängigkeit wurde erklärt
                 }
                 for(i = 0; i < (MAXCIVS-1); ++i)
                 {
@@ -148,15 +148,15 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 MyPlanetHeader->PFlags = MyPlanetHeader->Ethno;
                 if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
                 {
-                    _s2 = PText[568];
+                    _s2 = PText[568];   // Übertritt zur Föderation wurde erklärt
                 }
                 PlanetLose = true;
-            } else if (((1 == Warnung[ActPlayer])
-                     || (2 == Warnung[ActPlayer]))
+            } else if (((1 == Warnung[ActPlayer-1])
+                     || (2 == Warnung[ActPlayer-1]))
                      && (0 == (rand()%22)))
             {
                 if (!SETNEWPLANETOWNER(MyPlanetHeader, &OldPlanet, &TheProject, ActSys, &_s1, &_s2, &PlanetLose)) { return; }
-            } else if ((2 == Warnung[ActPlayer])
+            } else if ((2 == Warnung[ActPlayer-1])
                      && (0 == (rand()%10)))
             {
                 if (!SETNEWPLANETOWNER(MyPlanetHeader, &OldPlanet, &TheProject, ActSys, &_s1, &_s2, &PlanetLose)) { return; }
@@ -200,7 +200,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         WRITE(171,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
         if ((0 < TheProject) && (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[TheProject]]))
         {
-            _s1=my_strcpy(s, PText[570]);
+            _s1=my_strcpy(s, PText[570]);   // Bürger fordern
             *_s1++ = ' ';
             (void) my_strcpy(_s1, Project.data[TheProject]);
             WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,2, s);

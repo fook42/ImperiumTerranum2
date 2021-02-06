@@ -1478,7 +1478,7 @@ void ROTATEPLANETS(uint8 ActSys)
 
     if ((Year>1973) && (Save.CivPlayer[ActPlayer-1] != 0))
     {
-        if ((Save.ImperatorState[ActPlayer-1]<700) && (Warnung[ActPlayer] == 0))
+        if ((Save.ImperatorState[ActPlayer-1]<700) && (Warnung[ActPlayer-1] == 0))
         {
             INFORMUSER();
             MAKEBORDER(MyScreen[0],30,80,480,205,12,6,0);
@@ -1487,12 +1487,12 @@ void ROTATEPLANETS(uint8 ActSys)
             WRITE_RP0(256,135,ActPlayerFlag,WRITE_Center,3,PText[622]);
             WRITE_RP0(256,155,ActPlayerFlag,WRITE_Center,3,PText[623]);
             WRITE_RP0(256,175,ActPlayerFlag,WRITE_Center,3,PText[624]);
-            Warnung[ActPlayer] = 1;
+            Warnung[ActPlayer-1] = 1;
             Save.ImperatorState[ActPlayer-1] = 700;
             WAITLOOP(false);
             RECT_RP0_C0(30,80,480,205);
             REFRESHDISPLAY();
-        } else if ((Save.ImperatorState[ActPlayer-1]<500) && (Warnung[ActPlayer] == 1))
+        } else if ((Save.ImperatorState[ActPlayer-1]<500) && (Warnung[ActPlayer-1] == 1))
         {
             INFORMUSER();
             MAKEBORDER(MyScreen[0],30,80,480,185,12,6,0);
@@ -1500,14 +1500,14 @@ void ROTATEPLANETS(uint8 ActSys)
             WRITE_RP0(256,115,ActPlayerFlag,WRITE_Center,3,PText[627]);
             WRITE_RP0(256,135,ActPlayerFlag,WRITE_Center,3,PText[628]);
             WRITE_RP0(256,155,ActPlayerFlag,WRITE_Center,3,PText[629]);
-            Warnung[ActPlayer] = 2;
+            Warnung[ActPlayer-1] = 2;
             WAITLOOP(false);
             RECT_RP0_C0(30,80,480,185);
             REFRESHDISPLAY();
         }
         if (Save.ImperatorState[ActPlayer-1] >= 1000)
         {
-            Warnung[ActPlayer] = 0;
+            Warnung[ActPlayer-1] = 0;
         }
     }
 

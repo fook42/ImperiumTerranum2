@@ -105,7 +105,7 @@ _EXTERN_  sint32        AllCreative[MAXCIVS];
 _EXTERN_  uint32        Militaerausgaben[MAXCIVS];
 _EXTERN_  uint32        Verschrottung[MAXCIVS];
 _EXTERN_  uint8         LastDisplay[MAXCIVS+1];
-_EXTERN_  uint8         Warnung[MAXCIVS+1];
+_EXTERN_  uint8         Warnung[MAXCIVS];
 _EXTERN_  uint8*        TextMemA;
 _EXTERN_  uint8*        PathMemA;
 _EXTERN_  uint32        TextMemL, PathMemL, MaquesShips;
