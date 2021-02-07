@@ -20,12 +20,12 @@ void INFORMUSER()
     }
     LastPlayer = ActPlayer;
     Display = LastDisplay[ActPlayer];
-    RECT_RP0_C0(523,10,630,117);
+    RECT_RP0_C0(522,9,629,117);      // clear Minimap
     if (MultiPlayer)
     {
         if (!Save.PlayMySelf)
         {
-            RECT_RP0_C0(0,0,511,511);
+            RECT_RP0_C0(0,0,511,511);   // clear Main Star-area
         }
         s[7]=Save.CivPlayer[ActPlayer-1]+'0';
         PLAYERJINGLE(ActPlayer-1);
@@ -42,7 +42,7 @@ void INFORMUSER()
         WAITLOOP(Save.PlayMySelf);
         if (0 == Display)
         {
-            DRAWSTARS(MODE_REDRAW,ActPlayer);
+            DRAWSTARS(MODE_REDRAW);
         } else {
             DRAWSYSTEM(MODE_REDRAW,Display,NULL);
         }

@@ -184,13 +184,14 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     }
     if (-2 == Mode)
     {
-        WRITE(320,340,255,WRITE_Center,RPort_PTR,0,"(Womit bewiesen wäre, daß unser Universum geschlossen ist!)");
+        WRITE(320,340,255,WRITE_Center,RPort_PTR,0,"(Womit bewiesen wï¿½re, daï¿½ unser Universum geschlossen ist!)");
     }
     WAITLOOP(false);
     if (NULL != SndModulePtr)
     {
        StopPlayer();
        UnLoadModule(SndModulePtr);
+       FreePlayer();
     }
 
     SWITCHDISPLAY();

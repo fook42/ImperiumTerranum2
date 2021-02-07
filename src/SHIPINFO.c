@@ -84,7 +84,6 @@ void SHIPINFO(uint8 ActSys)
     char*   _s2;
     r_ShipHeader*   MyShipPtr;
     APTR    ModC = NULL;
-    uint32  ModL;
 
     MyShipPtr = ObjPtr;
     if (( 8 > MyShipPtr->SType)
@@ -94,7 +93,6 @@ void SHIPINFO(uint8 ActSys)
         return;
     }
     ModC = GETTHESOUND(2);
-    ModL = ModMemL[2];
 
     INITSCREEN(SCREEN_TECH);
     _s=my_strcpy( s, PathStr[5]);
@@ -212,7 +210,7 @@ void SHIPINFO(uint8 ActSys)
     if (NULL != ModC)
     {
         StopPlayer();
-        FreeMem(ModC,ModL);
+        UnLoadModule(ModC);
     }
     PLAYSOUND(0,300);
     ScreenToFront(MyScreen[0]);

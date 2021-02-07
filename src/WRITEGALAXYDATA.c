@@ -18,7 +18,7 @@ void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove)
          && (LastSystem != (i+1)))
         {
             LastSystem = (i+1);
-            RECT_RP0_C0(522,9,629,116);      // clear Minimap
+            RECT_RP0_C0(522,9,629,117);      // clear Minimap
             WRITE_RP0(528,12,12,0,3,Save.SystemName.data[i]);
             if ((0 != Save.CivPlayer[ActPlayer-1])
              && (0 != (SystemFlags[ActPlayer-1][i] & FLAG_KNOWN)))

@@ -19,7 +19,7 @@ void PLAYERJINGLE(const int JingleID)
         if (0 == FHandle) { return; }
         (void) Seek(FHandle, 0, OFFSET_END);
         LogoSMemL[JingleID] = Seek(FHandle, 0, OFFSET_BEGINNING);
-        LogoSMemA[JingleID] = (uint8*) AllocMem(LogoSMemL[JingleID], MEMF_FAST );
+        LogoSMemA[JingleID] = (uint8*) AllocMem(LogoSMemL[JingleID], MEMF_ANY );
         if (NULL == LogoSMemA[JingleID])
         {
             Close(FHandle);

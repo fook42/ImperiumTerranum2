@@ -56,7 +56,7 @@ void STARTROTATEPLANETS()
     ActPlayerFlag = GETCIVFLAG(ActPlayer);
     if (0 != Display)
     {
-        DRAWSTARS(MODE_REDRAW, ActPlayer);
+        DRAWSTARS(MODE_REDRAW);
     }
     Informed = false;
     j = 18;
@@ -255,7 +255,7 @@ void STARTROTATEPLANETS()
     {
         if ((0 == LastDisplay[ActPlayer]) && (0 != Display))
         {
-            DRAWSTARS(MODE_REDRAW,ActPlayer);
+            DRAWSTARS(MODE_REDRAW);
         } else if (0 != LastDisplay[ActPlayer])
         {
             HANDLESYSTEM(&LastDisplay[ActPlayer],NULL);

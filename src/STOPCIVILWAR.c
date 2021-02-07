@@ -11,7 +11,6 @@ void STOPCIVILWAR(uint8 EndText)
     r_PlanetHeader* MyPlanetHeader;
     r_ShipHeader*   MyShipPtr;
     APTR    ModC = NULL;
-    uint32  ModL;
 
     if ((0            == Save.WorldFlag) ||
         (WFLAG_CEBORC == Save.WorldFlag) ||
@@ -32,7 +31,6 @@ void STOPCIVILWAR(uint8 EndText)
     if (0 != Save.CivPlayer[CivVar])
     {
         ModC = GETTHESOUND(1);
-        ModL = ModMemL[1];
     }
     if (0 == EndText)
     {
@@ -138,6 +136,6 @@ void STOPCIVILWAR(uint8 EndText)
     if (NULL != ModC)
     {
         StopPlayer();
-        FreeMem(ModC, ModL);
+        UnLoadModule(ModC);
     }
 }

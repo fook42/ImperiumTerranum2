@@ -7,6 +7,9 @@ void SMALLGAMEEXIT()
 {
     int     i;
 
+    StopPlayer();
+    FreePlayer();
+    
     custom.dmacon = BITCLR | DMAF_AUDIO; // 0x000F
 
     if (NULL != ImgBitMap4.MemA)

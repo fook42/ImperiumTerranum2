@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void DRAWSTARS(const int Mode, int DS_ActPlayer)
+void DRAWSTARS(const int Mode)
 {
     int             i, j;
     r_ShipHeader*   MyShipPtr;
@@ -12,10 +12,10 @@ void DRAWSTARS(const int Mode, int DS_ActPlayer)
     double          Factor;
     uint32          CVal[MAXCIVS];
     uint8           DS_ActPlayerFlag, CivmaskFlag, Write_DrawMode;
+    uint8           DS_ActPlayer = ActPlayer-1;
     char            s[20];
 
-    DS_ActPlayerFlag = GETCIVFLAG(DS_ActPlayer);
-    DS_ActPlayer--;     // todo.. due to shifted arrays
+    DS_ActPlayerFlag = GETCIVFLAG(ActPlayer);
     Display = 0;
     if ((MODE_REDRAW   == Mode)
      || (MODE_STARGATE == Mode))

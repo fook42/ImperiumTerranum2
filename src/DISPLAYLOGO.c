@@ -25,7 +25,7 @@ void DISPLAYLOGO(const int DL_ActPlayer, const int LEdge, const int TEdge)
     {
         if (NULL == LogoMemA[DL_ActPlayer])
         {
-            LogoMemA[DL_ActPlayer] = (uint8*) AllocMem(LOGOSIZE ,MEMF_FAST | MEMF_CLEAR);
+            LogoMemA[DL_ActPlayer] = (uint8*) AllocMem(LOGOSIZE ,MEMF_ANY | MEMF_CLEAR);
             ActMem = LogoMemA[DL_ActPlayer];
             if (NULL == ActMem) { ActMem = LogoMemA[0]; }
             _s=my_strcpy(FName, PathStr[10]);

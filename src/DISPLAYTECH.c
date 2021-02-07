@@ -114,8 +114,8 @@ void DISPLAYTECH(const int TechID)
     if (NULL != ModC)
     {
         StopPlayer();
-        FreePlayer();
         UnLoadModule(ModC);
+        FreePlayer();
     }
     ScreenToFront(MyScreen[0]);
 }

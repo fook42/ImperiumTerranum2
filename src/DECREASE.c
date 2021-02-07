@@ -5,7 +5,7 @@
 
 void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
 {
-    APTR    ModC;
+    APTR    ModC = NULL;
     r_PlanetHeader* MyPlanetHeader;
     char    s[40];
     char*   _s;
@@ -45,6 +45,6 @@ void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
     if (NULL != ModC)
     {
         StopPlayer();
-        FreeMem(ModC,ModMemL[3]);
+        UnLoadModule(ModC);
     }
 }

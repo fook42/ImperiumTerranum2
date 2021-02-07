@@ -12,7 +12,6 @@ void CREATECIVILWAR(int CivVar)
     char    s[99];
     char*   _s;
     APTR    ModC = NULL;
-    uint32  ModL;
 
     CivFlag = GETCIVFLAG(CivVar);
     if ((0 != Save.WorldFlag) && (Save.WorldFlag != CivFlag))
@@ -28,7 +27,6 @@ void CREATECIVILWAR(int CivVar)
         if (0 != Save.CivPlayer[CivVar])
         {
             ModC = GETTHESOUND(1);
-            ModL = ModMemL[1];
             REQUEST(s,PText[387],CivFlag,CivFlag);
         }
         for(i = 0; i < (MAXCIVS-1); ++i)
@@ -72,7 +70,7 @@ void CREATECIVILWAR(int CivVar)
     if (NULL != ModC)
     {
         StopPlayer();
-        FreeMem(ModC, ModL);
+        UnLoadModule(ModC);
     }
     if ((Save.WarPower[7]*4) < Save.WarPower[CivVar-1])
     {

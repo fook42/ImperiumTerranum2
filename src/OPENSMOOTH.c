@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-BPTR OPENSMOOTH(char* FName, uint32 FMode)
+BPTR OPENSMOOTH(const char* FName, const uint32 FMode)
 {
     char    DName[50];
     BPTR    FHandle;

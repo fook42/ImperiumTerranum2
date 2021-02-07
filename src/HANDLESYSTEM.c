@@ -413,7 +413,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
             {
                 if ((MouseX(0)>=518) && (MouseX(0)<=634))   // click to gadget-area
                 {
-                    if ((MouseY(0)>=9) && (MouseY(0)<=117)) // click to mini map
+                    if ((MouseY(0)>8) && (MouseY(0)<118)) // click to mini map
                     {
                         PLAYSOUND(0,300);
                         OffsetX = 576-MouseX(0);
@@ -503,6 +503,6 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
     {
         KLICKGAD(518,444);
         RECT_RP0_C0(522,9,629,117);
-        DRAWSTARS(MODE_REDRAW,ActPlayer);
+        DRAWSTARS(MODE_REDRAW);
     }
 }

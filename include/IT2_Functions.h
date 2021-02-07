@@ -81,7 +81,7 @@ void DRAWMOVINGSHIP(r_ShipHeader* MyShipPtr, uint8 ActSys);
 // <<<
 void DRAWRECT(const int x, const int y, const r_ShipHeader* MyShipPtr, const int color);
 
-void DRAWSTARS(const int Mode, int DS_ActPlayer);
+void DRAWSTARS(const int Mode);
 void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr);
 void ENDSEQUENZ(sint16 Mode);
 bool EXISTSPLANET(uint8 CivVar, uint8 ActSys, uint8 Mode);
@@ -99,7 +99,7 @@ void FREESYSTEMMEMORY();
 void GAMEEXIT();
 void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName);
 uint8 GETRAWCODE();
-APTR GETTHESOUND(uint8 MID);
+APTR GETTHESOUND(const int MID);
 uint8 GOTONEXTPLANET(uint8 ActSys, r_ShipHeader* MyShipPtr);
 uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* ShipPtr);
 void GOTOPEACE(int CivVar1, int CivVar2);
@@ -122,7 +122,7 @@ uint8 GETCOLOR(const int Col);
 void HIGHSCORE();
 // <<<
 void INFORMUSER();
-bool INITDESK(int Mode);
+bool INITDESK(const int Mode);
 bool INITLANG();
 void INITMENU();
 void INITSCREEN(int Mode);
@@ -168,7 +168,7 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
 // <<<
 struct Screen* OPENCINEMA(uint8 Depth);
 bool OPENMAINSCREENS();
-BPTR OPENSMOOTH(char* FName, uint32 FMode);
+BPTR OPENSMOOTH(const char* FName, const uint32 FMode);
 // >>> OPTIONMENU
 void CHECKGADS(int GadID);
 void OPTION_REDUCECOSTS(void);

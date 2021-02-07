@@ -219,10 +219,9 @@ void GETSAVENAME(char* Title, char* SName)
 
     if (-1 < selected)
     {
-        _s1=my_strcpy(SName, PathStr[8]);
-        _s1=my_strcpy(_s1, "IMPT.0");
-        _s1--;
-        *_s1 = selected + '1';
+        _s1=my_strcpy(my_strcpy(SName, PathStr[8]), "IMPT.");
+        *_s1++ = selected + '1';
+        *_s1 = 0;
     }
     CloseWindow(GSN_Window);
     return;
@@ -313,11 +312,10 @@ uint8 DIS_LOADGAME()
                                 {
                                     PlanetHeader->ProjectPtr = NULL;
                                     exitvalue = LOAD_NOMEM;
-                                    i = 99; // should be enough to exit the outer loop
-                                    j = 99; // should be enough to exit the inner loop
+                                    goto leave_loop;
                                 }
                             }
-                            if ((LOAD_OKAY == exitvalue) && (NULL != PlanetHeader->FirstShip.NextShip))
+                            if (NULL != PlanetHeader->FirstShip.NextShip)
                             {
                                 // ships were saved with this Planet.. so restore them
                                 LOADSHIPS(&PlanetHeader->FirstShip, FHandle);
@@ -326,10 +324,11 @@ uint8 DIS_LOADGAME()
                     } else {
                         SystemHeader[i].PlanetMemA = NULL;
                         exitvalue = LOAD_NOMEM;
-                        i = 99; // should be enough to exit the outer loop
+                        goto leave_loop;
                     }
                 }
             }
+            leave_loop:
             if (LOAD_NOMEM == exitvalue)
             {
                 // free some memory.. as we dont get any more yet.
@@ -483,7 +482,7 @@ bool DISKMENU(uint8 Autoselect)
                         CloseWindow(DIS_Window);
                         DIS_Window = NULL;
                         INFORMUSER();
-                        DRAWSTARS(MODE_REDRAW, ActPlayer);
+                        DRAWSTARS(MODE_REDRAW);
                         leave_dialog = true;
                     } else if (LOAD_NOMEM == loadreturn)
                     {

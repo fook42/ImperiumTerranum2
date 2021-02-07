@@ -12,7 +12,7 @@ bool READPATHS()
     if (0 != FHandle)
     {
         (void)     Seek(FHandle, 0, OFFSET_END);
-        PathMemL = Seek(FHandle, 0, OFFSET_BEGINNING);
+        PathMemL = Seek(FHandle, 0, OFFSET_BEGINNING); // added 1 for last path-delimiter!
         PathMemA = (uint8*) AllocMem(PathMemL, MEMF_CLEAR);
         if (NULL != PathMemA)
         {
@@ -33,26 +33,22 @@ void CREATEPATHS()
 {
     uint8*  btx;
     uint8   i = 0;
-    uint32  PathPos, EndofPaths;
+    uint8*  EndofPaths;
 
-    PathPos = (uint32) PathMemA;
-    EndofPaths = PathPos+PathMemL;
+    EndofPaths = PathMemA+PathMemL;
+    btx = PathMemA;
     do
     {
         /* set PathStr[i] to current PathAddr. */
-        PathStr[i] = (char*) PathPos;
-        /* now search for 0-byte in current Path or End and select next PathStr */
-        do
+        PathStr[i] = (char*) btx;
+
+        /* now search for $0A-byte in current Path or End and select next PathStr */
+        while ((0 != *btx) && (10 != *btx) && (EndofPaths > btx))
         {
-            btx = (uint8*) PathPos;
-            ++PathPos;
-            if (10 == *btx)
-            {
-                *btx = 0;
-            }
+            ++btx;
         }
-        while ((0 != *btx) && (PathPos <= EndofPaths));
+        *btx++ = 0;
         ++i;
     }
-    while ((i < PATHS) && (PathPos < EndofPaths));
+    while ((i < PATHS) && (btx < EndofPaths));
 }

@@ -53,7 +53,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
         Close(FHandle);
     } else {
 
-        memcpy(IMemA[0], (CacheMemA[realCacheNum]+CNum3+8), *((uint32*)CacheMemA[realCacheNum]));
+        CopyMem( (APTR) (CacheMemA[realCacheNum]+CNum3+8), (APTR) IMemA[0], *((uint32*)CacheMemA[realCacheNum]));
     }
 
     struct Image DI_Img = {0, 0, (WORD) Width, (WORD) Height, (WORD) Depth, (UWORD*) IMemA[0], CNum-1, 0, NULL};
@@ -63,7 +63,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     if ((0 != CacheNum) && (false == ImageIsValid))
     {
         CacheMemL[realCacheNum] = ImgSize+CNum3+8;
-        CacheMemA[realCacheNum] = AllocMem(CacheMemL[realCacheNum], MEMF_FAST);
+        CacheMemA[realCacheNum] = AllocMem(CacheMemL[realCacheNum], MEMF_ANY);
 
         if (NULL != CacheMemA[realCacheNum])
         {
@@ -83,7 +83,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
             (void) Read(FHandle, Addr, CNum3);
             Close(FHandle);
             Addr += CNum3;
-            memcpy((void*) Addr, IMemA[0], ImgSize);
+            CopyMem( (APTR) IMemA[0], (APTR) Addr, ImgSize);
 
             ImageIsValid = true;
         } else {

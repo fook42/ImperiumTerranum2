@@ -1535,7 +1535,7 @@ void ROTATEPLANETS(uint8 ActSys)
         }
         if (Display>Save.Systems)
         {
-            DRAWSTARS(MODE_REDRAW,ActPlayer);
+            DRAWSTARS(MODE_REDRAW);
         }
     }
 /* *** SPIELER SPIELT NICHT *** */

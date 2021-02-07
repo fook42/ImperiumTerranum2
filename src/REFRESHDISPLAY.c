@@ -14,6 +14,6 @@ void REFRESHDISPLAY()
         }
         DRAWSYSTEM(Mode,Display,NULL);
     } else {
-        DRAWSTARS(Mode,ActPlayer);
+        DRAWSTARS(Mode);
     }
 }

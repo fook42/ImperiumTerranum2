@@ -14,7 +14,6 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
     char*           _s2 = NULL;
     uint8           i;
     APTR            ModC = NULL;
-    uint32          ModL;
     bool            PlanetLose, b;
     struct Window*  CPA_Window;
     struct Window*  CPA2_Window;
@@ -80,7 +79,6 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         }
         INFORMUSER();
         ModC = GETTHESOUND(3);
-        ModL = ModMemL[3];
     } else {
         if ((0 != (rand()%80)) && (0 == Warnung[ActPlayer-1])) { return; }
         MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*0.895);
@@ -175,8 +173,12 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             (28 == TheProject) ||
             (29 == TheProject))
         {
+            if (NULL != ModC)
+            {
+                StopPlayer();
+                UnLoadModule(ModC);
+            }
             ModC = GETTHESOUND(1);
-            ModL = ModMemL[1];
         }
 
         CPA_Window=MAKEWINDOW(85,110,341,91,MyScreen[0]);
@@ -262,10 +264,11 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             CHECKPROJECTS(&OldPlanet, MyPlanetHeader->PFlags);
         }
     }
-    if (ModC != 0)
+    if (NULL != ModC)
     {
         StopPlayer();
-        FreeMem(ModC,ModL);
+        UnLoadModule(ModC);
+        FreePlayer();
     }
 
 }

@@ -28,6 +28,8 @@ void MAIN_FNC()
             Printf("Can't open font: \"");
             Printf(CustomTA[i].ta_Name);
             Printf("\" , size: %ld\n", CustomTA[i].ta_YSize);
+            GAMEEXIT();
+            return;
         }
     }
     /* read Paths.txt-File **********************************/
@@ -57,16 +59,14 @@ void MAIN_FNC()
     }
     for (i = 1; i<128; ++i) { SetRGB4(&(XScreen->ViewPort),i,0,0,0); };
 
-    //    INITCHANNELS();
-
     /* Start the Intro ******************/
     MAININTRO();
     /************************************/
 
     if (!OPENMAINSCREENS())
     {
-        GAMEEXIT();
         puts("Can`t open screens!\n");
+        GAMEEXIT();
         return;
     }
 /*    WBench = CloseWorkBench();
@@ -98,7 +98,6 @@ void MAIN_FNC()
         GAMEEXIT();
         return;
     }
-    //    INITCHANNELS();
     INITSOUNDS();
     i = 0;
 /*    if (!WBench)
@@ -127,7 +126,7 @@ void MAIN_FNC()
         GAMEEXIT();
         return;
     }
-    DRAWSTARS(MODE_REDRAW,ActPlayer);
+    DRAWSTARS(MODE_REDRAW);
     ScreenToFront(MyScreen[0]);
 
     if (2 == i)
@@ -310,6 +309,7 @@ void MAIN_FNC()
                         {
                             StopPlayer();
                             UnLoadModule(SndModulePtr);
+                            FreePlayer();
                         }
 
                         for (i = 0; i < MAXCIVS; ++i)

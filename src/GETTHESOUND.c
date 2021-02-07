@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-APTR GETTHESOUND(uint8 MID)
+APTR GETTHESOUND(const int MID)
 {
     APTR modptr = NULL;
     if (NULL != ModMemA[MID])
@@ -11,7 +11,7 @@ APTR GETTHESOUND(uint8 MID)
         modptr = AllocMem(ModMemL[MID], MEMF_CHIP);
         if (NULL != modptr)
         {
-            CopyMemQuick(ModMemA[MID], modptr, ModMemL[MID]);
+            CopyMem(ModMemA[MID], modptr, ModMemL[MID]);
             StopPlayer();
             RelocModule((struct MMD0*)modptr);
             if (GETMIDIPLAYER((struct MMD0*)modptr))

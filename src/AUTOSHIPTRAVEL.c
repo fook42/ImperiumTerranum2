@@ -301,7 +301,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
     {
         if (0 == ActSys)
         {
-            DRAWSTARS(MODE_REDRAW,ActPlayer);
+            DRAWSTARS(MODE_REDRAW);
         } else {
             DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
         }

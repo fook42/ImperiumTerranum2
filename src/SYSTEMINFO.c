@@ -76,7 +76,7 @@ void SYSTEMINFO(uint8 ActSys)
                     CloseWindow(SYS_Window);
                     SYS_Window = NULL;
 
-                    DRAWSTARS(MODE_REDRAW,ActPlayer);
+                    DRAWSTARS(MODE_REDRAW);
                     SysID = 0;
                     do
                     {

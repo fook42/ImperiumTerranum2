@@ -670,7 +670,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                         }
                                                     } break;
                                 case TYPE_STARGATE: {
-                                                        DRAWSTARS(MODE_STARGATE,ActPlayer);
+                                                        DRAWSTARS(MODE_STARGATE);
                                                         SysID = 0;
                                                         do
                                                         {
@@ -748,8 +748,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         }
                     }
                 }
-            } else if ((RawCode == 0) && (MouseX(0)>=522) && (MouseX(0)<=629)
-                                      && (MouseY(0)>=9)   && (MouseY(0)<=117))
+            } else if ((RawCode == 0) && (MouseX(0)>521) && (MouseX(0)<630)
+                                      && (MouseY(0)>8)   && (MouseY(0)<118))
             {
                 // clicked on minimap to move the view
                 OffsetX = 576-MouseX(0);
@@ -758,7 +758,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             }
         } else if (RMB_PRESSED)
         {
-            if ((MouseX(0)>517) && (MouseX(0)<635) && (MouseY(0)>8) && (MouseY(0)<118))
+            if ((MouseX(0)>521) && (MouseX(0)<630) && (MouseY(0)>8) && (MouseY(0)<118))
             {
                 // clicked on minimap area
                 if ((MouseY(0)< 30) && ( 42 > OffsetY)) { OffsetY += 2; }
