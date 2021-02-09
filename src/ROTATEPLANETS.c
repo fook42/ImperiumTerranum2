@@ -1307,7 +1307,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                 Save.WarState[ActPlayer-1][i] = LEVEL_NO_ALLIANZ;
                                 if (((i==1) || (i==2)) && ((rand()%3) == 0) && (Save.WarPower[i]>Save.WarPower[ActPlayer-1]))
                                 {
-                                    AUTOVERHANDLUNG(i+1,ActPlayer,ActSys,MODE_BELEIDIGUNG);
+                                    AUTOVERHANDLUNG(i+1,ActPlayer,MODE_BELEIDIGUNG);
                                 }
                             }
                             RECT_RP0_C0(85,120,425,265);

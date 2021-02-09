@@ -199,7 +199,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     }
                                                     REFRESHDISPLAY();
                                                     Delay(10);
-                                                    AUTOVERHANDLUNG(MyShipPtr->Owner,MyPlanetHeader->PFlags,ActSys,0);
+                                                    AUTOVERHANDLUNG(MyShipPtr->Owner,MyPlanetHeader->PFlags,MODE_REFRESH);
                                                     return;
                                                 }
                                                 LINKTOORBIT(MyPlanetHeader, MyShipPtr, ActSys-1);
@@ -368,7 +368,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     Bool_var = TAKETECH(MyShipPtr->Owner, MyPlanetHeader->PFlags & FLAG_CIV_MASK);
                                                     Save.Staatstopf[GETCIVVAR(MyShipPtr->Owner)-1] += (MyPlanetHeader->XProjectPayed / 5);
                                                     MyPlanetHeader->XProjectPayed -= (MyPlanetHeader->XProjectPayed*0xCD)>>10; // -0.2x
-                                                    AUTOVERHANDLUNG(MyShipPtr->Owner, MyPlanetHeader->PFlags, ActSys, 0);
+                                                    AUTOVERHANDLUNG(MyShipPtr->Owner, MyPlanetHeader->PFlags, MODE_REFRESH);
                                                     CHECKPROJECTS(MyPlanetHeader, MyShipPtr->Owner);
                                                     MyPlanetHeader->PFlags = MyShipPtr->Owner;
                                                     if ((MyPlanetHeader->Population<(MyPlanetHeader->Size*13)) || ((rand()%(5)) == 0))
@@ -607,11 +607,11 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                             MyShipPtr->PosY = MOVESHIP_FromY;
                                                             if (STARTBIGSHIPFIGHT(MyShipPtr,OtherShipPtr,MODE_ONCE,ActSys) == 1)
                                                             {
-                                                                AUTOVERHANDLUNG(ActPlayerFlag,CivFlag,ActSys,0);
+                                                                AUTOVERHANDLUNG(ActPlayerFlag,CivFlag,MODE_REFRESH);
                                                                 MyShipPtr->Moving = 0;
                                                                 return;
                                                             }
-                                                            AUTOVERHANDLUNG(ActPlayerFlag,CivFlag,ActSys,0);
+                                                            AUTOVERHANDLUNG(ActPlayerFlag,CivFlag,MODE_REFRESH);
                                                         } else if (SHIPTYPE_FLEET != MyShipPtr->SType)
                                                         {
                                                             // moved into our own ship .. lets form a fleet

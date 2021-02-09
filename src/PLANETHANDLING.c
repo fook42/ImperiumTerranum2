@@ -825,11 +825,11 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                 PLANET_MyShipPtr->PosY = MOVESHIP_FromY;
                                 if (STARTBIGSHIPFIGHT(PLANET_MyShipPtr,OtherShipPtr,MODE_ALL,ActSys) == 1)
                                 {
-                                    AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,ActSys,0);
+                                    AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,MODE_REFRESH);
                                     PLANET_MyShipPtr->Moving = 0;
                                     return false;
                                 }
-                                AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,ActSys,0);
+                                AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,MODE_REFRESH);
                                 return false;
                             }
                         }   break;
@@ -837,7 +837,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                         {
                             b = true;
                             STARLANDING(PLANET_MyPlanetHeader,PLANET_MyShipPtr,ActSys);
-                            AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,ActSys,0);
+                            AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,MODE_REFRESH);
                         }   break;
                     case GADGET_ORBIT:
                         {
@@ -993,7 +993,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                             {
                                 if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) != 0) && (FIn>0))
                                 {
-                                    AUTOVERHANDLUNG(ActPlayerFlag, PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK, ActSys, 0);
+                                    AUTOVERHANDLUNG(ActPlayerFlag, PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK, MODE_REFRESH);
                                 }
                                 if (0 < SOut)
                                 {
@@ -1032,7 +1032,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                 {
                                     CHECKPLANET(PLANET_MyPlanetHeader);
                                     CHECKPROJECTS(PLANET_MyPlanetHeader,ActPlayerFlag);
-                                    AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,ActSys,0);
+                                    AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,MODE_REFRESH);
                                     REFRESHDISPLAY();
                                     (void) TAKETECH(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK);
                                     if (PLANET_MyPlanetHeader->XProjectPayed>1000)

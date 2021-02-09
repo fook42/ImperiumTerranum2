@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void AUTOVERHANDLUNG(int CivFlag1, int CivFlag2, int ActSys, int Mode)
+void AUTOVERHANDLUNG(const int CivFlag1, const int CivFlag2, const int Mode)
 {
     int     CivVar1, CivVar2;
 

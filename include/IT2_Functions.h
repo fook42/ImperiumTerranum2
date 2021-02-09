@@ -30,7 +30,7 @@ char* GETCIVNAME(const int CivVar);
 char* GETMYADJ(const int CivFlag, bool* DconDone);
 
 void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr);
-void AUTOVERHANDLUNG(int CivFlag1,int CivFlag2,int ActSys,int Mode);
+void AUTOVERHANDLUNG(const int CivFlag1, const int CivFlag2, const int Mode);
 bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, uint8 ActSys);
 
 void BOX(struct RastPort* RPort, const int Left, const int Top, const int Right, const int Bottom);

@@ -277,7 +277,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             && (Save.WarState[2][GETCIVVAR(MyShipPtr->Owner)-1] != LEVEL_ALLIANZ)
                                             && (Save.WarState[2][GETCIVVAR(MyShipPtr->Owner)-1] != LEVEL_WAR))
                                         {
-                                            AUTOVERHANDLUNG(FLAG_REMALO,MyShipPtr->Owner,ActSys,MODE_TERRITORIUM);
+                                            AUTOVERHANDLUNG(FLAG_REMALO,MyShipPtr->Owner,MODE_TERRITORIUM);
                                         }
                                         REFRESHDISPLAY();
                                     }
