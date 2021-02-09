@@ -133,7 +133,7 @@ void INITVARS();
 void KILLFLEET(r_ShipHeader* MyShipPtr);
 void KLICKGAD(const int x, const int y);
 void LINKSHIP(r_ShipHeader* SPtr, r_ShipHeader* TPtr, uint8 Mode);
-void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, int ActSys);
+void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, const int ActSys);
 // >>> LOADMOD
 void LOADMOD(char* FName, int MID);
 LONG GETMIDIPLAYER(struct MMD0 *module);

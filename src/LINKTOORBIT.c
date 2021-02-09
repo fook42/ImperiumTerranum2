@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, int ActSys)
+void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, const int ActSys)
 {
     sint16  x,y;
     if (0 == (MyShipPtr->Ladung & MASK_SIEDLER))
@@ -16,7 +16,7 @@ void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, int Ac
         y = 256+(MyShipPtr->PosY+OffsetY)*32;
         if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
         {
-            RECT(MyScreen[0],0,x,y,x+31,y+31);
+            RECT_RP0_C0(x,y,x+31,y+31);
             REFRESHDISPLAY();
             Delay(10);
         }
