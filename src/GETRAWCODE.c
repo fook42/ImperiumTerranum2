@@ -3,10 +3,10 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-uint8 GETRAWCODE()
+UWORD GETRAWCODE()
 {
     struct IntuiMessage*  IMsg = NULL;
-    uint8 _GETRAWCODE = 0;
+    UWORD _GETRAWCODE = 0;
 
     if ((NULL != MyScreen[0]->FirstWindow) &&
         (NULL != MyScreen[1]->FirstWindow))

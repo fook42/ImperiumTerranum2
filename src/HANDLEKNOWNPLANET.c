@@ -204,7 +204,8 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     int     i, j;
     sint32  l;
     uint8   blink;
-    uint8   Ships, btx, RawCode;
+    uint8   Ships, btx;
+    UWORD   RawCode;
     bool    DoIt, b;
     char    s[60];
     char*   _s;

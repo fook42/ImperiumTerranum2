@@ -14,14 +14,14 @@ void DOSSIER()
     char*   _s;
     struct Window* DOS_Window;
     struct RastPort* RPort_PTR;
-    DOS_Window=MAKEWINDOW(0,50,511,393,MyScreen[0]);
+    DOS_Window=MAKEWINDOW(0,50,512,393,MyScreen[0]);
     if (NULL == DOS_Window)
     {
         return;
     }
     RPort_PTR = DOS_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,  0,510,205,12,6,1);
-    MAKEWINBORDER(RPort_PTR,0,206,510,392,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,  0,511,205,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,206,511,392,12,6,1);
 
     WRITE(175,10,12,WRITE_Right,RPort_PTR,2,_PT_Status);
     WRITE(275,10,12,WRITE_Right,RPort_PTR,2,_PT_Bevoelkerung);

@@ -380,7 +380,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
     r_PlanetHeader* MyPlanetHeader;
     char    s[60];
     char*   _s;
-    uint8   RawCode;
+    UWORD   RawCode;
 
     OffsetX = 0;
     OffsetY = 0;

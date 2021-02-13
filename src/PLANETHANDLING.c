@@ -73,7 +73,7 @@ void POSITIVEANSWER(uint8 CivVar)
     Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_PEACE;
 }
 
-uint8 GETOPTION(uint8 Opts, char (*OptArr)[40], uint8 CivFlag)
+uint8 GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
 {
     sint8   Pos = 0, i = 0;
     uint16  ypos;
@@ -189,7 +189,8 @@ void CALLOTHERPLAYER(const int CivVar, const int CivFlag)
 
 void DIPLOMACY()
 {
-    uint8   XSystem, XTech, CivVar, CivFlag, Opts, Answer;
+    uint8   XSystem, XTech, CivVar, CivFlag, Answer;
+    int     Opts;
     uint32  XCosts;
     char    OptArr[8][40];
     uint8   OptID[8];

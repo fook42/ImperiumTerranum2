@@ -127,10 +127,10 @@ typedef struct SArr6 {
                                     } break;
             default: { }
         }
-        y = 0;
+        y = 87;
         for(i = 0; i < 6; ++i)
         {
-            WRITE(9,y+87,12,0,RPort_PTR,2,SA6.data[i]);
+            WRITE(9,y,12,0,RPort_PTR,2,SA6.data[i]);
             y += 17;
         }
 

@@ -7,7 +7,7 @@ void MAIN_FNC()
 {
     int     i, j = 1;
     uint32  l;
-    uint8   RawCode;
+    UWORD   RawCode;
     char    s[60];
     char*   _s;
     char    Txt_notEnoughMem[] = {"Not enough memory available!\n"};
@@ -173,7 +173,7 @@ void MAIN_FNC()
             if ((LMB_PRESSED && (MouseX(0) >= 518) && (MouseX(0) <= 634)
                              && (MouseY(0) >= 472) && (MouseY(0) <= 492))
                 || (LMB_PRESSED && RMB_PRESSED)
-                || ((RawCode == 64) || (RawCode == 67) || (RawCode == 68)))
+                || ((64 == RawCode) || (67 == RawCode) || (68 == RawCode)))
             {
                 KLICKGAD(518,472);
                 STARTROTATEPLANETS();

@@ -98,7 +98,7 @@ void FORSCHUNG();
 void FREESYSTEMMEMORY();
 void GAMEEXIT();
 void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName);
-uint8 GETRAWCODE();
+UWORD GETRAWCODE();
 APTR GETTHESOUND(const int MID);
 uint8 GOTONEXTPLANET(uint8 ActSys, r_ShipHeader* MyShipPtr);
 uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* ShipPtr);

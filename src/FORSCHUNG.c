@@ -14,15 +14,15 @@ void FORSCHUNG()
     char*   _s;
     struct Window* FOR_Window;
     struct RastPort* RPort_PTR;
-    FOR_Window=MAKEWINDOW(0,0,511,512,MyScreen[0]);
+    FOR_Window=MAKEWINDOW(0,0,512,512,MyScreen[0]);
     if (NULL == FOR_Window)
     {
         return;
     }
     RPort_PTR = FOR_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,  0,510,330,12,6,1);
-    MAKEWINBORDER(RPort_PTR,0,331,510,400,12,6,1);
-    MAKEWINBORDER(RPort_PTR,0,401,510,511,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,  0,511,330,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,331,511,400,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,401,511,511,12,6,1);
 
     WRITE(255,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[737]);
     posx = 10;

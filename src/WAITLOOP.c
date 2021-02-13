@@ -5,7 +5,7 @@
 
 void WAITLOOP(bool no_wait)
 {
-    uint8 RawCode;
+    UWORD RawCode;
     do
     {
         Delay(RDELAY);

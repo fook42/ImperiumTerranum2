@@ -11,13 +11,13 @@ void PROJEKTE()
 	struct Window*      PRJ_Window;
 	struct RastPort*    RPort_PTR;
 
-	PRJ_Window=MAKEWINDOW(0,1,512,511,MyScreen[0]);
+	PRJ_Window=MAKEWINDOW(0,0,512,512,MyScreen[0]);
 	if (NULL == PRJ_Window)
 	{
 		return;
 	}
 	RPort_PTR = PRJ_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,511,510,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,0,511,511,12,6,1);
 
     XPos = 172;
     for (i = 1; i<4; ++i)

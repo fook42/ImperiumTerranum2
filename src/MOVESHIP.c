@@ -12,7 +12,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     r_PlanetHeader* MyPlanetHeader;
     uint32          l;
     uint8           blink;
-    uint8           i, j, RawCode;
+    uint8           i, j;
+    UWORD           RawCode;
     uint8           CivVar,CivFlag,OldMoving,SysID;
     ByteArr42*      ActPProjects;
 
@@ -503,7 +504,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         {
             if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
             {
-                DRAWRECT(MOVESHIP_x,MOVESHIP_y,MyShipPtr, 0);
+                DRAWRECT(MOVESHIP_x,MOVESHIP_y, MyShipPtr, 0);
             }
 
             if ((MOVESHIP_x>=0) && (MOVESHIP_x<=505) && (MOVESHIP_y>=0) && (MOVESHIP_y<=512) && (MyShipPtr->SType != SHIPTYPE_FLEET))
@@ -533,12 +534,13 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
 
         RawCode = GETRAWCODE();
 
-        if ((LMB_PRESSED) || ((RawCode>=29) && (RawCode<=31)) || (RawCode==45) || (RawCode==47)
-            || ((RawCode>=61) && (RawCode<=63)) || ((RawCode>=76) && (RawCode<=79)))
+        if ((LMB_PRESSED)
+            || ((28 < RawCode) && (32 > RawCode)) || (45 == RawCode) || (47 == RawCode)
+            || ((60 < RawCode) && (64 > RawCode)) || ((75 < RawCode) && (80 > RawCode)))
         {
             if (((MouseX(0)>=0) && (MouseX(0)<513))
-                || ((RawCode>=29) && (RawCode<=31)) || (RawCode==45) || (RawCode==47)
-                || ((RawCode>=61) && (RawCode<=63)) || ((RawCode>=76) && (RawCode<=79)))
+                || ((28 < RawCode) && (32 > RawCode)) || (45 == RawCode) || (47 == RawCode)
+                || ((60 < RawCode) && (64 > RawCode)) || ((75 < RawCode) && (80 > RawCode)))
             {
                 if (FINDOBJECT(ActSys-1,MouseX(0),MouseY(0),NULL))
                 {   // clicked on something?
@@ -555,23 +557,23 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     }
                 } else {
                     // clicked in space to move the ship there
-                    if (((MouseX(0) < MOVESHIP_x) && (RawCode == 0))
-                        || (RawCode==29) || (RawCode==45) || (RawCode==61) || (RawCode==79))
+                    if (((MouseX(0) < MOVESHIP_x) && (0 == RawCode))
+                        || (29 == RawCode) || (45 == RawCode) || (61 == RawCode) || (79 == RawCode))
                     {
                         MyShipPtr->PosX--;
                     }
-                    if (((MouseX(0) > (MOVESHIP_x+32)) && (RawCode == 0))
-                        || (RawCode==31) || (RawCode==47) || (RawCode==63) || (RawCode==78))
+                    if (((MouseX(0) > (MOVESHIP_x+32)) && (0 == RawCode))
+                        || (31 == RawCode) || (47 == RawCode) || (63 == RawCode) || (78 == RawCode))
                     {
                         MyShipPtr->PosX++;
                     }
-                    if (((MouseY(0) < MOVESHIP_y) && (RawCode == 0))
-                        || ((RawCode>=61) && (RawCode<=63)) || (RawCode==76))
+                    if (((MouseY(0) < MOVESHIP_y) && (0 == RawCode))
+                        || ((60 < RawCode) && (64 > RawCode)) || (76 == RawCode))
                     {
                         MyShipPtr->PosY--;
                     }
-                    if (((MouseY(0) > (MOVESHIP_y+32)) && (RawCode == 0))
-                        || ((RawCode>=29) && (RawCode<=31)) || (RawCode==77))
+                    if (((MouseY(0) > (MOVESHIP_y+32)) && (0 == RawCode))
+                        || ((28 < RawCode) && (32 > RawCode)) || (77 == RawCode))
                     {
                         MyShipPtr->PosY++;
                     }
@@ -748,7 +750,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         }
                     }
                 }
-            } else if ((RawCode == 0) && (MouseX(0)>521) && (MouseX(0)<630)
+            } else if ((0 == RawCode) && (MouseX(0)>521) && (MouseX(0)<630)
                                       && (MouseY(0)>8)   && (MouseY(0)<118))
             {
                 // clicked on minimap to move the view
