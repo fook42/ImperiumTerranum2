@@ -5,7 +5,7 @@
 
 uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* MyShipPtr)
 {
-    sint32  distance,SysEntfernung;
+    sint32  distance, distanceY,SysEntfernung;
     uint8   i,j;
     uint8   SysID, CivVar;
     time_t  t;
@@ -22,28 +22,28 @@ uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* MyShipPtr)
     SysID = MAXSYSTEMS;
     for(i = 0; i < Save.Systems; ++i)
     {
-        if (i != ActSys)
-        {
-            distance = abs(SystemX[ActSys] - SystemX[i]);
-            if (abs(SystemY[ActSys] - SystemY[i]) > distance)
-            {
-                distance = abs(SystemY[ActSys]-SystemY[i]);
-            }
+        if (i == ActSys) { continue; }
 
-            if ((distance < SysEntfernung) && (0 == (rand()%2)))
+        distance = abs(SystemX[ActSys] - SystemX[i]);
+        distanceY= abs(SystemY[ActSys] - SystemY[i]);
+        if (distanceY > distance)
+        {
+            distance = distanceY;
+        }
+
+        if ((distance < SysEntfernung) && (0 == (rand()%2)))
+        {
+            if (((Save.GlobalFlags[CivVar-1] == GFLAG_EXPLORE) && ((SystemHeader[i].State & STATE_TACTICAL) == 0))
+                || ((MyShipPtr->Flags == SHIPFLAG_WATER)
+                    && (((MyShipPtr->Fracht>0) && ((SystemFlags[0][i] & FLAG_CIV_MASK) != 0))
+                        || (MyShipPtr->Fracht == 0))))
             {
-                if (((Save.GlobalFlags[CivVar-1] == GFLAG_EXPLORE) && ((SystemHeader[i].State & STATE_TACTICAL) == 0))
-                    || ((MyShipPtr->Flags == SHIPFLAG_WATER)
-                        && (((MyShipPtr->Fracht>0) && ((SystemFlags[0][i] & FLAG_CIV_MASK) != 0))
-                            || (MyShipPtr->Fracht == 0))))
+                SysEntfernung = distance;
+                SysID = i;
+                if (   (TARGET_STARGATE == SystemHeader[ActSys].FirstShip.SType)
+                    && (TARGET_STARGATE == SystemHeader[ SysID].FirstShip.SType))
                 {
-                    SysEntfernung = distance;
-                    SysID = i;
-                    if ((TARGET_STARGATE == SystemHeader[ActSys].FirstShip.SType)
-                     && (TARGET_STARGATE == SystemHeader[ SysID].FirstShip.SType))
-                    {
-                        SysEntfernung = 255;
-                    }
+                    SysEntfernung = 255;
                 }
             }
         }
