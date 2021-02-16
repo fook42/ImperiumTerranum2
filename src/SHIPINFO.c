@@ -23,7 +23,7 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
     char    Txt_999[] = {"999"};
 
     TactStep = it_round((MyShipPtr->Tactical * 300) / MyShipPtr->Shield);
-    RECT_RP1(0,386,296,513,310);
+    RECT_RP1_C0(386,296,513,310);
     WRITE_RP1(443-TactStep,297,1,1,1,"#");
 
     Step = (MyShipPtr->Shield / 3);
@@ -58,7 +58,7 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
     WRITE_RP1(571,296,5,1,1,s);
 
     Step = 111.0 / ShipData(MyShipPtr->SType).MaxMove;
-    RECT_RP1(0,386,427,513,442);
+    RECT_RP1_C0(386,427,513,442);
     WRITE_RP1(498-it_round(Step*MyShipPtr->Repair),429,1,1,1,"#");
 
     if (0 == MyShipPtr->Repair)

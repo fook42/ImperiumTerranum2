@@ -22,7 +22,7 @@ void CHECKGADS(int GadID)
     // ----
     if ((0 == GadID) || (7 == GadID))
     {
-        RECT_RP1(0,542,141,568,310);
+        RECT_RP1_C0(542,141,568,310);
         txt[0]=Player+'0';
         txt[1]=0;
         WRITE_RP1(555,(5-Player)*38+142,40,WRITE_Center,3,txt);
@@ -30,8 +30,8 @@ void CHECKGADS(int GadID)
     }
     if ((0 == GadID) || (6 == GadID))
     {
-        RECT_RP1(0,447,141,473,310);
-        RECT_RP1(0,412,341,508,360);
+        RECT_RP1_C0(447,141,473,310);
+        RECT_RP1_C0(412,341,508,360);
         if (Level<10)
         {
             txt[0]=Level+'0';
@@ -50,11 +50,11 @@ void CHECKGADS(int GadID)
         y = 113;
         for (i = 0; i < 5; ++i)
         {
-            RECT_RP1(0, 238, y, 388, y+19);
+            RECT_RP1_C0( 238, y, 388, y+19);
             y += 80;
         }
     } else {
-        RECT_RP1(0,238,33+GadID*80,388,52+GadID*80);
+        RECT_RP1_C0(238,33+GadID*80,388,52+GadID*80);
     }
     if ((0 == GadID) || (1 == GadID))
     {
@@ -196,7 +196,7 @@ void OPTION_MULTIPLAYER(void)
                 MAKEWINBORDER(MyRPort_PTR[1],100, offset, 540, offset+30,14,40,0);
                 _s2 = GETCIVNAME(j+1);
             } else {
-                RECT_RP1(0, 100, offset, 540, offset+30);
+                RECT_RP1_C0( 100, offset, 540, offset+30);
                 *_s1 = Save.CivPlayer[j]+'0';
                 _s2 = s;
             }
@@ -333,9 +333,9 @@ void OPTIONMENU(int Mode)
 
     // new .. audio-option!!!
     WRITE_RP1(507,410,40,WRITE_Center,3,"Audio");
-    RECT_RP1(0,442,431,504,454);
+    RECT_RP1_C0(442,431,504,454);
     WRITE_RP1(473,435,40,WRITE_Center,3,_PT_ein);
-    RECT_RP1(0,510,431,572,454);
+    RECT_RP1_C0(510,431,572,454);
     WRITE_RP1(541,435,40,WRITE_Center,3,_PT_aus);
     // ----
 

@@ -245,6 +245,7 @@ void WRITEGALAXYDATA(uint8 ActSys, uint8 ShipMaxMove);
 
 //--------------------------------
 void RECT_RP0_C0(const int LEdge, const int TEdge, const int REdge, const int BEdge);
+void RECT_RP1_C0(const int LEdge, const int TEdge, const int REdge, const int BEdge);
 void RECT_RP1(const int Color, const int LEdge, const int TEdge, const int REdge, const int BEdge);
 void RECTWIN(struct RastPort* RPort, const int Color, const int LEdge, const int TEdge, const int REdge, const int BEdge);
 void MAKEWINBORDER(struct RastPort* RPort, const int LEdge, const int TEdge, const int REdge, const int BEdge, const int Col1, const int Col2, const int Darken);

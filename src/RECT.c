@@ -9,6 +9,12 @@ void RECT_RP0_C0(const int LEdge, const int TEdge, const int REdge, const int BE
     RectFill(MyRPort_PTR[0], LEdge, TEdge, REdge, BEdge);
 }
 
+void RECT_RP1_C0(const int LEdge, const int TEdge, const int REdge, const int BEdge)
+{
+    SetAPen(MyRPort_PTR[1], 0);
+    RectFill(MyRPort_PTR[1], LEdge, TEdge, REdge, BEdge);
+}
+
 void RECT_RP1(const int Color, const int LEdge, const int TEdge, const int REdge, const int BEdge)
 {
     SetAPen(MyRPort_PTR[1], Color);

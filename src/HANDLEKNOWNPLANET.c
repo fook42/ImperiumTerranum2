@@ -12,7 +12,7 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
     char    s[4];
     char*   _s;
 
-    RECT_RP1(0,56,426,327,448);
+    RECT_RP1_C0(56,426,327,448);
     l = 0;
     s[0]=0;
     if (0 != MyPlanetHeader->ProjectID)
@@ -40,7 +40,7 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
         WRITE_RP1(191,430,2,(1|WRITE_Center),3, _s);
     }
 
-    RECT_RP1(0,56,399,256,418);
+    RECT_RP1_C0(56,399,256,418);
     if (l > 100) { l = 100; }
     if (l < 0)   { l = 0; }
     (void) dez2out(l, 3, s);
@@ -77,13 +77,19 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
         }
     }
 
-    RECT_RP1(4,56,150,56+MyPlanetHeader->Infrastruktur,169);
-    (void) dez2out((MyPlanetHeader->Infrastruktur >> 1), 3, s);
+    i = MyPlanetHeader->Infrastruktur;
+    if (200 < i) { i = 200; }
+    RECT_RP1(4,56,150,56+i,169);
+    (void) dez2out((i >> 1), 3, s);
     WRITE_RP1(278,153,4,1,1,s);
+    MyPlanetHeader->Infrastruktur = i;
 
-    RECT_RP1(4,56,199,56+MyPlanetHeader->Industrie,218);
-    (void) dez2out((MyPlanetHeader->Industrie >> 1), 3, s);
+    i = MyPlanetHeader->Industrie;
+    if (200 < i) { i = 200; }   
+    RECT_RP1(4,56,199,56+i,218);
+    (void) dez2out((i >> 1), 3, s);
     WRITE_RP1(278,202,4,1,1,s);
+    MyPlanetHeader->Industrie = i;
 
     (void) dez2out(MyPlanetHeader->Population, 7, s);
     WRITE_RP1(59,251,4,1,1,s);
@@ -95,7 +101,7 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     if (ActPProjects->data[36]>0) { ++y; }
     if (ActPProjects->data[38]>0) { ++y; }
     if (ActPProjects->data[42]>0) { ++y; }
-    RECT_RP1(0,56,307,178,330);
+    RECT_RP1_C0(56,307,178,330);
 
     if (y > 0)
     {
@@ -114,7 +120,7 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     if (ActPProjects->data[38]>0) { ++y; }
     if (ActPProjects->data[41]>0) { ++y; }
     if (ActPProjects->data[42]>0) { ++y; }
-    RECT_RP1(0,56,354,178,376);
+    RECT_RP1_C0(56,354,178,376);
     if (y > 0)
     {
         xpos = 56;
@@ -134,7 +140,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
     char    s[4];
 
     // clear right project icon area
-    RECT_RP1(0,359,92,639,511);
+    RECT_RP1_C0(359,92,639,511);
     x = 0;
     y = 0;
     for(i = 0; i < 7; ++i)
@@ -224,10 +230,10 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     j=0;
     for(i = 0; i < 3; ++i)
     {
-        RECT_RP1(0,56,101+j,256,120+j);
+        RECT_RP1_C0(56,101+j,256,120+j);
         j+=49;
     }
-    RECT_RP1(0,0,0,639,90);
+    RECT_RP1_C0(0,0,639,90);
 
     _s=my_strcpy(s, _PT_System);
     *_s++ = ':';
@@ -424,7 +430,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 --j;
 //                Img = (struct Image) {0,0,384,407,7,IMemA[0],127,0,NULL};
                 // clear right project-area to print the list of available Projects to build
-                RECT_RP1(0,360,92,639,511);
+                RECT_RP1_C0(360,92,639,511);
                 WRITE_RP1(365,474,4,1,3,PText[177]);
                 for(i = 1; i <= j; ++i)
                 {

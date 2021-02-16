@@ -260,7 +260,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                     if ((0 <= ShipShield) && (255 >= ShipShield))
                     {
                         RECT_RP0_C0(ShipShield,245,254,254);
-                        RECT_RP1(0,ShipShield,245,254,254);
+                        RECT_RP1_C0(ShipShield,245,254,254);
                     }
                 }
                 for (j = 6; j>=0; --j)
