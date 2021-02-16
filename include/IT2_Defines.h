@@ -153,6 +153,7 @@ enum {  SCREEN_PLANET = 1,
 #define RECT(A,B,C,D,E,F)            RECTWIN(&((A)->RastPort),B,C,D,E,F)
 
 // WRITE-Defines
+#define WRITE_Left    0x00
 #define WRITE_Center  0x10
 #define WRITE_Right   0x20
 #define WRITE_Shadow  0x40

@@ -125,7 +125,7 @@ void INFORMUSER();
 bool INITDESK(const int Mode);
 bool INITLANG();
 void INITMENU();
-void INITSCREEN(int Mode);
+void INITSCREEN(const int Mode);
 void INITSOUNDS();
 bool INITSTARS();
 void INITSTDTAGS();
