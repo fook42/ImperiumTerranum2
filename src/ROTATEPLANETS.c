@@ -25,6 +25,7 @@ void ROTATEPLANETS(uint8 ActSys)
     time_t      t;
     uint8       NewPNames;
     uint8       i, j, k;
+    int         ProjID;
     struct Window*   ROT_Window;
     struct Window*   ROT_Window2;
     struct RastPort* RPort_PTR;
@@ -490,41 +491,49 @@ void ROTATEPLANETS(uint8 ActSys)
                             }
                         }
 
-                        if ((PlanetHeader->ProjectID>0) && (abs(PlanetHeader->XProjectPayed) > PlanetHeader->XProjectCosts))
+                        ProjID = PlanetHeader->ProjectID;
+                        if ((0 < ProjID) && (abs(PlanetHeader->XProjectPayed) > PlanetHeader->XProjectCosts))
                         {
                             PlanetHeader->XProjectPayed -= PlanetHeader->XProjectCosts;
                             ActPProjects = PlanetHeader->ProjectPtr;
-                            if ((PlanetHeader->ProjectID==34) || (PlanetHeader->ProjectID==40))
+                            if ((34 == ProjID) || (40 == ProjID))
                             {
-                                ActPProjects->data[PlanetHeader->ProjectID] = 100;
-                            } else if (((PlanetHeader->ProjectID>=1)  && (PlanetHeader->ProjectID<=7))
-                                        ||((PlanetHeader->ProjectID>=25) && (PlanetHeader->ProjectID<=38))
-                                        ||((PlanetHeader->ProjectID>=40) && (PlanetHeader->ProjectID<=42)))
+                                ActPProjects->data[ProjID] = 100;
+                            } else if (((0  < ProjID) && (8  > ProjID))
+                                     ||((24 < ProjID) && (39 > ProjID))
+                                     ||((39 < ProjID) && (43 > ProjID)))
                             {
-                                ActPProjects->data[PlanetHeader->ProjectID]++;
-                            } else if  ((PlanetHeader->ProjectID>=8)  && (PlanetHeader->ProjectID<=24))
+                                ActPProjects->data[ProjID]++;
+                            } else if  ((7 < ProjID)  && (25 > ProjID))
                             {
+                                /* a new ship has been built ... */
+
+                                // create a maques ship of same type if not already too much exists
                                 if (MAXMAQUES > MaquesShips)
                                 {
-                                    (void) CREATEMAQUESSHIP(i,PlanetHeader->ProjectID);
+                                    (void) CREATEMAQUESSHIP(i, ProjID);
                                 }
+
+                                // reserve memory for the new ship and fill in the ship structures
                                 ActShipPtr = (r_ShipHeader*) AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
                                 if (NULL != ActShipPtr)
                                 {
-                                    *ActShipPtr = (r_ShipHeader) {0,PlanetHeader->ProjectID, PlanetHeader->PFlags & FLAG_CIV_MASK,0,0,0,0,0,0,
-                                                                ShipData(PlanetHeader->ProjectID).MaxShield,1,1,
-                                                                ShipData(PlanetHeader->ProjectID).MaxMove,0,0,0,NULL,NULL,NULL};
+                                    *ActShipPtr = (r_ShipHeader) {0,ProjID, PlanetHeader->PFlags & FLAG_CIV_MASK,0,0,0,0,0,0,
+                                                                ShipData(ProjID).MaxShield,1,1,
+                                                                ShipData(ProjID).MaxMove,0,0,0,NULL,NULL,NULL};
                                                     /*Age,SType,Owner,Flags,ShieldBonus,Ladung,Fracht,PosX,PosY,
                                                     Shield,Weapon,Repair
                                                     Moving,Source,Target,Tactical,TargetShip,BeforeShip,NextShip*/
                                     ActShipPtr->Weapon = WEAPON_GUN;
-                                    if (Save.TechCosts[ActPlayer-1].data[15] <= 0) { ActShipPtr->Weapon = WEAPON_LASER; }
-                                    if (Save.TechCosts[ActPlayer-1].data[24] <= 0) { ActShipPtr->Weapon = WEAPON_PHASER; }
-                                    if (Save.TechCosts[ActPlayer-1].data[32] <= 0) { ActShipPtr->Weapon = WEAPON_DISRUPTOR; }
-                                    if (Save.TechCosts[ActPlayer-1].data[27] <= 0) { ActShipPtr->Weapon = WEAPON_PTORPEDO; }
+                                    --ActPlayer;
+                                    if (1 > Save.TechCosts[ActPlayer].data[15]) { ActShipPtr->Weapon = WEAPON_LASER; }
+                                    if (1 > Save.TechCosts[ActPlayer].data[24]) { ActShipPtr->Weapon = WEAPON_PHASER; }
+                                    if (1 > Save.TechCosts[ActPlayer].data[32]) { ActShipPtr->Weapon = WEAPON_DISRUPTOR; }
+                                    if (1 > Save.TechCosts[ActPlayer].data[27]) { ActShipPtr->Weapon = WEAPON_PTORPEDO; }
+                                    ++ActPlayer;
 
-                                    if ((PlanetHeader->ProjectID == 21) && (SystemHeader[i].FirstShip.SType == 0)
-                                        && ((Save.CivPlayer[GETCIVVAR(ActShipPtr->Owner)-1] == 0) || Save.PlayMySelf))
+                                    if ((21 == ProjID) && (0 == SystemHeader[i].FirstShip.SType)
+                                        && ((0 == Save.CivPlayer[GETCIVVAR(ActShipPtr->Owner)-1]) || Save.PlayMySelf))
                                     {
                                         ActShipPtr->PosX = it_round(PlanetHeader->PosX);
                                         ActShipPtr->PosY = it_round(PlanetHeader->PosY);
@@ -534,23 +543,22 @@ void ROTATEPLANETS(uint8 ActSys)
                                     }
                                 }
                             }
-                            if (((PlanetHeader->ProjectID>=1) && (PlanetHeader->ProjectID<=7))
-                                || (PlanetHeader->ProjectID==39))
+                            if (((0 < ProjID) && (8 > ProjID)) || (39 == ProjID))
                             {
-                                Save.ProjectCosts[ActPlayer-1].data[PlanetHeader->ProjectID] = 0;
+                                Save.ProjectCosts[ActPlayer-1].data[ProjID] = 0;
                             }
                             l = 1;
                         }
                         if (l == 1)
                         {
-                            if ((PlanetHeader->ProjectID>=1) && (PlanetHeader->ProjectID<=7))
+                            if ((0 < ProjID) && (8 > ProjID))
                             {
                                 Save.ImperatorState[ActPlayer-1] += 150;
-                                if (Save.stProject[PlanetHeader->ProjectID-1] == 0)
+                                if (0 == Save.stProject[ProjID-1])
                                 {
                                     INFORMUSER();
                                     Save.ImperatorState[ActPlayer-1] += 50;
-                                    Save.stProject[PlanetHeader->ProjectID-1] = ActPlayer;
+                                    Save.stProject[ProjID-1] = ActPlayer;
 
                                     ROT_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
                                     RPort_PTR = ROT_Window->RPort;
@@ -561,14 +569,13 @@ void ROTATEPLANETS(uint8 ActSys)
                                     (void) my_strcpy(_s, PText[579]); // fuehren als erste
                                     WRITE(171, 7,GETCIVFLAG(ActPlayer),(1|WRITE_Center),RPort_PTR,3,s);
 
-                                    _s=my_strcpy(s, Project.data[PlanetHeader->ProjectID]);
+                                    _s=my_strcpy(s, Project.data[ProjID]);
                                     *_s++ = '-';
                                     *_s = 0;
                                     WRITE(171,29,                   12,(1|WRITE_Center),RPort_PTR,3,s);
                                     s[0]=0;
                                     _s=s;
-                                    if ((1 <= PlanetHeader->ProjectID)
-                                     && (3 >= PlanetHeader->ProjectID))
+                                    if ((0 < ProjID) && (4 > ProjID))
                                     {
                                         _s=my_strcpy(s, PText[582]); // Projekt
                                         *_s++ = ' ';
@@ -580,7 +587,7 @@ void ROTATEPLANETS(uint8 ActSys)
 
                                     CloseWindow(ROT_Window);
                                 }
-                            } else if ((8 <= PlanetHeader->ProjectID) && (PlanetHeader->ProjectID <= 24))
+                            } else if ((7 < ProjID) && (25 > ProjID))
                             {
                                 if (0 != Save.CivPlayer[ActPlayer-1])
                                 {
@@ -601,12 +608,12 @@ void ROTATEPLANETS(uint8 ActSys)
                                 } else {
                                     ActShipPtr->ShieldBonus = it_round(Level*2.0-2);
                                 }
-                            } else if ((PlanetHeader->ProjectID==26)
-                                    || ((PlanetHeader->ProjectID>=28) && (PlanetHeader->ProjectID<=42)))
+                            } else if ((26 == ProjID)
+                                    || ((27 < ProjID) && (43 > ProjID)))
                             {
                                 Save.ImperatorState[ActPlayer-1] += 10;
                             }
-                            if ((PlanetHeader->ProjectID==26) || (PlanetHeader->ProjectID==27))
+                            if ((26 == ProjID) || (27 == ProjID))
                             {
                                 PlanetHeader->Population -= 10;
                             }
@@ -631,13 +638,13 @@ void ROTATEPLANETS(uint8 ActSys)
                             (void) my_strcpy(_s, PlanetHeader->PName);
                             WRITE(171,27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
 
-                            if (0 < PlanetHeader->ProjectID)
+                            if (0 < ProjID)
                             {
                                 _s=my_strcpy(s, PText[583]);  // baut
                                 *_s++ = ' ';
-                                (void) my_strcpy(_s, Project.data[PlanetHeader->ProjectID]);
+                                (void) my_strcpy(_s, Project.data[ProjID]);
                             } else {
-                                switch (PlanetHeader->ProjectID)
+                                switch (ProjID)
                                 {
                                     case -3: (void) my_strcpy(s, _PT_Biosphaere_gereinigt);    break;
                                     case -2: (void) my_strcpy(s, _PT_Infrastructur_repariert); break;
@@ -647,15 +654,15 @@ void ROTATEPLANETS(uint8 ActSys)
                             WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
 
                             Delay(5);
-                            if (( 8 <= PlanetHeader->ProjectID)
-                             && (24 >= PlanetHeader->ProjectID) && (!Save.PlayMySelf))
+                            if (( 7 < ProjID)
+                             && (25 > ProjID) && (!Save.PlayMySelf))
                             {
                                 // building ships... where to place it?
                                 ROT_Window2=MAKEWINDOW(85,208,341,41,MyScreen[0]);
                                 RPort_PTR2 = ROT_Window2->RPort;
                                 MAKEWINBORDER(RPort_PTR2,0,0,340,40,12,6,1);
 
-                                BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(PlanetHeader->ProjectID-8)*32,32,RPort_PTR2,10, 4,32,32,192);
+                                BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(ProjID-8)*32,32,RPort_PTR2,10, 4,32,32,192);
                                 DrawImage(RPort_PTR2,&GadImg1, 55,10);
                                 DrawImage(RPort_PTR2,&GadImg1,195,10);
 
@@ -693,8 +700,9 @@ void ROTATEPLANETS(uint8 ActSys)
                             CloseWindow(ROT_Window);
 
 //                            REFRESHDISPLAY();
+                            /* if we did build a ship or a settler or a landing troop, build another one... else no new project is selected */
                             if ((( 8  > PlanetHeader->ProjectID) || (24  < PlanetHeader->ProjectID))
-                              && (24 != PlanetHeader->ProjectID) && (27 != PlanetHeader->ProjectID))
+                              && (26 != PlanetHeader->ProjectID) && (27 != PlanetHeader->ProjectID))
                             {
                                 PlanetHeader->ProjectID = 0;
                             }
