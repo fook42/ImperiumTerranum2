@@ -51,7 +51,7 @@ void CLOCK();
 void CLOSEMYSCREENS();
 void CREATECIVILWAR(int CivVar);
 void CREATEJAHADR(const int CJ_ActPlayer);
-bool CREATEMAQUESSHIP(uint8 SysID, uint8 ShipID);
+bool CREATEMAQUESSHIP(const int SysID, int ShipID);
 void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanets);
 void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum);
 bool READPATHS();
@@ -132,7 +132,7 @@ void INITSTDTAGS();
 void INITVARS();
 void KILLFLEET(r_ShipHeader* MyShipPtr);
 void KLICKGAD(const int x, const int y);
-void LINKSHIP(r_ShipHeader* SPtr, r_ShipHeader* TPtr, uint8 Mode);
+void LINKSHIP(r_ShipHeader* SPtr, r_ShipHeader* TPtr, const int Mode);
 void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, const int ActSys);
 // >>> LOADMOD
 void LOADMOD(char* FName, int MID);

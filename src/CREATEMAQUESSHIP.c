@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-bool CREATEMAQUESSHIP(uint8 SysID, uint8 ShipID)
+bool CREATEMAQUESSHIP(const int SysID, int ShipID)
 {
     r_ShipHeader*   ActShipPtr;
     int     i;

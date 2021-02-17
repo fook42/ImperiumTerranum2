@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void LINKSHIP(r_ShipHeader* SourcePtr, r_ShipHeader* TargetPtr, uint8 Mode)
+void LINKSHIP(r_ShipHeader* SourcePtr, r_ShipHeader* TargetPtr, const int Mode)
 {
     if (1 == Mode)
     {
