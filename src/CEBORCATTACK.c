@@ -6,7 +6,7 @@
 void CEBORCATTACK(uint8 CA_ActPlayerFlag)
 {
     int     i,j;
-    uint8   l,random_wert;
+    uint8   ShipType,random_wert;
     r_ShipHeader*   CA_MyShipPtr;
 
     if ((0            != Save.WorldFlag)
@@ -48,14 +48,14 @@ void CEBORCATTACK(uint8 CA_ActPlayerFlag)
         CA_MyShipPtr = (r_ShipHeader*) AllocMem(sizeof(r_ShipHeader), MEMF_CLEAR);
         if (NULL != CA_MyShipPtr)
         {
-            l = 23;
+            ShipType = 23;
             if (40 > (rand()%100))
             {
-                l = 20;
+                ShipType = 20;
             }
-            *CA_MyShipPtr = (r_ShipHeader) {0,l,FLAG_OTHER,0,100,1,0,(rand()%20)-40,(rand()%20)-40,
-                                            ShipData(l).MaxShield,WEAPON_PTORPEDO,1,
-                                            ShipData(l).MaxMove,0,0,0,NULL,NULL,NULL};
+            *CA_MyShipPtr = (r_ShipHeader) {0,ShipType,FLAG_OTHER,0,100,1,0,(rand()%20)-40,(rand()%20)-40,
+                                            ShipData(ShipType).MaxShield,WEAPON_PTORPEDO,1,
+                                            ShipData(ShipType).MaxMove,0,0,0,NULL,NULL,NULL};
             LINKSHIP(CA_MyShipPtr, &(SystemHeader[j].FirstShip), 0);
         }
     }
