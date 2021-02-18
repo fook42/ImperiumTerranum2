@@ -234,8 +234,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     }
     while (14 > SDIBases);
 
-    SDIBases = (ActPProjects->data[34] / 10)-1;
-    SPHBases = (ActPProjects->data[40] / 10)-1;
+    SDIBases = (ActPProjects->data[PROJECT_SDI] / 10)-1;
+    SPHBases = (ActPProjects->data[PROJECT_SPACEPHALANX] / 10)-1;
 
     do
     {
@@ -510,8 +510,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     (void) SETCOLOR(MyScreen[AScr],s);
     (void) my_strcpy(_s-3, "img");
     if (!DISPLAYIMAGE(s,0,0,256,256,5,MyScreen[AScr],0)) { }
-    if (SDIBaseDrawed>0) { ActPProjects->data[34] -= (SDIBaseHit*ActPProjects->data[34] / SDIBaseDrawed); }
-    if (SPHBaseDrawed>0) { ActPProjects->data[40] -= (SPHBaseHit*ActPProjects->data[40] / SPHBaseDrawed); }
+    if (SDIBaseDrawed>0) { ActPProjects->data[PROJECT_SDI]          -= (SDIBaseHit*ActPProjects->data[PROJECT_SDI] / SDIBaseDrawed); }
+    if (SPHBaseDrawed>0) { ActPProjects->data[PROJECT_SPACEPHALANX] -= (SPHBaseHit*ActPProjects->data[PROJECT_SPACEPHALANX] / SPHBaseDrawed); }
     if ((SDIBaseDrawed>0) && (SPHBaseDrawed>0))
     {
         CityDrawed = CityDrawed*20+SDIBaseDrawed+SPHBaseDrawed;

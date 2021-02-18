@@ -53,13 +53,13 @@ void CREATEJAHADR(const int CJ_ActPlayer)
                 if (NULL != MyPlanetHeader->ProjectPtr)
                 {
                     MyPlanetHeader->ProjectPtr->data[1]  = 1;
-                    MyPlanetHeader->ProjectPtr->data[25] = 1;
-                    MyPlanetHeader->ProjectPtr->data[30] = 1;
-                    MyPlanetHeader->ProjectPtr->data[32] = 1;
-                    MyPlanetHeader->ProjectPtr->data[26] |= 16;
-                    MyPlanetHeader->ProjectPtr->data[27] |= 16;
+                    MyPlanetHeader->ProjectPtr->data[PROJECT_SPACEDOCK]      = 1;
+                    MyPlanetHeader->ProjectPtr->data[PROJECT_RECYCLINGPLANT] = 1;
+                    MyPlanetHeader->ProjectPtr->data[PROJECT_HYDROPOWER]     = 1;
+                    MyPlanetHeader->ProjectPtr->data[PROJECT_SETTLERS]      |= 16;
+                    MyPlanetHeader->ProjectPtr->data[PROJECT_LANDINGTROOPS] |= 16;
                 }
-                MyPlanetHeader->ProjectID = 0;
+                MyPlanetHeader->ProjectID = PROJECT_NONE;
 
                 MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
                 while (NULL != MyShipPtr)

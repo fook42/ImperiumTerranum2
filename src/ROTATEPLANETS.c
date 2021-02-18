@@ -197,7 +197,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             || ((PlanetHeader->Class == CLASS_STONES)    && ((PlanetHeader->Population /  929) <= PlanetHeader->Size))
                             || ((PlanetHeader->Class == CLASS_DESERT)    && ((PlanetHeader->Population /  739) <= PlanetHeader->Size)))
                         {
-                            PlanetHeader->Population += 1+(ActPProjects->data[41]+ActPProjects->data[42])*20;
+                            PlanetHeader->Population += 1+(ActPProjects->data[PROJECT_MICROIDS]+ActPProjects->data[PROJECT_WEATHERSTATION])*20;
                             PlanetHeader->Population = it_round(PlanetHeader->Population*1.008);
                             if (Save.ProjectCosts[CivVar-1].data[3] == 0)
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.028); }
@@ -347,20 +347,21 @@ void ROTATEPLANETS(uint8 ActSys)
                         }
                     }
                     ActPProjects = PlanetHeader->ProjectPtr;
-                    if ((ActPProjects->data[34]>=1) && (ActPProjects->data[34]<=99))
-                        { ActPProjects->data[34] = it_round(ActPProjects->data[34]*1.2)+1; }
+                    if ((0 < ActPProjects->data[PROJECT_SDI]) && (100 > ActPProjects->data[PROJECT_SDI]))
+                        { ActPProjects->data[PROJECT_SDI] = it_round(ActPProjects->data[PROJECT_SDI]*1.2)+1; }
 
-                    if ((ActPProjects->data[40]>=1) && (ActPProjects->data[40]<=99))
-                        { ActPProjects->data[40] = it_round(ActPProjects->data[40]*1.2)+1; }
+                    if ((0 < ActPProjects->data[PROJECT_SPACEPHALANX]) && (100 > ActPProjects->data[PROJECT_SPACEPHALANX]))
+                        { ActPProjects->data[PROJECT_SPACEPHALANX] = it_round(ActPProjects->data[PROJECT_SPACEPHALANX]*1.2)+1; }
 
                     SystemFlags[ActPlayer-1][i] |= FLAG_KNOWN;
 
-                    PProd = 11+(ActPProjects->data[31]+ActPProjects->data[37]
-                                +ActPProjects->data[38]+ActPProjects->data[41]
-                                +ActPProjects->data[42])*6;
+                    PProd = 11+(ActPProjects->data[PROJECT_FUSIONPOWER] +ActPProjects->data[PROJECT_INT_PLANT]
+                               +ActPProjects->data[PROJECT_INFO_HIGHWAY]+ActPProjects->data[PROJECT_MICROIDS]
+                               +ActPProjects->data[PROJECT_WEATHERSTATION])*6;
 
-                    PCreativity = 20+(ActPProjects->data[33]+ActPProjects->data[35]+ActPProjects->data[36]
-                                        +ActPProjects->data[38]+ActPProjects->data[42])*10;
+                    PCreativity = 20+(ActPProjects->data[PROJECT_PART_ACCEL]     +ActPProjects->data[PROJECT_INTERNET]
+                                     +ActPProjects->data[PROJECT_VIRT_UNIVERSITY]+ActPProjects->data[PROJECT_INFO_HIGHWAY]
+                                     +ActPProjects->data[PROJECT_WEATHERSTATION])*10;
 
                     AllCreative[ActPlayer-1] += it_round(PCreativity*(PlanetHeader->Biosphaere/80.0+PlanetHeader->Population/400.0))+1;
 
@@ -496,12 +497,11 @@ void ROTATEPLANETS(uint8 ActSys)
                         {
                             PlanetHeader->XProjectPayed -= PlanetHeader->XProjectCosts;
                             ActPProjects = PlanetHeader->ProjectPtr;
-                            if ((34 == ProjID) || (40 == ProjID))
+                            if ((PROJECT_SDI == ProjID) || (PROJECT_SPACEPHALANX == ProjID))
                             {
                                 ActPProjects->data[ProjID] = 100;
-                            } else if (((0  < ProjID) && (8  > ProjID))
-                                     ||((24 < ProjID) && (39 > ProjID))
-                                     ||((39 < ProjID) && (43 > ProjID)))
+                            } else if (((0  < ProjID) && (8   > ProjID))
+                                     ||((24 < ProjID) && (PROJECT_VON_NEUMANN != ProjID) && (43 > ProjID)))
                             {
                                 ActPProjects->data[ProjID]++;
                             } else if  ((7 < ProjID)  && (25 > ProjID))
@@ -543,7 +543,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     }
                                 }
                             }
-                            if (((0 < ProjID) && (8 > ProjID)) || (39 == ProjID))
+                            if (((0 < ProjID) && (8 > ProjID)) || (PROJECT_VON_NEUMANN == ProjID))
                             {
                                 Save.ProjectCosts[ActPlayer-1].data[ProjID] = 0;
                             }
@@ -608,12 +608,12 @@ void ROTATEPLANETS(uint8 ActSys)
                                 } else {
                                     ActShipPtr->ShieldBonus = it_round(Level*2.0-2);
                                 }
-                            } else if ((26 == ProjID)
-                                    || ((27 < ProjID) && (43 > ProjID)))
+                            } else if ((PROJECT_SETTLERS == ProjID)
+                                    || ((PROJECT_LANDINGTROOPS < ProjID) && (PROJECT_NOMORE > ProjID)))
                             {
                                 Save.ImperatorState[ActPlayer-1] += 10;
                             }
-                            if ((26 == ProjID) || (27 == ProjID))
+                            if ((PROJECT_SETTLERS == ProjID) || (PROJECT_LANDINGTROOPS == ProjID))
                             {
                                 PlanetHeader->Population -= 10;
                             }
@@ -638,7 +638,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             (void) my_strcpy(_s, PlanetHeader->PName);
                             WRITE(171,27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
 
-                            if (0 < ProjID)
+                            if (PROJECT_NONE < ProjID)
                             {
                                 _s=my_strcpy(s, PText[583]);  // baut
                                 *_s++ = ' ';
@@ -646,8 +646,8 @@ void ROTATEPLANETS(uint8 ActSys)
                             } else {
                                 switch (ProjID)
                                 {
-                                    case -3: (void) my_strcpy(s, _PT_Biosphaere_gereinigt);    break;
-                                    case -2: (void) my_strcpy(s, _PT_Infrastructur_repariert); break;
+                                    case PROJECT_CLEAR_BIOPHERE: (void) my_strcpy(s, _PT_Biosphaere_gereinigt);    break;
+                                    case PROJECT_REPAIR_INFRA:   (void) my_strcpy(s, _PT_Infrastructur_repariert); break;
                                     default: (void) my_strcpy(s, _PT_IndustrAnlage_repariert);
                                 }
                             }
@@ -702,9 +702,10 @@ void ROTATEPLANETS(uint8 ActSys)
 //                            REFRESHDISPLAY();
                             /* if we did build a ship or a settler or a landing troop, build another one... else no new project is selected */
                             if ((( 8  > PlanetHeader->ProjectID) || (24  < PlanetHeader->ProjectID))
-                              && (26 != PlanetHeader->ProjectID) && (27 != PlanetHeader->ProjectID))
+                              && (PROJECT_SETTLERS      != PlanetHeader->ProjectID)
+                              && (PROJECT_LANDINGTROOPS != PlanetHeader->ProjectID))
                             {
-                                PlanetHeader->ProjectID = 0;
+                                PlanetHeader->ProjectID = PROJECT_NONE;
                             }
                             if (!Save.PlayMySelf)
                             {
@@ -712,10 +713,10 @@ void ROTATEPLANETS(uint8 ActSys)
                             }
                         }
 
-                        if (((l == 1) || ((PlanetHeader->ProjectID>=-3) && (PlanetHeader->ProjectID<=0)))
+                        if (((l == 1) || ((PROJECT_CLEAR_BIOPHERE <= PlanetHeader->ProjectID) && (PROJECT_NONE >= PlanetHeader->ProjectID)))
                             && ((Save.CivPlayer[ActPlayer-1] == 0) || Save.PlayMySelf))
                         {
-                            PlanetHeader->ProjectID = 0;
+                            PlanetHeader->ProjectID = PROJECT_NONE;
                             for(k = 8; k <= 24; k++)
                             {
                                 if ((Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[k]] <= 0)
@@ -730,13 +731,13 @@ void ROTATEPLANETS(uint8 ActSys)
                                     if (((PlanetHeader->ProjectID==8) || (PlanetHeader->ProjectID==9))
                                         && (Save.WarPower[ActPlayer-1]>40))
                                     {
-                                        PlanetHeader->ProjectID = 0;
+                                        PlanetHeader->ProjectID = PROJECT_NONE;
                                     }
                                 }
                             }
                             if ((ActPlayer == 8) && (Save.WarPower[7]>8000))
                             {
-                                PlanetHeader->ProjectID = 0;
+                                PlanetHeader->ProjectID = PROJECT_NONE;
                             }
 
                             /* *** DCON`s begrenzen *** */
@@ -755,18 +756,18 @@ void ROTATEPLANETS(uint8 ActSys)
                                         (LEVEL_WAR == Save.WarState[ActPlayer-1][7]) || (LEVEL_COLDWAR == Save.WarState[ActPlayer-1][7]))
                                     {
                                         /* Krieg mit anderer Zivi */
-                                        if (ActPProjects->data[27]<1)
+                                        if (1 > ActPProjects->data[PROJECT_LANDINGTROOPS])
                                         {
-                                            PlanetHeader->ProjectID = 27;
+                                            PlanetHeader->ProjectID = PROJECT_LANDINGTROOPS;
                                         }
                                         while ((NULL != MyShipPtr) && (NULL != MyShipPtr->NextShip))
                                         {
                                             if ((0 == (MyShipPtr->Ladung & MASK_LTRUPPS))
-                                                && (0 < ActPProjects->data[27])
+                                                && (0 < ActPProjects->data[PROJECT_LANDINGTROOPS])
                                                 && (ShipData(MyShipPtr->SType).MaxLoad >
                                                     (((MyShipPtr->Ladung & MASK_SIEDLER) / 16) + (MyShipPtr->Ladung & MASK_LTRUPPS))))
                                             {
-                                                ActPProjects->data[27]--;
+                                                ActPProjects->data[PROJECT_LANDINGTROOPS]--;
                                                 MyShipPtr->Ladung++;
                                             }
                                             ActShipPtr = MyShipPtr->NextShip;
@@ -780,15 +781,15 @@ void ROTATEPLANETS(uint8 ActSys)
                                                 && (Save.GlobalFlags[ActPlayer-1] == GFLAG_EXPLORE))
                                     {
                                         /* *** Noch nicht alle Planeten des Systems besiedelt! *** */
-                                        if (ActPProjects->data[26] >= ShipData(MyShipPtr->SType).MaxLoad)
+                                        if (ActPProjects->data[PROJECT_SETTLERS] >= ShipData(MyShipPtr->SType).MaxLoad)
                                         {
                                             for(k = 1; k <= ShipData(MyShipPtr->SType).MaxLoad; k++)
                                             {
-                                                if ((ActPProjects->data[26]>0)
+                                                if ((ActPProjects->data[PROJECT_SETTLERS]>0)
                                                     && (ShipData(MyShipPtr->SType).MaxLoad >
                                                         (((MyShipPtr->Ladung & MASK_SIEDLER) / 16) + (MyShipPtr->Ladung & MASK_LTRUPPS))))
                                                 {
-                                                    ActPProjects->data[26]--;
+                                                    ActPProjects->data[PROJECT_SETTLERS]--;
                                                     MyShipPtr->Ladung += 16;
                                                 }
                                             }
@@ -796,7 +797,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                             MyShipPtr->PosY = it_round(PlanetHeader->PosY);
                                             l = GOTONEXTPLANET(i+1,MyShipPtr);
                                         } else {
-                                            PlanetHeader->ProjectID = 26;
+                                            PlanetHeader->ProjectID = PROJECT_SETTLERS;
                                         }
                                     } else if (((SystemHeader[i].State & STATE_TACTICAL) == STATE_ALL_OCC)
                                                 && (Save.GlobalFlags[ActPlayer-1] == GFLAG_EXPLORE))
@@ -806,36 +807,38 @@ void ROTATEPLANETS(uint8 ActSys)
                                         {
                                             l = 2;
                                         } else {
-                                            if ((ActPProjects->data[26]+ActPProjects->data[27]) > ShipData(MyShipPtr->SType).MaxLoad)
+                                            if ((ActPProjects->data[PROJECT_SETTLERS]+ActPProjects->data[PROJECT_LANDINGTROOPS]) > ShipData(MyShipPtr->SType).MaxLoad)
                                             {
                                                 MyShipPtr->PosX = it_round(PlanetHeader->PosX);
                                                 MyShipPtr->PosY = it_round(PlanetHeader->PosY);
                                                 for(k = 1; k <= ShipData(MyShipPtr->SType).MaxLoad; k++)
                                                 {
-                                                    if ((ActPProjects->data[26]>1)
+                                                    if ((ActPProjects->data[PROJECT_SETTLERS]>1)
                                                         && (ShipData(MyShipPtr->SType).MaxLoad >
                                                         (((MyShipPtr->Ladung & MASK_SIEDLER) / 16) + (MyShipPtr->Ladung & MASK_LTRUPPS))))
                                                     {
-                                                        ActPProjects->data[26]--;
+                                                        ActPProjects->data[PROJECT_SETTLERS]--;
                                                         MyShipPtr->Ladung += 16;
                                                     }
-                                                    if ((ActPProjects->data[27]>1)
+                                                    if ((ActPProjects->data[PROJECT_LANDINGTROOPS]>1)
                                                         && (ShipData(MyShipPtr->SType).MaxLoad >
                                                         (((MyShipPtr->Ladung & MASK_SIEDLER) / 16) + (MyShipPtr->Ladung & MASK_LTRUPPS))))
                                                     {
-                                                        ActPProjects->data[27]--;
+                                                        ActPProjects->data[PROJECT_LANDINGTROOPS]--;
                                                         MyShipPtr->Ladung++;
                                                     }
                                                 }
                                                 l = GOTONEXTSYSTEM(i+1,MyShipPtr);
                                             } else {
-                                                if (ActPProjects->data[26]<ShipData(MyShipPtr->SType).MaxLoad)
-                                                    { PlanetHeader->ProjectID = 26; }
-                                                if (ActPProjects->data[27]<2)
+                                                if (ActPProjects->data[PROJECT_SETTLERS]<ShipData(MyShipPtr->SType).MaxLoad)
                                                 {
-                                                    PlanetHeader->ProjectID = 27;
+                                                    PlanetHeader->ProjectID = PROJECT_SETTLERS;
+                                                }
+                                                if (2 > ActPProjects->data[PROJECT_LANDINGTROOPS])
+                                                {
+                                                    PlanetHeader->ProjectID = PROJECT_LANDINGTROOPS;
                                                 } else {
-                                                    PlanetHeader->ProjectID = 26;
+                                                    PlanetHeader->ProjectID = PROJECT_SETTLERS;
                                                 }
                                             }
                                         }
@@ -867,7 +870,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     {
                                         if ((PlanetHeader->FirstShip.NextShip->NextShip != NULL)
                                             && ((SystemHeader[i].State & STATE_TACTICAL) == STATE_ALL_OCC)
-                                            && (ActPProjects->data[26] == 0))
+                                            && (0 == ActPProjects->data[PROJECT_SETTLERS]))
                                         {
                                             if ((((PlanetHeader->Water / PlanetHeader->Size)<55) && EXISTSPLANET(ActPlayer,i+1,1))
                                                 || (((PlanetHeader->Water / PlanetHeader->Size)>56) && EXISTSPLANET(ActPlayer,i+1,2)))
@@ -927,9 +930,9 @@ void ROTATEPLANETS(uint8 ActSys)
                                 { PlanetHeader->ProjectID = 1; }
                             if (0 == PlanetHeader->ProjectID)
                             {
-                                if (200 > PlanetHeader->Industrie)     { PlanetHeader->ProjectID = -1; }
-                                if (200 > PlanetHeader->Infrastruktur) { PlanetHeader->ProjectID = -2; }
-                                if (200 > PlanetHeader->Biosphaere)    { PlanetHeader->ProjectID = -3; }
+                                if (200 > PlanetHeader->Industrie)     { PlanetHeader->ProjectID = PROJECT_REPAIR_INDUSTRY; }
+                                if (200 > PlanetHeader->Infrastruktur) { PlanetHeader->ProjectID = PROJECT_REPAIR_INFRA; }
+                                if (200 > PlanetHeader->Biosphaere)    { PlanetHeader->ProjectID = PROJECT_CLEAR_BIOPHERE; }
                             } else if (0 < PlanetHeader->ProjectID)
                             {
                                 PlanetHeader->XProjectCosts = Save.ProjectCosts[ActPlayer-1].data[PlanetHeader->ProjectID];
@@ -937,9 +940,9 @@ void ROTATEPLANETS(uint8 ActSys)
                         }
                         if ((0 == Save.CivPlayer[ActPlayer-1]) || (Save.PlayMySelf))
                         {
-                            if (170 > PlanetHeader->Industrie)     { PlanetHeader->ProjectID = -1; }
-                            if (170 > PlanetHeader->Infrastruktur) { PlanetHeader->ProjectID = -2; }
-                            if (170 > PlanetHeader->Biosphaere)    { PlanetHeader->ProjectID = -3; }
+                            if (170 > PlanetHeader->Industrie)     { PlanetHeader->ProjectID = PROJECT_REPAIR_INDUSTRY; }
+                            if (170 > PlanetHeader->Infrastruktur) { PlanetHeader->ProjectID = PROJECT_REPAIR_INFRA; }
+                            if (170 > PlanetHeader->Biosphaere)    { PlanetHeader->ProjectID = PROJECT_CLEAR_BIOPHERE; }
                         }
                         PMoney = it_round(PProd*(PlanetHeader->Infrastruktur/17.0+PlanetHeader->Industrie/17.0+PlanetHeader->Population/17.0))+1;
                         while (PMoney>MAXPMONEY)
@@ -1645,7 +1648,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         PlanetHeader->Industrie = 180;
                         PlanetHeader->ProjectPtr = (ByteArr42*) (AllocMem(sizeof(ByteArr42),MEMF_CLEAR));
                         PlanetHeader->ProjectPtr->data[1]  = 1;
-                        PlanetHeader->ProjectPtr->data[26] = 5;
+                        PlanetHeader->ProjectPtr->data[PROJECT_SETTLERS] = 5;
                         for(i = 0; i < (MAXCIVS-1); i++)
                         {
                             if (i != (ActPlayer))

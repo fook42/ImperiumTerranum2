@@ -758,21 +758,25 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
         if (((PLANET_MyPlanetHeader->Class==CLASS_DESERT) || (PLANET_MyPlanetHeader->Class==CLASS_HALFEARTH)
           || (PLANET_MyPlanetHeader->Class==CLASS_EARTH)  || (PLANET_MyPlanetHeader->Class==CLASS_ICE)
           || (PLANET_MyPlanetHeader->Class==CLASS_STONES) || (PLANET_MyPlanetHeader->Class==CLASS_WATER))
-         && ( (((0 == ShipsInOrbit) || (ActPlayerFlag == ShipsInOrbit)) && (0 == ActPProjects->data[34]) && (0 == ActPProjects->data[40]))
-          || (NULL == PLANET_MyPlanetHeader->ProjectPtr) || (ActPlayerFlag == l)))
+         && ( (((0 == ShipsInOrbit) || (ActPlayerFlag == ShipsInOrbit))
+             && (0 == ActPProjects->data[PROJECT_SDI])
+             && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
+            || (NULL == PLANET_MyPlanetHeader->ProjectPtr) || (ActPlayerFlag == l)))
         {
             GadSet[GadCnt++] = GADGET_LADEN;
         }
         if (((PLANET_MyPlanetHeader->Class==CLASS_DESERT) || (PLANET_MyPlanetHeader->Class==CLASS_HALFEARTH)
           || (PLANET_MyPlanetHeader->Class==CLASS_EARTH)  || (PLANET_MyPlanetHeader->Class==CLASS_ICE)
           || (PLANET_MyPlanetHeader->Class==CLASS_STONES) || (PLANET_MyPlanetHeader->Class==CLASS_WATER))
-          && ((NULL == PLANET_MyPlanetHeader->ProjectPtr) || (0 != l) || (0 != ActPProjects->data[34]) || (0 != ActPProjects->data[40]))
+          && ((NULL == PLANET_MyPlanetHeader->ProjectPtr) || (0 != l)
+             || (0 != ActPProjects->data[PROJECT_SDI])
+             || (0 != ActPProjects->data[PROJECT_SPACEPHALANX]))
           && ((ActPlayerFlag == l) || (0 == ShipsInOrbit)))
         {
             GadSet[GadCnt++] = GADGET_ANGRIFF;
         }
         if ((ActPlayerFlag == l) && (0 == ShipsInOrbit)
-         && (((0 == ActPProjects->data[34]) && (0 == ActPProjects->data[40]))
+         && (((0 == ActPProjects->data[PROJECT_SDI]) && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
             || (NULL == PLANET_MyPlanetHeader->ProjectPtr)))
         {
             GadSet[GadCnt++] = GADGET_LANDUNG;
@@ -895,26 +899,26 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                         if ((MouseX(0)>=112) && (MouseX(0)<=212))
                                         {
                                             if ((MouseY(0)>=164) && (MouseY(0)<=194)
-                                            && (ActPProjects->data[26]>0)
+                                            && (0 < ActPProjects->data[PROJECT_SETTLERS])
                                             && (ShipData(PLANET_MyShipPtr->SType).MaxLoad > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
                                             && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
                                             && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
-                                            && (PLANET_MyShipPtr->Fracht == 0))
+                                            && (0 == PLANET_MyShipPtr->Fracht))
                                             {
                                                 PLAYSOUND(0,300);
-                                                ActPProjects->data[26]--;
+                                                --(ActPProjects->data[PROJECT_SETTLERS]);
                                                 PLANET_MyShipPtr->Ladung += 16;
-                                                SOut--;
+                                                --SOut;
                                             }
                                             if ((MouseY(0)>=228) && (MouseY(0)<=258)
-                                            && (ActPProjects->data[26]<250)
-                                            && ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER)>0)
-                                            && (PLANET_MyShipPtr->Fracht == 0))
+                                            && (250 > ActPProjects->data[PROJECT_SETTLERS])
+                                            && (0 < (PLANET_MyShipPtr->Ladung & MASK_SIEDLER))
+                                            && (0 == PLANET_MyShipPtr->Fracht))
                                             {
                                                 PLAYSOUND(0,300);
-                                                ActPProjects->data[26]++;
+                                                ++(ActPProjects->data[PROJECT_SETTLERS]);
                                                 PLANET_MyShipPtr->Ladung -= 16;
-                                                SOut++;
+                                                ++SOut;
                                             }
                                         }
                                     }
@@ -924,25 +928,25 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                         if ((MouseX(0)>=227) && (MouseX(0)<=327))
                                         {
                                             if ((MouseY(0)>=164) && (MouseY(0)<=194)
-                                            && (ActPProjects->data[27]>0)
+                                            && (0 < ActPProjects->data[PROJECT_LANDINGTROOPS])
                                             && (ShipData(PLANET_MyShipPtr->SType).MaxLoad>((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
                                             && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
                                             && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
-                                            && (PLANET_MyShipPtr->Fracht == 0)
+                                            && (0 == PLANET_MyShipPtr->Fracht)
                                             && (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (LTOut>0)))
                                             {
                                                 PLAYSOUND(0,300);
-                                                --(ActPProjects->data[27]);
+                                                --(ActPProjects->data[PROJECT_LANDINGTROOPS]);
                                                 ++(PLANET_MyShipPtr->Ladung);
                                                 --LTOut;
                                             }
                                             if ((MouseY(0)>=228) && (MouseY(0)<=258)
-                                            && (ActPProjects->data[27]<250)
-                                            && ((PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)>0)
-                                            && (PLANET_MyShipPtr->Fracht == 0))
+                                            && (250 > ActPProjects->data[PROJECT_LANDINGTROOPS])
+                                            && (0 < (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
+                                            && (0 == PLANET_MyShipPtr->Fracht))
                                             {
                                                 PLAYSOUND(0,300);
-                                                ++(ActPProjects->data[27]);
+                                                ++(ActPProjects->data[PROJECT_LANDINGTROOPS]);
                                                 --(PLANET_MyShipPtr->Ladung);
                                                 ++LTOut;
                                             }
@@ -950,7 +954,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                     }
                                     if (((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
                                        ||((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0))
-                                      || ((ActPProjects->data[34] == 0) && (ActPProjects->data[40] == 0)))
+                                      || ((0 == ActPProjects->data[PROJECT_SDI]) && (0 == ActPProjects->data[PROJECT_SPACEPHALANX])))
                                      && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
                                     {
                                         do
@@ -1002,7 +1006,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                     PLANET_MyPlanetHeader->PFlags = ActPlayerFlag | FLAG_KNOWN;
                                     PLANET_MyPlanetHeader->Ethno = ActPlayerFlag;
                                     PLANET_MyPlanetHeader->Population += 10*SOut;
-                                    ActPProjects->data[26] = 0;
+                                    ActPProjects->data[PROJECT_SETTLERS] = 0;
                                     if (!OldCiviPlanet)
                                     {
                                         if (PLANET_MyPlanetHeader->Class == CLASS_EARTH)

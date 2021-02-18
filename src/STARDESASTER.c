@@ -187,7 +187,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                                 {
                                     ActPPRoject = (ByteArr42*) MyPlanetHeader->ProjectPtr;
                                     ActPPRoject->data[2] = 0;
-                                    ActPPRoject->data[39] = 0;
+                                    ActPPRoject->data[PROJECT_VON_NEUMANN] = 0;
                                     for(k = 1; k <= 42; k++)
                                     {
                                         if (0 < ProjectNeedsTech[k])
@@ -196,7 +196,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                                         }
                                     }
                                 }
-                                MyPlanetHeader->ProjectID = -3;
+                                MyPlanetHeader->ProjectID = PROJECT_CLEAR_BIOPHERE;
                                 MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*0.7);
                                 MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
                                 while (NULL != MyShipPtr)
@@ -297,7 +297,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                                             }
                                         // }
                                     }
-                                    MyPlanetHeader->ProjectID = -3;
+                                    MyPlanetHeader->ProjectID = PROJECT_CLEAR_BIOPHERE;
                                     MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
                                     while (NULL != MyShipPtr)
                                     {

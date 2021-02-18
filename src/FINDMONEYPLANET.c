@@ -25,12 +25,12 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
                 if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == CivFlag)
                 {
                     ActPProject = MyPlanetHeader->ProjectPtr;
-                    l = ActPProject->data[25];
-                    for(k = 28; k <= 42; k++)
+                    l = ActPProject->data[PROJECT_SPACEDOCK];
+                    for(k = 28; k < 43; ++k)
                     {
                         if (ActPProject->data[k] > 0 )
                         {
-                            l++;
+                            ++l;
                         }
                     }
                 }
@@ -64,7 +64,8 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
         {
             XProjectID = (rand()%42)+1;
         }
-        while (((25 != XProjectID) && ((28 > XProjectID) || (XProjectID > 42))) || (ActPProject->data[XProjectID]<=0));
+        while (((PROJECT_SPACEDOCK != XProjectID) && ((PROJECT_CONT_UNION > XProjectID) || (PROJECT_WEATHERSTATION < XProjectID)))
+             || (1 > ActPProject->data[XProjectID]));
         ActPProject->data[XProjectID] = 0;
         Save.Staatstopf[CivVar] += (Save.ProjectCosts[CivVar].data[XProjectID] / 29);
     }

@@ -28,11 +28,12 @@ void FINDENEMYOBJECT(uint8 ActSys, r_ShipHeader* ShipPtr)
         CivVar2 = GETCIVVAR(MyPlanetHeader->PFlags);
         if ((0 != CivVar2) && (CivVar2 != CivVar))
         {
-            if ((Save.WarState[CivVar-1][CivVar2-1]==LEVEL_WAR) ||
-                (Save.WarState[CivVar-1][CivVar2-1]==LEVEL_COLDWAR))
+            if ((LEVEL_WAR     == Save.WarState[CivVar-1][CivVar2-1]) ||
+                (LEVEL_COLDWAR == Save.WarState[CivVar-1][CivVar2-1]))
             {
-                if (((MyShipPtr->Ladung & MASK_LTRUPPS)>0) || (MyPlanetHeader->FirstShip.NextShip != NULL)
-                    || (ActPProjects->data[34]>0) || (ActPProjects->data[40]>0) || (CivVar == 9))
+                if ((0 < (MyShipPtr->Ladung & MASK_LTRUPPS)) || (NULL != MyPlanetHeader->FirstShip.NextShip)
+                    || (0 < ActPProjects->data[PROJECT_SDI])
+                    || (0 < ActPProjects->data[PROJECT_SPACEPHALANX]) || (9 == CivVar))
                 {
                     DistNew = it_round((double) abs(MyPlanetHeader->PosX-MyShipPtr->PosX));
                     if (it_round((double) abs(MyPlanetHeader->PosY - MyShipPtr->PosY)) > DistNew)

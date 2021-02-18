@@ -21,8 +21,8 @@ void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner)
         {
             Save.ProjectCosts[GETCIVVAR(NewOwner)-1              ].data[i] = 0;
             Save.ProjectCosts[GETCIVVAR(MyPlanetHeader->PFlags)-1].data[i] = abs(Year)*i*11;
-            if ((Save.CivPlayer[GETCIVVAR(NewOwner)-1              ] != 0)
-             || (Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1] != 0))
+            if ((0 != Save.CivPlayer[GETCIVVAR(NewOwner)-1              ])
+             || (0 != Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1]))
             {
                 CPJ_Window=MAKEWINDOW(85,118,341,83,MyScreen[0]);
                 if (NULL != CPJ_Window)

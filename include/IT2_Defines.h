@@ -198,4 +198,70 @@ enum {  SCREEN_PLANET = 1,
 #define SHIPDATA_OFFSET     8
 #define ShipData(...)       ShipData[(__VA_ARGS__) - SHIPDATA_OFFSET]
 
+
+#define PROJECT_CLEAR_BIOPHERE  -3
+#define PROJECT_REPAIR_INFRA    -2
+#define PROJECT_REPAIR_INDUSTRY -1
+#define PROJECT_NONE            0
+#define PROJECT_SPACEDOCK       25
+#define PROJECT_SETTLERS        26
+#define PROJECT_LANDINGTROOPS   27
+#define PROJECT_CONT_UNION      28
+#define PROJECT_GLOBAL_UNION    29
+#define PROJECT_RECYCLINGPLANT  30
+#define PROJECT_FUSIONPOWER     31
+#define PROJECT_HYDROPOWER      32
+#define PROJECT_PART_ACCEL      33
+#define PROJECT_SDI             34
+#define PROJECT_INTERNET        35
+#define PROJECT_VIRT_UNIVERSITY 36
+#define PROJECT_INT_PLANT       37
+#define PROJECT_INFO_HIGHWAY    38
+#define PROJECT_VON_NEUMANN     39
+#define PROJECT_SPACEPHALANX    40
+#define PROJECT_MICROIDS        41
+#define PROJECT_WEATHERSTATION  42
+#define PROJECT_NOMORE          43
+
+
+/*Raumdock      25
+Siedler-Einheit
+Landungstruppen
+Kontinentale Union
+Globale Union
+Recycling-Anlage
+Fusions-Kraftwerk
+Hydrolyse-Kraftwerk
+Teilchenbeschleuniger
+SDI
+Internet
+virtuelle Universit�t
+intelligente Fabrik
+Informationhighway
+von-Neumann-Sonde
+Spacephalanx
+Microiden
+Wetter-Station  42
+*/
+
+/*Spacedock
+Seddlers
+Landingtroops
+Continental Union
+Global Union
+Recyclingplant
+Fusion powerplant
+Hydrolytic powerplant
+Particleaccelerator
+SDI
+Internet
+Virtual University
+Intelligent Factory
+Informationhighway
+von-Neumann-probe
+Spacephalanx
+Microids
+Weather-Station */
+
+
 #endif

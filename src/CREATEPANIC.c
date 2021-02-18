@@ -24,49 +24,49 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
     MyPlanetHeader = PPtr;
 
     ActPProjects = MyPlanetHeader->ProjectPtr;
-    TheProject = 0;
+    TheProject = PROJECT_NONE;
     if ((0 == (Year % 10)) && (((Year / 10)&1) == (PlanetNum&1)))
     {
         _s1 = PText[559];
-        if (0 == ActPProjects->data[41])
+        if (0 == ActPProjects->data[PROJECT_MICROIDS])
         {
-            if (0 == ActPProjects->data[30])
+            if (0 == ActPProjects->data[PROJECT_RECYCLINGPLANT])
             {
                 /* RECYCLINGANLAGE */
-                if ((5500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[30]] <= 0)
-                        && (30 != MyPlanetHeader->ProjectID))
+                if ((5500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_RECYCLINGPLANT]] <= 0)
+                        && (PROJECT_RECYCLINGPLANT != MyPlanetHeader->ProjectID))
                 {
-                    TheProject = 30;
+                    TheProject = PROJECT_RECYCLINGPLANT;
                     _s1 = PText[560];
                 } else {
                     return;
                 }
-            } else if (0 == ActPProjects->data[32])
+            } else if (0 == ActPProjects->data[PROJECT_HYDROPOWER])
             {
                 /* HYDROKRAFTWERK */
-                if ((7000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[32]] <= 0)
-                        && (32 != MyPlanetHeader->ProjectID))
+                if ((7000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_HYDROPOWER]] <= 0)
+                        && (PROJECT_HYDROPOWER != MyPlanetHeader->ProjectID))
                 {
-                    TheProject = 32;
+                    TheProject = PROJECT_HYDROPOWER;
                 } else {
                     return;
                 }
-            } else if (0 == ActPProjects->data[31])
+            } else if (0 == ActPProjects->data[PROJECT_FUSIONPOWER])
             {
                 /* FUSIONSKRAFTWERK */
-                if ((9000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[31]] <= 0)
-                        && (31 != MyPlanetHeader->ProjectID))
+                if ((9000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_FUSIONPOWER]] <= 0)
+                        && (PROJECT_FUSIONPOWER != MyPlanetHeader->ProjectID))
                 {
-                    TheProject = 31;
+                    TheProject = PROJECT_FUSIONPOWER;
                 } else {
                     return;
                 }
-            } else if (0 == ActPProjects->data[42])
+            } else if (0 == ActPProjects->data[PROJECT_WEATHERSTATION])
             {
-                if ((11500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[42]] <= 0)
-                        && (42 != MyPlanetHeader->ProjectID))
+                if ((11500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_WEATHERSTATION]] <= 0)
+                        && (PROJECT_WEATHERSTATION != MyPlanetHeader->ProjectID))
                 {
-                    TheProject = 42;
+                    TheProject = PROJECT_WEATHERSTATION;
                     _s1 = PText[561];
                 } else {
                     return;
@@ -93,17 +93,17 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             i = rand()%10;
         }
         switch (i) {
-        case 0: if (0 == ActPProjects->data[28])
+        case 0: if (0 == ActPProjects->data[PROJECT_CONT_UNION])
             {   /*kontinentale Union*/
-                TheProject = 28;
+                TheProject = PROJECT_CONT_UNION;
                 _s1 = PText[562];   // Bürgerkrieg ausgebrochen
             } else {
                 return;
             }; break;
 
-        case 1: if (0 == ActPProjects->data[29])
+        case 1: if (0 == ActPProjects->data[PROJECT_GLOBAL_UNION])
             {   /*globale Union*/
-                TheProject = 29;
+                TheProject = PROJECT_GLOBAL_UNION;
                 _s1 = PText[563];   // Kriege zwischen den Nationen
             } else {
                 return;
@@ -126,7 +126,10 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
                 GetPlanet[   GETCIVVAR(MyPlanetHeader->Ethno)-1] = MyPlanetHeader;
                 GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1] = ActSys;
                 memcpy(&OldPlanet, MyPlanetHeader, sizeof(r_PlanetHeader));
-                if (0 != Save.CivPlayer[ActPlayer-1]) { TheProject = -1; }
+                if (0 != Save.CivPlayer[ActPlayer-1])
+                {
+                    TheProject = -1;
+                }
                 _s1 = PText[566];   // Schwere ethnische Konflikte ausgebrochen
                 if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
                 {
@@ -170,8 +173,8 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
     {
         INFORMUSER();
         if ((-1 == TheProject) ||
-            (28 == TheProject) ||
-            (29 == TheProject))
+            (PROJECT_CONT_UNION   == TheProject) ||
+            (PROJECT_GLOBAL_UNION == TheProject))
         {
             if (NULL != ModC)
             {
@@ -200,7 +203,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         *_s1++ = ' ';
         (void) my_strcpy(_s1, MyPlanetHeader->PName);
         WRITE(171,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
-        if ((0 < TheProject) && (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[TheProject]]))
+        if ((PROJECT_NONE < TheProject) && (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[TheProject]]))
         {
             _s1=my_strcpy(s, PText[570]);   // Bürger fordern
             *_s1++ = ' ';

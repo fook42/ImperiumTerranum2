@@ -12,22 +12,23 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
     char    s[4];
     char*   _s;
 
+    RECT_RP1_C0(56,399,256,418);
     RECT_RP1_C0(56,426,327,448);
     l = 0;
     s[0]=0;
-    if (0 != MyPlanetHeader->ProjectID)
+    if (PROJECT_NONE != MyPlanetHeader->ProjectID)
     {
-        if (0 < MyPlanetHeader->ProjectID)
+        if (PROJECT_NONE < MyPlanetHeader->ProjectID)
         {
             _s = Project.data[MyPlanetHeader->ProjectID];
             l = MyPlanetHeader->XProjectPayed*100 / (MyPlanetHeader->XProjectCosts+1);
         } else {
             switch (MyPlanetHeader->ProjectID) {
-                case -3:{
+                case PROJECT_CLEAR_BIOPHERE:{
                             _s = PText[163];
                             l = MyPlanetHeader->Biosphaere >> 1;
                         }; break;
-                case -2:{
+                case PROJECT_REPAIR_INFRA:{
                             _s = PText[164];
                             l = MyPlanetHeader->Infrastruktur >> 1;
                         }; break;
@@ -38,11 +39,10 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
             }
         }
         WRITE_RP1(191,430,2,(1|WRITE_Center),3, _s);
+        if (l > 100) { l = 100; }
+        if (l < 0)   { l = 0; }
     }
 
-    RECT_RP1_C0(56,399,256,418);
-    if (l > 100) { l = 100; }
-    if (l < 0)   { l = 0; }
     (void) dez2out(l, 3, s);
     WRITE_RP1(278,402,4,1,1,s);
     RECT_RP1(4,56,399,56+(l*2),418);
@@ -207,7 +207,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     char    NewProject[26][30];             // 1..25
     uint32  ProjectRounds[26];              // 1..25
     sint16  ProjectNum[26], ProjectType[26];// 1..25
-    int     i, j;
+    int     i, j, ypos;
     sint32  l;
     uint8   blink;
     uint8   Ships, btx;
@@ -307,9 +307,9 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         WRITE_RP1(275,65,1,1,3,s);
     }
 
-    PProd = 11+(ActPProjects->data[31]+ActPProjects->data[37]+
-                ActPProjects->data[38]+ActPProjects->data[41]+
-                ActPProjects->data[42])*6;
+    PProd = 11+( ActPProjects->data[PROJECT_FUSIONPOWER] +ActPProjects->data[PROJECT_INT_PLANT]
+                +ActPProjects->data[PROJECT_INFO_HIGHWAY]+ActPProjects->data[PROJECT_MICROIDS]
+                +ActPProjects->data[PROJECT_WEATHERSTATION])*6;
     PMoney = it_round(PProd*(double)(MyPlanetHeader->Infrastruktur+MyPlanetHeader->Industrie+MyPlanetHeader->Population)/17.0)+1;
     while (PMoney>MAXPMONEY)
     {
@@ -353,7 +353,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 {
                     (void) my_strcpy(NewProject[j], PText[163]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Biosphaere)*PMoney / 9;
-                    ProjectNum[j] = -3;
+                    ProjectNum[j] = PROJECT_CLEAR_BIOPHERE;
                     ProjectType[j] = 1;
                     j++;
                 }
@@ -361,7 +361,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 {
                     (void) my_strcpy(NewProject[j], PText[164]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Infrastruktur)*PMoney / 9;
-                    ProjectNum[j] = -2;
+                    ProjectNum[j] = PROJECT_REPAIR_INFRA;
                     ProjectType[j] = 1;
                     j++;
                 }
@@ -369,7 +369,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 {
                     (void) my_strcpy(NewProject[j], PText[165]);
                     ProjectRounds[j] = (200-MyPlanetHeader->Industrie)*PMoney / 9;
-                    ProjectNum[j] = -1;
+                    ProjectNum[j] = PROJECT_REPAIR_INDUSTRY;
                     ProjectType[j] = 1;
                     j++;
                 }
@@ -383,18 +383,18 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         || (Save.ProjectCosts[ActPlayer-1].data[ProjectNeedsProject[i]] <= 0)))
                     {
                         /* nötiges Projekt vorhanden */
-                        if ((((0 < i) && (8 > i)) || (39 == i)) && (Save.ProjectCosts[ActPlayer-1].data[i]>0))
+                        if ((((0 < i) && (8 > i)) || (PROJECT_VON_NEUMANN == i)) && (Save.ProjectCosts[ActPlayer-1].data[i]>0))
                         {
                             DoIt = true;
                         }
                         /* Großprojekt noch nicht gebaut */
-                        if (((25 == i) || ((27 < i) && (39 > i)) || ((39 < i) && (43 > i)))
+                        if (((PROJECT_SPACEDOCK == i) || ((PROJECT_LANDINGTROOPS < i) && (PROJECT_VON_NEUMANN != i) && (PROJECT_NOMORE > i)))
                             && (0 == ActPProjects->data[i]))
                         {
                             DoIt = true;
                         }
                         /* Projekt noch nicht gebaut */
-                        if (((7 < i) && (25 > i)) || (26 == i) || (27 == i))
+                        if (((7 < i) && (PROJECT_SPACEDOCK > i)) || (PROJECT_SETTLERS == i) || (PROJECT_LANDINGTROOPS == i))
                         {
                             DoIt = true;
                         }
@@ -447,7 +447,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     WRITE_RP1(575,78+i*16,ProjectType[i],1,2,s);
                 }
                 btx = 1;
-                MyPlanetHeader->ProjectID = 0;
+                MyPlanetHeader->ProjectID = PROJECT_NONE;
                 do
                 {
                     Delay(RDELAY);
@@ -457,14 +457,16 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         if ((i != btx) && (i>=1) && (i<=j))
                         {
                             btx = i;
+                            ypos = 94;
                             for(i = 1; i <= j; ++i)
                             {
                                 if (i != btx)
                                 {
-                                    WRITE_RP1(365,78+i*16,ProjectType[i],1,2,NewProject[i]);
+                                    WRITE_RP1(365,ypos,ProjectType[i],1,2,NewProject[i]);
                                 } else {
-                                    WRITE_RP1(365,78+i*16,ProjectType[i],5,2,NewProject[i]);
+                                    WRITE_RP1(365,ypos,ProjectType[i],5,2,NewProject[i]);
                                 }
+                                ypos += 16;
                             }
                         }
 
@@ -475,16 +477,16 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         }
                     }
                 }
-                while ((0 == MyPlanetHeader->ProjectID) && RMB_NOTPRESSED);
+                while ((PROJECT_NONE == MyPlanetHeader->ProjectID) && RMB_NOTPRESSED);
                 if (RMB_PRESSED)
                 {
                     /* cancel any project-work .. */
-                    MyPlanetHeader->ProjectID = 0;
+                    MyPlanetHeader->ProjectID = PROJECT_NONE;
                     PLAYSOUND(0,300);
                 } else {
                     /* new project selected .. */
                     MyPlanetHeader->XProjectCosts = ProjectRounds[btx];
-                    if (MyPlanetHeader->ProjectID>0)
+                    if (PROJECT_NONE < MyPlanetHeader->ProjectID)
                     {
                         (void) my_strcpy(s, Project.data[MyPlanetHeader->ProjectID]);
                     }
@@ -493,7 +495,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 WRITEPROJECTSSTATUS(MyPlanetHeader, ActPProjects);
             } else if ((MouseX(1) > 197) && (MouseX(1) < 329)
                     && (MouseY(1) > 454) && (MouseY(1) < 481)
-                    && (MyPlanetHeader->ProjectID>0))
+                    && (PROJECT_NONE < MyPlanetHeader->ProjectID))
             {
                 CLICKRECT(MyRPort_PTR[1],197,455,328,481,2);
 
@@ -513,6 +515,8 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 WRITE( 70,106,2,WRITE_Center,RPort_PTR,3,_PT_Kaufen);
                 MAKEWINBORDER(RPort_PTR,141,100,263,125,2,32,1);
                 WRITE(202,106,2,WRITE_Center,RPort_PTR,3,"Abbruch");
+
+                --ActPlayer;
                 b = false;
                 do
                 {
@@ -526,13 +530,13 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         b = true;
                         l = MyPlanetHeader->XProjectCosts-MyPlanetHeader->XProjectPayed;
                         if (l < 0) { l = 0; }
-                        if (l >= Save.Staatstopf[ActPlayer-1])
+                        if (l >= Save.Staatstopf[ActPlayer])
                         {
-                            MyPlanetHeader->XProjectPayed += Save.Staatstopf[ActPlayer-1];
-                            Save.Staatstopf[ActPlayer-1] = 0;
+                            MyPlanetHeader->XProjectPayed += Save.Staatstopf[ActPlayer];
+                            Save.Staatstopf[ActPlayer] = 0;
                         } else {
                             MyPlanetHeader->XProjectPayed = MyPlanetHeader->XProjectCosts;
-                            Save.Staatstopf[ActPlayer-1] -= l;
+                            Save.Staatstopf[ActPlayer] -= l;
                         }
                     }
                     if (RMB_PRESSED || (LMB_PRESSED
@@ -545,7 +549,9 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     }
                 }
                 while (!b);
+                ++ActPlayer;
                 CloseWindow(HKP_Window);
+
                 WRITECURRENTPROJECT(MyPlanetHeader);
             }
         }

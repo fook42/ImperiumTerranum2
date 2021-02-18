@@ -159,12 +159,12 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                     DrawMode = 1;
                     if (NULL != PlanetHeader->ProjectPtr)
                     {
-                        if (1 == PlanetHeader->ProjectPtr->data[25])
+                        if (1 == PlanetHeader->ProjectPtr->data[PROJECT_SPACEDOCK])
                         {
                             BltBitMapRastPort((struct BitMap*) &ImgBitMap4,544,32,MyRPort_PTR[0],x-18,y+10,15,14,192);
                         }
-                        if ((0 != PlanetHeader->ProjectPtr->data[34]) ||
-                            (0 != PlanetHeader->ProjectPtr->data[40]))
+                        if ((0 != PlanetHeader->ProjectPtr->data[PROJECT_SDI]) ||
+                            (0 != PlanetHeader->ProjectPtr->data[PROJECT_SPACEPHALANX]))
                         {
                             DrawMode = 5;
                         }

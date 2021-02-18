@@ -44,61 +44,62 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
     }
     srand((unsigned) time(&t));
 
-    if (ActPProjects->data[34]>0)
+    if (0 < ActPProjects->data[PROJECT_SDI])
     {
-        LandShield = it_round(1.6*ActPProjects->data[34]);
-        do{
-            switch (rand()%(5)) {
-            case 0: ShipShield -= GroundWeapon; break;
-            default: {
-                    LandShield -= ShipWeapon;
-                    HitCtr++;
-                }
-            }
-        }
-        while ((ShipShield>=0) && (LandShield>=0));
-        if (LandShield <= 0)
-        {
-            ActPProjects->data[34] = 0;
-            if (Visible)
-            {
-                PLAYSOUND(1,1100);
-            }
-        } else {
-            ActPProjects->data[34] = it_round(LandShield*100.0/9.0/10.0);
-        }
-    }
-
-    if ((ActPProjects->data[40]>0) && (ShipShield >= 0))
-    {
-        Delay(20);
-        LandShield = it_round(6.4*ActPProjects->data[40]);
+        LandShield = it_round(1.6*ActPProjects->data[PROJECT_SDI]);
         do
         {
-            switch (rand()%(5)) {
-            case 0: ShipShield -= GroundWeapon; break;
-            default: {
-                    LandShield -= ShipWeapon;
-                    HitCtr++;
-                }
+            if (0 == (rand()%5))
+            {
+                ShipShield -= GroundWeapon;
+            } else {
+                LandShield -= ShipWeapon;
+                ++HitCtr;
             }
         }
-        while ((ShipShield>=0) && (LandShield>=0));
-        if (LandShield <= 0)
+        while ((0 <= ShipShield) && (0 <= LandShield));
+        if (0 >= LandShield)
         {
-            ActPProjects->data[40] = 0;
+            ActPProjects->data[PROJECT_SDI] = 0;
             if (Visible)
             {
                 PLAYSOUND(1,1100);
             }
         } else {
-            ActPProjects->data[40] = it_round(LandShield*100.0/49.0/10.0);
+            ActPProjects->data[PROJECT_SDI] = it_round(LandShield*100.0/9.0/10.0);
         }
     }
 
-    if (ShipShield >= 0)
+    if ((0 < ActPProjects->data[PROJECT_SPACEPHALANX]) && (0 <= ShipShield))
     {
-        if ((ShipShield - MyShipPtr->ShieldBonus - MyShipPtr->Tactical*3)>0)
+        Delay(20);
+        LandShield = it_round(6.4*ActPProjects->data[PROJECT_SPACEPHALANX]);
+        do
+        {
+            if (0 == (rand()%5))
+            {
+                ShipShield -= GroundWeapon;
+            } else {
+                LandShield -= ShipWeapon;
+                ++HitCtr;
+            }
+        }
+        while ((0 <= ShipShield) && (0 <= LandShield));
+        if (0 >= LandShield)
+        {
+            ActPProjects->data[PROJECT_SPACEPHALANX] = 0;
+            if (Visible)
+            {
+                PLAYSOUND(1,1100);
+            }
+        } else {
+            ActPProjects->data[PROJECT_SPACEPHALANX] = it_round(LandShield*100.0/49.0/10.0);
+        }
+    }
+
+    if (0 <= ShipShield)
+    {
+        if (0 < (ShipShield - MyShipPtr->ShieldBonus - MyShipPtr->Tactical*3))
         {
             MyShipPtr->Shield = ShipShield - MyShipPtr->ShieldBonus - MyShipPtr->Tactical*3;
         } else {

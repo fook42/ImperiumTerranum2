@@ -219,7 +219,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     if (NULL != MyPlanetHeader->ProjectPtr)
                                                     {
                                                         ActPProjects = MyPlanetHeader->ProjectPtr;
-                                                        if ((ActPProjects->data[34]>0) || (ActPProjects->data[40]>0))
+                                                        if ((0 < ActPProjects->data[PROJECT_SDI])
+                                                         || (0 < ActPProjects->data[PROJECT_SPACEPHALANX]))
                                                         {
                                                             MOVESHIP_SMALLANDING(MyPlanetHeader,MyShipPtr,ActSys);
                                                             return;
@@ -307,7 +308,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     GOTOWAR(MyShipPtr->Owner,MyPlanetHeader->PFlags);
                                                 }
                                                 ActPProjects = MyPlanetHeader->ProjectPtr;
-                                                if ((ActPProjects->data[34]>0) || (ActPProjects->data[40]>0))
+                                                if ((0 < ActPProjects->data[PROJECT_SDI])
+                                                 || (0 < ActPProjects->data[PROJECT_SPACEPHALANX]))
                                                 {
                                                     if ((Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1] != 0)
                                                      || (Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1] != 0))
@@ -327,7 +329,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     MyPlanetHeader->Infrastruktur = rand()%150;
                                                     MyPlanetHeader->XProjectCosts = 0;
                                                     MyPlanetHeader->XProjectPayed = 0;
-                                                    MyPlanetHeader->ProjectID     = 0;
+                                                    MyPlanetHeader->ProjectID     = PROJECT_NONE;
 
                                                     for(j = 1; j <= 42; j++)
                                                     {
@@ -376,7 +378,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     {
                                                         MyPlanetHeader->Ethno = MyShipPtr->Owner;
                                                     }
-                                                    MyPlanetHeader->ProjectID = 0;
+                                                    MyPlanetHeader->ProjectID = PROJECT_NONE;
                                                     MyShipPtr->Moving = 0;
                                                     if ((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) != 0)
                                                     {

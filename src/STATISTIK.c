@@ -47,22 +47,25 @@ void STATISTIK()
                 {
                     ActPProjects = MyPlanet->ProjectPtr;
                     Planeten++;
-                    Kreativitaet   += ActPProjects->data[33]+ActPProjects->data[35]+ActPProjects->data[36]
-                                     +ActPProjects->data[38]+ActPProjects->data[42];
-                    Produktivitaet += ActPProjects->data[31]+ActPProjects->data[37]+ActPProjects->data[38]
-                                     +ActPProjects->data[41]+ActPProjects->data[42];
-                    Buildings      += ActPProjects->data[30]+ActPProjects->data[31]+ActPProjects->data[35]
-                                     +ActPProjects->data[36]+ActPProjects->data[37]+ActPProjects->data[38]
-                                     +ActPProjects->data[39]+ActPProjects->data[41];
-                    if (ActPProjects->data[34] > 0) { Buildings++; }
-                    if (ActPProjects->data[40] > 0) { Buildings++; }
+                    Kreativitaet   += ActPProjects->data[PROJECT_PART_ACCEL]+ActPProjects->data[PROJECT_INTERNET]
+                                     +ActPProjects->data[PROJECT_VIRT_UNIVERSITY]+ActPProjects->data[PROJECT_INFO_HIGHWAY]
+                                     +ActPProjects->data[PROJECT_WEATHERSTATION];
+                    Produktivitaet += ActPProjects->data[PROJECT_FUSIONPOWER]+ActPProjects->data[PROJECT_INT_PLANT]
+                                     +ActPProjects->data[PROJECT_INFO_HIGHWAY]+ActPProjects->data[PROJECT_MICROIDS]
+                                     +ActPProjects->data[PROJECT_WEATHERSTATION];
+                    Buildings      += ActPProjects->data[PROJECT_RECYCLINGPLANT]+ActPProjects->data[PROJECT_FUSIONPOWER]
+                                     +ActPProjects->data[PROJECT_INTERNET]+ActPProjects->data[PROJECT_VIRT_UNIVERSITY]
+                                     +ActPProjects->data[PROJECT_INT_PLANT]+ActPProjects->data[PROJECT_INFO_HIGHWAY]
+                                     +ActPProjects->data[PROJECT_VON_NEUMANN]+ActPProjects->data[PROJECT_MICROIDS];
+                    if (0 < ActPProjects->data[PROJECT_SDI])          { ++Buildings; }
+                    if (0 < ActPProjects->data[PROJECT_SPACEPHALANX]) { ++Buildings; }
                     Bio     += MyPlanet->Biosphaere;
                     Infra   += MyPlanet->Infrastruktur;
                     Ind     += MyPlanet->Industrie;
                     Groesse += MyPlanet->Size;
                     if ((0 != MyPlanet->Ethno) && ((MyPlanet->PFlags & FLAG_CIV_MASK) != MyPlanet->Ethno))
                     {
-                        Eth++;
+                        ++Eth;
                     }
                 }
             }
