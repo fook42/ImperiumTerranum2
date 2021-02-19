@@ -27,7 +27,7 @@ bool INITLANG()
     }
     (void)     Seek(FHandle, 0, OFFSET_END);
     TextMemL = Seek(FHandle, 0, OFFSET_BEGINNING);
-    TextMemA = AllocMem(TextMemL, MEMF_CLEAR);
+    TextMemA = my_AllocMem(TextMemL, MEMF_CLEAR);
     if (NULL == TextMemA)
     {
         puts("Nicht genug Speicher vorhanden!\n");

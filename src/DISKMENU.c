@@ -21,7 +21,7 @@ void LOADSHIPS(r_ShipHeader* ShipPtr, BPTR FHandle)
     ActShipPtr = ShipPtr->NextShip;
     while (NULL != ActShipPtr)
     {
-        memory = AllocMem(sizeof(r_ShipHeader), MEMF_ANY);
+        memory = my_AllocMem(sizeof(r_ShipHeader), MEMF_ANY);
         if (NULL != memory)
         {
             (void) Read(FHandle, memory, sizeof(r_ShipHeader));
@@ -35,7 +35,7 @@ void LOADSHIPS(r_ShipHeader* ShipPtr, BPTR FHandle)
                 FirstFShip = true;
                 do
                 {
-                    memory = AllocMem(sizeof(r_ShipHeader), MEMF_ANY);
+                    memory = my_AllocMem(sizeof(r_ShipHeader), MEMF_ANY);
                     if (NULL == memory)
                     {
                         ActShipPtr->TargetShip = NULL;
@@ -267,7 +267,7 @@ uint8 DIS_LOADGAME()
         if (0 != FHandle)
         {
             exitvalue = LOAD_OKAY;
-            FREESYSTEMMEMORY(); // freemem of SystemHeader-stucts: projects, planetMem, ships.
+            FREESYSTEMMEMORY(); // my_FreeMem of SystemHeader-stucts: projects, planetMem, ships.
             (void) Read(FHandle, &actVer, 4);   // should be the ACTVERSION.. but we dont check here - was done in GETSAVENAME
             (void) Read(FHandle, &Year, 4);
             (void) Read(FHandle, &Level, 1);
@@ -290,7 +290,7 @@ uint8 DIS_LOADGAME()
                     }
 
                     // PlanetMemA was set in savegame, but the memory is not allocated.. so we need to do it
-                    MemPtr = AllocMem(SystemHeader[i].Planets*sizeof(r_PlanetHeader), MEMF_ANY);
+                    MemPtr = my_AllocMem(SystemHeader[i].Planets*sizeof(r_PlanetHeader), MEMF_ANY);
                     if (NULL != MemPtr)
                     {
                         (void) Read(FHandle, MemPtr, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
@@ -302,7 +302,7 @@ uint8 DIS_LOADGAME()
                             {
                                 // in the saved structure an ProjectPtr-Address was set
                                 // so we also need to allocate new memory for it - and read the data into this
-                                MemPtr = AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
+                                MemPtr = my_AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
                                 if (NULL != MemPtr)
                                 {
                                     PlanetHeader->ProjectPtr = (ByteArr42*) MemPtr;

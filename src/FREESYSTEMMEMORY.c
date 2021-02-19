@@ -17,7 +17,7 @@ void FREESHIPMEM(r_ShipHeader* ActShipPtr)
             {
                 FreePointer = (APTR) FleetShipPtr;
                 FleetShipPtr = FleetShipPtr->NextShip;
-                FreeMem( FreePointer, sizeof(r_ShipHeader) );
+                my_FreeMem( FreePointer, sizeof(r_ShipHeader) );
             }
         }
 
@@ -25,7 +25,7 @@ void FREESHIPMEM(r_ShipHeader* ActShipPtr)
         while (NULL != FreePointer)
         {
             ActShipPtr = ActShipPtr->NextShip;
-            FreeMem( FreePointer, sizeof(r_ShipHeader) );
+            my_FreeMem( FreePointer, sizeof(r_ShipHeader) );
             FreePointer = (APTR) ActShipPtr;
         }
     }
@@ -48,14 +48,14 @@ void FREESYSTEMMEMORY()
             MyPlanetHeader = (r_PlanetHeader*) &(SystemHeader[i].PlanetMemA[j]);
             if (NULL != MyPlanetHeader->ProjectPtr)
             {
-                FreeMem( MyPlanetHeader->ProjectPtr, sizeof(ByteArr42));
+                my_FreeMem( MyPlanetHeader->ProjectPtr, sizeof(ByteArr42));
                 MyPlanetHeader->ProjectPtr = NULL;
             }
 
             FREESHIPMEM(MyPlanetHeader->FirstShip.NextShip);
             MyPlanetHeader->FirstShip.NextShip = NULL;
         }
-        FreeMem(SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
+        my_FreeMem(SystemHeader[i].PlanetMemA, SystemHeader[i].Planets*sizeof(r_PlanetHeader));
         SystemHeader[i].PlanetMemA = NULL;
     }
 }

@@ -19,7 +19,7 @@ void PLAYERJINGLE(const int JingleID)
         if (0 == FHandle) { return; }
         (void) Seek(FHandle, 0, OFFSET_END);
         LogoSMemL[JingleID] = Seek(FHandle, 0, OFFSET_BEGINNING);
-        LogoSMemA[JingleID] = (uint8*) AllocMem(LogoSMemL[JingleID], MEMF_ANY );
+        LogoSMemA[JingleID] = (uint8*) my_AllocMem(LogoSMemL[JingleID], MEMF_ANY );
         if (NULL == LogoSMemA[JingleID])
         {
             Close(FHandle);
@@ -30,9 +30,9 @@ void PLAYERJINGLE(const int JingleID)
     }
     if ((NULL == SoundMemA[3]) || ((SoundSize[3]<<1) != LogoSMemL[JingleID]))
     {
-        if (0 != SoundSize[3]) { FreeMem(SoundMemA[3],SoundSize[3]<<1); }
+        if (0 != SoundSize[3]) { my_FreeMem(SoundMemA[3],SoundSize[3]<<1); }
         SoundSize[3] = (UWORD) (LogoSMemL[JingleID] >> 1);
-        SoundMemA[3] = (UWORD*) AllocMem(LogoSMemL[JingleID], MEMF_CHIP );
+        SoundMemA[3] = (UWORD*) my_AllocMem(LogoSMemL[JingleID], MEMF_CHIP );
         if (NULL == SoundMemA[3]) { return; }
     }
     CopyMemQuick(LogoSMemA[JingleID], SoundMemA[3], LogoSMemL[JingleID]);

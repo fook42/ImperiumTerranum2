@@ -83,7 +83,7 @@ void MAIN_FNC()
     }
 
     IMemL[0] = 287000;
-    IMemA[0] = (uint8*) AllocMem(IMemL[0], MEMF_CHIP | MEMF_CLEAR);
+    IMemA[0] = (uint8*) my_AllocMem(IMemL[0], MEMF_CHIP | MEMF_CLEAR);
     if (NULL == IMemA[0])
     {
         puts(Txt_notEnoughMem);
@@ -91,7 +91,7 @@ void MAIN_FNC()
         return;
     }
 
-    ZeroSound = (UWORD*) AllocMem(8, MEMF_CHIP | MEMF_CLEAR);
+    ZeroSound = (UWORD*) my_AllocMem(8, MEMF_CHIP | MEMF_CLEAR);
     if (NULL == ZeroSound)
     {
         puts(Txt_notEnoughMem);

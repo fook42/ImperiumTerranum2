@@ -19,7 +19,7 @@ void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanet
 
     SystemHeader[ActSys].Planets    = (rand()%(MAXPLANETS-3))+4; // 4..MAXPLANETS
     if (minHomePlanets > SystemHeader[ActSys].Planets) { SystemHeader[ActSys].Planets = minHomePlanets; }
-    SystemHeader[ActSys].PlanetMemA = (r_PlanetHeader*) AllocMem(SystemHeader[ActSys].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
+    SystemHeader[ActSys].PlanetMemA = (r_PlanetHeader*) my_AllocMem(SystemHeader[ActSys].Planets*sizeof(r_PlanetHeader),MEMF_CLEAR);
     if (NULL == SystemHeader[ActSys].PlanetMemA)
     {
         // no memory, no planets

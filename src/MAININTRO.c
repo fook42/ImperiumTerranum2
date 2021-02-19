@@ -92,13 +92,13 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* 
     }
     if (NULL != IntroMemA)
     {
-        FreeMem((APTR) IntroMemA, IntroMemL);
+        my_FreeMem((APTR) IntroMemA, IntroMemL);
     }
     for (i = 0; i<3; ++i)
     {
         if (NULL != SMemA[i])
         {
-            FreeMem((APTR) SMemA[i], SMemL[i]);
+            my_FreeMem((APTR) SMemA[i], SMemL[i]);
             SMemA[i] = NULL;
         }
     }
@@ -106,7 +106,7 @@ void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* 
     {
         if (NULL != IMemA[i])
         {
-            FreeMem((APTR) IMemA[i], IMemL[i]);
+            my_FreeMem((APTR) IMemA[i], IMemL[i]);
             IMemA[i] = NULL;
         }
     }
@@ -467,7 +467,7 @@ bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, uint32* SMemL)
             (void)  Seek(FHandle, 0, OFFSET_END);
             ssize = Seek(FHandle, 0, OFFSET_BEGINNING);
             SMemL[i] = ssize;
-            SMemA[i] = (uint16*) AllocMem(ssize, MEMF_CHIP | MEMF_CLEAR);
+            SMemA[i] = (uint16*) my_AllocMem(ssize, MEMF_CHIP | MEMF_CLEAR);
             if (NULL == SMemA[i]) { return false; }
             (void) Read(FHandle, (APTR) SMemA[i], SMemL[i]);
             Close(FHandle);
@@ -661,7 +661,7 @@ void MAININTRO()
 
 /**** new .. alloc mem for vectorObj .. free this later ***/
     IntroMemL = sizeof(VectorObj_t)*NUM_VECTOROBJ;
-    IntroMemA = (uint8*) AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
+    IntroMemA = (uint8*) my_AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
     if (NULL == IntroMemA)
     {
         goto leave_intro;
@@ -868,12 +868,12 @@ void MAININTRO()
 
     if (NULL != IntroMemA)
     {
-        FreeMem((APTR) IntroMemA, IntroMemL);
+        my_FreeMem((APTR) IntroMemA, IntroMemL);
     }
 
     if (NULL != IMemA[0])
     {
-        FreeMem((APTR) IMemA[0], IMemL[0]);
+        my_FreeMem((APTR) IMemA[0], IMemL[0]);
         IMemA[0] = NULL;
     }
     for (i = 0; i<2; i++)
@@ -896,7 +896,7 @@ void MAININTRO()
     IMemL[1] = 21000;
     for (i = 0; i<2; ++i)
     {
-        IMemA[i] = (uint8*) AllocMem(IMemL[i], MEMF_CHIP);
+        IMemA[i] = (uint8*) my_AllocMem(IMemL[i], MEMF_CHIP);
         if (NULL == IMemA[i])
         {
             goto leave_intro;
@@ -1083,7 +1083,7 @@ void MAININTRO()
 
 /**** new .. alloc mem for r_Coords .. free this later ***/
     IntroMemL = sizeof(r_Coords_t)*3;
-    IntroMemA = (uint8*) AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
+    IntroMemA = (uint8*) my_AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
     if (NULL == IntroMemA)
     {
         goto leave_intro;

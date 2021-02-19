@@ -36,7 +36,7 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
                 ActShipPtr->NextShip->BeforeShip = ActShipPtr->BeforeShip;
             }
 
-            FreeMem((APTR) ActShipPtr, sizeof(r_ShipHeader));
+            my_FreeMem((APTR) ActShipPtr, sizeof(r_ShipHeader));
             ActShipPtr = BehindShipPtr;
             if (ActShipPtr == NULL) { return; }
             CivVar = GETCIVVAR(ActShipPtr->Owner);

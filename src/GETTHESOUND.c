@@ -8,7 +8,7 @@ APTR GETTHESOUND(const int MID)
     APTR modptr = NULL;
     if (NULL != ModMemA[MID])
     {
-        modptr = AllocMem(ModMemL[MID], MEMF_CHIP);
+        modptr = my_AllocMem(ModMemL[MID], MEMF_CHIP);
         if (NULL != modptr)
         {
             CopyMem(ModMemA[MID], modptr, ModMemL[MID]);

@@ -872,7 +872,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                         /*GADGET_LADEN,GADGET_LANDUNG*/
                             if (NULL == PLANET_MyPlanetHeader->ProjectPtr)
                             {
-                                MemPtr = AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
+                                MemPtr = my_AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
                                 if (NULL == MemPtr)
                                 {
                                     return false;

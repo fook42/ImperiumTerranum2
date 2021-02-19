@@ -19,13 +19,13 @@ void DISPLAYLOGO(const int DL_ActPlayer, const int LEdge, const int TEdge)
            This means that the allocated memory will always start on an address which
            is at least evenly _divisible by four_. */
 
-        LogoMemA[0] = (uint8*) AllocMem(LOGOSIZE ,MEMF_CHIP | MEMF_CLEAR);
+        LogoMemA[0] = (uint8*) my_AllocMem(LOGOSIZE ,MEMF_CHIP | MEMF_CLEAR);
     }
     if (NULL != LogoMemA[0])
     {
         if (NULL == LogoMemA[DL_ActPlayer])
         {
-            LogoMemA[DL_ActPlayer] = (uint8*) AllocMem(LOGOSIZE ,MEMF_ANY | MEMF_CLEAR);
+            LogoMemA[DL_ActPlayer] = (uint8*) my_AllocMem(LOGOSIZE ,MEMF_ANY | MEMF_CLEAR);
             ActMem = LogoMemA[DL_ActPlayer];
             if (NULL == ActMem) { ActMem = LogoMemA[0]; }
             _s=my_strcpy(FName, PathStr[10]);

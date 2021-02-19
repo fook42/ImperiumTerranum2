@@ -33,7 +33,7 @@ void INIT_HOMEPLANETS(uint8 Civ, uint8 HomeSystem, uint8 HomePlanet)
             PlanetHeader->Infrastruktur = 165;
             PlanetHeader->Industrie     = 160;
             // get memory for Projects on home planet
-            MemPointer = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
+            MemPointer = my_AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
             if (NULL == MemPointer)
             {
                 // @TODO out-of-memory handling needed...
@@ -70,7 +70,7 @@ void INIT_SOLARSYSTEM(void)
 
     SystemHeader[0].Planets = 9;
     // get memory for Planets
-    MemPointer = AllocMem(SystemHeader[0].Planets*sizeof(r_PlanetHeader), MEMF_ANY|MEMF_CLEAR);
+    MemPointer = my_AllocMem(SystemHeader[0].Planets*sizeof(r_PlanetHeader), MEMF_ANY|MEMF_CLEAR);
     if (NULL == MemPointer)
     {
         // @TODO out-of-memory handling needed...
@@ -82,7 +82,7 @@ void INIT_SOLARSYSTEM(void)
     SystemHeader[0].FirstShip.Owner = FLAG_TERRA;
 
     // get memory for Projects on home planet
-    MemPointer = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
+    MemPointer = my_AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
     if (NULL == MemPointer)
     {
         // @TODO out-of-memory handling needed...
@@ -212,7 +212,7 @@ bool INITSTARS()
             if (2 == j)
             {
                 // always turn the 2nd Planet in the system into the 1st HomePlanet of this Civ
-                ProjectMem = AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
+                ProjectMem = my_AllocMem(sizeof(ByteArr42), MEMF_ANY|MEMF_CLEAR);
                 if (NULL == ProjectMem)
                 {
                     // @TODO cleanup and free some memory..

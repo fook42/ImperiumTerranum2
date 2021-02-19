@@ -229,7 +229,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     Save.ImperatorState[CivVar-1] += 25;
                                                     if (NULL == MyPlanetHeader->ProjectPtr)
                                                     {
-                                                        l = (uint32) AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
+                                                        l = (uint32) my_AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
                                                         if (0 == l)
                                                         {
                                                             return;
@@ -622,7 +622,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                             FleetShipPtr = OtherShipPtr;
                                                             if (SHIPTYPE_FLEET != OtherShipPtr->SType)
                                                             {
-                                                                l = (uint32) AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
+                                                                l = (uint32) my_AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
                                                                 if (l == 0)
                                                                 {
                                                                     DisplayBeep(NULL);

@@ -45,7 +45,7 @@ void CEBORCATTACK(uint8 CA_ActPlayerFlag)
     for(i = 0; i < random_wert; ++i)
     {
         ++(Save.Bevoelkerung[7]);
-        CA_MyShipPtr = (r_ShipHeader*) AllocMem(sizeof(r_ShipHeader), MEMF_CLEAR);
+        CA_MyShipPtr = (r_ShipHeader*) my_AllocMem(sizeof(r_ShipHeader), MEMF_CLEAR);
         if (NULL != CA_MyShipPtr)
         {
             ShipType = 23;

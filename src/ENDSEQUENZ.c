@@ -26,7 +26,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     CloseScreen(MyScreen[0]);
 
     IMemL[0] = 230656;
-    IMemA[0] = AllocMem(IMemL[0], MEMF_CHIP);
+    IMemA[0] = my_AllocMem(IMemL[0], MEMF_CHIP);
     if (NULL == IMemA[0])
     {
         puts("not enough chip-memory (225KB) - exit!\n");

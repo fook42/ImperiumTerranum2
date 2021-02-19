@@ -213,7 +213,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         Save.Bevoelkerung[CivVar-1] += PlanetHeader->Population;
                     } else if (NULL == PlanetHeader->ProjectPtr)
                     {
-                        PlanetHeader->ProjectPtr = (ByteArr42*) AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
+                        PlanetHeader->ProjectPtr = (ByteArr42*) my_AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
                     }
 
                     if ((PlanetHeader->Class == CLASS_PHANTOM) && (NULL != PlanetHeader->FirstShip.NextShip))
@@ -515,7 +515,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                 }
 
                                 // reserve memory for the new ship and fill in the ship structures
-                                ActShipPtr = (r_ShipHeader*) AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
+                                ActShipPtr = (r_ShipHeader*) my_AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
                                 if (NULL != ActShipPtr)
                                 {
                                     *ActShipPtr = (r_ShipHeader) {0,ProjID, PlanetHeader->PFlags & FLAG_CIV_MASK,0,0,0,0,0,0,
@@ -1646,7 +1646,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         PlanetHeader->Biosphaere = 200;
                         PlanetHeader->Infrastruktur = 190;
                         PlanetHeader->Industrie = 180;
-                        PlanetHeader->ProjectPtr = (ByteArr42*) (AllocMem(sizeof(ByteArr42),MEMF_CLEAR));
+                        PlanetHeader->ProjectPtr = (ByteArr42*) my_AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
                         PlanetHeader->ProjectPtr->data[1]  = 1;
                         PlanetHeader->ProjectPtr->data[PROJECT_SETTLERS] = 5;
                         for(i = 0; i < (MAXCIVS-1); i++)

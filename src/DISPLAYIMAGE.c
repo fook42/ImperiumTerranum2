@@ -63,7 +63,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     if ((0 != CacheNum) && (false == ImageIsValid))
     {
         CacheMemL[realCacheNum] = ImgSize+CNum3+8;
-        CacheMemA[realCacheNum] = AllocMem(CacheMemL[realCacheNum], MEMF_ANY);
+        CacheMemA[realCacheNum] = my_AllocMem(CacheMemL[realCacheNum], MEMF_ANY);
 
         if (NULL != CacheMemA[realCacheNum])
         {

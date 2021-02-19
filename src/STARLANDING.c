@@ -612,7 +612,7 @@ void STARLANDINGEXIT(bool Error, r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8
     DoClock = false;
     if (NULL != ImgBitMap5.MemA)
     {
-        FreeMem(ImgBitMap5.MemA, ImgBitMap5.MemL);
+        my_FreeMem(ImgBitMap5.MemA, ImgBitMap5.MemL);
         ImgBitMap5.MemA = NULL;
     }
     CLOSEMYSCREENS();

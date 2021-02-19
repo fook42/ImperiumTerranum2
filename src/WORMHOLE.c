@@ -27,7 +27,7 @@ void WORMHOLE_LOADSOUND(char* FName, const int SoundID)
         {
             Filesize += STEPS*3;
         }
-        WHSoundMemA[SoundID] = (uint16*) AllocMem(Filesize*2, MEMF_CHIP);
+        WHSoundMemA[SoundID] = (uint16*) my_AllocMem(Filesize*2, MEMF_CHIP);
         if (NULL != WHSoundMemA[SoundID])
         {
             (void) Read(FHandle, (APTR) WHSoundMemA[SoundID], Filesize*2);
@@ -364,13 +364,13 @@ bool WORMEXIT(bool _WORMEXIT, r_ShipHeader* MyShipPtr, uint8 ActSys)
     {
         if (NULL != WHSoundMemA[i])
         {
-            FreeMem((APTR) WHSoundMemA[i], WHSoundMemL[i] << 1);
+            my_FreeMem((APTR) WHSoundMemA[i], WHSoundMemL[i] << 1);
             WHSoundMemA[i] = NULL;
         }
     }
     if (NULL != ImgBitMapW4.MemA)
     {
-        FreeMem(ImgBitMapW4.MemA, ImgBitMapW4.MemL);
+        my_FreeMem(ImgBitMapW4.MemA, ImgBitMapW4.MemL);
     }
     ImgBitMapW4.MemA = NULL;
     custom.dmacon = BITCLR | DMAF_AUDIO;

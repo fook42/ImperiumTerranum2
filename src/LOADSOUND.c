@@ -14,7 +14,7 @@ void LOADSOUND(char* FName, const int SoundID)
     (void) Seek(FHandle, 0, OFFSET_END);
     Filesize = Seek(FHandle, 0, OFFSET_BEGINNING);
     SoundSize[SoundID] = (UWORD) (Filesize >> 1);
-    SoundMemA[SoundID] = (UWORD*) AllocMem(Filesize, MEMF_CHIP);
+    SoundMemA[SoundID] = (UWORD*) my_AllocMem(Filesize, MEMF_CHIP);
     if (NULL == SoundMemA[SoundID])
     {
         Close( FHandle );

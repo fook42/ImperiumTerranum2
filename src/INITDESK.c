@@ -34,14 +34,14 @@ bool INITDESK(const int Mode)
         if (!RAWLOADIMAGE(s,0,0,640,192,8,&ImgBitMap8)) { return false; }
 
         IMemL[1] = 4480;
-        IMemA[1] = AllocMem( IMemL[1], MEMF_CHIP | MEMF_CLEAR );
+        IMemA[1] = my_AllocMem( IMemL[1], MEMF_CHIP | MEMF_CLEAR );
         if (NULL == IMemA[1]) { return false; }
 
         (void) my_strcpy(_s, "DeskGads.img");
         FHandle = OPENSMOOTH( s, MODE_OLDFILE);       /*Planets/Deskgads.img*/
         if (0 == FHandle)
         {
-            FreeMem( IMemA[1], IMemL[1] );
+            my_FreeMem( IMemA[1], IMemL[1] );
             IMemA[1] = NULL;
             return false;
         }

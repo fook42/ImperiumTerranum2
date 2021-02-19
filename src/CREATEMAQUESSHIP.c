@@ -10,7 +10,7 @@ bool CREATEMAQUESSHIP(const int SysID, int ShipID)
 
     if ((1999 < Year) && (0 != (rand()%4))) { return false; }
 
-    ActShipPtr = (r_ShipHeader*) AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
+    ActShipPtr = (r_ShipHeader*) my_AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
     if (NULL != ActShipPtr)
     {
         if (8 < ShipID) { --ShipID; }

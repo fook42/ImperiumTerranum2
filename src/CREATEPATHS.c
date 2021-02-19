@@ -13,7 +13,7 @@ bool READPATHS()
     {
         (void)     Seek(FHandle, 0, OFFSET_END);
         PathMemL = Seek(FHandle, 0, OFFSET_BEGINNING); // added 1 for last path-delimiter!
-        PathMemA = (uint8*) AllocMem(PathMemL, MEMF_CLEAR);
+        PathMemA = (uint8*) my_AllocMem(PathMemL, MEMF_CLEAR);
         if (NULL != PathMemA)
         {
             (void) Read(FHandle, PathMemA, PathMemL);

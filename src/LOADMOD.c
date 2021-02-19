@@ -12,7 +12,7 @@ void LOADMOD(char* FName, int MID)
     {
         (void)         Seek(FHandle, 0, OFFSET_END);
         ModMemL[MID] = Seek(FHandle, 0, OFFSET_BEGINNING);
-        ModMemA[MID] = (uint8*) AllocMem(ModMemL[MID], MEMF_ANY);
+        ModMemA[MID] = (uint8*) my_AllocMem(ModMemL[MID], MEMF_ANY);
         if (NULL != ModMemA[MID])
         {
             (void) Read(FHandle, (APTR) ModMemA[MID], ModMemL[MID]);

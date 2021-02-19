@@ -4,6 +4,9 @@
 #include <hardware/custom.h>
 #include "IT2_PText_Defines.h"
 
+#define my_AllocMem(A,B)    AllocMem(A,B);printf("#Alloc (%8ld) file %s (%s, # %d)\n", (uint32) A, __FILE__, __func__, __LINE__)
+#define my_FreeMem(A,B)     FreeMem(A,B); printf("#Free (%8ld) file %s (%s, # %d)\n", (uint32) A, __FILE__, __func__, __LINE__)
+
 #define FLAG_UNKNOWN    0           /* 0x00 */
 #define FLAG_KNOWN      0x80        /* 0x80 = 1000 0000 */
 #define FLAG_TERRA      20          /* 0x14 = 0001 0100 */
