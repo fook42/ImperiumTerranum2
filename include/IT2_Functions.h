@@ -14,6 +14,8 @@
 BOOL getMyScreenToolTypes(BYTE* waName, ULONG* Hires_ID_PTR, ULONG* Lowres_ID_PTR);
 BOOL setMyScreenToolTypes(BYTE* waName, ULONG Hires_ID, ULONG Lowres_ID);
 
+APTR myfn_AllocMem( ULONG byteSize, ULONG requirements );
+
 int it_round(double x);
 char* dez2out(int value, int digits, char* dest);
 char* float2out(double fvalue, int dezdigits, int flodigits, char* dest);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
+#include "IT2_Functions.h"
 #include "IT2_Defines.h"
 #include "IT2_Types.h"
 #include "IT2_Vars.h"
@@ -144,4 +145,10 @@ char* my_strcpy(char* destination, const char* source)
  
     // destination is returned by standard strcpy()
     return (destination-1);
+}
+
+APTR myfn_AllocMem( ULONG byteSize, ULONG requirements )
+{
+    DBG_AllocPtr = AllocMem( byteSize, requirements );
+    return DBG_AllocPtr;
 }

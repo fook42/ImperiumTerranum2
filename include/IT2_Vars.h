@@ -61,6 +61,8 @@ _EXTERN_  struct Library *MEDPlayerBase;
 _EXTERN_  uint8             PubScreenNum;
 #endif
 
+_EXTERN_ APTR               DBG_AllocPtr;
+
 _EXTERN_  bool              Audio_enable;
 
 _EXTERN_  struct TagItem    Tags[8];
