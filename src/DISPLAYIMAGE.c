@@ -12,7 +12,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     uint16  CNum, i;
     uint16  CNum3;
     uint32  ImgSize_packed, ImgSize=0; // , Addr;
-    APTR    Addr;
+    uint32  Addr;
     uint16* Colors;
     r_Col_t*  RGB;
     bool    ImageIsValid = false;
@@ -30,7 +30,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
         realCacheNum = CacheNum-1;
         if (NULL != CacheMemA[realCacheNum])
         {
-            if (0 != *CacheMemA[realCacheNum])
+            if (0 != *((uint32*) CacheMemA[realCacheNum]) )
             {
                 ImageIsValid = true;
             }
@@ -46,8 +46,8 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
         }
         (void)  Seek(FHandle, 0, OFFSET_END);
         ImgSize_packed = Seek(FHandle, 0, OFFSET_BEGINNING);
-        Addr = (APTR) (IMemA[0]+IMemL[0]-ImgSize_packed-250);   // start at 250+FileSize Bytes from the end (!) of IMem-Area
-        (void) Read(FHandle, Addr, ImgSize_packed);
+        Addr = (uint32) (IMemA[0]+IMemL[0]-ImgSize_packed-250);   // start at 250+FileSize Bytes from the end (!) of IMem-Area
+        (void) Read(FHandle, (APTR) Addr, ImgSize_packed);
         ImgSize = (Width*Height*Depth)>>3;    // w*h*depth/8 = num of bytes for uncompressed imagedata
         UNPACK(IMemA[0], (uint8*) Addr, ImgSize, 0);
         Close(FHandle);
@@ -67,7 +67,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
 
         if (NULL != CacheMemA[realCacheNum])
         {
-            Addr = (APTR) CacheMemA[realCacheNum];
+            Addr = (uint32) CacheMemA[realCacheNum];
             *((uint32*) Addr) = ImgSize;
             Addr += 4;
             *((uint16*) Addr) = CNum;
@@ -80,7 +80,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
                 return false;
             }
             (void) Seek(FHandle, 8, OFFSET_BEGINNING);
-            (void) Read(FHandle, Addr, CNum3);
+            (void) Read(FHandle, (APTR) Addr, CNum3);
             Close(FHandle);
             Addr += CNum3;
             CopyMem( (APTR) IMemA[0], (APTR) Addr, ImgSize);
@@ -92,7 +92,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     }
     if (true == ImageIsValid)
     {
-        Addr = (APTR) CacheMemA[realCacheNum];
+        Addr = (uint32) CacheMemA[realCacheNum];
         Addr += 4;
         Colors = (uint16*) Addr;
         Addr += 4;
