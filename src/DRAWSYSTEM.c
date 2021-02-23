@@ -89,6 +89,8 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     SetAPen(MyRPort_PTR[0],12);
     for (j = 0; j < MAXHOLES; ++j)
     {
+        if (0 == MyWormHole[i].System[0]) { continue; }
+
         for (i = 0; i < 2; ++i)
         {
             if (MyWormHole[j].System[i] == ActSys)

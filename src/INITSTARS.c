@@ -261,10 +261,10 @@ bool INITSTARS()
         /* pick random start and end systems */
         MyWormHole[j].System[0] = rand()%(MAXSYSTEMS+1);    /* generate a number 0 <= x <= MAXSYSTEMS */
         MyWormHole[j].System[1] = rand()%(MAXSYSTEMS+1);
-        /* if the wormhole starts/ends in solar system (id = 0)
+        /* if the wormhole starts/ends in zero system (id = 0 -> no real star system)
          * or if it starts where it ends, it will be eleminated ... */
-        if ((MyWormHole[j].System[0] == 0) ||
-            (MyWormHole[j].System[1] == 0) ||
+        if ((0 == MyWormHole[j].System[0]) ||
+            (0 == MyWormHole[j].System[1]) ||
             (MyWormHole[j].System[0] == MyWormHole[j].System[1]))
         {
             MyWormHole[j].System[0] = 0;
@@ -274,11 +274,11 @@ bool INITSTARS()
             for (i = 0; i < 2; ++i)
             {
                 /* pick any number  4 <= x <= 35 */
-                MyWormHole[j].PosX[i] = 35-(rand()%32);
-                if ((rand()%2) == 0) { MyWormHole[j].PosX[i] = -MyWormHole[j].PosX[i]; }
+                MyWormHole[j].PosX[i] = 4+(rand()%32);
+                if (0 == (rand()%2)) { MyWormHole[j].PosX[i] = -MyWormHole[j].PosX[i]; }
 
-                MyWormHole[j].PosY[i] = 35-(rand()%32);
-                if ((rand()%2) == 0) { MyWormHole[j].PosY[i] = -MyWormHole[j].PosY[i]; }
+                MyWormHole[j].PosY[i] = 4+(rand()%32);
+                if (0 == (rand()%2)) { MyWormHole[j].PosY[i] = -MyWormHole[j].PosY[i]; }
             }
         }
     }

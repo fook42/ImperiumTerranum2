@@ -63,6 +63,8 @@ void DRAWSTARS(const int Mode)
     {
         for (j = 0; j < MAXHOLES; ++j)
         {
+            if (0 == MyWormHole[i].System[0]) { continue; }
+
             if (FLAG_KNOWN == MyWormHole[j].CivKnowledge[DS_ActPlayer])
             {
                 Move(MyRPort_PTR[0],SystemX[MyWormHole[j].System[0]-1],SystemY[MyWormHole[j].System[0]-1]);
