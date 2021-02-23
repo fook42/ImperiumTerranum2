@@ -151,7 +151,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     {
                         MyShipPtr->PosX = MOVESHIP_FromX;
                         MyShipPtr->PosY = MOVESHIP_FromY;
-                        /* if ObjType != TYPE_PLANET  ObjType = 0; */
+                        /* if (ObjType != TYPE_PLANET) { ObjType = 0; } */
                     }
                 }
                 switch (ObjType) {

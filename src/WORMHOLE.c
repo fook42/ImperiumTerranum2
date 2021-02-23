@@ -256,7 +256,7 @@ void TRAVEL()
             RectCol = 15;
             if ((WORMHOLE_ShipShield >= 13) && (WORMHOLE_ShipShield <= 762))
             {
-                RECTWIN(MyRPort_PTR[AScr],0, 312, 1, 318, 258-it_round(WORMHOLE_ShipShield/3.0));
+                RECTWIN(MyRPort_PTR[AScr],0, 312, 1, 318, 258-it_round((double) WORMHOLE_ShipShield/3.0));
             }
             if (WORMHOLE_ShipShield < 0)
             {
@@ -349,7 +349,7 @@ bool SMALLWORMFLIGHT(r_ShipHeader* MyShipPtr)
     {
         return false;
     } else {
-        MyShipPtr->Shield = it_round((double) WORMHOLE_ShipShield / 760.0 * ShipData(MyShipPtr->SType).MaxShield);
+        MyShipPtr->Shield = it_round((double) (WORMHOLE_ShipShield / 760.0) * ShipData(MyShipPtr->SType).MaxShield);
         return true;
     }
 }
@@ -408,7 +408,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
 
     Error = true;
     MyShipPtr = ShipPtr;
-    WORMHOLE_ShipShield = it_round(MyShipPtr->Shield / ShipData(MyShipPtr->SType).MaxShield * 760.0);
+    WORMHOLE_ShipShield = it_round((double) (MyShipPtr->Shield * 760.0) / ShipData(MyShipPtr->SType).MaxShield);
     if (Save.NoWorm)
     {
         return SMALLWORMFLIGHT(MyShipPtr);
@@ -444,7 +444,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
     {
         _WORMFLIGHT = false;
     } else {
-        MyShipPtr->Shield = it_round((double) WORMHOLE_ShipShield / 760.0 * ShipData(MyShipPtr->SType).MaxShield);
+        MyShipPtr->Shield = it_round((double) (WORMHOLE_ShipShield / 760.0) * ShipData(MyShipPtr->SType).MaxShield);
         _WORMFLIGHT = true;
     }
     Error = false;
@@ -472,18 +472,20 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     }
     PLAYSOUND(2,250);
     Delay(7);
-    for (i = 15; i>=0; i--)
+    for (i = 15; i>=0; --i)
     {
         BltBitMapRastPort((struct BitMap*) &ImgBitMap7,i*32,32,MyRPort_PTR[0],MOVESHIP_ToX,MOVESHIP_ToY,32,32,192);
         WaitTOF();
         Delay(4);
     }
+
     if (MOVESHIP_ToY>210)
     {
         Offset = 110;
     } else {
         Offset = 260;
     }
+    /* find a random destination system */
     SysID = (rand()%Save.Systems);  // shifted by -1 for the arrays
     MAKEWINBORDER(MyRPort_PTR[0],70,Offset,440,Offset+85,12,6,0);
     WRITE_RP0(256,Offset+13,ActPlayerFlag,WRITE_Center,3,PText[467]);
@@ -498,13 +500,16 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     }
     SystemFlags[ActPlayer-1][SysID] |= FLAG_KNOWN;
     LINKSHIP(MyShipPtr, &SystemHeader[SysID].FirstShip,1);
+
+    /* place the ship anywhere between x and y = -39..-4 / +4..+39 */
     do
     {
-        MyShipPtr->PosX = (rand()%80)-40;
-        MyShipPtr->PosY = (rand()%80)-40;
-    }
-    while ((FINDOBJECT(SysID,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
-        && ((MyShipPtr->PosX<-3) || (MyShipPtr->PosX>3)) && ((MyShipPtr->PosY<-3) || (MyShipPtr->PosY>3)));
+        MyShipPtr->PosX = (rand()%36)+4;
+        MyShipPtr->PosY = (rand()%36)+4;
+
+        MyShipPtr->PosX *= ((rand()%2)*2)-1;
+        MyShipPtr->PosY *= ((rand()%2)*2)-1;
+    } while (FINDOBJECT(SysID,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
 
     WAITLOOP(false);
     RECT_RP0_C0(70,Offset,440,Offset+85);
