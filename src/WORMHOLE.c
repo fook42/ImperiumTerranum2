@@ -69,6 +69,7 @@ bool WORMHOLE_INITIMAGES()
 void TRAVEL()
 {
     sint16  X[6],Y[6],S[6];     // 1..5
+    sint16  RightB[6],BottomB[6],LeftB[6],TopB[6];
     sint16  XOff, YOff;
     volatile uint16*    Joy;
     sint16   DirCnt, DVert, DHoriz, JVert, JHoriz;
@@ -160,10 +161,10 @@ void TRAVEL()
 
         if (((*Joy & 0x3) == 0x1) || ((*Joy & 0x3) == 0x2))
         {
-            JVert = 8;
+            JVert = -8;         // up
         } else if (((*Joy & 0x300) == 0x100) || ((*Joy & 0x300) == 0x200))
         {
-            JVert = -8;
+            JVert = 8;          // down
         }
         if (0 != JHoriz)
         {
@@ -226,15 +227,24 @@ void TRAVEL()
         SetAPen(MyRPort_PTR[AScr],6);
         for(j = 1; j < 6; ++j)
         {
-            if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255)
-              &&((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
+            RightB[j]  = X[j]+S[j];
+            BottomB[j] = Y[j]+S[j];
+            LeftB[j]   = X[j]-S[j];
+            TopB[j]    = Y[j]-S[j];
+
+            if ((LeftB[j] >0) && (LeftB[j] <310) && (TopB[j]   >0) && (TopB[j]   <256)
+              &&(RightB[j]>0) && (RightB[j]<310) && (BottomB[j]>0) && (BottomB[j]<256))
             {
-                BOX(MyRPort_PTR[AScr], X[j]-S[j], Y[j]-S[j], X[j]+S[j], Y[j]+S[j]);
+                Move(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
+                Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
+                Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
+                Draw(MyRPort_PTR[AScr], LeftB[j],  BottomB[j]);
+                Draw(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
             }
         }
         if ((X[5]<120) || (X[5]>200) || (Y[5]<90) || (Y[5]>165))
         {
-            if ((X[5]>=105) && (X[5]<=215) && (Y[5]>=75) && (Y[5]<=180))
+            if ((X[5]>104) && (X[5]<216) && (Y[5]>74) && (Y[5]<181))
             {
                 if (Audio_enable)
                 {
@@ -254,7 +264,7 @@ void TRAVEL()
             }
 
             RectCol = 15;
-            if ((WORMHOLE_ShipShield >= 13) && (WORMHOLE_ShipShield <= 762))
+            if ((WORMHOLE_ShipShield > 12) && (WORMHOLE_ShipShield < 763))
             {
                 RECTWIN(MyRPort_PTR[AScr],0, 312, 1, 318, 258-it_round((double) WORMHOLE_ShipShield/3.0));
             }
@@ -283,36 +293,36 @@ void TRAVEL()
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255))
+            if ((LeftB[j]>0) && (LeftB[j]<310) && (TopB[j]>0) && (TopB[j]<256))
             {
-                Draw(MyRPort_PTR[AScr], X[j]-S[j], Y[j]-S[j]);
+                Draw(MyRPort_PTR[AScr], LeftB[j], TopB[j]);
             }
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if (((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]-S[j])>=1) && ((Y[j]-S[j])<=255))
+            if ((RightB[j]>0) && (RightB[j]<310) && (TopB[j]>0) && (TopB[j]<256))
             {
-                Draw(MyRPort_PTR[AScr], X[j]+S[j], Y[j]-S[j]);
+                Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
             }
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if (((X[j]+S[j])>=1) && ((X[j]+S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
+            if ((RightB[j]>0) && (RightB[j]<310) && (BottomB[j]>0) && (BottomB[j]<256))
             {
-                Draw(MyRPort_PTR[AScr], X[j]+S[j], Y[j]+S[j]);
+                Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
             }
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if (((X[j]-S[j])>=1) && ((X[j]-S[j])<=309) && ((Y[j]+S[j])>=1) && ((Y[j]+S[j])<=255))
+            if ((LeftB[j]>0) && (LeftB[j]<310) && (BottomB[j]>0) && (BottomB[j]<256))
             {
-                Draw(MyRPort_PTR[AScr], X[j]-S[j], Y[j]+S[j]);
+                Draw(MyRPort_PTR[AScr], LeftB[j], BottomB[j]);
             }
         }
 
@@ -507,8 +517,8 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
         MyShipPtr->PosX = (rand()%36)+4;
         MyShipPtr->PosY = (rand()%36)+4;
 
-        MyShipPtr->PosX *= ((rand()%2)*2)-1;
-        MyShipPtr->PosY *= ((rand()%2)*2)-1;
+        if (0 == (rand()%2)) { MyShipPtr->PosX = -MyShipPtr->PosX; }
+        if (0 == (rand()%2)) { MyShipPtr->PosY = -MyShipPtr->PosY; }
     } while (FINDOBJECT(SysID,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
 
     WAITLOOP(false);
