@@ -64,6 +64,8 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
     }
     for(i = 0; i < MAXHOLES; i++)
     {
+        if (0 == MyWormHole[i].System[0]) { continue; }
+
         if (MyWormHole[i].CivKnowledge[CivVar] == FLAG_KNOWN)
         {
             for(j = 0; j < 2; j++)
@@ -82,6 +84,8 @@ void FINDENEMYSYSTEM(uint8 ActSys, uint8 CivVar, r_ShipHeader* ShipPtr)
     }
     for(i = 0; i < MAXHOLES; i++)
     {
+        if (0 == MyWormHole[i].System[0]) { continue; }
+
         if (MyWormHole[i].CivKnowledge[CivVar] == FLAG_KNOWN)
         {
             for(j = 0; j < 2; j++)

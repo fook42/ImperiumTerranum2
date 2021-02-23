@@ -68,6 +68,8 @@ uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* MyShipPtr)
     }
     for(i = 0; i < MAXHOLES; ++i)
     {
+        if (0 == MyWormHole[i].System[0]) { continue; }
+
         if (FLAG_KNOWN == MyWormHole[i].CivKnowledge[CivVar-1])
         {
             for(j = 0; j < 2; ++j)

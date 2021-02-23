@@ -5,11 +5,12 @@
 
 void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
 {
-    uint8   j,WormID,PosID,NewSys=1;
-    int     i;
+    int     i,j,WormID,PosID,NewSys=1;
 
     for(i = 0; i < MAXHOLES; ++i)
     {
+        if (0 == MyWormHole[i].System[0]) { continue; }
+
         for(j = 0; j < 2; ++j)
         {
             if ((MyWormHole[i].System[j] == ActSys)
@@ -45,7 +46,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         }
     }
     NewSys--; // to shift the arrays
-    if (SystemHeader[NewSys].Planets == 0)
+    if (0 == SystemHeader[NewSys].Planets)
     {
         CREATENEWSYSTEM(NewSys, ActPlayer-1, 1);
     }
@@ -55,8 +56,8 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
     MyShipPtr->PosY = MyWormHole[WormID].PosY[PosID];
     do
     {
-        MyShipPtr->PosX = MyShipPtr->PosX-1+(rand()%3);
-        MyShipPtr->PosY = MyShipPtr->PosY-1+(rand()%3);
+        MyShipPtr->PosX += (rand()%3)-1;
+        MyShipPtr->PosY += (rand()%3)-1;
     }
     while ((FINDOBJECT(NewSys,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
         && ((MyShipPtr->PosX<-3) || (MyShipPtr->PosX>3)) && ((MyShipPtr->PosY<-3) || (MyShipPtr->PosY>3)));

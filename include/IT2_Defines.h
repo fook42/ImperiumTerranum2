@@ -58,6 +58,7 @@ enum { CIVVAR_NONE  = 0,
 #define LEVEL_NO_ALLIANZ  5
 #define LEVEL_COLDWAR   6
 
+#define TYPE_NOTHING    0
 #define TYPE_PLANET     2
 #define TYPE_SHIP       4
 #define TYPE_STARGATE   16
@@ -222,46 +223,5 @@ enum {  SCREEN_PLANET = 1,
 #define PROJECT_MICROIDS        41
 #define PROJECT_WEATHERSTATION  42
 #define PROJECT_NOMORE          43
-
-
-/*Raumdock      25
-Siedler-Einheit
-Landungstruppen
-Kontinentale Union
-Globale Union
-Recycling-Anlage
-Fusions-Kraftwerk
-Hydrolyse-Kraftwerk
-Teilchenbeschleuniger
-SDI
-Internet
-virtuelle Universit�t
-intelligente Fabrik
-Informationhighway
-von-Neumann-Sonde
-Spacephalanx
-Microiden
-Wetter-Station  42
-*/
-
-/*Spacedock
-Seddlers
-Landingtroops
-Continental Union
-Global Union
-Recyclingplant
-Fusion powerplant
-Hydrolytic powerplant
-Particleaccelerator
-SDI
-Internet
-Virtual University
-Intelligent Factory
-Informationhighway
-von-Neumann-probe
-Spacephalanx
-Microids
-Weather-Station */
-
 
 #endif

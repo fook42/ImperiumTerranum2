@@ -151,7 +151,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     {
                         MyShipPtr->PosX = MOVESHIP_FromX;
                         MyShipPtr->PosY = MOVESHIP_FromY;
-                        /* if ObjType != TYPE_PLANET  ObjType = 0; */
+                        /* if (ObjType != TYPE_PLANET) { ObjType = 0; } */
                     }
                 }
                 switch (ObjType) {
@@ -461,6 +461,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             }
             for(i = 0; i < MAXHOLES; i++)
             {
+                if (0 == MyWormHole[i].System[0]) { continue; }
+
                 for(j = 0; j < 2; j++)
                 {
                     if (MyWormHole[i].System[j] == ActSys)

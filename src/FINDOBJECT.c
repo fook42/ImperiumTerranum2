@@ -63,6 +63,8 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
     // last try; are we close to a worm-hole ?
     for(i = 0; i < MAXHOLES; ++i)
     {
+        if (0 == MyWormHole[i].System[0]) { continue; }
+
         for(j = 0; j < 2; ++j)
         {
             if (MyWormHole[i].System[j] == (ActSys+1))
