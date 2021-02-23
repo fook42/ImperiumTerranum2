@@ -68,8 +68,8 @@ bool WORMHOLE_INITIMAGES()
 
 void TRAVEL()
 {
-    sint16  X[6],Y[6],S[6];     // 1..5
-    sint16  RightB[6],BottomB[6],LeftB[6],TopB[6];
+    sint16  X[5],Y[5],S[5];     // 1..5 -> 0..4
+    sint16  RightB[5],BottomB[5],LeftB[5],TopB[5];
     sint16  XOff, YOff;
     volatile uint16*    Joy;
     sint16   DirCnt, DVert, DHoriz, JVert, JHoriz;
@@ -91,13 +91,13 @@ void TRAVEL()
     }
     srand((unsigned) time(&t));
 
-    X[1] = 155;
-    Y[1] = 128;
-    S[1] = 10;
+    X[0] = 155;
+    Y[0] = 128;
+    S[0] = 10;
     XOff = 0;
     YOff = 0;
     Clear = 0;
-    for(j = 1; j < 5; ++j)
+    for(j = 0; j < 4; ++j)
     {
         X[j+1] = X[j];
         Y[j+1] = Y[j];
@@ -168,7 +168,7 @@ void TRAVEL()
         }
         if (0 != JHoriz)
         {
-            for(j = 1; j < 6; ++j)
+            for(j = 0; j < 5; ++j)
             {
                 X[j] += JHoriz;
             }
@@ -176,7 +176,7 @@ void TRAVEL()
         }
         if (0 != JVert)
         {
-            for(j = 1; j < 6; ++j)
+            for(j = 0; j < 5; ++j)
             {
                 Y[j] += JVert;
             }
@@ -190,7 +190,7 @@ void TRAVEL()
         if (YOff >  122) { YOff =  122; }
         if (YOff < -122) { YOff = -122; }
 
-        for(j = 1; j < 6; ++j)
+        for(j = 0; j < 5; ++j)
         {
             if (154 > X[j])
             {
@@ -210,22 +210,22 @@ void TRAVEL()
             S[j] = it_round(S[j]*1.06);
         }
 
-        if (240 < S[5])
+        if (240 < S[4])
         {
             for (j = 4; j > 0; --j)
             {
-                X[j+1] = X[j];
-                Y[j+1] = Y[j];
-                S[j+1] = S[j];
+                X[j] = X[j-1];
+                Y[j] = Y[j-1];
+                S[j] = S[j-1];
             }
-            X[1] = 155+XOff;
-            Y[1] = 128+YOff;
-            S[1] = 10;
+            X[0] = 155+XOff;
+            Y[0] = 128+YOff;
+            S[0] = 10;
         }
 
         BltBitMapRastPort((struct BitMap*) &ImgBitMapW4,170-XOff,128-YOff, MyRPort_PTR[AScr],0,0,310,256,192);
         SetAPen(MyRPort_PTR[AScr],6);
-        for(j = 1; j < 6; ++j)
+        for(j = 0; j < 5; ++j)
         {
             LeftB[j]   = X[j]-S[j];
             if (0   > LeftB[j])   { LeftB[j] = 0; }
@@ -246,9 +246,9 @@ void TRAVEL()
             Draw(MyRPort_PTR[AScr], LeftB[j],  BottomB[j]);
             Draw(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
         }
-        if ((X[5]<120) || (X[5]>200) || (Y[5]<90) || (Y[5]>165))
+        if ((X[4]<120) || (X[4]>200) || (Y[4]<90) || (Y[4]>165))
         {
-            if ((X[5]>104) && (X[5]<216) && (Y[5]>74) && (Y[5]<181))
+            if ((X[4]>104) && (X[4]<216) && (Y[4]>74) && (Y[4]<181))
             {
                 if (Audio_enable)
                 {
@@ -295,25 +295,25 @@ void TRAVEL()
 
         SetAPen(MyRPort_PTR[AScr], 5);
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j < 6; ++j)
+        for(j = 0; j < 5; ++j)
         {
             Draw(MyRPort_PTR[AScr], LeftB[j], TopB[j]);
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j < 6; ++j)
+        for(j = 0; j < 5; ++j)
         {
             Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j < 6; ++j)
+        for(j = 0; j < 5; ++j)
         {
             Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
-        for(j = 1; j < 6; ++j)
+        for(j = 0; j < 5; ++j)
         {
             Draw(MyRPort_PTR[AScr], LeftB[j], BottomB[j]);
         }
