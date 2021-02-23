@@ -227,20 +227,24 @@ void TRAVEL()
         SetAPen(MyRPort_PTR[AScr],6);
         for(j = 1; j < 6; ++j)
         {
-            RightB[j]  = X[j]+S[j];
-            BottomB[j] = Y[j]+S[j];
             LeftB[j]   = X[j]-S[j];
+            if (0   > LeftB[j])   { LeftB[j] = 0; }
+            if (310 < LeftB[j])   { LeftB[j] = 310; }
+            RightB[j]  = X[j]+S[j];
+            if (0   > RightB[j])  { RightB[j] = 0; }
+            if (310 < RightB[j])  { RightB[j] = 310; }
             TopB[j]    = Y[j]-S[j];
+            if (0   > TopB[j])    { TopB[j] = 0; }
+            if (310 < TopB[j])    { TopB[j] = 310; }
+            BottomB[j] = Y[j]+S[j];
+            if (0   > BottomB[j]) { BottomB[j] = 0; }
+            if (310 < BottomB[j]) { BottomB[j] = 310; }
 
-            if ((LeftB[j] >0) && (LeftB[j] <310) && (TopB[j]   >0) && (TopB[j]   <256)
-              &&(RightB[j]>0) && (RightB[j]<310) && (BottomB[j]>0) && (BottomB[j]<256))
-            {
-                Move(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
-                Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
-                Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
-                Draw(MyRPort_PTR[AScr], LeftB[j],  BottomB[j]);
-                Draw(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
-            }
+            Move(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
+            Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
+            Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
+            Draw(MyRPort_PTR[AScr], LeftB[j],  BottomB[j]);
+            Draw(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
         }
         if ((X[5]<120) || (X[5]>200) || (Y[5]<90) || (Y[5]>165))
         {
@@ -293,37 +297,25 @@ void TRAVEL()
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if ((LeftB[j]>0) && (LeftB[j]<310) && (TopB[j]>0) && (TopB[j]<256))
-            {
-                Draw(MyRPort_PTR[AScr], LeftB[j], TopB[j]);
-            }
+            Draw(MyRPort_PTR[AScr], LeftB[j], TopB[j]);
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if ((RightB[j]>0) && (RightB[j]<310) && (TopB[j]>0) && (TopB[j]<256))
-            {
-                Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
-            }
+            Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if ((RightB[j]>0) && (RightB[j]<310) && (BottomB[j]>0) && (BottomB[j]<256))
-            {
-                Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
-            }
+            Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
         }
 
         Move(MyRPort_PTR[AScr], XOff+150, YOff+128);
         for(j = 1; j < 6; ++j)
         {
-            if ((LeftB[j]>0) && (LeftB[j]<310) && (BottomB[j]>0) && (BottomB[j]<256))
-            {
-                Draw(MyRPort_PTR[AScr], LeftB[j], BottomB[j]);
-            }
+            Draw(MyRPort_PTR[AScr], LeftB[j], BottomB[j]);
         }
 
         SetAPen(MyRPort_PTR[AScr], RectCol);
