@@ -55,8 +55,7 @@ bool WORMHOLE_INITIMAGES()
     char    s[40];
     char*   _s;
 
-    _s=my_strcpy(s, PathStr[4]);
-    _s=my_strcpy(_s, "Wormhole.img");
+    _s=my_strcpy(my_strcpy(s, PathStr[4]), "Wormhole.img");
     if (!RAWLOADIMAGE(s,0,0,640,512,4, &ImgBitMapW4))
         { return false; }
 
@@ -69,7 +68,7 @@ bool WORMHOLE_INITIMAGES()
 void TRAVEL()
 {
     sint16  X[5],Y[5],S[5];     // 1..5 -> 0..4
-    sint16  RightB[5],BottomB[5],LeftB[5],TopB[5];
+    sint16  RightB[5],BottomB[5],LeftB[5],TopB[5], BValue;
     sint16  XOff, YOff;
     volatile uint16*    Joy;
     sint16   DirCnt, DVert, DHoriz, JVert, JHoriz;
@@ -227,28 +226,31 @@ void TRAVEL()
         SetAPen(MyRPort_PTR[AScr],6);
         for(j = 0; j < 5; ++j)
         {
-            LeftB[j]   = X[j]-S[j];
-            if (0   > LeftB[j])   { LeftB[j] = 0; }
-            if (310 < LeftB[j])   { LeftB[j] = 310; }
-            RightB[j]  = X[j]+S[j];
-            if (0   > RightB[j])  { RightB[j] = 0; }
-            if (310 < RightB[j])  { RightB[j] = 310; }
-            TopB[j]    = Y[j]-S[j];
-            if (0   > TopB[j])    { TopB[j] = 0; }
-            if (310 < TopB[j])    { TopB[j] = 310; }
-            BottomB[j] = Y[j]+S[j];
-            if (0   > BottomB[j]) { BottomB[j] = 0; }
-            if (310 < BottomB[j]) { BottomB[j] = 310; }
+            BValue = X[j]-S[j];
+            if (0   > BValue)   { BValue = 0; }
+            if (310 < BValue)   { BValue = 310; }
+            LeftB[j] = BValue;
 
-            Move(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
-            Draw(MyRPort_PTR[AScr], RightB[j], TopB[j]);
-            Draw(MyRPort_PTR[AScr], RightB[j], BottomB[j]);
-            Draw(MyRPort_PTR[AScr], LeftB[j],  BottomB[j]);
-            Draw(MyRPort_PTR[AScr], LeftB[j],  TopB[j]);
+            BValue = X[j]+S[j];
+            if (0   > BValue)   { BValue = 0; }
+            if (310 < BValue)   { BValue = 310; }
+            RightB[j] = BValue;
+
+            BValue = Y[j]-S[j];
+            if (0   > BValue)   { BValue = 0; }
+            if (310 < BValue)   { BValue = 310; }
+            TopB[j] = BValue;
+
+            BValue = Y[j]+S[j];
+            if (0   > BValue)   { BValue = 0; }
+            if (310 < BValue)   { BValue = 310; }
+            BottomB[j] = BValue;
+
+            BOX(MyRPort_PTR[AScr], LeftB[j], TopB[j], RightB[j], BottomB[j]);
         }
-        if ((X[4]<120) || (X[4]>200) || (Y[4]<90) || (Y[4]>165))
+        if ((120 > X[4]) || (200 < X[4]) || (90 > Y[4]) || (165 < Y[4]))
         {
-            if ((X[4]>104) && (X[4]<216) && (Y[4]>74) && (Y[4]<181))
+            if ((104 < X[4]) && (216 > X[4]) && (74 < Y[4]) && (181 > Y[4]))
             {
                 if (Audio_enable)
                 {
