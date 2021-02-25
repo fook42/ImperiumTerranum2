@@ -54,13 +54,15 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
     LINKSHIP(MyShipPtr, &SystemHeader[NewSys].FirstShip, 1);
     MyShipPtr->PosX = MyWormHole[WormID].PosX[PosID];
     MyShipPtr->PosY = MyWormHole[WormID].PosY[PosID];
+
     do
     {
         MyShipPtr->PosX += (rand()%3)-1;
         MyShipPtr->PosY += (rand()%3)-1;
     }
     while ((FINDOBJECT(NewSys,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
-        && ((MyShipPtr->PosX<-3) || (MyShipPtr->PosX>3)) && ((MyShipPtr->PosY<-3) || (MyShipPtr->PosY>3)));
+        || ((4 > MyShipPtr->PosX) && (-4 < MyShipPtr->PosX) && (4 > MyShipPtr->PosY) && (-4 < MyShipPtr->PosY)));
+
     if (Visible)
     {
         for(i = 0; i < 16; ++i)
