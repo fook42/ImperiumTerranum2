@@ -1,4 +1,4 @@
-const char __ver[] = "$VER: ImperiumTerranum 2.808 (20.02.2021)\0";
+const char __ver[] = "$VER: ImperiumTerranum 2.809 (28.02.2021)\0";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -107,6 +107,10 @@ int main(int argc,char** argv)
                 (void) getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000, &ScreenModeID_LowRes,  &LowRes_Width,  &LowRes_Height);
                 (void) setMyScreenToolTypes( wbarg->wa_Name, ScreenModeID_HighRes, ScreenModeID_LowRes );
             }
+        } else {
+            /* started from CLI ... open the screenmode-requesters anyway */
+            (void) getScreenmode(SCREENREQTITLE_High, 640, 512, 0xA9004, &ScreenModeID_HighRes, &HighRes_Width, &HighRes_Height);
+            (void) getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000, &ScreenModeID_LowRes,  &LowRes_Width,  &LowRes_Height);
         }
 
         MAIN_FNC();
