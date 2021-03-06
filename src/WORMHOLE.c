@@ -70,11 +70,11 @@ void TRAVEL()
     sint16  X[5],Y[5],S[5];     // 1..5 -> 0..4
     sint16  RightB[5],BottomB[5],LeftB[5],TopB[5], BValue;
     sint16  XOff, YOff;
-    volatile uint16*    Joy;
-    sint16   DirCnt, DVert, DHoriz, JVert, JHoriz;
+    sint16  DirCnt, DVert, DHoriz, JVert, JHoriz;
     uint16  i, Clear;
     uint8   j, random_wert;
     uint8   AScr, RectCol;
+    int     oldMouseX, oldMouseY;
     time_t  t;
 
     RECT(MyScreen[0],7,311,0,319,255);
@@ -106,10 +106,15 @@ void TRAVEL()
     DirCnt = 1;
     DVert = 0;
     DHoriz = 0;
-    Joy = (uint16*) 0xDFF00C;
+
+    oldMouseX = MyScreen[1-AScr]->Width/2;
+    oldMouseY = MyScreen[1-AScr]->Height/2;
 
     for(i = 1; i <= STEPS; ++i)
     {
+        JHoriz = ((oldMouseX-MouseX(1-AScr))>>3) + (((oldMouseX-MouseX(1-AScr))>>2)&1);     // div by 8, "round" up
+        JVert  = ((oldMouseY-MouseY(1-AScr))>>3) + (((oldMouseY-MouseY(1-AScr))>>2)&1);     // div by 8, "round" up
+
         if ((STEPS-55) > i)
         {
             if (8 < DirCnt)
@@ -131,40 +136,6 @@ void TRAVEL()
             DVert = 0;
         }
 
-        JVert = 0;
-        JHoriz = 0;
-        // 0x1  = unten
-        // 0x2  = links unten
-        // 0x3  = links
-        // 0x100= oben
-        // 0x200= oben rechts
-        // 0x300= rechts
-
-/*
-        if (((*Joy & 0x3) == 0x3) || ((*Joy & 0x3) == 0x2))
-        {
-            JHoriz = -8;
-        } else if (((*Joy & 0x300) == 0x300) || ((*Joy & 0x300) == 0x200))
-        {
-            JHoriz = 8;
-        }
-*/
-
-        if ((*Joy & 0x2) == 0x2)
-        {
-            JHoriz = -8;        // right
-        } else if ((*Joy & 0x200) == 0x200)
-        {
-            JHoriz = 8;         // left
-        }
-
-        if (((*Joy & 0x3) == 0x1) || ((*Joy & 0x3) == 0x2))
-        {
-            JVert = -8;         // up
-        } else if (((*Joy & 0x300) == 0x100) || ((*Joy & 0x300) == 0x200))
-        {
-            JVert = 8;          // down
-        }
         if (0 != JHoriz)
         {
             for(j = 0; j < 5; ++j)
