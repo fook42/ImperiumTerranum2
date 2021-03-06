@@ -196,7 +196,7 @@ void TRAVEL()
                 X[j] = 155-it_round((double) (155-X[j])*0.98);
             } else if (156 < X[j])
             {
-                X[j] = it_round((double) X[j]+0.98);
+                X[j] = 155+it_round((double) (X[j]-155)*0.98);
             }
 
             if (127 > Y[j])
@@ -204,7 +204,7 @@ void TRAVEL()
                 Y[j] = 128-it_round((double) (128-Y[j])*0.98);
             } else if (129 < Y[j])
             {
-                Y[j] = it_round((double) Y[j]+0.98);
+                Y[j] = 128+it_round((double) (Y[j]-128)*0.98);
             }
             S[j] = it_round(S[j]*1.06);
         }

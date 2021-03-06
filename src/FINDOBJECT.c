@@ -11,7 +11,7 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
     int             i,j;
 
     ObjPtr = NULL;
-    ObjType = 0;
+    ObjType = TYPE_NOTHING;
 
     // check if we are close to a Stargate ?
     if (NULL != ExcludeObj)
