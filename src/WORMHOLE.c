@@ -100,7 +100,7 @@ void TRAVEL()
     {
         X[j+1] = X[j];
         Y[j+1] = Y[j];
-        S[j+1] = it_round(S[j]*1.6);
+        S[j+1] = S[j] + ((S[j] + (S[j]>>2))>>1);
     }
     AScr = 0;
     DirCnt = 1;
@@ -164,20 +164,20 @@ void TRAVEL()
         {
             if (154 > X[j])
             {
-                X[j] = 155-it_round((double) (155-X[j])*0.98);
+                X[j] += ((155-X[j]) + ((155-X[j])>>2))>>6;
             } else if (156 < X[j])
             {
-                X[j] = 155+it_round((double) (X[j]-155)*0.98);
+                X[j] -= ((X[j]-155) - ((X[j]-155)>>2))>>6;
             }
 
             if (127 > Y[j])
             {
-                Y[j] = 128-it_round((double) (128-Y[j])*0.98);
+                Y[j] += ((128-Y[j]) + ((128-Y[j])>>2))>>6;
             } else if (129 < Y[j])
             {
-                Y[j] = 128+it_round((double) (Y[j]-128)*0.98);
+                Y[j] -= ((Y[j]-128) - ((Y[j]-128)>>2))>>6;
             }
-            S[j] = it_round(S[j]*1.06);
+            S[j] += (S[j]>>4) + ((S[j]>>3)&1);
         }
 
         if (240 < S[4])
@@ -198,23 +198,23 @@ void TRAVEL()
         for(j = 0; j < 5; ++j)
         {
             BValue = X[j]-S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (310 < BValue) { BValue = 310; }
             LeftB[j] = BValue;
 
             BValue = X[j]+S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (310 < BValue) { BValue = 310; }
             RightB[j] = BValue;
 
             BValue = Y[j]-S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (310 < BValue) { BValue = 310; }
             TopB[j] = BValue;
 
             BValue = Y[j]+S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (310 < BValue) { BValue = 310; }
             BottomB[j] = BValue;
 
             BOX(MyRPort_PTR[AScr], LeftB[j], TopB[j], RightB[j], BottomB[j]);
@@ -312,6 +312,7 @@ void TRAVEL()
                 SPLengthA = WHSoundMemL[0]-i-i-i;
             }
         }
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
     }
