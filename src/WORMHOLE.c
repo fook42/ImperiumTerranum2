@@ -70,9 +70,11 @@ void TRAVEL()
     sint16  X[5],Y[5],S[5];     // 1..5 -> 0..4
     sint16  RightB[5],BottomB[5],LeftB[5],TopB[5], BValue;
     sint16  XOff, YOff;
-    sint16  DirCnt, DVert, DHoriz, JVert, JHoriz;
-    uint16  i, Clear;
-    uint8   j, random_wert;
+    sint16  DVert, DHoriz,JVert, JHoriz;
+    uint16  Clear;
+    int     i, j;
+    uint8   DirCnt;
+    uint8   random_wert;
     uint8   AScr, RectCol;
     int     oldMouseX, oldMouseY;
     time_t  t;
@@ -98,8 +100,8 @@ void TRAVEL()
     Clear = 0;
     for(j = 0; j < 4; ++j)
     {
-        X[j+1] = X[j];
-        Y[j+1] = Y[j];
+        X[j+1] = X[0];
+        Y[j+1] = Y[0];
         S[j+1] = S[j] + ((S[j] + (S[j]>>2))>>1);
     }
     AScr = 0;
@@ -110,31 +112,27 @@ void TRAVEL()
     oldMouseX = MyScreen[1-AScr]->Width/2;
     oldMouseY = MyScreen[1-AScr]->Height/2;
 
-    for(i = 1; i <= STEPS; ++i)
+    for(i = 0; i < STEPS; ++i)
     {
-        JHoriz = ((oldMouseX-MouseX(1-AScr))>>3) + (((oldMouseX-MouseX(1-AScr))>>2)&1);     // div by 8, "round" up
-        JVert  = ((oldMouseY-MouseY(1-AScr))>>3) + (((oldMouseY-MouseY(1-AScr))>>2)&1);     // div by 8, "round" up
-
         if ((STEPS-55) > i)
         {
-            if (8 < DirCnt)
-            {
-                DirCnt = 0;
-            } else if (0 == DirCnt)
+            if (8 == DirCnt)
             {
                 DHoriz = ((rand()%3)-1)*3;
                 if (0 == DHoriz)
                 {
                     DVert = ((rand()%3)-1)*3;
                 }
-                DirCnt = 1;
-            } else {
-                ++DirCnt;
+                DirCnt = 0;
             }
+            ++DirCnt;
         } else {
             DHoriz = 0;
             DVert = 0;
         }
+
+        JHoriz = ((oldMouseX-MouseX(1-AScr))>>3) + (((oldMouseX-MouseX(1-AScr))>>2)&1);     // div by 8, "round" up
+        JVert  = ((oldMouseY-MouseY(1-AScr))>>3) + (((oldMouseY-MouseY(1-AScr))>>2)&1);     // div by 8, "round" up
 
         if (0 != JHoriz)
         {
@@ -209,12 +207,12 @@ void TRAVEL()
 
             BValue = Y[j]-S[j];
             if      (0   > BValue) { BValue = 0; }
-            else if (310 < BValue) { BValue = 310; }
+            else if (255 < BValue) { BValue = 255; }
             TopB[j] = BValue;
 
             BValue = Y[j]+S[j];
             if      (0   > BValue) { BValue = 0; }
-            else if (310 < BValue) { BValue = 310; }
+            else if (255 < BValue) { BValue = 255; }
             BottomB[j] = BValue;
 
             BOX(MyRPort_PTR[AScr], LeftB[j], TopB[j], RightB[j], BottomB[j]);
