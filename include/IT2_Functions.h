@@ -141,6 +141,9 @@ LONG GETMIDIPLAYER(struct MMD0 *module);
 void LOADSOUND(char* FName, const int SoundID);
 // >>> MAININTRO
 void MAININTRO();
+int MAININTRO_PART1(uint16** SMemA, uint32* SMemL);
+int MAININTRO_PART2(uint16** SMemA, uint32* SMemL);
+
 void SETDARKCOLOR(char* FName, r_Col_t* Colors);
 // void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module);
 void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL);
