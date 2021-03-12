@@ -1,4 +1,4 @@
-const char __ver[] = "$VER: ImperiumTerranum 2.809 (28.02.2021)\0";
+const char __ver[] = "$VER: ImperiumTerranum 2.810 (12.03.2021)\0";
 
 #include <stdio.h>
 #include <stdlib.h>
