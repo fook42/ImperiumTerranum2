@@ -141,23 +141,23 @@ LONG GETMIDIPLAYER(struct MMD0 *module);
 void LOADSOUND(char* FName, const int SoundID);
 // >>> MAININTRO
 void MAININTRO();
-int MAININTRO_PART1(uint16** SMemA, uint32* SMemL);
-int MAININTRO_PART2(uint16** SMemA, uint32* SMemL);
-int MAININTRO_PART3(uint16** SMemA, uint32* SMemL);
-
 void SETDARKCOLOR(char* FName, r_Col_t* Colors);
-// void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module);
-void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL);
-bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, uint32* SMemL);
-int ff_round(long int value);
-void ROTATEpX(VectorObj_t* actObject);
-void ROTATEpY(VectorObj_t* actObject);
-void ROTATEpZ(VectorObj_t* actObject);
-void ROTATEnX(VectorObj_t* actObject);
-void ROTATEnY(VectorObj_t* actObject);
-void ROTATEnZ(VectorObj_t* actObject);
-void FLY(VectorObj_t* actObject, sint32 Factor);
-void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL);
+int MAININTRO_PART1(uint16** SMemA, LONG* SMemL);
+int MAININTRO_PART2(uint16** SMemA, LONG* SMemL);
+int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr);
+int MAININTRO_PART4();
+
+// void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module, uint16** SMemA, uint32* SMemL);
+// bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, uint32* SMemL);
+//int ff_round(long int value);
+//void ROTATEpX(VectorObj_t* actObject);
+//void ROTATEpY(VectorObj_t* actObject);
+//void ROTATEpZ(VectorObj_t* actObject);
+//void ROTATEnX(VectorObj_t* actObject);
+//void ROTATEnY(VectorObj_t* actObject);
+//void ROTATEnZ(VectorObj_t* actObject);
+//void FLY(VectorObj_t* actObject, sint32 Factor);
+//void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL);
 // <<<
 void MAIN_FNC();
 // >>> MILITAER

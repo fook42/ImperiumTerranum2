@@ -21,8 +21,6 @@
 // will be global variables... waste of memory - maybe we can move them to the heap? ...
 #define NUM_VECTOROBJ (13)
 VectorObj_t*    VObj[NUM_VECTOROBJ];
-extern uint8*   IntroMemA;
-extern uint32   IntroMemL;
 
 // ... fixfloat-round ----------
 
@@ -356,40 +354,49 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
 }
 
 
-int MAININTRO_PART2(uint16** SMemA, uint32* SMemL)
+int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
 {
     char        s[40];
     char*       _s;
     r_Col_t     Colors[128];
     PLANEPTR    MyRastPtr = NULL;
+    APTR        IntroAreaMem = NULL;
     struct TmpRas       MyTmpRas;
     struct AreaInfo     MyAI;
     uint8       i;
-
+    int         ret_code = -1;
+    APTR        TextVectorMem = NULL;
+    uint32      TextVectorSize;
 
     MyRastPtr = AllocRaster(640,360);
     if (NULL == MyRastPtr)
     {
-        return -1;
+        goto leave_part;
     }
     InitTmpRas(&MyTmpRas, MyRastPtr, 21000);
-    InitArea(&MyAI, (APTR) IMemA[0], 200);
-    
+
+    IntroAreaMem = AllocMem(IntroAreaSize, MEMF_CHIP);
+    if (NULL == IntroAreaMem)
+    {
+        goto leave_part;
+    }
+    InitArea(&MyAI, IntroAreaMem, 200);
+
     MyRPort_PTR[0]->TmpRas = &MyTmpRas;
     MyRPort_PTR[1]->TmpRas = &MyTmpRas;
     MyRPort_PTR[0]->AreaInfo = &MyAI;
     MyRPort_PTR[1]->AreaInfo = &MyAI;
 
 /**** new .. alloc mem for vectorObj .. free this later ***/
-    IntroMemL = sizeof(VectorObj_t)*NUM_VECTOROBJ;
-    IntroMemA = (uint8*) AllocMem(IntroMemL, MEMF_ANY | MEMF_CLEAR);
-    if (NULL == IntroMemA)
+    TextVectorSize = sizeof(VectorObj_t)*NUM_VECTOROBJ;
+    TextVectorMem = (uint8*) AllocMem(TextVectorSize, MEMF_ANY | MEMF_CLEAR);
+    if (NULL == TextVectorMem)
     {
-        return -1;
+        goto leave_part;
     }
     for (i = 0; i<NUM_VECTOROBJ; ++i)
     {
-        VObj[i] = (VectorObj_t*) (IntroMemA + i*sizeof(VectorObj_t));
+        VObj[i] = (VectorObj_t*) (((ULONG) TextVectorMem) + i*sizeof(VectorObj_t));
     }
 /**** new .. */
 
@@ -399,7 +406,7 @@ int MAININTRO_PART2(uint16** SMemA, uint32* SMemL)
     (void) my_strcpy(_s, "Frame1.pal");
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame1.img");
-    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { return -1; }
+    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_part; }
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRESENTS");
     WaitTOF();
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,75,192);
@@ -457,16 +464,16 @@ int MAININTRO_PART2(uint16** SMemA, uint32* SMemL)
         6,6,0,{630,601,601,601,601,630},{2,2,10,10,2,2},{1,1,1,3,3,3},
         {627,601,601,601,601,627},{14,14,36,36,14,14},{1,1,1,3,3,3}};
 
-    if (LMB_PRESSED) { return 1; }
+    if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
     GREATEFFECT(13, Colors, SMemA, SMemL);
-    if (LMB_PRESSED) { return 1; }
+    if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
 
     /*****************************************************************************/
     /* A VIRTUAL WORLDS PRODUCTION */
     (void) my_strcpy(_s, "Frame2.pal");
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame2.img");
-    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { return -1; }
+    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_part; }
     WRITE(320,205,31,WRITE_Center,MyRPort_PTR[AScr],4,"A");
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRODUCTION");
     WaitTOF();
@@ -517,16 +524,16 @@ int MAININTRO_PART2(uint16** SMemA, uint32* SMemL)
         6,0,0,{505,483,483,483,483,505},{3,2,36,36,2,3},{1,1,1,3,3,3},
         {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
 
-    if (LMB_PRESSED) { return 1; }
+    if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
     GREATEFFECT(11, Colors, SMemA, SMemL);
-    if (LMB_PRESSED) { return 1; }
+    if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
 
     /*****************************************************************************/
     /* IMPERIUM TERRANUM */
     (void) my_strcpy(_s, "Frame3.pal");
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame3.img");
-    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { return -1; }
+    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_part; }
     WaitTOF();
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,37,192);
 
@@ -579,39 +586,40 @@ int MAININTRO_PART2(uint16** SMemA, uint32* SMemL)
         6,6,0,{569,558,558,558,558,569},{2,2,36,36,2,2},{1,1,1,3,3,3},
         {602,591,580,580,591,602},{2,2,18,18,2,2},{1,1,1,3,3,3}};
 
-    if (LMB_PRESSED) { return 1; }
+    if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
     GREATEFFECT(12, Colors, SMemA, SMemL);
-    if (LMB_PRESSED) { return 1; }
+    if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
+
+
+    ret_code = 0;
+leave_part:
 
     /*****************************************************************************/
     // cleanup...
-    FreeRaster(MyRastPtr,640,360);
-    MyRastPtr = NULL;
 
-    if (NULL != IntroMemA)
+    if (NULL != MyRastPtr)
     {
-        FreeMem((APTR) IntroMemA, IntroMemL);
+        FreeRaster(MyRastPtr, 640, 360);
     }
 
-    if (NULL != IMemA[0])
+    if (NULL != IntroAreaMem)
     {
-        FreeMem((APTR) IMemA[0], IMemL[0]);
-        IMemA[0] = NULL;
+        FreeMem(IntroAreaMem, IntroAreaSize);
     }
+
+    if (NULL != TextVectorMem)
+    {
+        FreeMem((APTR) TextVectorMem, TextVectorSize);
+    }
+
     for (i = 0; i<2; i++)
     {
         if (NULL != MyScreen[i])
         {
             CloseScreen(MyScreen[i]);
         }
-        MyScreen[i] = OPENCINEMA(7);
-        if (NULL == MyScreen[i])
-        {
-            return -1;
-        }
-        MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
-        MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
     }
 
-    return 0;
+    return ret_code;
+
 }

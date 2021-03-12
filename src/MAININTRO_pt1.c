@@ -3,20 +3,21 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-int MAININTRO_PART1(uint16** SMemA, uint32* SMemL)
+int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
 {
     int                 i;
     uint16              xpos;
     struct ITBitMap     IntroBitMap;
     char                s[40];
     char*               _s;
+    int                 ret_code = -1;
 
     for (i = 0; i<2; i++)
     {
         MyScreen[i] = OPENCINEMA(5);
         if (NULL == MyScreen[i])
         {
-            return -1;
+            goto leave_part;
         }
         MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
         MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
@@ -25,9 +26,9 @@ int MAININTRO_PART1(uint16** SMemA, uint32* SMemL)
 
     if (!FillITBitMap(&IntroBitMap, 80, 183, 5))
     {
-        return -1;
+        goto leave_part;
     }
-    IMemL[0] = IntroBitMap.MemL;
+    IMemL[0] = IntroBitMap.MemL;        // = 73200 Bytes
     IMemA[0] = (uint8*) IntroBitMap.MemA;
 
     _s = my_strcpy(s,PathStr[7]);
@@ -38,7 +39,7 @@ int MAININTRO_PART1(uint16** SMemA, uint32* SMemL)
     (void) my_strcpy(_s, "Frame0.img");   // Touchbyte ...
     if (!RAWLOADIMAGE(s,0,0,640,183,5,&IntroBitMap))
     {
-        return -1;
+        goto leave_part;
     }
     xpos = 5;
     for (i = 0; i<8; ++i)
@@ -58,7 +59,7 @@ int MAININTRO_PART1(uint16** SMemA, uint32* SMemL)
         BltBitMapRastPort((struct BitMap*) &IntroBitMap,41,0,MyRPort_PTR[AScr],xpos+49,340, 5,90,192);
         WaitTOF();
         ScreenToFront(MyScreen[AScr]);
-        if (LMB_PRESSED) { return 1; }
+        if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
     }
     while (xpos > 10);
     ClipBlit(MyRPort_PTR[AScr],10,340,MyRPort_PTR[1-AScr],10,340,50,90,192);
@@ -82,7 +83,7 @@ int MAININTRO_PART1(uint16** SMemA, uint32* SMemL)
         RectFill(MyRPort_PTR[AScr],xpos+41,340,xpos+50,430);
         WaitTOF();
         ScreenToFront(MyScreen[AScr]);
-        if (LMB_PRESSED) { return 1; }
+        if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
     }
     while (xpos > 60);
 
@@ -94,7 +95,7 @@ int MAININTRO_PART1(uint16** SMemA, uint32* SMemL)
         BltBitMapRastPort((struct BitMap*) &IntroBitMap,0,0,MyRPort_PTR[AScr],10,340,616,91,192);
         ScreenToFront(MyScreen[AScr]);
     }
-    if (LMB_PRESSED) { return 1; }
+    if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
     Delay(15);
     AScr = 1-AScr;
     BltBitMapRastPort((struct BitMap*) &IntroBitMap,0,90,MyRPort_PTR[AScr],10,337,98,90,192);
@@ -124,5 +125,13 @@ int MAININTRO_PART1(uint16** SMemA, uint32* SMemL)
     WaitTOF();
     ScreenToFront(MyScreen[AScr]);
 
-    return 0;
+    ret_code = 0;
+leave_part:
+
+    if (NULL != IntroBitMap.MemA)
+    {
+        FreeMem(IntroBitMap.MemA, IntroBitMap.MemL);
+    }
+
+    return ret_code;
 }

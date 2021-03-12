@@ -3,19 +3,27 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-int MAININTRO_PART3(uint16** SMemA, uint32* SMemL)
+int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
 {
     char        s[40];
     char*       _s;
     BPTR        FHandle;
     r_Col_t     Colors[128];
-    struct MMD0 *SndModulePtr = NULL;
     struct RastPort*    actRastPort;
     uint8       i, k;
     uint32      ISize;
     uint16      dFactor;
 
-    _s=my_strcpy(s,PathStr[7]);
+    for (i = 0; i<2; i++)
+    {
+        MyScreen[i] = OPENCINEMA(7);
+        if (NULL == MyScreen[i])
+        {
+            return -1;
+        }
+        MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
+        MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
+    }
 
     IMemL[0] = 201856;
     IMemL[1] = 21000;
@@ -47,6 +55,8 @@ int MAININTRO_PART3(uint16** SMemA, uint32* SMemL)
     custom.dmacon = BITCLR | DMAF_AUD2 | DMAF_AUD3; // 0x000C
     if (LMB_PRESSED) { return 1; }
 
+    _s=my_strcpy(s,PathStr[7]);
+
     (void) my_strcpy(_s, "MOD.Intro");
     FHandle = OPENSMOOTH(s,MODE_OLDFILE);
     if (0 != FHandle)
@@ -54,10 +64,10 @@ int MAININTRO_PART3(uint16** SMemA, uint32* SMemL)
         Close(FHandle);
         StopPlayer();
         FreePlayer();
-        SndModulePtr = LoadModule(s);   // module will be loaded directly from disk
-        if (GETMIDIPLAYER(SndModulePtr))
+        *SndModulePtr = LoadModule(s);   // module will be loaded directly from disk
+        if (GETMIDIPLAYER(*SndModulePtr))
         {
-            PlayModule(SndModulePtr);
+            PlayModule(*SndModulePtr);
         }
     }
 
@@ -66,7 +76,7 @@ int MAININTRO_PART3(uint16** SMemA, uint32* SMemL)
     (void) my_strcpy(_s, "Frame4.img");       // terrain with stars...
     if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[1],0))
     {
-        return 1;
+        return -1;
     }
     ClipBlit(MyRPort_PTR[1],0,75,MyRPort_PTR[0],0,75,640,360,192);
 
