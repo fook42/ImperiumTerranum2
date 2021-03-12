@@ -143,6 +143,7 @@ void LOADSOUND(char* FName, const int SoundID);
 void MAININTRO();
 int MAININTRO_PART1(uint16** SMemA, uint32* SMemL);
 int MAININTRO_PART2(uint16** SMemA, uint32* SMemL);
+int MAININTRO_PART3(uint16** SMemA, uint32* SMemL);
 
 void SETDARKCOLOR(char* FName, r_Col_t* Colors);
 // void INTROEXIT(PLANEPTR MyRastPtr, struct MMD0 *module);

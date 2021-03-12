@@ -23,51 +23,6 @@
 VectorObj_t*    VObj[NUM_VECTOROBJ];
 extern uint8*   IntroMemA;
 extern uint32   IntroMemL;
-// ------------------------------
-
-void SETDARKCOLOR(char* FName, r_Col_t* Colors)
-{
-    uint32  AddrX, AddrEnd, ISize;
-    uint8   i;
-    uint32* ColorID;
-    BPTR    FHandle;
-
-    FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
-    if (0 != FHandle)
-    {
-        (void)  Seek(FHandle, 0, OFFSET_END);
-        ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
-        (void) Read(FHandle, (APTR) IMemA[0], ISize);
-        Close(FHandle);
-        AddrX = (uint32) IMemA[0];
-        AddrEnd = AddrX + ISize;
-        do
-        {
-            ColorID = (uint32*) AddrX;
-            AddrX += 4;
-        }
-        while ((AddrX < AddrEnd) && (_COLOR_CMAP_TEXT_ != *ColorID));
-
-        if (_COLOR_CMAP_TEXT_ == *ColorID)
-        {
-            AddrX += 4; // skip "IMPT"-string
-            i = 0;
-            do
-            {
-                SetRGB32(MyVPort_PTR[0],i,0,0,0);
-                SetRGB32(MyVPort_PTR[1],i,0,0,0);
-
-                Colors[i] = *((r_Col_t*) AddrX);
-                AddrX += sizeof(r_Col_t);
-                ++i;
-            }
-            while (AddrX < AddrEnd);
-        }
-        Colors[31].r = 45;
-        Colors[31].g = 45;
-        Colors[31].b = 62;
-    }
-}
 
 // ... fixfloat-round ----------
 
