@@ -22,9 +22,10 @@ int MAININTRO_PART4()
         "Special Effects",              "Oxygenic",
         "Credits go to",                "Adam Benjamin   Rikard Cederlund",
         "Jakob Gaardsted   Andy Jones", "George Moore",
-        "Surround-Sounds created with", "WaveTracer DSï¿½",
-        "Colors in Technicolorï¿½",       "Panaflexï¿½ Camera and Lenses by Panavisionï¿½"};
-    const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3};
+        "Surround-Sounds created with", "WaveTracer DS®",
+        "Colors in Technicolor®",       "Panaflex® Camera and Lenses by Panavision®",
+        "Ported to C & improved by",    "Fook42"};
+    const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3, 3,4};
 
     r_Coords_t* ShipX;
     r_Coords_t* ShipY;
@@ -205,8 +206,6 @@ int MAININTRO_PART4()
         for (k = 30; k<33; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
         AreaEnd(actRastPort);
 
-        SetAPen(actRastPort,0);
-        RectFill(actRastPort,0,75,0,200);
         if (1 < ISize)
         {
             WRITE(320,220,123,WRITE_Center,actRastPort,FArr[l  ],SArr[l  ]);
@@ -225,29 +224,25 @@ int MAININTRO_PART4()
     }
     while ((Factor<3.2) && (SizeFactor<3.2));
 
-    if (16 > l)
+    while ((sizeof(FArr)-1) > l)
     {
-        do
+        WaitTOF();
+        ScreenToFront(MyScreen[AScr]);
+        AScr = 1-AScr;
+        BltBitMapRastPort(&MyBitMap,0,0,MyRPort_PTR[AScr],0,75,640,360,192);
+        if (0 < ISize)
         {
-            WaitTOF();
-            ScreenToFront(MyScreen[AScr]);
-            AScr = 1-AScr;
-            BltBitMapRastPort(&MyBitMap,0,0,MyRPort_PTR[AScr],0,75,640,360,192);
-            if (0 < ISize)
-            {
-                WRITE(320,220,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l  ],SArr[l  ]);
-                WRITE(320,245,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l+1],SArr[l+1]);
-            }
-            ++ISize;
-            if (20 < ISize)
-            {
-                l += 2;
-                ISize = 0;
-            }
-            if (LMB_PRESSED)
-                { ret_code = 1; goto leave_part; }
+            WRITE(320,220,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l  ],SArr[l  ]);
+            WRITE(320,245,123,WRITE_Center,MyRPort_PTR[AScr],FArr[l+1],SArr[l+1]);
         }
-        while (17 > l);
+        ++ISize;
+        if (20 < ISize)
+        {
+            l += 2;
+            ISize = 0;
+        }
+        if (LMB_PRESSED)
+            { ret_code = 1; goto leave_part; }
     }
 
     ret_code = 0;

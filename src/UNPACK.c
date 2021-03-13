@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void UNPACK(uint8* Anfang, uint8* PackedD, const int Laenge, const int Mode)
+void UNPACK(uint8* Anfang, uint8* PackedD, const LONG Laenge, const int Mode)
 {
     uint8  Anz;
     uint8* UnPackedD;

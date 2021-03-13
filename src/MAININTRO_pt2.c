@@ -368,7 +368,7 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     APTR        TextVectorMem = NULL;
     uint32      TextVectorSize;
 
-    MyRastPtr = AllocRaster(640,360);
+    MyRastPtr = AllocRaster(640, 360);
     if (NULL == MyRastPtr)
     {
         goto leave_part;
@@ -383,7 +383,8 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     InitArea(&MyAI, IntroAreaMem, 200);
 
     MyRPort_PTR[0]->TmpRas = &MyTmpRas;
-    MyRPort_PTR[1]->TmpRas = &MyTmpRas;
+    MyRPort_PTR[1]->TmpRas = &MyTmpRas; // maybe illegal!!!
+    //  hint from Autodocs(InitTmpRas): BUGS: Would be nice if RastPorts could share one TmpRas.
     MyRPort_PTR[0]->AreaInfo = &MyAI;
     MyRPort_PTR[1]->AreaInfo = &MyAI;
 

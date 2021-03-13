@@ -28,8 +28,8 @@ int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
     {
         goto leave_part;
     }
-    IMemL[0] = IntroBitMap.MemL;        // = 73200 Bytes
-    IMemA[0] = (uint8*) IntroBitMap.MemA;
+    IMemL[0] = IntroBitMap.MemL;            // needed for RAWLOADIMAGE, DISPLAYIMAGE...
+    IMemA[0] = (uint8*) IntroBitMap.MemA;   // will be freed automatically when intro ends
 
     _s = my_strcpy(s,PathStr[7]);
     (void) my_strcpy(_s, "Frame0.pal");
@@ -127,11 +127,6 @@ int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
 
     ret_code = 0;
 leave_part:
-
-    if (NULL != IntroBitMap.MemA)
-    {
-        FreeMem(IntroBitMap.MemA, IntroBitMap.MemL);
-    }
 
     return ret_code;
 }

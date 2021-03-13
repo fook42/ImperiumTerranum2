@@ -6,7 +6,7 @@
 bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, ITBitMap* DestBitMap)
 {
     BPTR            FHandle;
-    int             ISize, piclen;
+    LONG            ISize, piclen;
     PLANEPTR        plane_PTR;
     int             i;
     bool            _RAWLOADIMAGE = false;
@@ -17,7 +17,7 @@ bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width
     {
         (void)  Seek(FHandle, 0, OFFSET_END);
         ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
-        if (0 != ISize)
+        if (0 < ISize)
         {
             (void) Read(FHandle, (IMemA[0]+IMemL[0]-ISize-250), ISize);
             piclen = (Width*Height*Depth)>>3;

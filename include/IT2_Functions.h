@@ -228,7 +228,7 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag);
 void SYSTEMINFO(uint8 ActSys);
 void SYSTEMTOENEMY(uint8 ActSys, uint8 NewOwner, uint8 OldOwner);
 bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2);
-void UNPACK(uint8* Anfang, uint8* PackedD, const int Laenge, const int Mode);
+void UNPACK(uint8* Anfang, uint8* PackedD, const LONG Laenge, const int Mode);
 // >>> VERHANDLUNG ---
 void VERHANDLUNG_INIT(int CivFlag, char* CivStr, int Mode);
 void VERHANDLUNG(int CivFlag, int Mode);
