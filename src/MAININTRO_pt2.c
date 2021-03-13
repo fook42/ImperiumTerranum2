@@ -613,6 +613,12 @@ leave_part:
         FreeMem((APTR) TextVectorMem, TextVectorSize);
     }
 
+    if (NULL != IMemA[0])
+    {
+        FreeMem((APTR) IMemA[0], IMemL[0]);
+        IMemA[0] = NULL;
+    }
+
     for (i = 0; i<2; i++)
     {
         if (NULL != MyScreen[i])
