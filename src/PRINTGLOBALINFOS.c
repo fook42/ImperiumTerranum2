@@ -6,16 +6,19 @@
 void PRINTGLOBALINFOS(uint8 PGI_ActPlayer)
 {
     char    s[12];
+    static  sint32 old_year;
 
-    // clean the area before...
-    RECT_RP0_C0(519,132,632,149);
+    if (Year != old_year)
+    {
+        (void) dez2out(Year, 0, s);
+        RECT_RP0_C0(519,132,632,149);
+        WRITE_RP0(575,134,109,(1|WRITE_Center),1,s);
+        old_year = Year;
+    }
+    // clean the areas before...
     RECT_RP0_C0(519,183,632,200);
     RECT_RP0_C0(519,234,632,251);
-
-    (void) dez2out(Year, 0, s);
-    WRITE_RP0(575,134,109,(1|WRITE_Center),1,s);
-
-    if ((true == Valid) && ((0 != Save.CivPlayer[PGI_ActPlayer]) || (!Save.PlayMySelf)))
+    if (true == Valid)
     {
         if ((0 != Save.CivPlayer[PGI_ActPlayer]) && (Informed))
         {
