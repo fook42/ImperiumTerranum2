@@ -70,11 +70,13 @@ void TRAVEL()
     sint16  X[5],Y[5],S[5];     // 1..5 -> 0..4
     sint16  RightB[5],BottomB[5],LeftB[5],TopB[5], BValue;
     sint16  XOff, YOff;
-    volatile uint16*    Joy;
-    sint16   DirCnt, DVert, DHoriz, JVert, JHoriz;
-    uint16  i, Clear;
-    uint8   j, random_wert;
+    sint16  DVert, DHoriz,JVert, JHoriz;
+    uint16  Clear;
+    int     i, j;
+    uint8   DirCnt;
+    uint8   random_wert;
     uint8   AScr, RectCol;
+    int     oldMouseX, oldMouseY;
     time_t  t;
 
     RECT(MyScreen[0],7,311,0,319,255);
@@ -98,73 +100,40 @@ void TRAVEL()
     Clear = 0;
     for(j = 0; j < 4; ++j)
     {
-        X[j+1] = X[j];
-        Y[j+1] = Y[j];
-        S[j+1] = it_round(S[j]*1.6);
+        X[j+1] = X[0];
+        Y[j+1] = Y[0];
+        S[j+1] = S[j] + ((S[j] + (S[j]>>2))>>1);
     }
     AScr = 0;
     DirCnt = 1;
     DVert = 0;
     DHoriz = 0;
-    Joy = (uint16*) 0xDFF00C;
 
-    for(i = 1; i <= STEPS; ++i)
+    oldMouseX = MyScreen[1-AScr]->Width/2;
+    oldMouseY = MyScreen[1-AScr]->Height/2;
+
+    for(i = 0; i < STEPS; ++i)
     {
         if ((STEPS-55) > i)
         {
-            if (8 < DirCnt)
-            {
-                DirCnt = 0;
-            } else if (0 == DirCnt)
+            if (8 == DirCnt)
             {
                 DHoriz = ((rand()%3)-1)*3;
                 if (0 == DHoriz)
                 {
                     DVert = ((rand()%3)-1)*3;
                 }
-                DirCnt = 1;
-            } else {
-                ++DirCnt;
+                DirCnt = 0;
             }
+            ++DirCnt;
         } else {
             DHoriz = 0;
             DVert = 0;
         }
 
-        JVert = 0;
-        JHoriz = 0;
-        // 0x1  = unten
-        // 0x2  = links unten
-        // 0x3  = links
-        // 0x100= oben
-        // 0x200= oben rechts
-        // 0x300= rechts
+        JHoriz = ((oldMouseX-MouseX(1-AScr))>>3) + (((oldMouseX-MouseX(1-AScr))>>2)&1);     // div by 8, "round" up
+        JVert  = ((oldMouseY-MouseY(1-AScr))>>3) + (((oldMouseY-MouseY(1-AScr))>>2)&1);     // div by 8, "round" up
 
-/*
-        if (((*Joy & 0x3) == 0x3) || ((*Joy & 0x3) == 0x2))
-        {
-            JHoriz = -8;
-        } else if (((*Joy & 0x300) == 0x300) || ((*Joy & 0x300) == 0x200))
-        {
-            JHoriz = 8;
-        }
-*/
-
-        if ((*Joy & 0x2) == 0x2)
-        {
-            JHoriz = -8;        // right
-        } else if ((*Joy & 0x200) == 0x200)
-        {
-            JHoriz = 8;         // left
-        }
-
-        if (((*Joy & 0x3) == 0x1) || ((*Joy & 0x3) == 0x2))
-        {
-            JVert = -8;         // up
-        } else if (((*Joy & 0x300) == 0x100) || ((*Joy & 0x300) == 0x200))
-        {
-            JVert = 8;          // down
-        }
         if (0 != JHoriz)
         {
             for(j = 0; j < 5; ++j)
@@ -193,20 +162,20 @@ void TRAVEL()
         {
             if (154 > X[j])
             {
-                X[j] = 155-it_round((double) (155-X[j])*0.98);
+                X[j] += ((155-X[j]) + ((155-X[j])>>2))>>6;
             } else if (156 < X[j])
             {
-                X[j] = 155+it_round((double) (X[j]-155)*0.98);
+                X[j] -= ((X[j]-155) - ((X[j]-155)>>2))>>6;
             }
 
             if (127 > Y[j])
             {
-                Y[j] = 128-it_round((double) (128-Y[j])*0.98);
+                Y[j] += ((128-Y[j]) + ((128-Y[j])>>2))>>6;
             } else if (129 < Y[j])
             {
-                Y[j] = 128+it_round((double) (Y[j]-128)*0.98);
+                Y[j] -= ((Y[j]-128) - ((Y[j]-128)>>2))>>6;
             }
-            S[j] = it_round(S[j]*1.06);
+            S[j] += (S[j]>>4) + ((S[j]>>3)&1);
         }
 
         if (240 < S[4])
@@ -227,28 +196,28 @@ void TRAVEL()
         for(j = 0; j < 5; ++j)
         {
             BValue = X[j]-S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (310 < BValue) { BValue = 310; }
             LeftB[j] = BValue;
 
             BValue = X[j]+S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (310 < BValue) { BValue = 310; }
             RightB[j] = BValue;
 
             BValue = Y[j]-S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (255 < BValue) { BValue = 255; }
             TopB[j] = BValue;
 
             BValue = Y[j]+S[j];
-            if (0   > BValue)   { BValue = 0; }
-            if (310 < BValue)   { BValue = 310; }
+            if      (0   > BValue) { BValue = 0; }
+            else if (255 < BValue) { BValue = 255; }
             BottomB[j] = BValue;
 
             BOX(MyRPort_PTR[AScr], LeftB[j], TopB[j], RightB[j], BottomB[j]);
         }
-        if ((120 > X[4]) || (200 < X[4]) || (90 > Y[4]) || (165 < Y[4]))
+        if ((50 < i) && ((120 > X[4]) || (200 < X[4]) || (90 > Y[4]) || (165 < Y[4])))
         {
             if ((104 < X[4]) && (216 > X[4]) && (74 < Y[4]) && (181 > Y[4]))
             {
@@ -341,6 +310,7 @@ void TRAVEL()
                 SPLengthA = WHSoundMemL[0]-i-i-i;
             }
         }
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
     }
