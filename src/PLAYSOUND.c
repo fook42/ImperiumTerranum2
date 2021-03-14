@@ -5,46 +5,34 @@
 
 void PLAYSOUND(const int SoundID, const int SoundRate)
 {
-    uint8   Volume = 32;
+    UWORD LRFader;
+    if (true == Audio_enable)
+    {
+        LRFader = it_round((double) IntuitionBase->MouseX / 10.0);
 
-    if (Audio_enable)
-    {
         custom.dmacon = BITCLR | DMAF_AUD0 | DMAF_AUD1; // 0x0003 .. stop audio on channel 0+1
-    }
-    WaitTOF();
-    if (0 == SoundID)
-    {
-        if (Audio_enable)
+        WaitTOF();
+        if (0 == SoundID)
         {
-            SPAddrA = SoundMemA[0]; SPFreqA = (UWORD) SoundRate; SPLengthA = SoundSize[0]; SPVolA = (UWORD) (64-Volume);
-            SPAddrB = SoundMemA[0]; SPFreqB = (UWORD) SoundRate; SPLengthB = SoundSize[0]; SPVolB = (UWORD) (Volume);
+            SPAddrA = SoundMemA[0]; SPFreqA = (UWORD) SoundRate; SPLengthA = SoundSize[0]; SPVolA = (UWORD) (64-LRFader);
+            SPAddrB = SoundMemA[0]; SPFreqB = (UWORD) SoundRate; SPLengthB = SoundSize[0]; SPVolB = (UWORD) (LRFader);
 
             custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1; // 0x8003 .. playback audio on channel 0+1
-
-            WaitTOF();
             WaitTOF();
 
             SPAddrA = ZeroSound; SPLengthA = 1;
             SPAddrB = ZeroSound; SPLengthB = 1;
-        } else {
-            WaitTOF();
-        }
-        
-        do
-        {
-            Delay(RDELAY);
-        }
-        while ((LMB_PRESSED || RMB_PRESSED) && (!Save.PlayMySelf));
+            
+            do
+            {
+                Delay(RDELAY);
+            }
+            while ((LMB_PRESSED || RMB_PRESSED) && (!Save.PlayMySelf));
 
-        WaitTOF();
-        if (Audio_enable)
-        {
+            WaitTOF();
             custom.dmacon = BITCLR | DMAF_AUD0 | DMAF_AUD1; // 0x0003 .. stop audio on channel 0+1
-        }
-        WaitTOF();
-    } else {
-        if (Audio_enable)
-        {
+            WaitTOF();
+        } else {
             SPAddrA = SoundMemA[SoundID];
             SPFreqA = (UWORD) SoundRate; SPVolA = 64;
             SPFreqB = (UWORD) SoundRate; SPVolB = 64;
@@ -62,14 +50,20 @@ void PLAYSOUND(const int SoundID, const int SoundRate)
             }
 
             custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1; // 0x8003 .. playback audio on channel 0+1
-
-            WaitTOF();
             WaitTOF();
 
             SPAddrA = ZeroSound; SPLengthA = 1;
             SPAddrB = ZeroSound; SPLengthB = 1;
-        } else {
-            WaitTOF();
+        }
+    } else {
+        WaitTOF();
+        if (0 == SoundID)
+        {
+            do
+            {
+                Delay(RDELAY);
+            }
+            while ((LMB_PRESSED || RMB_PRESSED) && (!Save.PlayMySelf));
         }
     }
 }

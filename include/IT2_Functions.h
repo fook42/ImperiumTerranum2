@@ -2,6 +2,8 @@
 #define _FUNC_INC_H_
 
 #include <proto/intuition.h>
+#include <intuition/intuitionbase.h>
+
 #include <proto/graphics.h>
 #include <proto/diskfont.h>
 #include <proto/dos.h>
