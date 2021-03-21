@@ -19,7 +19,9 @@
 #define intFactorMCos ((sint32) 1023 ) // =~ 1024*cos(-0.04);
 
 // will be global variables... waste of memory - maybe we can move them to the heap? ...
-#define NUM_VECTOROBJ (13)
+#define NUM_VECTOROBJ   (13)
+#define TextVectorSize  (sizeof(VectorObj_t)*NUM_VECTOROBJ)
+
 VectorObj_t*    VObj[NUM_VECTOROBJ];
 
 // ... fixfloat-round ----------
@@ -207,6 +209,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
             SPLengthC = 1;
             SPLengthD = 1;
         }
+        WaitTOF();
     }
 
     ScreenToFront(MyScreen[AScr]);
@@ -229,6 +232,7 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
         SetRGB32(MyVPort_PTR[AScr],31,  ((Colors[31].r*Factor)<<13) & 0xFF000000,
                                         ((Colors[31].g*Factor)<<13) & 0xFF000000,
                                         ((Colors[31].b*Factor)<<13) & 0xFF000000);
+        WaitTOF();
         ScreenToFront(MyScreen[AScr]);
     }
 
@@ -366,7 +370,6 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     uint8       i;
     int         ret_code = -1;
     APTR        TextVectorMem = NULL;
-    uint32      TextVectorSize;
 
     MyRastPtr = AllocRaster(640, 360);
     if (NULL == MyRastPtr)
@@ -388,18 +391,15 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     MyRPort_PTR[0]->AreaInfo = &MyAI;
     MyRPort_PTR[1]->AreaInfo = &MyAI;
 
-/**** new .. alloc mem for vectorObj .. free this later ***/
-    TextVectorSize = sizeof(VectorObj_t)*NUM_VECTOROBJ;
-    TextVectorMem = (uint8*) AllocMem(TextVectorSize, MEMF_ANY | MEMF_CLEAR);
+    TextVectorMem = AllocMem(TextVectorSize, MEMF_ANY | MEMF_CLEAR);
     if (NULL == TextVectorMem)
     {
         goto leave_part;
     }
     for (i = 0; i<NUM_VECTOROBJ; ++i)
     {
-        VObj[i] = (VectorObj_t*) (((ULONG) TextVectorMem) + i*sizeof(VectorObj_t));
+        VObj[i] = &((VectorObj_t*) TextVectorMem)[i];
     }
-/**** new .. */
 
     _s = my_strcpy(s,PathStr[7]);
     /*****************************************************************************/
@@ -591,7 +591,6 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     GREATEFFECT(12, Colors, SMemA, SMemL);
     if (LMB_PRESSED) { ret_code = 1; goto leave_part; }
 
-
     ret_code = 0;
 leave_part:
 
@@ -610,7 +609,7 @@ leave_part:
 
     if (NULL != TextVectorMem)
     {
-        FreeMem((APTR) TextVectorMem, TextVectorSize);
+        FreeMem(TextVectorMem, TextVectorSize);
     }
 
     if (NULL != IMemA[0])
@@ -628,5 +627,4 @@ leave_part:
     }
 
     return ret_code;
-
 }
