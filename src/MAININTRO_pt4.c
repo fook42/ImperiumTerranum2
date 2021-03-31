@@ -251,9 +251,9 @@ leave_part:
     /*****************************************************************************/
     // cleanup...
 
-    if (NULL != MyRastPtr)
+    if (NULL != ShipCoordMem)
     {
-        FreeRaster(MyRastPtr, 640, 360);
+        FreeMem((APTR) ShipCoordMem, ShipCoordSize);
     }
 
     if (NULL != IntroAreaMem)
@@ -261,9 +261,9 @@ leave_part:
         FreeMem(IntroAreaMem, IntroAreaSize);
     }
 
-    if (NULL != ShipCoordMem)
+    if (NULL != MyRastPtr)
     {
-        FreeMem((APTR) ShipCoordMem, ShipCoordSize);
+        FreeRaster(MyRastPtr, 640, 360);
     }
 
     return ret_code;

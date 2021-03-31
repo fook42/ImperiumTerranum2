@@ -597,9 +597,9 @@ leave_part:
     /*****************************************************************************/
     // cleanup...
 
-    if (NULL != MyRastPtr)
+    if (NULL != TextVectorMem)
     {
-        FreeRaster(MyRastPtr, 640, 360);
+        FreeMem(TextVectorMem, TextVectorSize);
     }
 
     if (NULL != IntroAreaMem)
@@ -607,9 +607,9 @@ leave_part:
         FreeMem(IntroAreaMem, IntroAreaSize);
     }
 
-    if (NULL != TextVectorMem)
+    if (NULL != MyRastPtr)
     {
-        FreeMem(TextVectorMem, TextVectorSize);
+        FreeRaster(MyRastPtr, 640, 360);
     }
 
     if (NULL != IMemA[0])
