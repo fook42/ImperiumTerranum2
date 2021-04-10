@@ -10,7 +10,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     r_ShipHeader*   OtherShipPtr;
     r_ShipHeader*   FleetShipPtr;
     r_PlanetHeader* MyPlanetHeader;
-    uint32          l;
+    APTR            newMemPtr;
     uint8           blink;
     uint8           i, j;
     UWORD           RawCode;
@@ -23,7 +23,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
 
     CLOCK();
     OldMoving = 0;
-    l = 0;
+    newMemPtr = NULL;
     MyShipPtr = ShipPtr;
     CivVar = GETCIVVAR(MyShipPtr->Owner);
     if ((CIVVAR_NONE == CivVar) || (0 >= MyShipPtr->Moving))
@@ -229,29 +229,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     Save.ImperatorState[CivVar-1] += 25;
                                                     if (NULL == MyPlanetHeader->ProjectPtr)
                                                     {
-                                                        l = (uint32) AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
-                                                        if (0 == l)
+                                                        newMemPtr = AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
+                                                        if (NULL == newMemPtr)
                                                         {
                                                             return;
-                                                        } else {
-                                                            MyPlanetHeader->ProjectPtr = (ByteArr42*) l;
-                                                            l = 99;
                                                         }
-                                                    } else {
-                                                        l = 13;
-                                                    }
-                                                    ActPProjects = MyPlanetHeader->ProjectPtr;
-                                                    ActPProjects->data[0] = 1;
-                                                    if (0 == (SystemFlags[0][ActSys-1] & FLAG_CIV_MASK))
-                                                    {
-                                                        SystemFlags[0][ActSys-1] = MyShipPtr->Owner;
-                                                    }
-                                                    MyPlanetHeader->PFlags = MyShipPtr->Owner;
-                                                    MyPlanetHeader->Ethno  = MyShipPtr->Owner;
-                                                    MyShipPtr->Ladung -= 16;
-                                                    MyPlanetHeader->Population += 10;
-                                                    if (13 != l)
-                                                    {
+                                                        MyPlanetHeader->ProjectPtr = (ByteArr42*) newMemPtr;
                                                         MyPlanetHeader->Infrastruktur = 1;
                                                         MyPlanetHeader->Industrie = 1;
                                                         if (MyPlanetHeader->Class == CLASS_EARTH)
@@ -268,6 +251,16 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                             MyPlanetHeader->Biosphaere = 30;
                                                         }
                                                     }
+                                                    ActPProjects = MyPlanetHeader->ProjectPtr;
+                                                    ActPProjects->data[0] = 1;
+                                                    if (0 == (SystemFlags[0][ActSys-1] & FLAG_CIV_MASK))
+                                                    {
+                                                        SystemFlags[0][ActSys-1] = MyShipPtr->Owner;
+                                                    }
+                                                    MyPlanetHeader->PFlags = MyShipPtr->Owner;
+                                                    MyPlanetHeader->Ethno  = MyShipPtr->Owner;
+                                                    MyShipPtr->Ladung -= 16;
+                                                    MyPlanetHeader->Population += 10;
                                                     if ((MyShipPtr->Ladung & MASK_SIEDLER)>0)
                                                     {
                                                         SysID = FINDNEXTPLANET(ActSys,MyShipPtr);
@@ -364,7 +357,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     }
                                                     SUPPORTCIVI(MyPlanetHeader->XProjectPayed / 5);
                                                     MyPlanetHeader->XProjectPayed -= (MyPlanetHeader->XProjectPayed*0xCD)>>10; // -0.2x
-                                                    l = GOTONEXTSYSTEM(ActSys,MyShipPtr);
+                                                    (void) GOTONEXTSYSTEM(ActSys,MyShipPtr);
                                                 } else if ((MyShipPtr->Ladung & MASK_LTRUPPS)>0)
                                                 {
                                                     CHECKPLANET(MyPlanetHeader);
@@ -405,7 +398,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     // FINDENEMYOBJECT(i,MyShipPtr); // ... todo .. i is uninitialized .. where are we looking for enemy objects?
                                                     FINDENEMYOBJECT(ActSys, MyShipPtr);
                                                 } else {
-                                                    l = GOTONEXTSYSTEM(ActSys,MyShipPtr);
+                                                    (void) GOTONEXTSYSTEM(ActSys,MyShipPtr);
                                                 }
                                                 return;
                                             }
@@ -624,15 +617,15 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                             FleetShipPtr = OtherShipPtr;
                                                             if (SHIPTYPE_FLEET != OtherShipPtr->SType)
                                                             {
-                                                                l = (uint32) AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
-                                                                if (l == 0)
+                                                                newMemPtr = AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
+                                                                if (NULL == newMemPtr)
                                                                 {
                                                                     DisplayBeep(NULL);
                                                                     // more error handling necessary!!! -> setting of Targetship etc..
                                                                 } else {
-                                                                    CopyMemQuick((APTR) OtherShipPtr, (APTR) l, sizeof(r_ShipHeader));
+                                                                    CopyMemQuick((APTR) OtherShipPtr, newMemPtr, sizeof(r_ShipHeader));
                                                                     OtherShipPtr->SType = SHIPTYPE_FLEET;
-                                                                    OtherShipPtr->TargetShip = (r_ShipHeader*) l;
+                                                                    OtherShipPtr->TargetShip = (r_ShipHeader*) newMemPtr;
                                                                     OtherShipPtr->TargetShip->BeforeShip = OtherShipPtr;
                                                                     OtherShipPtr->TargetShip->NextShip = NULL;
                                                                     OtherShipPtr->TargetShip->Flags = 0;
