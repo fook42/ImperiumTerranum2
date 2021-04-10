@@ -694,11 +694,12 @@ void WRITELOADDATA(int LTOut)
 
 bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
 {
-    uint8   GadSet[MAXGADGETS+1];
+    uint8   GadSet[MAXGADGETS];
     uint8   GadCnt;
     bool    b, OldCiviPlanet;
     uint8   ShipsInOrbit;
-    uint32  l;
+    uint8   PlanetOwner;
+    uint32  mouse_gadget;
     APTR    MemPtr;
     int     LTOut, SOut, FIn;
     r_ShipHeader*   XShipPtr;
@@ -719,8 +720,8 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
     ActPProjects = PLANET_MyPlanetHeader->ProjectPtr;
     PLANET_MyShipPtr->PosX = MOVESHIP_FromX;
     PLANET_MyShipPtr->PosY = MOVESHIP_FromY;
-    GadCnt = 1;
-    for(i = 1; i <= MAXGADGETS; ++i)
+    GadCnt = 0;
+    for(i = 0; i < MAXGADGETS; ++i)
     {
         GadSet[i] = 0;
     }
@@ -736,11 +737,10 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
         }
         while ((0 == ShipsInOrbit) && (NULL != XShipPtr));
     }
-    l = PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK;
-    if ((0 != l) && (ActPlayerFlag != l))
+    PlanetOwner = PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK;
+    if ((0 != PlanetOwner) && (ActPlayerFlag != PlanetOwner))
     {
-        GadSet[1] = GADGET_DIPLOMAT;
-        GadCnt = 2;
+        GadSet[GadCnt++] = GADGET_DIPLOMAT;
         if (0 != ShipsInOrbit)
         {
             GadSet[GadCnt++] = GADGET_ATTACK;
@@ -761,31 +761,30 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
          && ( (((0 == ShipsInOrbit) || (ActPlayerFlag == ShipsInOrbit))
              && (0 == ActPProjects->data[PROJECT_SDI])
              && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
-            || (NULL == PLANET_MyPlanetHeader->ProjectPtr) || (ActPlayerFlag == l)))
+            || (NULL == PLANET_MyPlanetHeader->ProjectPtr) || (ActPlayerFlag == PlanetOwner)))
         {
             GadSet[GadCnt++] = GADGET_LADEN;
         }
         if (((PLANET_MyPlanetHeader->Class==CLASS_DESERT) || (PLANET_MyPlanetHeader->Class==CLASS_HALFEARTH)
           || (PLANET_MyPlanetHeader->Class==CLASS_EARTH)  || (PLANET_MyPlanetHeader->Class==CLASS_ICE)
           || (PLANET_MyPlanetHeader->Class==CLASS_STONES) || (PLANET_MyPlanetHeader->Class==CLASS_WATER))
-          && ((NULL == PLANET_MyPlanetHeader->ProjectPtr) || (0 != l)
+          && ((NULL == PLANET_MyPlanetHeader->ProjectPtr) || (0 != PlanetOwner)
              || (0 != ActPProjects->data[PROJECT_SDI])
              || (0 != ActPProjects->data[PROJECT_SPACEPHALANX]))
-          && ((ActPlayerFlag == l) || (0 == ShipsInOrbit)))
+          && ((ActPlayerFlag == PlanetOwner) || (0 == ShipsInOrbit)))
         {
             GadSet[GadCnt++] = GADGET_ANGRIFF;
         }
-        if ((ActPlayerFlag == l) && (0 == ShipsInOrbit)
+        if ((ActPlayerFlag == PlanetOwner) && (0 == ShipsInOrbit)
          && (((0 == ActPProjects->data[PROJECT_SDI]) && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
             || (NULL == PLANET_MyPlanetHeader->ProjectPtr)))
         {
             GadSet[GadCnt++] = GADGET_LANDUNG;
         }
     }
-    GadCnt--;
     MAKEWINBORDER(MyRPort_PTR[0],194,119,316,122+GadCnt*22,12,6,1);
     ypos = 122;
-    for(i = 1; i <= GadCnt; i++)
+    for(i = 0; i < GadCnt; ++i)
     {
         DrawImage(MyRPort_PTR[0],&GadImg1, 198, ypos);
         switch (GadSet[i]) {
@@ -807,14 +806,14 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
         Delay(RDELAY);
         if (LMB_PRESSED)
         {
-            if ((MouseX(0) > 197) && (MouseX(0) < 316)
-             && (MouseY(0) > 121) && (MouseY(0) < (100+(GadCnt+1)*22)))
+            if ((197 < MouseX(0)) && (316 > MouseX(0))
+             && (121 < MouseY(0)) && ((122+GadCnt*22) < MouseY(0)))
             {
-                l = (MouseY(0)-100) / 22;
-                KLICKGAD(198,100+l*22);
+                mouse_gadget = (uint32) ((MouseY(0)-122) / 22);
+                KLICKGAD(198,122+mouse_gadget*22);
                 RECT_RP0_C0(194,119,316,122+GadCnt*22);
                 REFRESHDISPLAY();
-                switch (GadSet[l])
+                switch (GadSet[mouse_gadget])
                 {
                     case GADGET_ATTACK:
                         {
@@ -876,9 +875,8 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                 if (NULL == MemPtr)
                                 {
                                     return false;
-                                } else {
-                                    PLANET_MyPlanetHeader->ProjectPtr = (ByteArr42*) MemPtr;
                                 }
+                                PLANET_MyPlanetHeader->ProjectPtr = (ByteArr42*) MemPtr;
                                 OldCiviPlanet = false;
                             } else {
                                 OldCiviPlanet = true;
