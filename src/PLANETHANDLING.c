@@ -807,7 +807,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
         if (LMB_PRESSED)
         {
             if ((197 < MouseX(0)) && (316 > MouseX(0))
-             && (121 < MouseY(0)) && ((122+GadCnt*22) < MouseY(0)))
+             && (121 < MouseY(0)) && ((122+GadCnt*22) > MouseY(0)))
             {
                 mouse_gadget = (uint32) ((MouseY(0)-122) / 22);
                 KLICKGAD(198,122+mouse_gadget*22);
@@ -845,20 +845,21 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                         }   break;
                     case GADGET_ORBIT:
                         {
-                            if (PLANET_MyShipPtr->SType == SHIPTYPE_FLEET)
+                            if (SHIPTYPE_FLEET == PLANET_MyShipPtr->SType)
                             {
-                                XShipPtr = &PLANET_MyPlanetHeader->FirstShip;
-                                while (XShipPtr->NextShip != NULL)
+                                XShipPtr = &(PLANET_MyPlanetHeader->FirstShip);
+                                while (NULL != XShipPtr->NextShip)
                                 {
                                     XShipPtr = XShipPtr->NextShip;
                                 }
+
                                 XShipPtr->NextShip = PLANET_MyShipPtr->TargetShip;
                                 PLANET_MyShipPtr->TargetShip->BeforeShip = XShipPtr;
                                 PLANET_MyShipPtr->Owner = 0;
                             } else {
-                                LINKSHIP(PLANET_MyShipPtr, &PLANET_MyPlanetHeader->FirstShip, 1);
-                                DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
+                                LINKSHIP(PLANET_MyShipPtr, &(PLANET_MyPlanetHeader->FirstShip), 1);
                             }
+                            DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                             return false;
                         }   break;
                     case GADGET_DIPLOMAT:
