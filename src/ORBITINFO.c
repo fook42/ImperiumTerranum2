@@ -215,7 +215,9 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
             if (MyShipPtr->Moving>0)
             {
                 DRAWSYSTEM(MODE_REFRESH,ActSys,MyShipPtr);
+                printf("%s (%d) : -> MOVESHIP\n", __FILE__, __LINE__);
                 MOVESHIP(ActSys,MyShipPtr,false);
+                printf("%s (%d) : <- MOVESHIP\n", __FILE__, __LINE__);
             }
         }
     }

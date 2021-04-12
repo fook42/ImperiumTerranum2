@@ -580,10 +580,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         ObjPtr = MyShipPtr;
                         SHIPINFO(ActSys);
                     } else {
-                        if (MyShipPtr->PosX>50)  { MyShipPtr->PosX = 50; }
-                        if (MyShipPtr->PosX<-50) { MyShipPtr->PosX = -50; }
-                        if (MyShipPtr->PosY>50)  { MyShipPtr->PosY = 50; }
-                        if (MyShipPtr->PosY<-50) { MyShipPtr->PosY = -50; }
+                        /* limit the action-area to -50..+50 */
+                        if ( 50 < MyShipPtr->PosX) { MyShipPtr->PosX =  50; }
+                        if (-50 > MyShipPtr->PosX) { MyShipPtr->PosX = -50; }
+                        if ( 50 < MyShipPtr->PosY) { MyShipPtr->PosY =  50; }
+                        if (-50 > MyShipPtr->PosY) { MyShipPtr->PosY = -50; }
+                        /* */
                         MOVESHIP_ToX = 256+((MyShipPtr->PosX+OffsetX)*32);
                         MOVESHIP_ToY = 256+((MyShipPtr->PosY+OffsetY)*32);
                         if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16,MOVESHIP_ToY+16,MyShipPtr))
@@ -591,7 +593,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                             switch (ObjType) {
                                 case TYPE_PLANET:   {
                                                         PLAYSOUND(0,300);
-                                                        if (!PLANETHANDLING(ActSys,MyShipPtr))
+                                                        if (!PLANETHANDLING(ActSys,MyShipPtr)) // uses "ObjPtr" as PlanetPointer filled by FINDOBJECT...
                                                         {
                                                             MyShipPtr->Moving = 0;
                                                             return;
@@ -617,6 +619,10 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                             FleetShipPtr = OtherShipPtr;
                                                             if (SHIPTYPE_FLEET != OtherShipPtr->SType)
                                                             {
+                                                                // if it wasnt a Fleet already, create a 1-ship fleet:
+                                                                //  before: A = otherShip
+                                                                // after: A = Fleetship -SType=Fleet,TargetShip=A,NextShip=NULL .. A->Before=F
+
                                                                 newMemPtr = AllocMem(sizeof(r_ShipHeader),MEMF_CLEAR);
                                                                 if (NULL == newMemPtr)
                                                                 {
@@ -631,13 +637,13 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                                     OtherShipPtr->TargetShip->Flags = 0;
                                                                 }
                                                             }
+                                                            // OtherShipPtr is now the Fleet-ship.
                                                             if (NULL != OtherShipPtr->TargetShip)
                                                             {
                                                                 OtherShipPtr->Flags = 0;
-                                                                OtherShipPtr = OtherShipPtr->TargetShip;
+                                                                OtherShipPtr = OtherShipPtr->TargetShip;    // first ship in fleet
 
-                                                                // handling of "Other->Next == NULL" is not enough
-                                                                // ... next loop it will be "Other=NULL"
+                                                                // search for last ship or strongest ship
                                                                 while ((OtherShipPtr->SType < MyShipPtr->SType)
                                                                         && (NULL != OtherShipPtr->NextShip))
                                                                 {
@@ -646,6 +652,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
 
                                                                 if (SHIPTYPE_FLEET == OtherShipPtr->BeforeShip->SType)
                                                                 {
+                                                                    // if the "last ship" was the first of the fleet...
                                                                     MyShipPtr->BeforeShip->NextShip = MyShipPtr->NextShip;
                                                                     if (NULL != MyShipPtr->NextShip)
                                                                     {

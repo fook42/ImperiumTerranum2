@@ -35,7 +35,7 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
             {
                 ActShipPtr->NextShip->BeforeShip = ActShipPtr->BeforeShip;
             }
-
+            printf("%s (%d) FreeMem of ShipHeader = %08lX\n", __FILE__, __LINE__, (uint32) ActShipPtr);
             FreeMem((APTR) ActShipPtr, sizeof(r_ShipHeader));
             ActShipPtr = BehindShipPtr;
             if (ActShipPtr == NULL) { return; }

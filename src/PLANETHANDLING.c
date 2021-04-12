@@ -855,6 +855,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
 
                                 XShipPtr->NextShip = PLANET_MyShipPtr->TargetShip;
                                 PLANET_MyShipPtr->TargetShip->BeforeShip = XShipPtr;
+                                // we loose the fleet-shipheader at "PLANET_MyShipPtr" .. so mark it for removal
                                 PLANET_MyShipPtr->Owner = 0;
                             } else {
                                 LINKSHIP(PLANET_MyShipPtr, &(PLANET_MyPlanetHeader->FirstShip), 1);

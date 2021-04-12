@@ -10,16 +10,35 @@ void KILLFLEET(r_ShipHeader* MyShipPtr)
     LastShipPtr = MyShipPtr;
     MyShipPtr->NextShip = MyShipPtr->TargetShip;
     MyShipPtr->TargetShip->BeforeShip = MyShipPtr;
-    while (NULL != MyShipPtr)
+
+    while (NULL != MyShipPtr->NextShip)
     {
-        MyShipPtr->Owner = LastShipPtr->Owner;
         MyShipPtr = MyShipPtr->NextShip;
+        MyShipPtr->Owner = LastShipPtr->Owner;
     }
-    // problem: MyShipPtr == NULL .. at this point... NULL->NextShip is not defined!!! Illegal Access
+
+// ... @TODO .. this will create a circle between "first ship" and last ship of the fleet 
+/*
     MyShipPtr->NextShip = LastShipPtr->NextShip;
     if (NULL != LastShipPtr->NextShip)
     {
         LastShipPtr->NextShip->BeforeShip = MyShipPtr;
     }
+*/
+
     LastShipPtr->Owner = 0;
 }
+
+
+/*
+    MyShipPtr (= Fleethead)---TargetShip--> [FirstShip] --NextShip--> [...]
+                     ^  `-(#11)-NextShip ---^  |  ^---BeforeShip----?
+                     `--(#12)-BeforeShip-------?  
+
+=============
+
+goal:
+-removal of first fleethead-ship
+-change ownership of all ships to fleet owner
+-replace "targetship" with "nextship"-pointer
+*/
