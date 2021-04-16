@@ -10,8 +10,6 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
     r_ShipHeader*   UseShipPtr;
     uint8           CivVar,CivVar2,i;
 
-    if (NULL == ShipPtr) { return; }
-
     ActShipPtr = ShipPtr;
 
     do

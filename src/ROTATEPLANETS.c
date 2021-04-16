@@ -37,21 +37,22 @@ void ROTATEPLANETS(uint8 ActSys)
     if (1 == ActPlayer) { ++Year; }
     FreeSystem = false;
     if ((0 == (Year % 10)) && (!Save.PlayMySelf)) { INFORMUSER(); }
-    AllCreative[ActPlayer-1] = 0;
+    --ActPlayer; // ..to shift the arrays..
+    AllCreative[ActPlayer] = 0;
     for(j = 1; j < 8; ++j)
     {
-        if (Save.ProjectCosts[ActPlayer-1].data[j] <= 0)
+        if (0 >= Save.ProjectCosts[ActPlayer].data[j])
         {
             if (0 < Year)
             {
-                Save.ProjectCosts[ActPlayer-1].data[j] = 50 * Year * j;
+                Save.ProjectCosts[ActPlayer].data[j] = 50 * Year * j;
             } else {
-                Save.ProjectCosts[ActPlayer-1].data[j] = 180000 * j;
+                Save.ProjectCosts[ActPlayer].data[j] = 180000 * j;
             }
         }
     }
 
-    if (1 == ActPlayer)
+    if (0 == ActPlayer)
     {
         MaquesShips = 0;
         for(i = 0; i < MAXCIVS; ++i)
@@ -62,24 +63,25 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    if (Save.ProjectCosts[ActPlayer-1].data[39] <= 0)
+    if (0 >= Save.ProjectCosts[ActPlayer].data[39])
     {
         for(i = 0; i < Save.Systems; ++i)
         {
-            if ((SystemHeader[i].vNS != FLAG_KNOWN) && ((rand()%5) == 0))
+            if ((FLAG_KNOWN != SystemHeader[i].vNS) && (0 == (rand()%5)))
             {
                 SystemHeader[i].vNS = FLAG_KNOWN;
                 break;
             }
         }
     }
+    ++ActPlayer; // ..to shift the arrays..
 
-    if (1 == ActPlayer)
+    for(i = 0; i < Save.Systems; ++i)
     {
-        for(i = 0; i < Save.Systems; ++i)
-        {
-            if (0 == SystemHeader[i].Planets) { continue; }
+        if (0 == SystemHeader[i].Planets) { continue; }
 
+        if (1 == ActPlayer)
+        {
             for(j = 0; j < MAXCIVS; ++j)
             {
                 SystemFlags[j][i] &= FLAG_CIV_MASK;
@@ -136,22 +138,20 @@ void ROTATEPLANETS(uint8 ActSys)
                     SystemHeader[i].FirstShip.SType = 0;
                 }
             }
-            REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip, i, 1);
-        }
-    }
-
-    if (ActPlayer<MAXCIVS)
-    {
-        for(i = 0; i < Save.Systems; ++i)
-        {
-            if (0 == SystemHeader[i].Planets) { continue; }
-
-            for(j = 1; j <= SystemHeader[i].Planets; ++j)
+            if (NULL != SystemHeader[i].FirstShip.NextShip)
             {
-                PlanetHeader = &(SystemHeader[i].PlanetMemA[j-1]);
+                REFRESHSHIPS(SystemHeader[i].FirstShip.NextShip, i, 1);
+            }
+        }
+
+        if (MAXCIVS > ActPlayer)
+        {
+            for(j = 0; j < SystemHeader[i].Planets; ++j)
+            {
+                PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
                 if (NULL == PlanetHeader) { continue; }
 
-                if ((PlanetHeader->Ethno == FLAG_OTHER) && (Save.WorldFlag != WFLAG_JAHADR))
+                if ((FLAG_OTHER == PlanetHeader->Ethno) && (WFLAG_JAHADR != Save.WorldFlag))
                 {
                     PlanetHeader->Ethno = PlanetHeader->PFlags & FLAG_CIV_MASK;
                 }
@@ -169,7 +169,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             }
                         }
                     }
-                    CREATEPANIC(PlanetHeader, i+1, j);
+                    CREATEPANIC(PlanetHeader, i+1, j+1);
                 }
                 if (1 == ActPlayer)
                 {
@@ -187,7 +187,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             PlanetHeader->Industrie = abs(PlanetHeader->Industrie-(rand()%7));
                             // @TODO .. can change from 100% -> 6%  .. better reduce rand-value
                         }
-                    } else if ((CivVar<=MAXCIVS) && (NULL != PlanetHeader->ProjectPtr))
+                    } else if ((MAXCIVS >= CivVar) && (NULL != PlanetHeader->ProjectPtr))
                     {
                         ActPProjects = PlanetHeader->ProjectPtr;
                         if (((PlanetHeader->Class == CLASS_EARTH)        && ((PlanetHeader->Population / 1176) <= PlanetHeader->Size))
@@ -199,15 +199,15 @@ void ROTATEPLANETS(uint8 ActSys)
                         {
                             PlanetHeader->Population += 1+(ActPProjects->data[PROJECT_MICROIDS]+ActPProjects->data[PROJECT_WEATHERSTATION])*20;
                             PlanetHeader->Population = it_round(PlanetHeader->Population*1.008);
-                            if (Save.ProjectCosts[CivVar-1].data[3] == 0)
+                            if (0 == Save.ProjectCosts[CivVar-1].data[3])
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.028); }
-                            if (Save.ProjectCosts[CivVar-1].data[4] == 0)
+                            if (0 == Save.ProjectCosts[CivVar-1].data[4])
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.029); }
-                            if (PlanetHeader->Population<1000)
+                            if (1000 > PlanetHeader->Population)
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.05); }
-                            if (PlanetHeader->Population<2000)
+                            if (2000 > PlanetHeader->Population)
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.009); }
-                            if (PlanetHeader->Population<3000)
+                            if (3000 > PlanetHeader->Population)
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.005); }
                         }
                         Save.Bevoelkerung[CivVar-1] += PlanetHeader->Population;
@@ -216,12 +216,15 @@ void ROTATEPLANETS(uint8 ActSys)
                         PlanetHeader->ProjectPtr = (ByteArr42*) AllocMem(sizeof(ByteArr42),MEMF_CLEAR);
                     }
 
-                    if ((PlanetHeader->Class == CLASS_PHANTOM) && (NULL != PlanetHeader->FirstShip.NextShip))
+                    if (NULL != PlanetHeader->FirstShip.NextShip)
                     {
-                        PlanetHeader->FirstShip.NextShip->Owner = 0;
+                        if (CLASS_PHANTOM == PlanetHeader->Class)
+                        {
+                            PlanetHeader->FirstShip.NextShip->Owner = 0;
+                        }
+                        REFRESHSHIPS(PlanetHeader->FirstShip.NextShip, i, 0);
                     }
-                    REFRESHSHIPS(PlanetHeader->FirstShip.NextShip, i, 0);
-                    d = 1.0/((j*3.0)+1);
+                    d = 1.0/((j*3.0)+4.0);  // d = 1.0/((j*3.0)+1);
                     sin_rot = sin(d);
                     cos_rot = cos(d);
                     d = PlanetHeader->PosX;
@@ -238,11 +241,11 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    if (ActSys>0)
+    if (0 < ActSys)
     {
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     }
-    if (ActPlayer<MAXCIVS)
+    if (MAXCIVS > ActPlayer)
     {
         for(i = 0; i < Save.Systems; ++i)
         {
