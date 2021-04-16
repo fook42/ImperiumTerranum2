@@ -18,17 +18,17 @@
 #define FLAG_CIV_MASK   (FLAG_TERRA | FLAG_KLEGAN | FLAG_REMALO | FLAG_CARDAC | FLAG_FERAGI | FLAG_BAROJA | FLAG_VOLKAN | FLAG_OTHER | FLAG_MAQUES)
                                     /* 0x7F = 0111 1111 */
 
-enum { CIVVAR_NONE  = 0,
-       CIVVAR_TERRA = 1,
-       CIVVAR_KLEGAN,
-       CIVVAR_REMALO,
-       CIVVAR_CARDAC,
-       CIVVAR_FERAGI,
-       CIVVAR_BAROJA,
-       CIVVAR_VOLKAN,
-       CIVVAR_OTHER,
-       CIVVAR_MAQUES
-     };
+enum Civilization { CIVVAR_NONE  = 0,
+                    CIVVAR_TERRA = 1,
+                    CIVVAR_KLEGAN,
+                    CIVVAR_REMALO,
+                    CIVVAR_CARDAC,
+                    CIVVAR_FERAGI,
+                    CIVVAR_BAROJA,
+                    CIVVAR_VOLKAN,
+                    CIVVAR_OTHER,
+                    CIVVAR_MAQUES
+                    };
 
 #define WFLAG_CEBORC    2
 #define WFLAG_DCON      3
