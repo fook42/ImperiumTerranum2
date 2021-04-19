@@ -165,9 +165,7 @@ void SYSTEMINFO(uint8 ActSys)
                         UseShipPtr->Target = ActSys;
                         if (0 < UseShipPtr->Moving)
                         {
-                            printf("%s (%d) : -> MOVESHIP\n", __FILE__, __LINE__);
                             MOVESHIP(ActSys,UseShipPtr,false);
-                            printf("%s (%d) : <- MOVESHIP\n", __FILE__, __LINE__);
                         }
                     } else {
                         UseShipPtr->Target = TARGET_POSITION;

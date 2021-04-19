@@ -845,22 +845,33 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                         }   break;
                     case GADGET_ORBIT:
                         {
+                            XShipPtr = &(PLANET_MyPlanetHeader->FirstShip);
                             if (SHIPTYPE_FLEET == PLANET_MyShipPtr->SType)
                             {
-                                XShipPtr = &(PLANET_MyPlanetHeader->FirstShip);
+                                // select last ship which is attached to the current planet
                                 while (NULL != XShipPtr->NextShip)
                                 {
                                     XShipPtr = XShipPtr->NextShip;
                                 }
 
                                 XShipPtr->NextShip = PLANET_MyShipPtr->TargetShip;
-                                PLANET_MyShipPtr->TargetShip->BeforeShip = XShipPtr;
+                                XShipPtr->NextShip->BeforeShip = XShipPtr;
+
+/*  will be done in "REFRESHSHIPS"
+                                PLANET_MyShipPtr->BeforeShip->NextShip = PLANET_MyShipPtr->NextShip;
+                                if (NULL != PLANET_MyShipPtr->NextShip)
+                                {
+                                    PLANET_MyShipPtr->NextShip->BeforeShip = PLANET_MyShipPtr->BeforeShip;
+                                }
+*/
+                                PLANET_MyShipPtr->TargetShip = NULL;
                                 // we loose the fleet-shipheader at "PLANET_MyShipPtr" .. so mark it for removal
                                 PLANET_MyShipPtr->Owner = 0;
                             } else {
-                                LINKSHIP(PLANET_MyShipPtr, &(PLANET_MyPlanetHeader->FirstShip), 1);
+                                LINKSHIP(PLANET_MyShipPtr, XShipPtr, 1);
+                                DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                             }
-                            DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
+    //                        DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                             return false;
                         }   break;
                     case GADGET_DIPLOMAT:

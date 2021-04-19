@@ -736,7 +736,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                             --MyShipPtr->Moving;
                         }
 
-                        if ((MyShipPtr->PosX>=-3) && (MyShipPtr->PosX<=2) && (MyShipPtr->PosY>=-3) && (MyShipPtr->PosY<=2))
+                        if ((-2 <= MyShipPtr->PosX) && (2 >= MyShipPtr->PosX) && (-2 <= MyShipPtr->PosY) && (2 >= MyShipPtr->PosY))
                         {
                             // too close to the sun.. ship explodes.
                             MOVESHIP_FromX = MyShipPtr->PosX;
@@ -754,8 +754,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         }
                     }
                 }
-            } else if ((0 == RawCode) && (MouseX(0)>521) && (MouseX(0)<630)
-                                      && (MouseY(0)>8)   && (MouseY(0)<118))
+            } else if ((0 == RawCode) && (521 < MouseX(0)) && (630 > MouseX(0))
+                                      && (8   < MouseY(0)) && (118 > MouseY(0)))
             {
                 // clicked on minimap to move the view
                 OffsetX = 576-MouseX(0);
@@ -764,13 +764,13 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             }
         } else if (RMB_PRESSED)
         {
-            if ((MouseX(0)>521) && (MouseX(0)<630) && (MouseY(0)>8) && (MouseY(0)<118))
+            if ((521 < MouseX(0)) && (630 > MouseX(0)) && (8 < MouseY(0)) && (118 > MouseY(0)))
             {
                 // clicked on minimap area
-                if ((MouseY(0)< 30) && ( 42 > OffsetY)) { OffsetY += 2; }
-                if ((MouseY(0)> 96) && (-42 < OffsetY)) { OffsetY -= 2; }
-                if ((MouseX(0)<539) && ( 42 > OffsetX)) { OffsetX += 2; }
-                if ((MouseX(0)>613) && (-42 < OffsetX)) { OffsetX -= 2; }
+                if (( 30 > MouseY(0)) && ( 42 > OffsetY)) { OffsetY += 2; }
+                if (( 96 < MouseY(0)) && (-42 < OffsetY)) { OffsetY -= 2; }
+                if ((539 > MouseX(0)) && ( 42 > OffsetX)) { OffsetX += 2; }
+                if ((613 < MouseX(0)) && (-42 < OffsetX)) { OffsetX -= 2; }
                 DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
             } else {
                 PLAYSOUND(0,300);
@@ -783,12 +783,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 }
             }
         }
-        if ((MyShipPtr->PosX > 60) || (MyShipPtr->PosY > 60))
+        if ((60 < MyShipPtr->PosX) || (60 < MyShipPtr->PosY))
         {
             ObjPtr = MyShipPtr;
             SYSTEMINFO(ActSys);
         }
-        if ((MyShipPtr->Moving >= 0) && (OldMoving != MyShipPtr->Moving))
+        if ((0 <= MyShipPtr->Moving) && (OldMoving != MyShipPtr->Moving))
         {
             _s = dez2out(MyShipPtr->Moving, 3, s);
             *_s++ = '-';

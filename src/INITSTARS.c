@@ -90,31 +90,31 @@ void INIT_SOLARSYSTEM(void)
     }
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[0]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   2,FLAG_UNKNOWN,0,"",4,4,0,24,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   2,FLAG_UNKNOWN,0,"",4.0,4.0,0,24,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[1]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_HALFEARTH,7,FLAG_UNKNOWN,0,"",7,7,0,283,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_HALFEARTH,7,FLAG_UNKNOWN,0,"",7.0,7.0,0,283,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[2]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,   10,FLAG_TERRA,FLAG_TERRA,"",10,10,4000,760,170,165,160,0,0,0,DefaultShip,(ByteArr42*) MemPointer};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_EARTH,   10,FLAG_TERRA,FLAG_TERRA,"",10.0,10.0,4000,760,170,165,160,0,0,0,DefaultShip,(ByteArr42*) MemPointer};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[3]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   5,FLAG_UNKNOWN,0,"",13,13,0,61,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   5,FLAG_UNKNOWN,0,"",13.0,13.0,0,61,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[4]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_GAS,    115,FLAG_UNKNOWN,0,"",16,16,0,0,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_GAS,    115,FLAG_UNKNOWN,0,"",16.0,16.0,0,0,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[5]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_SATURN,  82,FLAG_UNKNOWN,0,"",19,19,0,0,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_SATURN,  82,FLAG_UNKNOWN,0,"",19.0,19.0,0,0,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[6]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_GAS,     41,FLAG_UNKNOWN,0,"",22,22,0,0,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_GAS,     41,FLAG_UNKNOWN,0,"",22.0,22.0,0,0,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[7]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_GAS,     45,FLAG_UNKNOWN,0,"",25,25,0,0,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_GAS,     45,FLAG_UNKNOWN,0,"",25.0,25.0,0,0,0,0,0,0,0,0,DefaultShip,NULL};
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[8]);
-    *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   1,FLAG_UNKNOWN,0,"",30,30,0,11,0,0,0,0,0,0,DefaultShip,NULL};
+    *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   1,FLAG_UNKNOWN,0,"",30.0,30.0,0,11,0,0,0,0,0,0,DefaultShip,NULL};
     
     for(i=0; i < 9; ++i)
     {
@@ -132,7 +132,7 @@ void INIT_SOLARSYSTEM(void)
         for (j = 0; j < SystemHeader[0].Planets; ++j)
         {
             PlanetHeader = &(SystemHeader[0].PlanetMemA[j]);
-            d = 1.0/((j*3.0)+4);
+            d = 1.0/((j*3.0)+4.0);
             sin_rot = sin(d);
             cos_rot = cos(d);
             d = PlanetHeader->PosX; // added... to store previous PosX... d is unused at this point

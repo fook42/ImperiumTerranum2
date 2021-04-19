@@ -8,6 +8,8 @@ void KILLFLEET(r_ShipHeader* MyShipPtr)
     r_ShipHeader*   LastShipPtr;
 
     LastShipPtr = MyShipPtr;
+
+/* -- old, faulty code -- directly adopted from original pascal code --
     MyShipPtr->NextShip = MyShipPtr->TargetShip;
     MyShipPtr->TargetShip->BeforeShip = MyShipPtr;
 
@@ -16,9 +18,7 @@ void KILLFLEET(r_ShipHeader* MyShipPtr)
         MyShipPtr = MyShipPtr->NextShip;
         MyShipPtr->Owner = LastShipPtr->Owner;
     }
-
 // ... @TODO .. this will create a circle between "first ship" and last ship of the fleet 
-/*
     MyShipPtr->NextShip = LastShipPtr->NextShip;
     if (NULL != LastShipPtr->NextShip)
     {
@@ -28,17 +28,3 @@ void KILLFLEET(r_ShipHeader* MyShipPtr)
 
     LastShipPtr->Owner = 0;
 }
-
-
-/*
-    MyShipPtr (= Fleethead)---TargetShip--> [FirstShip] --NextShip--> [...]
-                     ^  `-(#11)-NextShip ---^  |  ^---BeforeShip----?
-                     `--(#12)-BeforeShip-------?  
-
-=============
-
-goal:
--removal of first fleethead-ship
--change ownership of all ships to fleet owner
--replace "targetship" with "nextship"-pointer
-*/

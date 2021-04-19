@@ -28,7 +28,7 @@ void FASTREFRESH(sint16 OldX, sint16 OldY, r_ShipHeader* XCludeShip)
                 } else {
                     UseShipPtr = OtherShipPtr;
                 }
-                if ((x>=0) && (x<481) && (y>=0) && (y<481))
+                if ((0 <= x) && (481 > x) && (0 <= y) && (481 > y))
                 {
                     BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32+1,33,MyRPort_PTR[0],x+1,y+1,30,30,192);
                 }

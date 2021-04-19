@@ -44,7 +44,6 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                 {
                     if (SHIPTYPE_FLEET == MyShipPtr->SType)
                     {
-                        printf("%s (%d) -> KILLFLEET - MyShipPtr = %08lX\n", __FILE__, __LINE__, (uint32) MyShipPtr);
                         KILLFLEET(MyShipPtr);
                     }
                 } else
@@ -53,7 +52,6 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                     {
                         if ((0 == Save.CivPlayer[CivVar-1]) || (Save.PlayMySelf))
                         {
-                            printf("%s (%d) -> KILLFLEET - MyShipPtr = %08lX\n", __FILE__, __LINE__, (uint32) MyShipPtr);
                             KILLFLEET(MyShipPtr);
                         }
                     }
