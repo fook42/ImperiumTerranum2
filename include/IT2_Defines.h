@@ -18,17 +18,17 @@
 #define FLAG_CIV_MASK   (FLAG_TERRA | FLAG_KLEGAN | FLAG_REMALO | FLAG_CARDAC | FLAG_FERAGI | FLAG_BAROJA | FLAG_VOLKAN | FLAG_OTHER | FLAG_MAQUES)
                                     /* 0x7F = 0111 1111 */
 
-enum { CIVVAR_NONE  = 0,
-       CIVVAR_TERRA = 1,
-       CIVVAR_KLEGAN,
-       CIVVAR_REMALO,
-       CIVVAR_CARDAC,
-       CIVVAR_FERAGI,
-       CIVVAR_BAROJA,
-       CIVVAR_VOLKAN,
-       CIVVAR_OTHER,
-       CIVVAR_MAQUES
-     };
+enum Civilization { CIVVAR_NONE  = 0,
+                    CIVVAR_TERRA = 1,
+                    CIVVAR_KLEGAN,
+                    CIVVAR_REMALO,
+                    CIVVAR_CARDAC,
+                    CIVVAR_FERAGI,
+                    CIVVAR_BAROJA,
+                    CIVVAR_VOLKAN,
+                    CIVVAR_OTHER,
+                    CIVVAR_MAQUES
+                    };
 
 #define WFLAG_CEBORC    2
 #define WFLAG_DCON      3
@@ -83,19 +83,19 @@ enum { CIVVAR_NONE  = 0,
 #define WEAPON_DISRUPTOR 7
 #define WEAPON_PTORPEDO  9
 
-#define MODE_REFRESH    0
-#define MODE_REDRAW     1
-#define MODE_FLEET      2
-#define MODE_STARGATE   3
-#define MODE_ONCE       4
-#define MODE_ALL        5
-#define MODE_OFFENSIV   8
-#define MODE_DEFENSIV   9
-#define MODE_SHIPS      10
-#define MODE_TERRITORIUM  11
-#define MODE_BELEIDIGUNG  12
-#define MODE_MONEY      13
-#define MODE_FORCE      14
+enum {  MODE_REFRESH = 0,
+        MODE_REDRAW,
+        MODE_FLEET,
+        MODE_STARGATE,
+        MODE_ONCE,
+        MODE_ALL,
+        MODE_OFFENSIV = 8,
+        MODE_DEFENSIV,
+        MODE_SHIPS,
+        MODE_TERRITORIUM,
+        MODE_BELEIDIGUNG,
+        MODE_MONEY,
+        MODE_FORCE };
 
 #define STATE_ALL_OCC   1
 #define STATE_ENEMY     2

@@ -8,40 +8,38 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
     r_ShipHeader*   ActShipPtr;
     r_ShipHeader*   BehindShipPtr;
     r_ShipHeader*   UseShipPtr;
-    uint8           CivVar,CivVar2,i;
-
-    if (NULL == ShipPtr) { return; }
+    int             CivVar,CivVar2,i;
 
     ActShipPtr = ShipPtr;
 
     do
     {
         CivVar = GETCIVVAR(ActShipPtr->Owner);
-        while ((((ActShipPtr->SType<8) || (ActShipPtr->SType>24))
-            && (ActShipPtr->SType != SHIPTYPE_FLEET)
-            && (ActShipPtr->SType != TARGET_STARGATE))
-            || (CivVar<1) || (CivVar>MAXCIVS) || (ActShipPtr->Owner == 0)
-            || ((ActShipPtr->Age >= 200) && (ActShipPtr->Fracht == 0) && (ActShipPtr->Ladung == 0)
-                && (ActShipPtr->SType != SHIPTYPE_FLEET)))
+        while ((((8 > ActShipPtr->SType) || (24 < ActShipPtr->SType)) && (SHIPTYPE_FLEET != ActShipPtr->SType) && (TARGET_STARGATE != ActShipPtr->SType))
+            || ((1 > CivVar) || (MAXCIVS < CivVar))
+            || (0 == ActShipPtr->Owner)
+            || ((200 <= ActShipPtr->Age) && (0 == ActShipPtr->Fracht) && (0 == ActShipPtr->Ladung)
+                && (SHIPTYPE_FLEET != ActShipPtr->SType)))
         {
-            if ((CivVar>0) && (ActShipPtr->Age >= 200))
+            if ((0 < CivVar) && (200 <= ActShipPtr->Age))
             {
                 Verschrottung[CivVar-1]++;
             }
             BehindShipPtr = ActShipPtr->NextShip;
 
-            ActShipPtr->BeforeShip->NextShip = ActShipPtr->NextShip;
-            if (ActShipPtr->NextShip != NULL)
+            ActShipPtr->BeforeShip->NextShip = BehindShipPtr;
+            if (NULL != BehindShipPtr)
             {
-                ActShipPtr->NextShip->BeforeShip = ActShipPtr->BeforeShip;
+                BehindShipPtr->BeforeShip = ActShipPtr->BeforeShip;
             }
-
             FreeMem((APTR) ActShipPtr, sizeof(r_ShipHeader));
             ActShipPtr = BehindShipPtr;
-            if (ActShipPtr == NULL) { return; }
+            if (NULL == ActShipPtr) { return; }
             CivVar = GETCIVVAR(ActShipPtr->Owner);
         }
-        if (ActShipPtr->SType == SHIPTYPE_FLEET)
+        --CivVar; // ..to shift the arrays..
+
+        if (SHIPTYPE_FLEET == ActShipPtr->SType)
         {
             UseShipPtr = ActShipPtr->TargetShip;
         } else {
@@ -53,35 +51,36 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
             ActShipPtr->PosX = 0;
             ActShipPtr->PosY = 0;
         }
-        if ((1 == Mode) && (ActShipPtr->NextShip != NULL))
+        if ((1 == Mode) && (NULL != ActShipPtr->NextShip))
         {
             CivVar2 = GETCIVVAR(ActShipPtr->NextShip->Owner);
-            if ((CivVar2>0) && (UseShipPtr->Moving>0) && (UseShipPtr->NextShip->Moving>0))
+            if ((0 < CivVar2) && (0 < UseShipPtr->Moving) && (0 < UseShipPtr->NextShip->Moving))
             {
-                if (Save.WarState[CivVar-1][CivVar2-1] == LEVEL_UNKNOWN)
-                  { Save.WarState[CivVar-1][CivVar2-1] = LEVEL_PEACE; }
-                if (Save.WarState[CivVar2-1][CivVar-1] == LEVEL_UNKNOWN)
-                  { Save.WarState[CivVar2-1][CivVar-1] = LEVEL_PEACE; }
+                --CivVar2;
+                if (Save.WarState[CivVar][CivVar2] == LEVEL_UNKNOWN)
+                  { Save.WarState[CivVar][CivVar2] = LEVEL_PEACE; }
+                if (Save.WarState[CivVar2][CivVar] == LEVEL_UNKNOWN)
+                  { Save.WarState[CivVar2][CivVar] = LEVEL_PEACE; }
             }
         }
-        if (ActShipPtr->Moving >= 0)
+        if (0 <= ActShipPtr->Moving)
         {
-            SystemFlags[CivVar-1][SysID] |= FLAG_KNOWN;
+            SystemFlags[CivVar][SysID] |= FLAG_KNOWN;
             for(i = 0; i < MAXCIVS; i++)
             {
-                if (Save.WarState[i][CivVar-1] == LEVEL_ALLIANZ)
+                if (LEVEL_ALLIANZ == Save.WarState[i][CivVar])
                 {
                     SystemFlags[i][SysID] |= FLAG_KNOWN;
                 }
             }
             ActShipPtr->Moving = ShipData(UseShipPtr->SType).MaxMove;
         }
-        if (UseShipPtr->Shield < ShipData(UseShipPtr->SType).MaxShield)
+        if (ShipData(UseShipPtr->SType).MaxShield > UseShipPtr->Shield)
         {
-            if ((Save.CivPlayer[GETCIVVAR(UseShipPtr->Owner)-1] != 0) && (!Save.PlayMySelf) && (Mode == 1))
+            if ((0 != Save.CivPlayer[GETCIVVAR(UseShipPtr->Owner)-1]) && (!Save.PlayMySelf) && (1 == Mode))
             {
                 UseShipPtr->Shield = UseShipPtr->Shield + UseShipPtr->Repair;
-                if (ActShipPtr->Moving>0)
+                if (0 < ActShipPtr->Moving)
                 {
                     ActShipPtr->Moving = ActShipPtr->Moving - UseShipPtr->Repair;
                 }
@@ -90,35 +89,35 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
                 ActShipPtr->Moving = it_round(ActShipPtr->Moving*0.77);
             }
         }
-        if (ActShipPtr->Owner == FLAG_MAQUES)
+        if (FLAG_MAQUES == ActShipPtr->Owner)
         {
-            MaquesShips++;
+            ++MaquesShips;
         }
 
         do
         {
-            if (UseShipPtr->Shield > ShipData(UseShipPtr->SType).MaxShield)
+            if (ShipData(UseShipPtr->SType).MaxShield < UseShipPtr->Shield)
             {
                 UseShipPtr->Shield = ShipData(UseShipPtr->SType).MaxShield;
             }
-            if (UseShipPtr->Age < 200)
+            if (200 > UseShipPtr->Age)
             {
                 UseShipPtr->Age++;
-            } else if (UseShipPtr->Moving > 2)
+            } else if (2 < UseShipPtr->Moving)
             {
                 UseShipPtr->Moving = ActShipPtr->Moving / 2;
             }
-            Save.WarPower[CivVar-1]    += it_round((double) ShipData(UseShipPtr->SType).WeaponPower*(UseShipPtr->Weapon/10+1));
-            Save.Bevoelkerung[CivVar-1]++;
-            Save.Staatstopf[CivVar-1]  -= UseShipPtr->SType * 14;
-            Militaerausgaben[CivVar-1] += UseShipPtr->SType * 14;
-            if (ActShipPtr->SType == SHIPTYPE_FLEET)
+            Save.WarPower[CivVar]    += it_round((double) ShipData(UseShipPtr->SType).WeaponPower*(UseShipPtr->Weapon/10+1));
+            Save.Bevoelkerung[CivVar]++;
+            Save.Staatstopf[CivVar]  -= UseShipPtr->SType * 14;
+            Militaerausgaben[CivVar] += UseShipPtr->SType * 14;
+            if (SHIPTYPE_FLEET == ActShipPtr->SType)
             {
                 UseShipPtr = UseShipPtr->NextShip;
             }
         }
-        while ((ActShipPtr->SType == SHIPTYPE_FLEET) && (NULL != UseShipPtr));
-        if (ActShipPtr->NextShip != NULL)
+        while ((SHIPTYPE_FLEET == ActShipPtr->SType) && (NULL != UseShipPtr));
+        if (NULL != ActShipPtr->NextShip)
         {
             if (ActShipPtr->NextShip->BeforeShip != ActShipPtr)
             {
@@ -127,5 +126,5 @@ void REFRESHSHIPS(r_ShipHeader* ShipPtr, const int SysID, const int Mode)
         }
         ActShipPtr = ActShipPtr->NextShip;
     }
-    while (ActShipPtr != NULL);
+    while (NULL != ActShipPtr);
 }
