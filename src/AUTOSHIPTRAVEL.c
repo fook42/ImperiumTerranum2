@@ -40,22 +40,16 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
             while (NULL != MyShipPtr)
             {
                 CivVar = GETCIVVAR(MyShipPtr->Owner);
-                if ((CIVVAR_NONE == CivVar) || (MAXCIVS < CivVar))
+                if (SHIPTYPE_FLEET == MyShipPtr->SType)
                 {
-                    if (SHIPTYPE_FLEET == MyShipPtr->SType)
+                    if (((0 < CivVar) && (MAXCIVS >= CivVar) && ((0 == Save.CivPlayer[CivVar-1]) || (Save.PlayMySelf)))
+                        || (CIVVAR_NONE == CivVar))
                     {
                         KILLFLEET(MyShipPtr);
                     }
-                } else
+                }
+                if ((0 < CivVar) && (MAXCIVS >= CivVar))
                 {
-                    if (SHIPTYPE_FLEET == MyShipPtr->SType)
-                    {
-                        if ((0 == Save.CivPlayer[CivVar-1]) || (Save.PlayMySelf))
-                        {
-                            KILLFLEET(MyShipPtr);
-                        }
-                    }
-
                     b = false;
                     Visible = false;
                     if (CivVar == ActPlayer)

@@ -741,12 +741,11 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                             // too close to the sun.. ship explodes.
                             MOVESHIP_FromX = MyShipPtr->PosX;
                             MOVESHIP_FromY = MyShipPtr->PosY;
-                            MyShipPtr->Owner = 0;
                             MOVESHIP_EXPLODE(ActSys,MyShipPtr);
                             if (SHIPTYPE_FLEET == MyShipPtr->SType)
                             {
                                 KILLFLEET(MyShipPtr);
-                            } else if ((MyShipPtr->SType>=17) && (MyShipPtr->SType<=24))
+                            } else if ((16 < MyShipPtr->SType) && (25 > MyShipPtr->SType))
                             {
                                 STARDESASTER(ActSys,MyShipPtr);
                             }
