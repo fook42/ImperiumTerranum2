@@ -615,16 +615,13 @@ void MAKELOADWINDOW()
     WRITE_RP0(363,203,ActPlayerFlag,0,3,PText[458]);
 }
 
-void CLIPPLANET(uint8 Class)
-{
-    BltBitMapRastPort((struct BitMap*) &ImgBitMap7,Class*32,0,MyRPort_PTR[0],59,227,32,32,192);
-}
-
 void WRITELOADDATA(int LTOut)
 {
     // ActPProjects, ActPlayerFlag, PLANET_MyShipPtr, PLANET_MyPlanetHeader
     char    s[6];
     char*   _s;
+    uint8   Class;
+    uint32  Humidity;
 
     _s = dez2out(((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16), 2, s);
     *_s++ = ' ';
@@ -640,55 +637,59 @@ void WRITELOADDATA(int LTOut)
     *_s++ = '%'; *_s = 0;
     WRITE_RP0(364,171,8,1,1,s);
 
-    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (PLANET_MyPlanetHeader->Population == 0))
+    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (0 == PLANET_MyPlanetHeader->Population))
     {
         (void) dez2out(ActPProjects->data[26], 3, s);
         WRITE_RP0(141,236,8,1,1,s);
     }
-    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (PLANET_MyPlanetHeader->Population>0))
+    if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
     {
-        if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
-        {
-            (void) dez2out(ActPProjects->data[27], 3, s);
-        } else if (PLANET_MyPlanetHeader->Population>0)
-        {
-            (void) dez2out(LTOut, 3, s);
-        }
+        (void) dez2out(ActPProjects->data[27], 3, s);
+        WRITE_RP0(256,236,8,1,1,s);
+    } else if (0 < PLANET_MyPlanetHeader->Population)
+    {
+        (void) dez2out(LTOut, 3, s);
         WRITE_RP0(256,236,8,1,1,s);
     }
-    if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK)==ActPlayerFlag) || ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK)==0)
-        || ((ActPProjects->data[34] == 0) && (ActPProjects->data[40] == 0)) || (PLANET_MyPlanetHeader->ProjectPtr == NULL))
-      && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
+
+    if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
+      || ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
+      || ((0 == ActPProjects->data[34]) && (0 == ActPProjects->data[40]))
+      || (NULL == PLANET_MyPlanetHeader->ProjectPtr))
+     && (CLASS_STONES != PLANET_MyPlanetHeader->Class))
     {
-        _s = dez2out((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size), 3, s);
+        Humidity = (PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size);
+        _s = dez2out(Humidity, 3, s);
         *_s++ = '%'; *_s = 0;
         WRITE_RP0(353,236,8,1,1,s);
         _s = s;
-        if ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)>80)
+        Class = CLASS_STONES;
+        if (80 < Humidity)
         {
-            if (PLANET_MyPlanetHeader->Class == CLASS_ICE)
+            if (CLASS_ICE == PLANET_MyPlanetHeader->Class)
             {
                 *_s++ = ' '; *_s++ = 'I'; *_s++ = ' '; *_s++ = ' ';
-                CLIPPLANET(CLASS_ICE);
+                Class = CLASS_ICE;
             } else {
                 *_s++ = 'W';
-                CLIPPLANET(CLASS_WATER);
+                Class = CLASS_WATER;
             }
-        } else if (((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)>=55) && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<=80))
+        } else if (54 < Humidity)
         {
             *_s++ = 'M';
-            CLIPPLANET(CLASS_EARTH);
-        } else if (((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)>=21) && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<=54))
+            Class = CLASS_EARTH;
+        } else if (20 < Humidity)
         {
             *_s++ = 'H'; *_s++ = ' ';
-            CLIPPLANET(CLASS_HALFEARTH);
-        } else if ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<21)
+            Class = CLASS_HALFEARTH;
+        } else
         {
             *_s++ = 'D'; *_s++ = ' ';
-            CLIPPLANET(CLASS_DESERT);
+            Class = CLASS_DESERT;
         }
         *_s = 0;
         WRITE_RP0(419,235,ActPlayerFlag,1,3,s);
+        BltBitMapRastPort((struct BitMap*) &ImgBitMap7,Class*32,0,MyRPort_PTR[0],59,227,32,32,192);
     }
 }
 
@@ -699,7 +700,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
     bool    b, OldCiviPlanet;
     uint8   ShipsInOrbit;
     uint8   PlanetOwner;
-    uint32  mouse_gadget;
+    uint16  mouse_gadget;
     APTR    MemPtr;
     int     LTOut, SOut, FIn;
     r_ShipHeader*   XShipPtr;
@@ -753,6 +754,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
             GadSet[GadCnt++] = GADGET_ORBIT;
         }
     }
+    // fleetships can not "(un)load","attack" or "deploy" something on a planet..
     if (SHIPTYPE_FLEET != PLANET_MyShipPtr->SType)
     {
         if (((PLANET_MyPlanetHeader->Class==CLASS_DESERT) || (PLANET_MyPlanetHeader->Class==CLASS_HALFEARTH)
@@ -776,8 +778,9 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
             GadSet[GadCnt++] = GADGET_ANGRIFF;
         }
         if ((ActPlayerFlag == PlanetOwner) && (0 == ShipsInOrbit)
-         && (((0 == ActPProjects->data[PROJECT_SDI]) && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
-            || (NULL == PLANET_MyPlanetHeader->ProjectPtr)))
+         && (((0 == ActPProjects->data[PROJECT_SDI])
+           && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
+          || (NULL == PLANET_MyPlanetHeader->ProjectPtr)))
         {
             GadSet[GadCnt++] = GADGET_LANDUNG;
         }
@@ -809,7 +812,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
             if ((197 < MouseX(0)) && (316 > MouseX(0))
              && (121 < MouseY(0)) && ((122+GadCnt*22) > MouseY(0)))
             {
-                mouse_gadget = (uint32) ((MouseY(0)-122) / 22);
+                mouse_gadget = (uint16) ((MouseY(0)-122) / 22);
                 KLICKGAD(198,122+mouse_gadget*22);
                 RECT_RP0_C0(194,119,316,122+GadCnt*22);
                 REFRESHDISPLAY();
@@ -818,16 +821,16 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                     case GADGET_ATTACK:
                         {
                             OtherShipPtr = PLANET_MyPlanetHeader->FirstShip.NextShip;
-                            while ((OtherShipPtr != NULL) && (OtherShipPtr->Owner == 0))
+                            while ((NULL != OtherShipPtr) && (0 == OtherShipPtr->Owner))
                             {
                                 OtherShipPtr = OtherShipPtr->NextShip;
                             }
-                            if ((OtherShipPtr != NULL) && (OtherShipPtr->Owner != ActPlayerFlag))
+                            if ((NULL != OtherShipPtr) && (ActPlayerFlag != OtherShipPtr->Owner))
                             {
                                 PLANET_MyShipPtr->Moving = 0;
                                 PLANET_MyShipPtr->PosX = MOVESHIP_FromX;
                                 PLANET_MyShipPtr->PosY = MOVESHIP_FromY;
-                                if (STARTBIGSHIPFIGHT(PLANET_MyShipPtr,OtherShipPtr,MODE_ALL,ActSys) == 1)
+                                if (1 == STARTBIGSHIPFIGHT(PLANET_MyShipPtr,OtherShipPtr,MODE_ALL,ActSys))
                                 {
                                     AUTOVERHANDLUNG(ActPlayerFlag,PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK,MODE_REFRESH);
                                     PLANET_MyShipPtr->Moving = 0;
@@ -857,21 +860,13 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                 XShipPtr->NextShip = PLANET_MyShipPtr->TargetShip;
                                 XShipPtr->NextShip->BeforeShip = XShipPtr;
 
-/*  will be done in "REFRESHSHIPS"
-                                PLANET_MyShipPtr->BeforeShip->NextShip = PLANET_MyShipPtr->NextShip;
-                                if (NULL != PLANET_MyShipPtr->NextShip)
-                                {
-                                    PLANET_MyShipPtr->NextShip->BeforeShip = PLANET_MyShipPtr->BeforeShip;
-                                }
-*/
                                 PLANET_MyShipPtr->TargetShip = NULL;
                                 // we loose the fleet-shipheader at "PLANET_MyShipPtr" .. so mark it for removal
                                 PLANET_MyShipPtr->Owner = 0;
                             } else {
                                 LINKSHIP(PLANET_MyShipPtr, XShipPtr, 1);
-                                DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                             }
-    //                        DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
+                            DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
                             return false;
                         }   break;
                     case GADGET_DIPLOMAT:
@@ -881,7 +876,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                         }   break;
                     default:
                         {
-                        /*GADGET_LADEN,GADGET_LANDUNG*/
+                            /*GADGET_LADEN,GADGET_LANDUNG*/
                             if (NULL == PLANET_MyPlanetHeader->ProjectPtr)
                             {
                                 MemPtr = AllocMem(sizeof(ByteArr42), MEMF_CLEAR);
@@ -904,79 +899,79 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                 Delay(RDELAY);
                                 if (LMB_PRESSED)
                                 {
-                                    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
-                                        || (PLANET_MyPlanetHeader->Population == 0))
+                                    if (0 == PLANET_MyShipPtr->Fracht)
                                     {
-                                        if ((MouseX(0)>=112) && (MouseX(0)<=212))
+                                        if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
+                                            || (0 == PLANET_MyPlanetHeader->Population))
                                         {
-                                            if ((MouseY(0)>=164) && (MouseY(0)<=194)
-                                            && (0 < ActPProjects->data[PROJECT_SETTLERS])
-                                            && (ShipData(PLANET_MyShipPtr->SType).MaxLoad > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
-                                            && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
-                                            && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
-                                            && (0 == PLANET_MyShipPtr->Fracht))
+                                            if ((111 < MouseX(0)) && (213 > MouseX(0)))
                                             {
-                                                PLAYSOUND(0,300);
-                                                --(ActPProjects->data[PROJECT_SETTLERS]);
-                                                PLANET_MyShipPtr->Ladung += 16;
-                                                --SOut;
+                                                if ((163 < MouseY(0)) && (195 > MouseY(0))
+                                                && (0 < ActPProjects->data[PROJECT_SETTLERS])
+                                                && (ShipData(PLANET_MyShipPtr->SType).MaxLoad > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
+                                                && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
+                                                && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
+                                                {
+                                                    PLAYSOUND(0,300);
+                                                    --(ActPProjects->data[PROJECT_SETTLERS]);
+                                                    PLANET_MyShipPtr->Ladung += 16;
+                                                    --SOut;
+                                                }
+                                                if ((227 < MouseY(0)) && (259 > MouseY(0))
+                                                && (250 > ActPProjects->data[PROJECT_SETTLERS])
+                                                && (0 < (PLANET_MyShipPtr->Ladung & MASK_SIEDLER)))
+                                                {
+                                                    PLAYSOUND(0,300);
+                                                    ++(ActPProjects->data[PROJECT_SETTLERS]);
+                                                    PLANET_MyShipPtr->Ladung -= 16;
+                                                    ++SOut;
+                                                }
                                             }
-                                            if ((MouseY(0)>=228) && (MouseY(0)<=258)
-                                            && (250 > ActPProjects->data[PROJECT_SETTLERS])
-                                            && (0 < (PLANET_MyShipPtr->Ladung & MASK_SIEDLER))
-                                            && (0 == PLANET_MyShipPtr->Fracht))
+                                        }
+                                        if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
+                                            || (0 < PLANET_MyPlanetHeader->Population))
+                                        {
+                                            if ((226 < MouseX(0)) && (328 > MouseX(0)))
                                             {
-                                                PLAYSOUND(0,300);
-                                                ++(ActPProjects->data[PROJECT_SETTLERS]);
-                                                PLANET_MyShipPtr->Ladung -= 16;
-                                                ++SOut;
+                                                if ((163 < MouseY(0)) && (195 > MouseY(0))
+                                                && (0 < ActPProjects->data[PROJECT_LANDINGTROOPS])
+                                                && (ShipData(PLANET_MyShipPtr->SType).MaxLoad>((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
+                                                && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
+                                                && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
+                                                && (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (LTOut>0)))
+                                                {
+                                                    PLAYSOUND(0,300);
+                                                    --(ActPProjects->data[PROJECT_LANDINGTROOPS]);
+                                                    ++(PLANET_MyShipPtr->Ladung);
+                                                    --LTOut;
+                                                }
+                                                if ((227 < MouseY(0)) && (259 > MouseY(0))
+                                                && (250 > ActPProjects->data[PROJECT_LANDINGTROOPS])
+                                                && (0 < (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
+                                                {
+                                                    PLAYSOUND(0,300);
+                                                    ++(ActPProjects->data[PROJECT_LANDINGTROOPS]);
+                                                    --(PLANET_MyShipPtr->Ladung);
+                                                    ++LTOut;
+                                                }
                                             }
                                         }
                                     }
-                                    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
-                                        || (PLANET_MyPlanetHeader->Population>0))
-                                    {
-                                        if ((MouseX(0)>=227) && (MouseX(0)<=327))
-                                        {
-                                            if ((MouseY(0)>=164) && (MouseY(0)<=194)
-                                            && (0 < ActPProjects->data[PROJECT_LANDINGTROOPS])
-                                            && (ShipData(PLANET_MyShipPtr->SType).MaxLoad>((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16 + (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS)))
-                                            && (15 > ((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16))
-                                            && (15 >  (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
-                                            && (0 == PLANET_MyShipPtr->Fracht)
-                                            && (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (LTOut>0)))
-                                            {
-                                                PLAYSOUND(0,300);
-                                                --(ActPProjects->data[PROJECT_LANDINGTROOPS]);
-                                                ++(PLANET_MyShipPtr->Ladung);
-                                                --LTOut;
-                                            }
-                                            if ((MouseY(0)>=228) && (MouseY(0)<=258)
-                                            && (250 > ActPProjects->data[PROJECT_LANDINGTROOPS])
-                                            && (0 < (PLANET_MyShipPtr->Ladung & MASK_LTRUPPS))
-                                            && (0 == PLANET_MyShipPtr->Fracht))
-                                            {
-                                                PLAYSOUND(0,300);
-                                                ++(ActPProjects->data[PROJECT_LANDINGTROOPS]);
-                                                --(PLANET_MyShipPtr->Ladung);
-                                                ++LTOut;
-                                            }
-                                        }
-                                    }
-                                    if (((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
-                                       ||((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0))
-                                      || ((0 == ActPProjects->data[PROJECT_SDI]) && (0 == ActPProjects->data[PROJECT_SPACEPHALANX])))
-                                     && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
+                                    if ((((ActPlayerFlag == (PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK))
+                                       || (0 == (PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK)))
+                                      || ((0 == ActPProjects->data[PROJECT_SDI])
+                                       && (0 == ActPProjects->data[PROJECT_SPACEPHALANX])))
+                                     && (CLASS_STONES != PLANET_MyPlanetHeader->Class))
                                     {
                                         do
                                         {
                                             Delay(RDELAY);
-                                            if ((MouseX(0)>=342) && (MouseX(0)<=442))
+                                            if ((341 < MouseX(0)) && (443 > MouseX(0)))
                                             {
-                                                if ((MouseY(0)>=164) && (MouseY(0)<=194)
-                                                && (PLANET_MyShipPtr->Ladung == 0)
-                                                && (PLANET_MyShipPtr->Fracht < ShipData(PLANET_MyShipPtr->SType).MaxLoad)
-                                                && (PLANET_MyPlanetHeader->Water>10))
+                                                if ((163 < MouseY(0)) && (195 > MouseY(0))
+                                                && (0 == PLANET_MyShipPtr->Ladung)
+                                                && (ShipData(PLANET_MyShipPtr->SType).MaxLoad > PLANET_MyShipPtr->Fracht)
+                                                && (10 < PLANET_MyPlanetHeader->Water))
                                                 {
                                                     Delay(7);
                                                     PLANET_MyPlanetHeader->Water -= 5;
@@ -984,12 +979,16 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                                     ++(PLANET_MyShipPtr->Fracht);
                                                     WRITELOADDATA(LTOut);
                                                 }
-                                                if ((MouseY(0)>=228) && (MouseY(0)<=258)
-                                                && (PLANET_MyShipPtr->Fracht>0)
-                                                && ((PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)<100))
+                                                if ((227 < MouseY(0)) && (259 > MouseY(0))
+                                                && (0 < PLANET_MyShipPtr->Fracht)
+                                                && (100 >= (PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size)))
                                                 {
                                                     Delay(7);
                                                     PLANET_MyPlanetHeader->Water += 5;
+                                                    if (100 < PLANET_MyPlanetHeader->Water)
+                                                    {
+                                                        PLANET_MyPlanetHeader->Water = 100;
+                                                    }
                                                     --FIn;
                                                     --(PLANET_MyShipPtr->Fracht);
                                                     WRITELOADDATA(LTOut);
