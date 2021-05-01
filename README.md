@@ -32,6 +32,10 @@ Once these tooltypes exists the game won't ask again for new screenmodes.
 
 To open up the screenmode-requester again, simply remove the tooltypes from the icon.
 
+Issues
+---
+Savegames from original version of IT2 and IT2-C version are NOT 100% compatible - loading of a wrong savegame leads to memory corruption and can cause system crashes!
+Make sure to use the right savegame for the right version of IT2.
 
 How to compile
 ---
