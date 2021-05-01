@@ -849,34 +849,34 @@ void ROTATEPLANETS(uint8 ActSys)
                                     {
                                         /* Alles Besetzt, Krieg beginnen */
                                         l = 0;
-                                        for(k = 1; k < MAXCIVS; k++)
+                                        for(k = 1; k < MAXCIVS; ++k)
                                         {
-                                            if ((k != ActPlayer) && (Save.WarState[ActPlayer-1][k-1] == LEVEL_NO_ALLIANZ))
+                                            if ((k != ActPlayer) && (LEVEL_NO_ALLIANZ == Save.WarState[ActPlayer-1][k-1]))
                                                 { l = k; }
                                         }
-                                        if (l == 0)
+                                        if (0 == l)
                                         {
-                                            for(k = 1; k < (MAXCIVS-1); k++)
+                                            for(k = 1; k < (MAXCIVS-1); ++k)
                                             {
-                                                if ((k != ActPlayer)
-                                                    && (Save.WarState[ActPlayer-1][k-1]!=LEVEL_UNKNOWN)
-                                                    && (Save.WarState[ActPlayer-1][k-1]!=LEVEL_DIED))
+                                                if ((ActPlayer != k)
+                                                    && (LEVEL_UNKNOWN != Save.WarState[ActPlayer-1][k-1])
+                                                    && (LEVEL_DIED    != Save.WarState[ActPlayer-1][k-1]))
                                                     { l = k; }
                                             }
                                         }
-                                        if (l != 0)
+                                        if (0 != l)
                                         {
                                             Save.WarState[ActPlayer-1][l-1] = LEVEL_COLDWAR;
                                         }
                                     }
-                                    if (PlanetHeader->FirstShip.NextShip != NULL)
+                                    if (NULL != PlanetHeader->FirstShip.NextShip)
                                     {
-                                        if ((PlanetHeader->FirstShip.NextShip->NextShip != NULL)
+                                        if ((NULL != PlanetHeader->FirstShip.NextShip->NextShip)
                                             && ((SystemHeader[i].State & STATE_TACTICAL) == STATE_ALL_OCC)
                                             && (0 == ActPProjects->data[PROJECT_SETTLERS]))
                                         {
-                                            if ((((PlanetHeader->Water / PlanetHeader->Size)<55) && EXISTSPLANET(ActPlayer,i+1,1))
-                                                || (((PlanetHeader->Water / PlanetHeader->Size)>56) && EXISTSPLANET(ActPlayer,i+1,2)))
+                                            if (((55 > (PlanetHeader->Water / PlanetHeader->Size)) && EXISTSPLANET(ActPlayer, i, 1))
+                                             || ((56 < (PlanetHeader->Water / PlanetHeader->Size)) && EXISTSPLANET(ActPlayer, i, 2)))
                                             {
                                                 MyShipPtr = PlanetHeader->FirstShip.NextShip->NextShip;
                                                 MyShipPtr->PosX = it_round(PlanetHeader->PosX);

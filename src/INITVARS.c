@@ -79,14 +79,14 @@ void INITVARS()
 
     memset(&Pens, 0, sizeof(PenArr));
 
+    memset(&ImgBitMap4, 0, sizeof(ITBitMap));
+    memset(&ImgBitMap7, 0, sizeof(ITBitMap));
+    memset(&ImgBitMap8, 0, sizeof(ITBitMap));
+
     for (i = 0; i< SOUNDS;  ++i ) { SoundMemA[i] = NULL; }
     for (i = 0; i< IMAGES;  ++i ) { IMemA[i]     = NULL; }
     for (i = 0; i< MODULES; ++i ) { ModMemA[i]   = NULL; }
     for (i = 0; i< CACHES;  ++i ) { CacheMemA[i] = NULL; }
-
-    memset(&ImgBitMap4, 0, sizeof(ITBitMap));
-    memset(&ImgBitMap7, 0, sizeof(ITBitMap));
-    memset(&ImgBitMap8, 0, sizeof(ITBitMap));
 
     MyScreen[0] = NULL;
     MyScreen[1] = NULL;

@@ -86,7 +86,7 @@ void DRAWRECT(const int x, const int y, const r_ShipHeader* MyShipPtr, const int
 void DRAWSTARS(const int Mode);
 void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr);
 void ENDSEQUENZ(sint16 Mode);
-bool EXISTSPLANET(uint8 CivVar, uint8 ActSys, uint8 Mode);
+bool EXISTSPLANET(int CivVar, int ActSys, int Mode);
 void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr);
 void FINANZEN();
 void FINDENEMYOBJECT(uint8 ActSys, r_ShipHeader* ShipPtr);
