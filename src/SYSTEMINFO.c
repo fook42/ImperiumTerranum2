@@ -76,7 +76,7 @@ void SYSTEMINFO(uint8 ActSys)
                     CloseWindow(SYS_Window);
                     SYS_Window = NULL;
 
-                    DRAWSTARS(MODE_REDRAW);
+                    DRAWSTARS(MODE_REDRAW); // show universe to select destination
                     SysID = 0;
                     do
                     {
@@ -90,7 +90,7 @@ void SYSTEMINFO(uint8 ActSys)
                         }
                     }
                     while((RMB_NOTPRESSED) && (0 == SysID));
-
+ 
                     if (RMB_PRESSED) { PLAYSOUND(0,300); }
                     if ((0 < SysID) && (MAXSYSTEMS >= SysID) && (ActSys != SysID))
                     {
@@ -100,7 +100,7 @@ void SYSTEMINFO(uint8 ActSys)
                         // @TODO .. replace with sqrt-calculation...
                         l = abs(SystemX[ActSys-1]-SystemX[SysID-1]) + abs(SystemY[ActSys-1]-SystemY[SysID-1]);
                         l = (l / ShipData(MyShipPtr->SType).MaxMove)+1;
-                        if (127 < l) { l = 127; }
+                        if (127 < l) { l = 127; }   // no starship needs to travel more than 127 years
                         MyShipPtr->Moving = (-l);
                         if (!FleetUsed)
                         {
@@ -110,11 +110,12 @@ void SYSTEMINFO(uint8 ActSys)
                             MyShipPtr->BeforeShip->Target = MyShipPtr->Target;
                             MyShipPtr->BeforeShip->Source = MyShipPtr->Source;
                             LINKSHIP(MyShipPtr->BeforeShip, &SystemHeader[SysID-1].FirstShip, 1);
-                            MyShipPtr = SystemHeader[i-1].FirstShip.NextShip;       // TODO: where does "i" come from?
+                            // MyShipPtr = SystemHeader[i-1].FirstShip.NextShip;       // TODO: where does "i" come from?
                         }
                     }
 
-                    DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
+                    DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);    // draw source/old star system
+                    LastSystem = ActSys;
                 } else if ((24 < SYS_Window->MouseY) && (46 > SYS_Window->MouseY))
                 {
                     // destroy ship ...
@@ -127,7 +128,7 @@ void SYSTEMINFO(uint8 ActSys)
                     y = 256+(UseShipPtr->PosY+OffsetY)*32;
                     PLAYSOUND(1,1100);
                     // show explosion-animation
-                    if ((x>=0) && (x<481) && (y>=0) && (y<481))
+                    if ((0 <= x) && (481 > x) && (0 <= y) && (481 > y))
                     {
                         RECT_RP0_C0(x,y,x+31,y+31);
                         for(i = 0; i < 16; ++i)
@@ -225,7 +226,7 @@ void SYSTEMINFO(uint8 ActSys)
                             REQUEST(PText[489],PText[490],ActPlayerFlag,ActPlayerFlag);
                         }
                     }
-                } else if ((SYS_Window->MouseY>=91) && (SYS_Window->MouseY<=111))
+                } else if ((90 < SYS_Window->MouseY) && (112 > SYS_Window->MouseY))
                 {
                     // wait at current position...
                     KLICKWINGAD(RPort_PTR,4,91);
