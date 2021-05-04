@@ -40,6 +40,14 @@ void STARTROTATEPLANETS()
     struct Window*   SRP_Window = NULL;
     struct RastPort* RPort_PTR = NULL;
 
+    const char* InfoBox_Texts[] = {"Auf der Erde nimmt Dank Gene Roddenberry", "eine Legende ihren Anfang!",
+                                   "Auf der Erde wird ein", "genialer Programmierer geboren!",
+                                   "Stanley Kubricks & Arthur C. Clarkes", "Vision wird Wirklichkeit!",
+                                   "Peter Hyams & Arthur C. Clarkes", "Vision wird Wirklichkeit!",
+                                   "Auf der Erde findet", "\"Der erste Kontakt\" statt!" };
+    const int InfoBox_Years[] = { 1963, 1973, 2001, 2010, 2063 };
+
+
     for(i = 0; i < MAXCIVS; i++)
     {
         Save.LastWarState[ActPlayer-1][i] = Save.WarState[ActPlayer-1][i];
@@ -48,12 +56,14 @@ void STARTROTATEPLANETS()
     {
         LastDisplay[ActPlayer] = Display;
     }
-    ++ActPlayer;
+
+    ++ActPlayer; // select next Player... or wrap around
     if (ActPlayer > MAXCIVS)
     {
         ActPlayer = 1;
     }
     ActPlayerFlag = GETCIVFLAG(ActPlayer);
+
     if (0 != Display)
     {
         DRAWSTARS(MODE_REDRAW);
@@ -193,41 +203,17 @@ void STARTROTATEPLANETS()
 
     if ((0 != Save.CivPlayer[ActPlayer]) && (0 == (rand()%10)))
     {
-        if        (1963 == Year)
+        for (i = 0; i < (sizeof(InfoBox_Years)/sizeof(InfoBox_Years[0])); ++i)
         {
-            CREATEINFOBOX(&SRP_Window, &RPort_PTR);
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"Auf der Erde nimmt Dank Gene Roddenberry");
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"eine Legende ihren Anfang!");
-        } else if (1973 == Year)
-        {
-            CREATEINFOBOX(&SRP_Window, &RPort_PTR);
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"Auf der Erde wird ein");
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"genialer Programmierer geboren!");
-        } else if (2001 == Year)
-        {
-            CREATEINFOBOX(&SRP_Window, &RPort_PTR);
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"Stanley Kubricks & Arthur C. Clarkes");
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"Vision wird Wirklichkeit!");
-        } else if (2010 == Year)
-        {
-            CREATEINFOBOX(&SRP_Window, &RPort_PTR);
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"Peter Hyams & Arthur C. Clarkes");
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"Vision wird Wirklichkeit!");
-        } else if (2063 == Year)
-        {
-            CREATEINFOBOX(&SRP_Window, &RPort_PTR);
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"Auf der Erde findet");
-            j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,"\"Der erste Kontakt\" statt!");
+            if (InfoBox_Years[i] == Year)
+            {
+                CREATEINFOBOX(&SRP_Window, &RPort_PTR);
+                j += 18;
+                WRITE(225,j,12,WRITE_Center,RPort_PTR,3, InfoBox_Texts[i*2]);
+                j += 18;
+                WRITE(225,j,12,WRITE_Center,RPort_PTR,3, InfoBox_Texts[i*2+1]);
+                break;
+            }
         }
     }
     ++ActPlayer;    // for array shifting...
