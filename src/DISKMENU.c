@@ -39,7 +39,7 @@ void LOADSHIPS(r_ShipHeader* ShipPtr, BPTR FHandle)
                     if (NULL == memory)
                     {
                         ActShipPtr->TargetShip = NULL;
-                        ActShipPtr->SType = 8;
+                        ActShipPtr->SType = 8;   // which shiptype is used as default?
                         return;
                     }
                     (void) Read(FHandle, memory, sizeof(r_ShipHeader));
@@ -432,6 +432,7 @@ bool DIS_DELETEGAME()
     return (exitvalue);
 }
 
+/* DISKMENU displays the "MainMenu"/"Hauptmenue" */
 bool DISKMENU(uint8 Autoselect)
 {
     bool _DISKMENU = true;
@@ -441,6 +442,9 @@ bool DISKMENU(uint8 Autoselect)
     bool    leave_dialog = false;
     struct Window* DIS_Window;
     struct RastPort* RPort_PTR;
+    const char* Button_Texts[] = {PText[529], PText[530], PText[531],
+                                  PText[532], PText[533], PText[534]};
+    int button_Textcol, button_Textstyle;
 
     DIS_Window=MAKEWINDOW(194,119,123,136,MyScreen[0]);
     if (NULL == DIS_Window)
@@ -451,17 +455,15 @@ bool DISKMENU(uint8 Autoselect)
     MAKEWINBORDER(RPort_PTR,0,0,122,135,12,6,1);
 
     ypos = 3;
+    button_Textcol = 0;
+    button_Textstyle = WRITE_Center;
     for(i = 0; i < 6; ++i)
     {
         DrawImage(RPort_PTR,&GadImg1,4, ypos);
+        if (5 == i) { button_Textcol = 8; button_Textstyle |= WRITE_Shadow; }
+        WRITE(61, ypos+2, button_Textcol, WRITE_Center, RPort_PTR, 3, Button_Texts[i]);
         ypos += 22;
     }
-    WRITE(61,  5,0,WRITE_Center,RPort_PTR,3,PText[529]);
-    WRITE(61, 27,0,WRITE_Center,RPort_PTR,3,PText[530]);
-    WRITE(61, 49,0,WRITE_Center,RPort_PTR,3,PText[531]);
-    WRITE(61, 71,0,WRITE_Center,RPort_PTR,3,PText[532]);
-    WRITE(61, 93,0,WRITE_Center,RPort_PTR,3,PText[533]);
-    WRITE(61,115,8,WRITE_Center,RPort_PTR,3,PText[534]);
 
     do
     {
@@ -491,6 +493,9 @@ bool DISKMENU(uint8 Autoselect)
                         NOMEMMESSAGE();
                         _DISKMENU = false;
                         leave_dialog = true;
+                    } else if ((LOAD_NOFILE == loadreturn) && (DISKMENU_LOADGAME == Autoselect))
+                    {
+                        /* if no file is loaded from the game-start what shall we do? start with a "new" game? */
                     }
                 } else if (((DIS_Window->MouseY > 24) && (DIS_Window->MouseY < 46)) || (DISKMENU_SAVEGAME == Autoselect))
                 {
