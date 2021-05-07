@@ -142,16 +142,16 @@ void STATISTIK()
         WRITE(270,250,ActPlayerFlag,0,RPort_PTR,3, _s);
 
         l = (uint32) (l / 3.0);
-        if       (l<10)            { _s = PText[723]; }
-        else if ((l> 9) && (l<20)) { _s = PText[724]; }
-        else if ((l>19) && (l<30)) { _s = PText[725]; }
-        else if ((l>29) && (l<40)) { _s = PText[726]; }
-        else if ((l>39) && (l<50)) { _s = PText[727]; }
-        else if ((l>49) && (l<60)) { _s = PText[728]; }
-        else if ((l>59) && (l<70)) { _s = PText[729]; }
-        else if ((l>69) && (l<80)) { _s = PText[730]; }
-        else if ((l>79) && (l<90)) { _s = PText[731]; }
-        else if  (l>89)            { _s = PText[732]; }
+        if      (l<10) { _s = PText[723]; }
+        else if (l<20) { _s = PText[724]; }
+        else if (l<30) { _s = PText[725]; }
+        else if (l<40) { _s = PText[726]; }
+        else if (l<50) { _s = PText[727]; }
+        else if (l<60) { _s = PText[728]; }
+        else if (l<70) { _s = PText[729]; }
+        else if (l<80) { _s = PText[730]; }
+        else if (l<90) { _s = PText[731]; }
+        else           { _s = PText[732]; }
         WRITE(250,180,12,0,RPort_PTR,3, _s);
     }
 
@@ -178,12 +178,13 @@ void STATISTIK()
     WRITE(20,320,12,0,RPort_PTR,3,s);
 
     // TODO ... debug-display???
-    _s=dez2out(MaquesShips, 0, s);
+/*    _s=dez2out(MaquesShips, 0, s);
     *_s++ = ' ';
     (void) dez2out(Save.WarPower[8], 0, _s);
     WRITE( 3, 2,12,0,RPort_PTR,0,s);
-    WAITLOOP(false);
+*/
 
+    WAITLOOP(false);
     CloseWindow(STA_Window);
 
     ++ActPlayer; // to shift the array
