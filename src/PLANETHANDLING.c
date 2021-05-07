@@ -603,7 +603,7 @@ void MAKELOADWINDOW()
             MAKEWINBORDER(MyRPort_PTR[0],227,228,327,258,12,6,1);
         }
         if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
-        || ((ActPProjects->data[34] == 0) && (ActPProjects->data[40] == 0))
+        || ((ActPProjects->data[PROJECT_SDI] == 0) && (ActPProjects->data[PROJECT_SPACEPHALANX] == 0))
         || (PLANET_MyPlanetHeader->ProjectPtr == NULL)) && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
         {
             MAKEWINBORDER(MyRPort_PTR[0],342,228,442,258,12,6,1);
@@ -639,12 +639,12 @@ void WRITELOADDATA(int LTOut)
 
     if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (0 == PLANET_MyPlanetHeader->Population))
     {
-        (void) dez2out(ActPProjects->data[26], 3, s);
+        (void) dez2out(ActPProjects->data[PROJECT_SETTLERS], 3, s);
         WRITE_RP0(141,236,8,1,1,s);
     }
     if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
     {
-        (void) dez2out(ActPProjects->data[27], 3, s);
+        (void) dez2out(ActPProjects->data[PROJECT_LANDINGTROOPS], 3, s);
         WRITE_RP0(256,236,8,1,1,s);
     } else if (0 < PLANET_MyPlanetHeader->Population)
     {
@@ -654,7 +654,7 @@ void WRITELOADDATA(int LTOut)
 
     if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
       || ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
-      || ((0 == ActPProjects->data[34]) && (0 == ActPProjects->data[40]))
+      || ((0 == ActPProjects->data[PROJECT_SDI]) && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
       || (NULL == PLANET_MyPlanetHeader->ProjectPtr))
      && (CLASS_STONES != PLANET_MyPlanetHeader->Class))
     {
@@ -890,7 +890,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                 OldCiviPlanet = true;
                             }
                             ActPProjects = PLANET_MyPlanetHeader->ProjectPtr;
-                            ActPProjects->data[0] = 1;
+                            ActPProjects->data[PROJECT_NONE] = 1;
                             b = true;
                             MAKELOADWINDOW();
                             WRITELOADDATA(LTOut);

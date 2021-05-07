@@ -368,13 +368,13 @@ void ROTATEPLANETS(uint8 ActSys)
 
                     AllCreative[ActPlayer-1] += it_round(PCreativity*(PlanetHeader->Biosphaere/80.0+PlanetHeader->Population/400.0))+1;
 
-                    if (0 == ActPProjects->data[41])
+                    if (0 == ActPProjects->data[PROJECT_MICROIDS])
                     {       /* Keine MICROIDEN, Biosphaeren-Abbau */
-                        l = 4+( ActPProjects->data[30]+               /* Recycling-Anl. */
-                                ActPProjects->data[31]+               /* Fusions-Kraftwerk */
-                                ActPProjects->data[32]+               /* Hydro-Kraftwerk */
-                                ActPProjects->data[37]+               /* intell. Fabrik */
-                                ActPProjects->data[42])*2;            /* Wetter-Sat */
+                        l = 4+(  ActPProjects->data[PROJECT_RECYCLINGPLANT]
+                                +ActPProjects->data[PROJECT_FUSIONPOWER]
+                                +ActPProjects->data[PROJECT_HYDROPOWER]
+                                +ActPProjects->data[PROJECT_INT_PLANT]
+                                +ActPProjects->data[PROJECT_WEATHERSTATION])*2;
 
                         if ( (PlanetHeader->Biosphaere >= 2) && (0 == (rand()%l)))
                             { PlanetHeader->Biosphaere -= 2; }
@@ -504,7 +504,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             {
                                 ActPProjects->data[ProjID] = 100;
                             } else if (((0  < ProjID) && (8   > ProjID))
-                                     ||((24 < ProjID) && (PROJECT_VON_NEUMANN != ProjID) && (43 > ProjID)))
+                                     ||((24 < ProjID) && (PROJECT_VON_NEUMANN != ProjID) && (PROJECT_NOMORE > ProjID)))
                             {
                                 ActPProjects->data[ProjID]++;
                             } else if  ((7 < ProjID)  && (25 > ProjID))

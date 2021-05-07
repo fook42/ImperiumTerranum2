@@ -26,16 +26,17 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
             switch (MyPlanetHeader->ProjectID) {
                 case PROJECT_CLEAR_BIOPHERE:{
                             _s = PText[163];
-                            l = MyPlanetHeader->Biosphaere >> 1;
+                            l = MyPlanetHeader->Biosphaere / 2;
                         }; break;
                 case PROJECT_REPAIR_INFRA:{
                             _s = PText[164];
-                            l = MyPlanetHeader->Infrastruktur >> 1;
+                            l = MyPlanetHeader->Infrastruktur / 2;
                         }; break;
-                default:{
+                case PROJECT_REPAIR_INDUSTRY:{
                             _s = PText[165];
-                            l = MyPlanetHeader->Industrie >> 1;
-                        }
+                            l = MyPlanetHeader->Industrie / 2;
+                        }; break;
+                default: { }
             }
         }
         WRITE_RP1(191,430,2,(1|WRITE_Center),3, _s);
@@ -48,6 +49,16 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
     RECT_RP1(4,56,399,56+(l*2),418);
 }
 
+void WPS_DRAWUPDATE(uint8 *value, int ypos)
+{
+    char   s[8];
+
+    if (200 < *value) { *value = 200; }
+    RECT_RP1(4, 56, ypos, (*value)+56, ypos+19);
+    (void) dez2out((*value / 2), 3, s);
+    WRITE_RP1(278, ypos+3, 4, 1, 1, s);
+}
+
 void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 {
     uint8  i, y;
@@ -56,16 +67,22 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 
 
     // draw state of biosphere, infrastructure and industry
-    RECT_RP1(4,56,101,56+MyPlanetHeader->Biosphaere,120);
-    (void) dez2out((MyPlanetHeader->Biosphaere >> 1), 3, s);
-    WRITE_RP1(278,104,4,1,1,s);
+    WPS_DRAWUPDATE(&MyPlanetHeader->Biosphaere, 101);
 
-    y =  ActPProjects->data[30]              /* Recycling-Anl. */
-        +ActPProjects->data[31]              /* Fusions-Kraftwerk */
-        +ActPProjects->data[32]              /* Hydro-Kraftwerk */
-        +ActPProjects->data[37]              /* intell. Fabrik */
-        +ActPProjects->data[42];             /* Wetter-Sat */
-    if (y < 5)
+    WPS_DRAWUPDATE(&MyPlanetHeader->Infrastruktur, 150);
+
+    WPS_DRAWUPDATE(&MyPlanetHeader->Industrie, 199);
+
+    (void) dez2out(MyPlanetHeader->Population, 7, s);
+    WRITE_RP1(59,251,4,1,1,s);
+
+    y =  ActPProjects->data[PROJECT_RECYCLINGPLANT]
+        +ActPProjects->data[PROJECT_FUSIONPOWER]
+        +ActPProjects->data[PROJECT_HYDROPOWER]
+        +ActPProjects->data[PROJECT_INT_PLANT]
+        +ActPProjects->data[PROJECT_WEATHERSTATION];
+
+    if (5 > y)
     {
         y = 5-y;
         xpos = 59;
@@ -77,33 +94,15 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
         }
     }
 
-    i = MyPlanetHeader->Infrastruktur;
-    if (200 < i) { i = 200; }
-    RECT_RP1(4,56,150,56+i,169);
-    (void) dez2out((i >> 1), 3, s);
-    WRITE_RP1(278,153,4,1,1,s);
-    MyPlanetHeader->Infrastruktur = i;
-
-    i = MyPlanetHeader->Industrie;
-    if (200 < i) { i = 200; }   
-    RECT_RP1(4,56,199,56+i,218);
-    (void) dez2out((i >> 1), 3, s);
-    WRITE_RP1(278,202,4,1,1,s);
-    MyPlanetHeader->Industrie = i;
-
-    (void) dez2out(MyPlanetHeader->Population, 7, s);
-    WRITE_RP1(59,251,4,1,1,s);
-
-
     y = 0;   /* Kreativität */
-    if (ActPProjects->data[33]>0) { ++y; }
-    if (ActPProjects->data[35]>0) { ++y; }
-    if (ActPProjects->data[36]>0) { ++y; }
-    if (ActPProjects->data[38]>0) { ++y; }
-    if (ActPProjects->data[42]>0) { ++y; }
+    if (0 < ActPProjects->data[PROJECT_PART_ACCEL])      { ++y; }
+    if (0 < ActPProjects->data[PROJECT_INTERNET])        { ++y; }
+    if (0 < ActPProjects->data[PROJECT_VIRT_UNIVERSITY]) { ++y; }
+    if (0 < ActPProjects->data[PROJECT_INFO_HIGHWAY])    { ++y; }
+    if (0 < ActPProjects->data[PROJECT_WEATHERSTATION])  { ++y; }
     RECT_RP1_C0(56,307,178,330);
 
-    if (y > 0)
+    if (0 < y)
     {
         xpos = 56;
         for(i = 0; i < y; ++i)
@@ -115,13 +114,14 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
     }
 
     y = 0;   /*Produktivität*/
-    if (ActPProjects->data[31]>0) { ++y; }
-    if (ActPProjects->data[37]>0) { ++y; }
-    if (ActPProjects->data[38]>0) { ++y; }
-    if (ActPProjects->data[41]>0) { ++y; }
-    if (ActPProjects->data[42]>0) { ++y; }
+    if (0 < ActPProjects->data[PROJECT_FUSIONPOWER])    { ++y; }
+    if (0 < ActPProjects->data[PROJECT_INT_PLANT])      { ++y; }
+    if (0 < ActPProjects->data[PROJECT_INFO_HIGHWAY])   { ++y; }
+    if (0 < ActPProjects->data[PROJECT_MICROIDS])       { ++y; }
+    if (0 < ActPProjects->data[PROJECT_WEATHERSTATION]) { ++y; }
     RECT_RP1_C0(56,354,178,376);
-    if (y > 0)
+
+    if (0 < y)
     {
         xpos = 56;
         for(i = 0; i < y; ++i)
@@ -136,7 +136,7 @@ void WRITEPLANETSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects)
 {
     uint8   i;
-    uint16  x, y;
+    uint16  x, y, projectBmapx, projectBmapy;
     char    s[4];
 
     // clear right project icon area
@@ -151,7 +151,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
             // was this project invented at this planet first?
             if (ActPProjects->data[i+1]>0)
             {
-                RECT_RP1(4,360+x,92+y,427+x,159+y);
+                RECT_RP1(4,360+x,92+y,360+x+PROJECTS_XSIZE,159+y);
             }
             // copy project icon bitmap to screen
             BltBitMapRastPort((struct BitMap*) &ImgBitMap8,i*64,0,MyRPort_PTR[1],362+x,94+y,64,64,192);
@@ -167,18 +167,23 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
 
     for(i = 25; i < 43; ++i)
     {
-        if ((ActPProjects->data[i]>0) || ((i == 39) && (Save.ProjectCosts[ActPlayer-1].data[i] <= 0)))
+        if ((0 < ActPProjects->data[i]) || ((39 == i) && (0 >= Save.ProjectCosts[ActPlayer-1].data[i])))
         {
-            if        ((i>24) && (i<28))
+            if (28 > i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-18)*64,  0,MyRPort_PTR[1],362+x,94+y,64,64,192);
-            } else if ((i>27) && (i<38))
+                projectBmapx = (i-18);
+                projectBmapy = 0;
+            } else if (38 > i)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-28)*64, 64,MyRPort_PTR[1],362+x,94+y,64,64,192);
+                projectBmapx = (i-28);
+                projectBmapy = 64;
             } else
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap8,(i-38)*64,128,MyRPort_PTR[1],362+x,94+y,64,64,192);
+                projectBmapx = (i-38);
+                projectBmapy = 128;
             }
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap8,projectBmapx*64,projectBmapy,MyRPort_PTR[1],362+x,94+y,64,64,192);
+
             if ((26 == i) || (27 == i))
             {
                 /* settlers and landingtroops */

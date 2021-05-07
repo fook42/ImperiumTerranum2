@@ -199,9 +199,9 @@ enum {  SCREEN_PLANET = 1,
 #define SHIPDATA_OFFSET     8
 #define ShipData(...)       ShipData[(__VA_ARGS__) - SHIPDATA_OFFSET]
 
-#define PROJECT_CLEAR_BIOPHERE  -3
-#define PROJECT_REPAIR_INFRA    -2
-#define PROJECT_REPAIR_INDUSTRY -1
+#define PROJECT_CLEAR_BIOPHERE  (-3)
+#define PROJECT_REPAIR_INFRA    (-2)
+#define PROJECT_REPAIR_INDUSTRY (-1)
 #define PROJECT_NONE            0
 #define PROJECT_SPACEDOCK       25
 #define PROJECT_SETTLERS        26
