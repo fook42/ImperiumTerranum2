@@ -5,7 +5,7 @@
 
 void SYSTEMTOENEMY(uint8 ActSys, uint8 NewOwner, uint8 OldOwner)
 {
-    uint8   i;
+    uint8     i;
     r_PlanetHeader* MyPlanetHeader;
     r_ShipHeader*   MyShipPtr;
 

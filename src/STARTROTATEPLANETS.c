@@ -25,7 +25,7 @@ void CREATEINFOBOX(struct Window** CIB_Window, struct RastPort** CIB_RPort_PTR)
             _s = dez2out(Year, 0, _s);
             *_s++ = ':';
             *_s = 0;
-            WRITE(225, 10,ActPlayerFlag,WRITE_Center,*CIB_RPort_PTR,3,s);
+            WRITE(225, 10,ActPlayerFlag,WRITE_Center|JAM1,*CIB_RPort_PTR,3,s);
         }
         PRINTGLOBALINFOS(ActPlayer);
     }
@@ -123,7 +123,7 @@ void STARTROTATEPLANETS()
                 if (18 < j)
                 {
                     CREATEINFOBOX(&SRP_Window, &RPort_PTR);
-                    WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
+                    WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3,s);
                 }
             }
         }
@@ -139,9 +139,9 @@ void STARTROTATEPLANETS()
             (void) my_strcpy(_s, PText[655]);
             CREATEINFOBOX(&SRP_Window, &RPort_PTR);
             j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
+            WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3,s);
             j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,PText[656]);
+            WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3,PText[656]);
         }
 
         if (0 != Save.CivilWar)
@@ -158,7 +158,7 @@ void STARTROTATEPLANETS()
                 (void) my_strcpy(_s, PText[657]);
                 CREATEINFOBOX(&SRP_Window, &RPort_PTR);
                 j += 18;
-                WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
+                WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3,s);
             }
         }
         if (0 != GetPlanetSys[ActPlayer])
@@ -170,7 +170,7 @@ void STARTROTATEPLANETS()
             (void) my_strcpy(_s, PText[658]);
             CREATEINFOBOX(&SRP_Window, &RPort_PTR);
             j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
+            WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3,s);
         }
         if (Verschrottung[ActPlayer]>0)
         {
@@ -185,7 +185,7 @@ void STARTROTATEPLANETS()
             }
             CREATEINFOBOX(&SRP_Window, &RPort_PTR);
             j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3, _s);
+            WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3, _s);
             Verschrottung[ActPlayer] = 0;
         }
 
@@ -196,7 +196,7 @@ void STARTROTATEPLANETS()
             (void) my_strcpy(_s, PText[662]);
             CREATEINFOBOX(&SRP_Window, &RPort_PTR);
             j += 18;
-            WRITE(225,j,12,WRITE_Center,RPort_PTR,3,s);
+            WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3,s);
             vNSonde[ActPlayer] = false;
         }
     }
@@ -209,9 +209,9 @@ void STARTROTATEPLANETS()
             {
                 CREATEINFOBOX(&SRP_Window, &RPort_PTR);
                 j += 18;
-                WRITE(225,j,12,WRITE_Center,RPort_PTR,3, InfoBox_Texts[i*2]);
+                WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3, InfoBox_Texts[i*2]);
                 j += 18;
-                WRITE(225,j,12,WRITE_Center,RPort_PTR,3, InfoBox_Texts[i*2+1]);
+                WRITE(225,j,12,WRITE_Center|JAM1,RPort_PTR,3, InfoBox_Texts[i*2+1]);
                 break;
             }
         }
@@ -250,6 +250,6 @@ void STARTROTATEPLANETS()
     if ((0 != Save.CivPlayer[ActPlayer-1]) && (Informed))
     {
         RECT_RP0_C0(520,291,632,308);
-        WRITE_RP0(521,292,12,1,3,PText[663]);
+        WRITE_RP0(521,292,12,JAM2,3,PText[663]);
     }
 }

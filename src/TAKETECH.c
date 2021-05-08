@@ -5,7 +5,8 @@
 
 bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
 {
-    uint8   i,TechID,CivVar1,CivVar2;
+    uint8   CivVar1,CivVar2;
+    int     i, TechID;
     char    s[60];
     char*   _s;
     bool    _TAKETECH = false;
@@ -42,8 +43,8 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
                 *_s++ = ':';
                 *_s = 0;
 
-                WRITE(171,22,CivFlag1,(1|WRITE_Center),RPort_PTR,3, s);
-                WRITE(171,42,      12,(1|WRITE_Center),RPort_PTR,3, TechnologyL.data[TechID]);
+                WRITE(171,22,CivFlag1,WRITE_Center|JAM1,RPort_PTR,3, s);
+                WRITE(171,42,      12,WRITE_Center|JAM1,RPort_PTR,3, TechnologyL.data[TechID]);
                 if (Save.PlayMySelf)
                 {
                     Delay(PAUSE);

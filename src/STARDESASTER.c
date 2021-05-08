@@ -5,7 +5,7 @@
 
 void FUCKSYSTEM(uint8 ActSys)
 {
-    uint8           i, j;
+    int             i, j;
     ByteArr42*      ActPPRoject;
     r_PlanetHeader* MyPlanetHeader;
     r_ShipHeader*   MyShipPtr;
@@ -75,6 +75,24 @@ void FUCKSYSTEM(uint8 ActSys)
     Delay(100);
 }
 
+void SD_TEXTWINDOW(const char* TextPtr1,const char* TextPtr2,const char* TextPtr3)
+{
+    struct Window*   STD_Window;
+    struct RastPort* RPort_PTR;
+
+    STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
+    if (NULL != STD_Window)
+    {
+        RPort_PTR = STD_Window->RPort;
+        MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
+        WRITE(206,10,ActPlayerFlag,WRITE_Center|JAM1,RPort_PTR,3,TextPtr1);
+        WRITE(206,30,ActPlayerFlag,WRITE_Center|JAM1,RPort_PTR,3,TextPtr2);
+        WRITE(206,50,ActPlayerFlag,WRITE_Center|JAM1,RPort_PTR,3,TextPtr3);
+        WAITLOOP(false);
+        CloseWindow(STD_Window);
+    }
+}
+
 
 void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
 {
@@ -85,11 +103,10 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
     const char      Nkonsonant[] = {"bcdfghjklmnpqrstvwxyz"};
     const uint8     NvokalLen = sizeof(Nvokal)-1;
     const uint8     NkonsoLen = sizeof(Nkonsonant)-1;
-    uint8           i, j, k;
+    int             i, j, k;
     bool            system_too_close;
-    struct Window*   STD_Window;
-    struct RastPort* RPort_PTR;
 
+    const uint8 PFlags[] = {FLAG_TERRA, FLAG_KLEGAN, FLAG_REMALO, FLAG_CARDAC, FLAG_BAROJA, FLAG_VOLKAN, FLAG_FERAGI};
 
     // MyShipPtr = ShipPtr;
     if (WFLAG_FIELD == Save.WorldFlag)
@@ -98,17 +115,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
         Save.Systems = MAXSYSTEMS;
         Save.WorldFlag = 0;
 
-        STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
-        if (NULL != STD_Window)
-        {
-            RPort_PTR = STD_Window->RPort;
-            MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
-            WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[391]);
-            WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[392]);
-            WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[393]);
-            WAITLOOP(false);
-            CloseWindow(STD_Window);
-        }
+        SD_TEXTWINDOW(PText[391], PText[392], PText[393]);
         return;
     }
     Save.ImperatorState[ActPlayer-1] -= 500;
@@ -124,13 +131,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
         case 1: {        /* NEUVERTEILUNG DER KRÄFTE */
                     PLAYSOUND(2,420);
                     Year = Year-(rand()%250)+75;
-                    STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
-                    RPort_PTR = STD_Window->RPort;
-                    MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
 
-                    WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[394]);
-                    WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,3,_PT_Der_Spieler_wurde);
-                    WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[396]);
                     for(i = 0; i < Save.Systems; i++)
                     {
                         do
@@ -146,108 +147,80 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                                 if ((abs(SystemX[i]-SystemX[j])+abs(SystemY[i]-SystemY[j])) < 30)
                                 {
                                     system_too_close = true;
+                                    break;
                                 }
                             }
                         }
                         while (system_too_close);
                     }
-                    for(j = 0; j < 7; j++)
+                    for(j = 0; j < 7; ++j)
                     {
-                        for(i = 0;  i < 7;   i++) { Save.WarState[j][i] = LEVEL_COLDWAR; }
-                        for(i = 1;  i <= 25; i++) { Save.TechCosts[j].data[i]    = 0; }
-                        for(i = 26; i <= 42; i++) { Save.TechCosts[j].data[i]    = i*2500; }
-                        for(i = 2;  i <= 7;  i++) { Save.ProjectCosts[j].data[i] = i*100000; }
+                        for(i = 0;  i < 7;  ++i) { Save.WarState[j][i] = LEVEL_COLDWAR; }
+                        for(i = 1;  i < 26; ++i) { Save.TechCosts[j].data[i]    = 0; }
+                        for(i = 26; i < 43; ++i) { Save.TechCosts[j].data[i]    = i*2500; }
+                        for(i = 2;  i < 8;  ++i) { Save.ProjectCosts[j].data[i] = i*100000; }
                         Save.ProjectCosts[j].data[39] = 40000;
                         Save.ActTech[j] = 0;
                     }
-                    for(i = 0; i < Save.Systems; i++)
+                    for(i = 0; i < Save.Systems; ++i)
                     {
                         SystemHeader[i].FirstShip.SType = 0;
                         SystemHeader[i].vNS = 0;
-                        for(j = 0; j < SystemHeader[i].Planets; j++)
+                        for(j = 0; j < SystemHeader[i].Planets; ++j)
                         {
                             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                            if (0 != MyPlanetHeader->PFlags)
+                            if (0 == MyPlanetHeader->PFlags) { continue; }  // only inhabited planets get a new owner
+
+                            MyPlanetHeader->PFlags = PFlags[rand()%7];
+                            MyPlanetHeader->Ethno = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
+                            MyPlanetHeader->Biosphaere    -= rand()%20;
+                            MyPlanetHeader->Infrastruktur -= rand()%20;
+                            MyPlanetHeader->Industrie     -= rand()%20;
+                            if (NULL != MyPlanetHeader->ProjectPtr)
                             {
-                                switch(rand()%7) {
-                                    case 0: MyPlanetHeader->PFlags = FLAG_TERRA;  break;
-                                    case 1: MyPlanetHeader->PFlags = FLAG_KLEGAN; break;
-                                    case 2: MyPlanetHeader->PFlags = FLAG_REMALO; break;
-                                    case 3: MyPlanetHeader->PFlags = FLAG_CARDAC; break;
-                                    case 4: MyPlanetHeader->PFlags = FLAG_BAROJA; break;
-                                    case 5: MyPlanetHeader->PFlags = FLAG_VOLKAN; break;
-                                    case 6: MyPlanetHeader->PFlags = FLAG_FERAGI; break;
-                                    default: {}
-                                }
-                                MyPlanetHeader->Ethno = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
-                                MyPlanetHeader->Biosphaere    -= rand()%20;
-                                MyPlanetHeader->Infrastruktur -= rand()%20;
-                                MyPlanetHeader->Industrie     -= rand()%20;
-                                if (NULL != MyPlanetHeader->ProjectPtr)
+                                ActPPRoject = (ByteArr42*) MyPlanetHeader->ProjectPtr;
+                                ActPPRoject->data[2] = 0;
+                                ActPPRoject->data[PROJECT_VON_NEUMANN] = 0;
+                                for(k = 1; k < PROJECT_NOMORE; ++k)
                                 {
-                                    ActPPRoject = (ByteArr42*) MyPlanetHeader->ProjectPtr;
-                                    ActPPRoject->data[2] = 0;
-                                    ActPPRoject->data[PROJECT_VON_NEUMANN] = 0;
-                                    for(k = 1; k <= 42; k++)
+                                    if (0 < ProjectNeedsTech[k])
                                     {
-                                        if (0 < ProjectNeedsTech[k])
-                                        {
-                                            ActPPRoject->data[k] = 0;
-                                        }
+                                        ActPPRoject->data[k] = 0;
                                     }
                                 }
-                                MyPlanetHeader->ProjectID = PROJECT_CLEAR_BIOPHERE;
-                                MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*0.7);
-                                MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
-                                while (NULL != MyShipPtr)
-                                {
-                                    MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
-                                    MyShipPtr = MyShipPtr->NextShip;
-                                }
+                            }
+                            MyPlanetHeader->ProjectID = PROJECT_CLEAR_BIOPHERE;
+                            MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*0.7);
+                            MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
+                            while (NULL != MyShipPtr)
+                            {
+                                MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
+                                MyShipPtr = MyShipPtr->NextShip;
                             }
                         }
                     }
-                    WAITLOOP(false);
-                    CloseWindow(STD_Window);
+                    SD_TEXTWINDOW(PText[394], _PT_Der_Spieler_wurde, PText[396]);
                 } break;
         case 2: {   /* CEBORCS */
                     PLAYSOUND(2,420);
                     CEBORCATTACK(0);
-                    STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
-                    if (NULL != STD_Window)
-                    {
-                        RPort_PTR = STD_Window->RPort;
-                        MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
-                        WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,_PT_Der_Spieler_wurde);
-                        WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[398]);
-                        WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[399]);
-                        WAITLOOP(false);
-                        CloseWindow(STD_Window);
-                    }
-
+                    SD_TEXTWINDOW(_PT_Der_Spieler_wurde, PText[398], PText[399]);
                 } break;
         case 3: {   /* DCON-IMPERIUM */
                     PLAYSOUND(2,420);
-                    STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
-                    RPort_PTR = STD_Window->RPort;
-                    MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
-
-                    WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,_PT_Der_Spieler_wurde);
-                    WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[401]);
-                    WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[402]);
                     while (Year>(-40000))
                     {
                         Year -= (rand()%89) * (rand()%89);
                     }
                     Save.Bevoelkerung[7] = 100;
                     Save.WorldFlag = WFLAG_DCON;
-                    for(i = 0; i < (MAXCIVS-1); i++)
+                    for(i = 0; i < (MAXCIVS-1); ++i)
                     {
                         Save.WarState[7][i] = LEVEL_PEACE;
                         Save.WarState[i][7] = LEVEL_PEACE;
                     }
 
-                    for(i = 0; i < MAXSYSTEMS; i++)
+                    for(i = 0; i < MAXSYSTEMS; ++i)
                     {
                         if ((i+1) != ActSys)
                         {
@@ -267,7 +240,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                                 MyShipPtr->Owner = FLAG_OTHER;
                                 MyShipPtr = MyShipPtr->NextShip;
                             }
-                            for(j = 0; j < SystemHeader[i].Planets; j++)
+                            for(j = 0; j < SystemHeader[i].Planets; ++j)
                             {
                                 MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
                                 MyPlanetHeader->PName[0]='D';
@@ -289,7 +262,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                                         // for(k = 0; k < 7; k++)
                                         // {
                                             // ...todo ... 7* same comparison ? ... ProjectPtr->data[i] makes no sense.. 
-                                            if ((ActPPRoject->data[i+1]>0) && (Save.ProjectCosts[7].data[i+1] == 0))
+                                            if ((0 < ActPPRoject->data[i+1]) && (0 == Save.ProjectCosts[7].data[i+1]))
                                             {
                                                 ActPPRoject->data[i+1] = 0;
                                             } else {
@@ -309,27 +282,16 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                         }
                     }
 
-                    for(i = 1; i <= 25; i++)
+                    for(i = 1; i < 26; ++i)
                     {
                         Save.TechCosts[7].data[i] = 0;
                     }
-                    WAITLOOP(false);
-                    CloseWindow(STD_Window);
+                    SD_TEXTWINDOW(_PT_Der_Spieler_wurde, PText[401], PText[402]);
                 } break;
         case 4: {   /* ZEIT-ANOMALIE */
                     PLAYSOUND(2,420);
                     Save.WorldFlag = WFLAG_FIELD;
-                    STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
-                    if (NULL != STD_Window)
-                    {
-                        RPort_PTR = STD_Window->RPort;
-                        MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
-                        WRITE(206,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[404]);
-                        WRITE(206,30,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[405]);
-                        WRITE(206,50,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[406]);
-                        WAITLOOP(false);
-                        CloseWindow(STD_Window);
-                    }
+                    SD_TEXTWINDOW(PText[404], PText[405], PText[406]);
                 } break;
         default: {}
     }
