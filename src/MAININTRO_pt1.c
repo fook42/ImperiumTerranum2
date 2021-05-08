@@ -26,6 +26,7 @@ int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
 
     if (!FillITBitMap(&IntroBitMap, 80, 183, 5))
     {
+        ret_code = -2;
         goto leave_part;
     }
     IMemL[0] = IntroBitMap.MemL;            // needed for RAWLOADIMAGE, DISPLAYIMAGE...
@@ -39,6 +40,7 @@ int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
     (void) my_strcpy(_s, "Frame0.img");   // Touchbyte ...
     if (!RAWLOADIMAGE(s,0,0,640,183,5,&IntroBitMap))
     {
+        ret_code = -3;
         goto leave_part;
     }
     xpos = 5;

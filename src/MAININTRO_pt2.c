@@ -374,6 +374,7 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     MyRastPtr = AllocRaster(640, 360);
     if (NULL == MyRastPtr)
     {
+        ret_code = -11;
         goto leave_part;
     }
     InitTmpRas(&MyTmpRas, MyRastPtr, 21000);
@@ -381,6 +382,7 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     IntroAreaMem = AllocMem(IntroAreaSize, MEMF_CHIP);
     if (NULL == IntroAreaMem)
     {
+        ret_code = -12;
         goto leave_part;
     }
     InitArea(&MyAI, IntroAreaMem, 200);
@@ -394,6 +396,7 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     TextVectorMem = AllocMem(TextVectorSize, MEMF_ANY | MEMF_CLEAR);
     if (NULL == TextVectorMem)
     {
+        ret_code = -13;
         goto leave_part;
     }
     for (i = 0; i<NUM_VECTOROBJ; ++i)
@@ -407,7 +410,7 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     (void) my_strcpy(_s, "Frame1.pal");
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame1.img");
-    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_part; }
+    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { ret_code = -14; goto leave_part; }
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRESENTS");
     WaitTOF();
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,75,192);
@@ -474,7 +477,7 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     (void) my_strcpy(_s, "Frame2.pal");
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame2.img");
-    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_part; }
+    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { ret_code = -15; goto leave_part; }
     WRITE(320,205,31,WRITE_Center,MyRPort_PTR[AScr],4,"A");
     WRITE(320,285,31,WRITE_Center,MyRPort_PTR[AScr],4,"PRODUCTION");
     WaitTOF();
@@ -534,7 +537,7 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     (void) my_strcpy(_s, "Frame3.pal");
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame3.img");
-    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { goto leave_part; }
+    if (!DISPLAYIMAGE(s,0,235,640,37,5,MyScreen[AScr],0)) { ret_code = -16; goto leave_part; }
     WaitTOF();
     ClipBlit(MyRPort_PTR[AScr],0,235,MyRPort_PTR[1-AScr],0,235,640,37,192);
 

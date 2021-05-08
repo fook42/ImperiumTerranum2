@@ -54,7 +54,7 @@ int MAININTRO_PART4()
     SetRGB4(MyVPort_PTR[AScr],123,14,14,15); SetRGB4(MyVPort_PTR[1-AScr],123,14,14,15);
 
     (void) my_strcpy(_s, "Frame6.img");
-    if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[AScr],0)) { goto leave_part; }
+    if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[AScr],0)) { ret_code = -31; goto leave_part; }
     ScreenToFront(MyScreen[AScr]);
     struct BitMap MyBitMap = (struct BitMap) { 80, 360, 1, 7, 0, \
                             {(PLANEPTR) (IMemA[0]),       (PLANEPTR) (IMemA[0]+28800), (PLANEPTR) (IMemA[0]+57600), \
@@ -67,12 +67,14 @@ int MAININTRO_PART4()
     MyRastPtr = AllocRaster(640, 360);
     if (NULL == MyRastPtr)
     {
+        ret_code = -32;
         goto leave_part;
     }
     InitTmpRas(&MyTmpRas,MyRastPtr,21000);
     IntroAreaMem = AllocMem(IntroAreaSize, MEMF_CHIP);
     if (NULL == IntroAreaMem)
     {
+        ret_code = -33;
         goto leave_part;
     }
     InitArea(&MyAI, IntroAreaMem, 200);
@@ -86,6 +88,7 @@ int MAININTRO_PART4()
     ShipCoordMem = (uint8*) AllocMem(ShipCoordSize, MEMF_ANY | MEMF_CLEAR);
     if (NULL == ShipCoordMem)
     {
+        ret_code = -34;
         goto leave_part;
     }
     ShipX = (r_Coords_t*) (ShipCoordMem);

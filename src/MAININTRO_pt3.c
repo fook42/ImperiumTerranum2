@@ -19,7 +19,7 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
         MyScreen[i] = OPENCINEMA(7);
         if (NULL == MyScreen[i])
         {
-            return -1;
+            return -21;
         }
         MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
         MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);
@@ -32,7 +32,7 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
         IMemA[i] = (uint8*) AllocMem(IMemL[i], MEMF_CHIP);
         if (NULL == IMemA[i])
         {
-            return -1;
+            return -22;
         }
     }
 
@@ -76,7 +76,7 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
     (void) my_strcpy(_s, "Frame4.img");       // terrain with stars...
     if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[1],0))
     {
-        return -1;
+        return -23;
     }
     ClipBlit(MyRPort_PTR[1],0,75,MyRPort_PTR[0],0,75,640,360,192);
 
