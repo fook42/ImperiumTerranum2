@@ -5,14 +5,16 @@
 
 void QUOTEPICARD()
 {
+    int     i, ypos;
     const char* Txt_Picard[] = {"Ich frage mich, ob es Kaiser Honorius klar",
                                 "war, als er sah, daß die Westgoten den siebten",
                                 "Hügel Roms überwanden, daß das Römische Reich",
                                 "fallen würde ... Das hier ist nur eine weitere",
                                 "Episode der Geschichte. Wird hier unsere",
-                                "Zivilisation enden?",
-                                "Jean Luc Picard",
+                                "Zivilisation enden?"};
+    const char* Txt_Picard2[] = {"Jean Luc Picard",
                                 "Mission \"Wolf 359\"" };
+
     struct Window* QPI_Window = NULL;
     struct RastPort* RPort_PTR;
     QPI_Window=MAKEWINDOW(20,70,471,221,MyScreen[0]);
@@ -21,14 +23,15 @@ void QUOTEPICARD()
         RPort_PTR = QPI_Window->RPort;
         MAKEWINBORDER(RPort_PTR,0,0,470,220,12,6,1);
 
-        WRITE(236, 20,12,WRITE_Center,RPort_PTR,3,Txt_Picard[0]);
-        WRITE(236, 42,12,WRITE_Center,RPort_PTR,3,Txt_Picard[1]);
-        WRITE(236, 64,12,WRITE_Center,RPort_PTR,3,Txt_Picard[2]);
-        WRITE(236, 86,12,WRITE_Center,RPort_PTR,3,Txt_Picard[3]);
-        WRITE(236,108,12,WRITE_Center,RPort_PTR,3,Txt_Picard[4]);
-        WRITE(236,130,12,WRITE_Center,RPort_PTR,3,Txt_Picard[5]);
-        WRITE(460,158,12,WRITE_Right ,RPort_PTR,3,Txt_Picard[6]);
-        WRITE(460,180,12,WRITE_Right ,RPort_PTR,3,Txt_Picard[7]);
+        ypos = 20;
+        for (i = 0; i < (sizeof(Txt_Picard)/sizeof(Txt_Picard[0])); ++i)
+        {
+            WRITE(236, ypos, 12, WRITE_Center, RPort_PTR, 3, Txt_Picard[i]);
+            ypos += 22;
+        }
+
+        WRITE(460,158,12,WRITE_Right,RPort_PTR,3, Txt_Picard2[0]);
+        WRITE(460,180,12,WRITE_Right,RPort_PTR,3, Txt_Picard2[1]);
         WAITLOOP(false);
 
         CloseWindow(QPI_Window);

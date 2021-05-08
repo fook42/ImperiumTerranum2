@@ -25,14 +25,14 @@ r_PlanetHeader* PLANET_MyPlanetHeader;
 ByteArr42*      ActPProjects;
 //
 
-void NEGATIVEANSWER()
+void PH_GIVEANSWER(const char* TextPtr1, const char* TextPtr2)
 {
     char    s[40];
     char*   _s;
     struct Window* ANS_Window;
     struct RastPort* RPort_PTR;
 
-    ANS_Window = MAKEWINDOW(85,120,341,81,MyScreen[0]);
+    ANS_Window = MAKEWINDOW(85, 120, 341, 81, MyScreen[0]);
     if (NULL != ANS_Window)
     {
         RPort_PTR = ANS_Window->RPort;
@@ -40,35 +40,22 @@ void NEGATIVEANSWER()
         _s=my_strcpy(s, _PT_Die);
         *_s++ = ' ';
         _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
-        (void) my_strcpy(_s, PText[416]);
-        WRITE(171, 20, ActPlayerFlag, WRITE_Center, RPort_PTR,3, s);
-        WRITE(171, 45, ActPlayerFlag, WRITE_Center, RPort_PTR,3, PText[417]);
+        (void) my_strcpy(_s, TextPtr1);
+        WRITE(171, 20, ActPlayerFlag, WRITE_Center|JAM1, RPort_PTR, 3, s);
+        WRITE(171, 45, ActPlayerFlag, WRITE_Center|JAM1, RPort_PTR, 3, TextPtr2);
         WAITLOOP(false);
         CloseWindow(ANS_Window);
     }
 }
 
+void NEGATIVEANSWER()
+{
+    PH_GIVEANSWER(PText[416], PText[417]);
+}
+
 void POSITIVEANSWER(uint8 CivVar)
 {
-    char    s[40];
-    char*   _s;
-    struct Window* ANS_Window;
-    struct RastPort* RPort_PTR;
-
-    ANS_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
-    if (NULL != ANS_Window)
-    {
-        RPort_PTR = ANS_Window->RPort;
-        MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
-        _s=my_strcpy(s, _PT_Die);
-        *_s++ = ' ';
-        _s=my_strcpy(_s, GETCIVADJ(ActPlayer));
-        (void) my_strcpy(_s, PText[418]);
-        WRITE(171, 20, ActPlayerFlag, WRITE_Center, RPort_PTR,3, s);
-        WRITE(171, 45, ActPlayerFlag, WRITE_Center, RPort_PTR,3, PText[419]);
-        WAITLOOP(false);
-        CloseWindow(ANS_Window);
-    }
+    PH_GIVEANSWER(PText[418], PText[419]);
     Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_PEACE;
     Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_PEACE;
 }
@@ -88,7 +75,7 @@ uint8 GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
         ypos = 10;
         for(i = 0; i < Opts; ++i)
         {
-            WRITE(10, ypos,12,0,RPort_PTR,3,OptArr[i]);
+            WRITE(10, ypos,12,JAM1,RPort_PTR,3,OptArr[i]);
             ypos += 20;
         }
 
@@ -107,9 +94,9 @@ uint8 GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
                     {
                         if (i == Pos)
                         {
-                            WRITE(10, ypos,CivFlag,0,RPort_PTR,3,OptArr[i]);
+                            WRITE(10, ypos,CivFlag,JAM1,RPort_PTR,3,OptArr[i]);
                         } else {
-                            WRITE(10, ypos,     12,0,RPort_PTR,3,OptArr[i]);
+                            WRITE(10, ypos,     12,JAM1,RPort_PTR,3,OptArr[i]);
                         }
                         ypos += 20;
                     }
@@ -145,12 +132,12 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
         *_s++ = ',';
         *_s++ = ' ';
         (void) my_strcpy(_s, PText[421]);
-        WRITE(221,20,CivFlag,WRITE_Center,RPort_PTR,3,s2);
-        WRITE(221,45,CivFlag,WRITE_Center,RPort_PTR,3,s);
+        WRITE(221,20,CivFlag,WRITE_Center|JAM1,RPort_PTR,3,s2);
+        WRITE(221,45,CivFlag,WRITE_Center|JAM1,RPort_PTR,3,s);
         DrawImage(RPort_PTR,&GadImg1, 20,80);
         DrawImage(RPort_PTR,&GadImg1,302,80);
-        WRITE( 80, 82, 8, WRITE_Center, RPort_PTR,3, _PT_Annehmen);
-        WRITE(362, 82, 8, WRITE_Center, RPort_PTR,3, _PT_Ablehnen);
+        WRITE( 80, 82, 8, WRITE_Center|JAM1, RPort_PTR,3, _PT_Annehmen);
+        WRITE(362, 82, 8, WRITE_Center|JAM1, RPort_PTR,3, _PT_Ablehnen);
         do
         {
             Delay(RDELAY);
@@ -176,10 +163,10 @@ void CALLOTHERPLAYER(const int CivVar, const int CivFlag)
 {
     PLAYERJINGLE(CivVar-1);
     MAKEBORDER(MyScreen[0],35,80,475,290,12,6,0);
-    WRITE_RP0(256, 95,12,WRITE_Center,3,PText[422]);
-    WRITE_RP0(256,125,12,WRITE_Center,3,"-");
-    WRITE_RP0(160,125,ActPlayerFlag,WRITE_Center,3,GETCIVNAME(ActPlayer));
-    WRITE_RP0(351,125,      CivFlag,WRITE_Center,3,GETCIVNAME(CivVar));
+    WRITE_RP0(256, 95,12,WRITE_Center|JAM1,3,PText[422]);
+    WRITE_RP0(256,125,12,WRITE_Center|JAM1,3,"-");
+    WRITE_RP0(160,125,ActPlayerFlag,WRITE_Center|JAM1,3,GETCIVNAME(ActPlayer));
+    WRITE_RP0(351,125,      CivFlag,WRITE_Center|JAM1,3,GETCIVNAME(CivVar));
     DISPLAYLOGO(ActPlayer,96,150);
     DISPLAYLOGO(CivVar,287,150);
     WAITLOOP(false);
@@ -379,8 +366,8 @@ void DIPLOMACY()
                                     }
                                 } else {
                                     MAKEWINBORDER(MyRPort_PTR[0],85,120,425,200,12,6,0);
-                                    WRITE_RP0(256,140,12,WRITE_Center,3,PText[445]);
-                                    WRITE_RP0(256,160,12,WRITE_Center,3,PText[446]);
+                                    WRITE_RP0(256,140,12,WRITE_Center|JAM1,3,PText[445]);
+                                    WRITE_RP0(256,160,12,WRITE_Center|JAM1,3,PText[446]);
                                     WAITLOOP(false);
                                     RECT_RP0_C0(85,120,425,200);
                                     REFRESHDISPLAY();
@@ -439,10 +426,10 @@ void DIPLOMACY()
                                 Save.Staatstopf[CivVar-1]    -= XCosts;
                                 Save.Staatstopf[ActPlayer-1] += XCosts;
                                 MAKEWINBORDER(MyRPort_PTR[0],85,120,425,200,12,6,0);
-                                WRITE_RP0(256,127,ActPlayerFlag,WRITE_Center,3,PText[447]); // Sie erhalten Reparationen
-                                WRITE_RP0(256,147,ActPlayerFlag,WRITE_Center,3,PText[448]); // in Höhe von
+                                WRITE_RP0(256,127,ActPlayerFlag,WRITE_Center|JAM1,3,PText[447]); // Sie erhalten Reparationen
+                                WRITE_RP0(256,147,ActPlayerFlag,WRITE_Center|JAM1,3,PText[448]); // in Höhe von
                                 (void) dez2out(XCosts, 0, s2);
-                                WRITE_RP0(256,173,      CivFlag,WRITE_Center,3,s2);
+                                WRITE_RP0(256,173,      CivFlag,WRITE_Center|JAM1,3,s2);
                                 WAITLOOP(false);
                                 RECT_RP0_C0(85,120,425,200);
                                 if ((Save.WorldFlag == ActPlayerFlag) && (CivVar == 8))
@@ -493,8 +480,8 @@ void DIPLOMACY()
                                 }
                             } else {
                                 MAKEWINBORDER(MyRPort_PTR[0],85,120,425,200,12,6,0);
-                                WRITE_RP0(256,140,12,WRITE_Center,3,PText[445]);    // Keine weiteren
-                                WRITE_RP0(256,160,12,WRITE_Center,3,PText[446]);    // Zivilisationen bekannt.
+                                WRITE_RP0(256,140,12,WRITE_Center|JAM1,3,PText[445]);    // Keine weiteren
+                                WRITE_RP0(256,160,12,WRITE_Center|JAM1,3,PText[446]);    // Zivilisationen bekannt.
                                 WAITLOOP(false);
                                 RECT_RP0_C0(85,120,425,200);
                                 REFRESHDISPLAY();
@@ -590,18 +577,23 @@ void MAKELOADWINDOW()
 
     if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
     {
-        MAKEWINBORDER(MyRPort_PTR[0],112,228,212,258,12,6,1);
-        MAKEWINBORDER(MyRPort_PTR[0],227,228,327,258,12,6,1);
-        MAKEWINBORDER(MyRPort_PTR[0],342,228,442,258,12,6,1);
+        xpos = 112;
+        for(i = 0; i < 3; ++i)
+        {
+            MAKEWINBORDER(MyRPort_PTR[0], xpos, 228, xpos+100, 258, 12, 6, 1);
+            xpos += 115;
+        }
     } else
     {
         if (0 == PLANET_MyPlanetHeader->Population)
         {
-            MAKEWINBORDER(MyRPort_PTR[0],112,228,212,258,12,6,1);
+            xpos = 112;
         } else  // if (0 < PLANET_MyPlanetHeader->Population) .... implicit .. Population is uint .. >=0 !
         {
-            MAKEWINBORDER(MyRPort_PTR[0],227,228,327,258,12,6,1);
+            xpos = 227;
         }
+        MAKEWINBORDER(MyRPort_PTR[0],xpos,228,xpos+100,258,12,6,1);
+
         if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
         || ((ActPProjects->data[PROJECT_SDI] == 0) && (ActPProjects->data[PROJECT_SPACEPHALANX] == 0))
         || (PLANET_MyPlanetHeader->ProjectPtr == NULL)) && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
@@ -610,9 +602,9 @@ void MAKELOADWINDOW()
         }
     }
 
-    WRITE_RP0(133,203,ActPlayerFlag,0,3,PText[456]);
-    WRITE_RP0(232,203,ActPlayerFlag,0,3,PText[457]);
-    WRITE_RP0(363,203,ActPlayerFlag,0,3,PText[458]);
+    WRITE_RP0(133,203,ActPlayerFlag,JAM1,3,PText[456]);
+    WRITE_RP0(232,203,ActPlayerFlag,JAM1,3,PText[457]);
+    WRITE_RP0(363,203,ActPlayerFlag,JAM1,3,PText[458]);
 }
 
 void WRITELOADDATA(int LTOut)
@@ -626,30 +618,30 @@ void WRITELOADDATA(int LTOut)
     _s = dez2out(((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16), 2, s);
     *_s++ = ' ';
     (void) dez2out(ShipData(PLANET_MyShipPtr->SType).MaxLoad, 2, _s);
-    WRITE_RP0(128,171,8,1,1,s);
+    WRITE_RP0(128,171,8,JAM2,1,s);
 
     _s = dez2out((PLANET_MyShipPtr->Ladung & MASK_LTRUPPS), 2, s);
     *_s++ = ' ';
     (void) dez2out(ShipData(PLANET_MyShipPtr->SType).MaxLoad, 2, _s);
-    WRITE_RP0(243,171,8,1,1,s);
+    WRITE_RP0(243,171,8,JAM2,1,s);
 
     _s = dez2out(it_round((double) PLANET_MyShipPtr->Fracht/ShipData(PLANET_MyShipPtr->SType).MaxLoad*100.0), 3, s);
     *_s++ = '%'; *_s = 0;
-    WRITE_RP0(364,171,8,1,1,s);
+    WRITE_RP0(364,171,8,JAM2,1,s);
 
     if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (0 == PLANET_MyPlanetHeader->Population))
     {
         (void) dez2out(ActPProjects->data[PROJECT_SETTLERS], 3, s);
-        WRITE_RP0(141,236,8,1,1,s);
+        WRITE_RP0(141,236,8,JAM2,1,s);
     }
     if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
     {
         (void) dez2out(ActPProjects->data[PROJECT_LANDINGTROOPS], 3, s);
-        WRITE_RP0(256,236,8,1,1,s);
+        WRITE_RP0(256,236,8,JAM2,1,s);
     } else if (0 < PLANET_MyPlanetHeader->Population)
     {
         (void) dez2out(LTOut, 3, s);
-        WRITE_RP0(256,236,8,1,1,s);
+        WRITE_RP0(256,236,8,JAM2,1,s);
     }
 
     if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
@@ -661,7 +653,7 @@ void WRITELOADDATA(int LTOut)
         Humidity = (PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size);
         _s = dez2out(Humidity, 3, s);
         *_s++ = '%'; *_s = 0;
-        WRITE_RP0(353,236,8,1,1,s);
+        WRITE_RP0(353,236,8,JAM2,1,s);
         _s = s;
         Class = CLASS_STONES;
         if (80 < Humidity)
@@ -688,7 +680,7 @@ void WRITELOADDATA(int LTOut)
             Class = CLASS_DESERT;
         }
         *_s = 0;
-        WRITE_RP0(419,235,ActPlayerFlag,1,3,s);
+        WRITE_RP0(419,235,ActPlayerFlag,JAM2,3,s);
         BltBitMapRastPort((struct BitMap*) &ImgBitMap7,Class*32,0,MyRPort_PTR[0],59,227,32,32,192);
     }
 }
@@ -985,9 +977,9 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                                 {
                                                     Delay(7);
                                                     PLANET_MyPlanetHeader->Water += 5;
-                                                    if (100 < PLANET_MyPlanetHeader->Water)
+                                                    if ((100*PLANET_MyPlanetHeader->Size) < PLANET_MyPlanetHeader->Water)
                                                     {
-                                                        PLANET_MyPlanetHeader->Water = 100;
+                                                        PLANET_MyPlanetHeader->Water = 100*PLANET_MyPlanetHeader->Size;
                                                     }
                                                     --FIn;
                                                     --(PLANET_MyShipPtr->Fracht);

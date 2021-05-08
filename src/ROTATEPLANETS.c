@@ -18,13 +18,14 @@ void ROTATEPLANETS(uint8 ActSys)
     ByteArr42*  ActPProjects;
     sint16      FromX, FromY;
     double      sin_rot, cos_rot, d;
-    uint8       CivVar,PCreativity,PProd,btx,XState,Fight;
+    uint8       CivVar,btx,XState,Fight;
+    int         PProd, PCreativity;
     char        s[99];
     char*       _s;
-    sint8       NewTech[7];
+    sint8       NewTech[6];
     time_t      t;
-    uint8       NewPNames;
-    uint8       i, j, k;
+    int         NewPNames;
+    int         i, j, k;
     int         ProjID;
     struct Window*   ROT_Window;
     struct Window*   ROT_Window2;
@@ -597,12 +598,12 @@ void ROTATEPLANETS(uint8 ActSys)
                                     btx = 1;
                                     XState = 0;
                                     Fight = 0;
-                                    for(k = 1; k <= 6; k++)
+                                    for(k = 0; k < 6; ++k)
                                     {
                                         if ((Save.Military[ActPlayer-1] & btx) == btx)
                                         {
-                                            XState = XState+i+1;
-                                            Fight = Fight+8;
+                                            XState += i+1;
+                                            Fight += 8;
                                         }
                                         btx = btx*2;
                                     }
@@ -1153,33 +1154,30 @@ void ROTATEPLANETS(uint8 ActSys)
             } else if ((Save.ActTech[ActPlayer-1] == 0) || (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] <= 0))
             {
                 Save.ActTech[ActPlayer-1] = 0;
-                for(j = 1; j <= 6; j++)
+                for(j = 0; j < 6; ++j)
                 {
                     NewTech[j] = 0;
                 }
-                j = 1;
-                i = 1;
+                j = 0;
+                i = 0;
                 do
                 {
-                    if (Save.TechCosts[ActPlayer-1].data[i]>0)
+                    ++i;
+                    if (0 < Save.TechCosts[ActPlayer-1].data[i])
                     {
-                        if (TechUse1[i] == 0)
+                        if ( (0 == TechUse1[i])
+                             || (   (0 >= Save.TechCosts[ActPlayer-1].data[TechUse1[i]])
+                                 && (0 >= Save.TechCosts[ActPlayer-1].data[TechUse2[i]])) )
                         {
-                            NewTech[j] = i;
-                            j++;
-                        } else if ((Save.TechCosts[ActPlayer-1].data[TechUse1[i]] <= 0)
-                                && (Save.TechCosts[ActPlayer-1].data[TechUse2[i]] <= 0))
-                        {
-                            NewTech[j] = i;
-                            j++;
+                            NewTech[j++] = i;
                         }
                     }
-                    i++;
                 }
-                while ((i<=42) && (j<=6));
-                if (0 != NewTech[1])
+                while ((42 > i) && (6 > j));
+
+                if (0 < j)
                 {
-                    if ((42 == NewTech[1]) && (0 < Save.ProjectCosts[ActPlayer-1].data[6]))
+                    if ((42 == NewTech[0]) && (0 < Save.ProjectCosts[ActPlayer-1].data[6]))
                     {
                         if (0 == (Year % 13))
                         {
@@ -1200,46 +1198,46 @@ void ROTATEPLANETS(uint8 ActSys)
                     MAKEWINBORDER(RPort_PTR,0,0,308,167,12,6,1);
 
                     WRITE(154, 10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[593]); // Was soll entwickelt werden?
-                    for(j = 1; j <= 6; j++)
+                    for(j = 0; j < 6; ++j)
                     {
-                        if (NewTech[j]>0)
+                        if (0 < NewTech[j])
                         {
-                            WRITE(10,j*20+20,12,0,RPort_PTR,3,TechnologyL.data[NewTech[j]]);
+                            WRITE(10,j*20+40,12,0,RPort_PTR,3,TechnologyL.data[NewTech[j]]);
                         }
                     }
-                    i = 0;
+                    i = 255;
                     do
                     {
                         Delay(RDELAY);
-                        j = (ROT_Window->MouseY-20) / 20;
-                        if ((i != j) && (j>=1) && (j<=6))
+                        j = (int) ((ROT_Window->MouseY-40) / 20);
+                        if ((i != j) && (0 <= j) && (6 > j))
                         {
                             i = j;
-                            for(j = 1; j <= 6; j++)
+                            for(j = 0; j < 6; ++j)
                             {
-                                if (NewTech[j]>0)
+                                if (0 < NewTech[j])
                                 {
-                                    WRITE(10,j*20+20,12,0,RPort_PTR,3,TechnologyL.data[NewTech[j]]);
+                                    WRITE(10,j*20+40,12,0,RPort_PTR,3,TechnologyL.data[NewTech[j]]);
                                 }
                             }
-                            if (NewTech[i]>0)
+                            if (0 < NewTech[i])
                             {
-                                WRITE(10,i*20+20,ActPlayerFlag,0,RPort_PTR,3,TechnologyL.data[NewTech[i]]);
+                                WRITE(10,i*20+40,ActPlayerFlag,0,RPort_PTR,3,TechnologyL.data[NewTech[i]]);
                             }
                         }
                         if (LMB_PRESSED)
                         {
                             PLAYSOUND(0,300);
-                            if (i>0)
+                            if (6 > i)
                             {
-                                if (NewTech[i]>0)
+                                if (0 < NewTech[i])
                                 {
                                     Save.ActTech[ActPlayer-1] = NewTech[i];
                                 }
                             }
                         }
                     }
-                    while (Save.ActTech[ActPlayer-1]<=0);
+                    while (0 >= Save.ActTech[ActPlayer-1]);
                     CloseWindow(ROT_Window);
                 }
             }
@@ -1635,8 +1633,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         SystemHeader[j].vNS = 0;
                         Save.CivPlayer[ActPlayer] = 0;
                         (void) my_strcpy(PlanetHeader->PName, PNames[0].data[NewPNames]);
-                        NewPNames++;
-                        if (NewPNames >= MAXPLANETS) { NewPNames = 0; }
+                        NewPNames = (NewPNames+1) % MAXPLANETS;
 
                         PlanetHeader->PFlags = ActPlayerFlag;
                         PlanetHeader->Ethno = PlanetHeader->PFlags;

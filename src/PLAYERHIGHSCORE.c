@@ -7,7 +7,7 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
 {
     char    s[50];
     BPTR    FHandle;
-    uint8   i;
+    int     i;
     uint32  ex_Points;
     uint8   ex_CivVar;
 

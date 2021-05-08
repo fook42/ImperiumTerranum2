@@ -5,9 +5,7 @@
 
 void REGIERUNG()
 {
-    uint8   i;
-    uint16  ypos;
-    int     PTextIndex;
+    int     i, ypos, PTextIndex;
 
     struct Window* REG_Window;
     struct RastPort* RPort_PTR;
@@ -54,7 +52,7 @@ void REGIERUNG()
                         REG_Window = NULL;
                         (*functions[i])();
 
-                        i = 99;
+                        break;
                     }
                     ypos += 22;
                 }
