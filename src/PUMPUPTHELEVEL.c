@@ -10,7 +10,7 @@ void PUMPUPTHELEVEL()
 
     do
     {
-        switch (rand()%5) {
+        switch (4) {
             case 0: if ((Save.WorldFlag==0) || (Save.WorldFlag==WFLAG_CEBORC))
                     {
                         CEBORCATTACK(ActPlayerFlag);
