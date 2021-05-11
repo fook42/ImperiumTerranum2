@@ -5,8 +5,10 @@
 
 void REGIERUNG()
 {
-    int     i, ypos, PTextIndex;
-
+    int     i, ypos;
+    int     button_Textcol, button_Textstyle;
+    const char* Button_Texts[] = {PText[746], PText[747], PText[748],
+                                  PText[749], PText[750], PText[751], PText[752]};
     struct Window* REG_Window;
     struct RastPort* RPort_PTR;
     void (*functions[])() = { MILITAER,
@@ -26,12 +28,13 @@ void REGIERUNG()
     MAKEWINBORDER(RPort_PTR,0,0,122,157,12,6,1);
 
     ypos = 3;
-    PTextIndex=746;
-    for (i = 0; i<7; ++i)
+    button_Textcol = 0;
+    button_Textstyle = WRITE_Center;
+    for(i = 0; i < 7; ++i)
     {
-        DrawImage(RPort_PTR,&GadImg1,4,ypos);
-        WRITE( 61,2+ypos,((i<6)?0:8),WRITE_Center,RPort_PTR,3,PText[PTextIndex]);
-        ++PTextIndex;
+        DrawImage(RPort_PTR,&GadImg1, 4, ypos);
+        if (6 == i) { button_Textcol = 8; button_Textstyle |= WRITE_Shadow; }
+        WRITE(61, ypos+2, button_Textcol, button_Textstyle, RPort_PTR, 3, Button_Texts[i]);
         ypos += 22;
     }
 

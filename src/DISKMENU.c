@@ -459,9 +459,9 @@ bool DISKMENU(uint8 Autoselect)
     button_Textstyle = WRITE_Center;
     for(i = 0; i < 6; ++i)
     {
-        DrawImage(RPort_PTR,&GadImg1,4, ypos);
+        DrawImage(RPort_PTR,&GadImg1, 4, ypos);
         if (5 == i) { button_Textcol = 8; button_Textstyle |= WRITE_Shadow; }
-        WRITE(61, ypos+2, button_Textcol, WRITE_Center, RPort_PTR, 3, Button_Texts[i]);
+        WRITE(61, ypos+2, button_Textcol, button_Textstyle, RPort_PTR, 3, Button_Texts[i]);
         ypos += 22;
     }
 

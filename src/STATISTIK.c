@@ -13,6 +13,12 @@ void STATISTIK()
     char*   _s;
     int     i, j, posy;
 
+    char*   StimmungTexts[] = {PText[712],PText[713],PText[714],PText[715],PText[716],
+                               PText[717],PText[718],PText[719],PText[720],PText[711]};
+
+    char*   EntwicklungTexts[] = {PText[723],PText[724],PText[725],PText[726],PText[727],
+                                  PText[728],PText[729],PText[730],PText[731],PText[732]};
+
     struct Window* STA_Window;
     struct RastPort* RPort_PTR;
     STA_Window = MAKEWINDOW(10,30,491,361,MyScreen[0]);
@@ -124,32 +130,12 @@ void STATISTIK()
         *_s  =0;
         WRITE(375,230,8,WRITE_Right|JAM1,RPort_PTR,1,s);
 
-        switch (it_round(l/31.0))
-        {
-            case 0:  _s = PText[712]; break;
-            case 1:  _s = PText[713]; break;
-            case 2:  _s = PText[714]; break;
-            case 3:  _s = PText[715]; break;
-            case 4:  _s = PText[716]; break;
-            case 5:  _s = PText[717]; break;
-            case 6:  _s = PText[718]; break;
-            case 7:  _s = PText[719]; break;
-            case 8:  _s = PText[720]; break;
-            default: _s = PText[711];
-        }
+        _s = StimmungTexts[it_round(l/31.0)];
         WRITE(270,250,ActPlayerFlag,JAM1,RPort_PTR,3, _s);
 
-        l = (uint32) (l / 3.0);
-        if      (l<10) { _s = PText[723]; }
-        else if (l<20) { _s = PText[724]; }
-        else if (l<30) { _s = PText[725]; }
-        else if (l<40) { _s = PText[726]; }
-        else if (l<50) { _s = PText[727]; }
-        else if (l<60) { _s = PText[728]; }
-        else if (l<70) { _s = PText[729]; }
-        else if (l<80) { _s = PText[730]; }
-        else if (l<90) { _s = PText[731]; }
-        else           { _s = PText[732]; }
+        l = (uint32) (l / 30.0);
+        if (9 < l) { l = 9; }
+        _s = EntwicklungTexts[l];
         WRITE(250,180,12,JAM1,RPort_PTR,3, _s);
     }
 
