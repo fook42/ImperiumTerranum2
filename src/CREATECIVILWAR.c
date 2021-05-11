@@ -14,20 +14,22 @@ void CREATECIVILWAR(int CivVar)
     APTR    ModC = NULL;
 
     CivFlag = GETCIVFLAG(CivVar);
-    if ((0 != Save.WorldFlag) && (Save.WorldFlag != CivFlag))
-    { return; }
+
+    if ((0 != Save.WorldFlag) && (CivFlag != Save.WorldFlag)) { return; }
+
     if  (0 == Save.WorldFlag)
     {
-        _s=my_strcpy(s, PText[385]);
-        *_s++ = ' ';
-        _s=my_strcpy(_s, GETCIVNAME(CivVar));
-        *_s++ = ' ';
-        (void) my_strcpy(_s, PText[386]);
         --CivVar; // to shift the arrays ...
         if (0 != Save.CivPlayer[CivVar])
         {
+            _s=my_strcpy(s, PText[385]);        // das Militär der ..
+            *_s++ = ' ';
+            _s=my_strcpy(_s, GETCIVNAME(CivVar+1));
+            *_s++ = ' ';
+            (void) my_strcpy(_s, PText[386]);   // putscht und ..
+
             ModC = GETTHESOUND(1);
-            REQUEST(s,PText[387],CivFlag,CivFlag);
+            REQUEST(s,PText[387],CivFlag,CivFlag);  // spaltet das Imperium...
         }
         for(i = 0; i < (MAXCIVS-1); ++i)
         {
@@ -45,15 +47,19 @@ void CREATECIVILWAR(int CivVar)
         }
         ++CivVar; // to shift the arrays ...
     }
-    Save.WorldFlag = (uint8) CivFlag;
+    Save.WorldFlag = CivFlag;
     Save.CivilWar = (uint8) CivVar;
     SETWORLDCOLORS();
     for(i = 0; i < Save.Systems; ++i)
     {
+        if (0 == SystemHeader[i].Planets) { continue; }
+
         for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-            if ((GETCIVVAR(MyPlanetHeader->PFlags) == CivVar) && ((rand()%100) >= 50))
+            if (NULL == MyPlanetHeader) { continue; }
+
+            if ((GETCIVVAR(MyPlanetHeader->PFlags) == CivVar) && (49 < (rand()%100)))
             {
                 MyPlanetHeader->PFlags = FLAG_OTHER;
                 Save.Bevoelkerung[7] += MyPlanetHeader->Population;
@@ -72,7 +78,8 @@ void CREATECIVILWAR(int CivVar)
         StopPlayer();
         UnLoadModule(ModC);
     }
-    if ((Save.WarPower[7]*4) < Save.WarPower[CivVar-1])
+
+    if ((0 < Save.WarPower[7]) && ((Save.WarPower[7]*4) < Save.WarPower[CivVar-1]))
     {
         CREATECIVILWAR(CivVar);
     }
