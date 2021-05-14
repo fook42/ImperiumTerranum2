@@ -45,10 +45,9 @@ void DISPLAYSTATE()
     punkte += Save.ImperatorState[ActPlayer];
     if (0 < Year)
     {
-        (void) dez2out(punkte-Year, 0, s);
-    } else {
-        (void) dez2out(punkte, 0, s);
+        punkte -= Year;
     }
+    (void) dez2out(punkte, 0, s);
     WRITE_RP1(540,240,2,WRITE_Right,1,s);
 
     WRITE_RP1(540,270,2,WRITE_Right,1,Txt_Sep);
