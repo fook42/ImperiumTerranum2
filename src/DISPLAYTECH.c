@@ -31,7 +31,7 @@ void DISPLAYTECH(const int TechID)
 {
     char    s[50];
     char*   _s;
-    int     Depth, CivVar, Offset=0;
+    int     Depth, CivVar, Offset=0, textid=0;
     uint16  l;
     APTR    ModC = NULL;
 
@@ -43,9 +43,11 @@ void DISPLAYTECH(const int TechID)
     ModC = GETTHESOUND(0);
     SetRast(MyRPort_PTR[1], 0); // clear the screen
 
-    if      ((TechID>= 1) && (TechID<=18)) { _s=my_strcpy(s, PathStr[1]); }
-    else if ((TechID>=19) && (TechID<=38)) { _s=my_strcpy(s, PathStr[2]); }
-    else if ((TechID>=39) && (TechID<=42)) { _s=my_strcpy(s, PathStr[3]); }
+    if      ((0  < TechID) && (19 > TechID)) { textid = 1; }
+    else if ((18 < TechID) && (39 > TechID)) { textid = 2; }
+    else if ((38 < TechID) && (43 > TechID)) { textid = 3; }
+
+    _s = my_strcpy(s, PathStr[textid]);
 
     if (34 == TechID)
     {
@@ -65,7 +67,7 @@ void DISPLAYTECH(const int TechID)
 
     WRITE_RP1(340,50,1,0,2,PText[223]);
     WRITE_RP1(340,70,1,0,3,TechnologyL.data[TechID]);
-    if (TechUse1[TechID]>0)
+    if (0 < TechUse1[TechID])
     {
         WRITE_RP1(340,110,1,0,3,PText[224]);
         WRITE_RP1(370,130,1,0,3,TechnologyL.data[TechUse1[TechID]]);
@@ -83,8 +85,8 @@ void DISPLAYTECH(const int TechID)
             if (TechUse1[CivVar] == TechID) { l      = CivVar; }
             if (TechUse2[CivVar] == TechID) { Offset = CivVar; }
         }
-        if (l>0) { WRITE_RP1(370,210,1,0,3,TechnologyL.data[l]); }
-        if ((l != Offset) && (Offset>=1) && (Offset<=42))
+        if (0 < l) { WRITE_RP1(370,210,1,0,3,TechnologyL.data[l]); }
+        if ((l != Offset) && (0 < Offset) && (43 > Offset))
         {
             WRITE_RP1(370,230,1,0,3,TechnologyL.data[Offset]);
         }
@@ -94,9 +96,11 @@ void DISPLAYTECH(const int TechID)
     {
         if (ProjectNeedsTech[CivVar] == TechID)
         {
-            if       (CivVar < 8)                   { _s=my_strcpy(s, PText[226]); }
-            else if ((CivVar > 7) && (CivVar < 25)) { _s=my_strcpy(s, PText[227]); }
-            else                                    { _s=my_strcpy(s, PText[228]); }
+            textid = 228;
+            if       (8 > CivVar)                   { textid = 226; }
+            else if ((7 < CivVar) && (25 > CivVar)) { textid = 227; }
+            _s=my_strcpy(s, PText[textid]);
+
             *_s++ = ' ';
             *_s++ = ' ';
             (void) my_strcpy(_s, Project.data[CivVar]);
