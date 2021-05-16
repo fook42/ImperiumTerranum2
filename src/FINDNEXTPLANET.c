@@ -12,6 +12,7 @@ uint8 FINDNEXTPLANET(uint8 ActSys, r_ShipHeader* ShipPtr)
     uint8   k;
     uint32  DistOld,DistNew,WPerc,WPercLow;
 
+
     if (FINDMAQUESSHIP(ActSys-1,ShipPtr)) { return ActSys; }
     MyShipPtr = ShipPtr;
     CivVar = GETCIVVAR(MyShipPtr->Owner);
@@ -32,36 +33,24 @@ uint8 FINDNEXTPLANET(uint8 ActSys, r_ShipHeader* ShipPtr)
 
         if (
            (((MyShipPtr->Ladung & MASK_SIEDLER )> 0) &&
-            ((MyPlanetHeader->Class == CLASS_DESERT)    ||
-             (MyPlanetHeader->Class == CLASS_HALFEARTH) ||
-             (MyPlanetHeader->Class == CLASS_EARTH)     ||
-             (MyPlanetHeader->Class == CLASS_ICE)       ||
-             (MyPlanetHeader->Class == CLASS_STONES)    ||
-             (MyPlanetHeader->Class == CLASS_WATER)
-            ) &&
+            (0 != ClassLifeFactor[MyPlanetHeader->Class]) &&
             (MyPlanetHeader->PFlags == 0) &&
             (OtherShipPtr == NULL)
            )
 
-         || ((MyShipPtr->Ladung == 0) &&
-             (MyShipPtr->Fracht == 0) &&
-             (WPercLow>56) &&
-             (MyPlanetHeader->Class != CLASS_STONES) &&
-             (MyPlanetHeader->Class != CLASS_GAS) &&
-             (MyPlanetHeader->Class != CLASS_SATURN) &&
-             (MyPlanetHeader->Class != CLASS_PHANTOM) &&
+         || ((0 == MyShipPtr->Ladung) &&
+             (0 == MyShipPtr->Fracht) &&
+             (56 < WPercLow) &&
+             (0 != ClassTransFactor[MyPlanetHeader->Class]) &&
              (((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == CivFlag) ||
               ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0) ||
               (Save.WarState[CivVar-1][GETCIVVAR(MyPlanetHeader->PFlags)-1] == LEVEL_WAR)
              )
             )
 
-         || ((MyShipPtr->Fracht>0) &&
-             (WPerc<55) &&
-             (MyPlanetHeader->Class!=CLASS_STONES) &&
-             (MyPlanetHeader->Class!=CLASS_GAS) &&
-             (MyPlanetHeader->Class!=CLASS_SATURN) &&
-             (MyPlanetHeader->Class!=CLASS_PHANTOM) &&
+         || ((0 < MyShipPtr->Fracht) &&
+             (55 > WPerc) &&
+             (0 != ClassTransFactor[MyPlanetHeader->Class]) &&
              ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == CivFlag)
             )
            )

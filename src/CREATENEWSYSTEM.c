@@ -4,6 +4,8 @@
 #include "IT2_Functions.h"
 
 const char* const Romanum[] = {" I"," II"," III"," IV"," V"," VI"," VII"," VIII"," IX"," X"," XI"};
+const uint8 ClassWaterFactor[] = {42, 0, 92, 0, 38, 13, 73, 0, 85};
+//                                St, G,  W,Sa, HE, De,  E, P,  I
 
 // create a new starsystem (ActSys) with >= "minHomePlanets" planets
 void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanets)
@@ -33,25 +35,13 @@ void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanet
         MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
 
         MyPlanetHeader->Class = rand()%CLASS_MAX_TYPES;
-        if ( (CLASS_DESERT == MyPlanetHeader->Class) || (CLASS_HALFEARTH == MyPlanetHeader->Class)
-          || (CLASS_EARTH  == MyPlanetHeader->Class) || (CLASS_ICE       == MyPlanetHeader->Class)
-          || (CLASS_STONES == MyPlanetHeader->Class) || (CLASS_WATER     == MyPlanetHeader->Class))
-        {
-            ++life_possible;
-        }
+
+        life_possible += ClassLifeFactor[MyPlanetHeader->Class];
+
         MyPlanetHeader->Size = (rand()%206)+1;
 
         // each class has its specific water-ammount
-        switch (MyPlanetHeader->Class)
-        {
-            case CLASS_DESERT:    MyPlanetHeader->Water = MyPlanetHeader->Size*13; break;
-            case CLASS_HALFEARTH: MyPlanetHeader->Water = MyPlanetHeader->Size*38; break;
-            case CLASS_EARTH:     MyPlanetHeader->Water = MyPlanetHeader->Size*73; break;
-            case CLASS_ICE:       MyPlanetHeader->Water = MyPlanetHeader->Size*85; break;
-            case CLASS_STONES:    MyPlanetHeader->Water = MyPlanetHeader->Size*42; break;
-            case CLASS_WATER:     MyPlanetHeader->Water = MyPlanetHeader->Size*92; break;
-            default:              MyPlanetHeader->Water = 0;
-        }
+        MyPlanetHeader->Water = MyPlanetHeader->Size * ClassWaterFactor[MyPlanetHeader->Class];
         MyPlanetHeader->PFlags = 0;
 
         // generate the name by using the systemname + romanum-number (I, II, III...etc)
@@ -79,9 +69,7 @@ void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanet
     while (minHomePlanets > life_possible)
     {
         MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[rand()%SystemHeader[ActSys].Planets]);
-        if (   (CLASS_GAS     == MyPlanetHeader->Class)
-            || (CLASS_SATURN  == MyPlanetHeader->Class)
-            || (CLASS_PHANTOM == MyPlanetHeader->Class))
+        if (0 == ClassLifeFactor[MyPlanetHeader->Class])
         {
             MyPlanetHeader->Class = CLASS_EARTH;
             MyPlanetHeader->Water = MyPlanetHeader->Size*60;

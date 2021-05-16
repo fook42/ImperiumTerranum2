@@ -29,7 +29,8 @@ _EXTERN_ struct TextAttr CustomTA[FONTS];
 _EXTERN_ struct Image    GadImg1, GadImg2;
 //missing PText : "Player"
 _EXTERN_ char _PTx_Player[];
-
+_EXTERN_ const uint8 ClassLifeFactor[];
+_EXTERN_ const uint8 ClassTransFactor[];
 #else
 struct CIA *ciaa = (struct CIA *) 0xBFE001;
 
@@ -53,6 +54,9 @@ struct TextAttr CustomTA[FONTS]={{(STRPTR) _Txt_FontName,11,0,0}, \
 struct Image    GadImg1 = { 0, 0, 116, 20, 7, NULL , 127, 0, NULL};
 struct Image    GadImg2 = { 0, 0, 116, 20, 7, NULL , 127, 0, NULL};
 char _PTx_Player[] = "Player\0";
+const uint8 ClassLifeFactor[]  = { 1, 0,  1, 0,  1,  1,  1, 0,  1};
+const uint8 ClassTransFactor[] = { 0, 0,  1, 0,  1,  1,  1, 0,  1};
+//                                St, G,  W,Sa, HE, De,  E, P,  I
 #endif
 
 _EXTERN_  struct Library *MEDPlayerBase;

@@ -14,9 +14,7 @@ void FUCKSYSTEM(uint8 ActSys)
     {
         MyPlanetHeader = &(SystemHeader[ActSys-1].PlanetMemA[i]);
 
-        if ((CLASS_GAS     != MyPlanetHeader->Class)
-         && (CLASS_SATURN  != MyPlanetHeader->Class)
-         && (CLASS_PHANTOM != MyPlanetHeader->Class))
+        if (0 != ClassLifeFactor[MyPlanetHeader->Class])
         {
             if (NULL != MyPlanetHeader->ProjectPtr)
             {

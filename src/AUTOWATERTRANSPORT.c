@@ -7,10 +7,7 @@ bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr,
 {
     bool return_value = false;
 
-    if ((CLASS_STONES  != MyPlanetHeader->Class)
-     && (CLASS_GAS     != MyPlanetHeader->Class)
-     && (CLASS_SATURN  != MyPlanetHeader->Class)
-     && (CLASS_PHANTOM != MyPlanetHeader->Class))
+    if (0 != ClassTransFactor[MyPlanetHeader->Class])
     {
         if (0 == MyShipPtr->Fracht)
         {

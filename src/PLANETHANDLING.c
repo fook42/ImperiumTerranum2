@@ -749,9 +749,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
     // fleetships can not "(un)load","attack" or "deploy" something on a planet..
     if (SHIPTYPE_FLEET != PLANET_MyShipPtr->SType)
     {
-        if (((PLANET_MyPlanetHeader->Class==CLASS_DESERT) || (PLANET_MyPlanetHeader->Class==CLASS_HALFEARTH)
-          || (PLANET_MyPlanetHeader->Class==CLASS_EARTH)  || (PLANET_MyPlanetHeader->Class==CLASS_ICE)
-          || (PLANET_MyPlanetHeader->Class==CLASS_STONES) || (PLANET_MyPlanetHeader->Class==CLASS_WATER))
+        if ((0 != ClassLifeFactor[PLANET_MyPlanetHeader->Class])
          && ( (((0 == ShipsInOrbit) || (ActPlayerFlag == ShipsInOrbit))
              && (0 == ActPProjects->data[PROJECT_SDI])
              && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
@@ -759,9 +757,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
         {
             GadSet[GadCnt++] = GADGET_LADEN;
         }
-        if (((PLANET_MyPlanetHeader->Class==CLASS_DESERT) || (PLANET_MyPlanetHeader->Class==CLASS_HALFEARTH)
-          || (PLANET_MyPlanetHeader->Class==CLASS_EARTH)  || (PLANET_MyPlanetHeader->Class==CLASS_ICE)
-          || (PLANET_MyPlanetHeader->Class==CLASS_STONES) || (PLANET_MyPlanetHeader->Class==CLASS_WATER))
+        if ((0 != ClassLifeFactor[PLANET_MyPlanetHeader->Class])
           && ((NULL == PLANET_MyPlanetHeader->ProjectPtr) || (0 != PlanetOwner)
              || (0 != ActPProjects->data[PROJECT_SDI])
              || (0 != ActPProjects->data[PROJECT_SPACEPHALANX]))

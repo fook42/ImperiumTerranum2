@@ -66,16 +66,17 @@ enum Civilization { CIVVAR_NONE  = 0,
 #define SHIPTYPE_FLEET  200
 #define SHIPTYPE_STARGATE   21
 
-#define CLASS_STONES    0   /*T*/
-#define CLASS_GAS       1   /*G*/
-#define CLASS_WATER     2   /*W*/
-#define CLASS_SATURN    3   /*S*/
-#define CLASS_HALFEARTH 4   /*H*/
-#define CLASS_DESERT    5   /*D*/
-#define CLASS_EARTH     6   /*M*/
-#define CLASS_PHANTOM   7   /*P*/
-#define CLASS_ICE       8   /*I*/
-#define CLASS_MAX_TYPES 9
+enum {  CLASS_STONES = 0,
+        CLASS_GAS,
+        CLASS_WATER,
+        CLASS_SATURN,
+        CLASS_HALFEARTH,
+        CLASS_DESERT,
+        CLASS_EARTH,
+        CLASS_PHANTOM,
+        CLASS_ICE,
+        CLASS_MAX_TYPES
+};
 
 #define WEAPON_GUN       1
 #define WEAPON_LASER     3

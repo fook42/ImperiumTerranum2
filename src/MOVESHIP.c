@@ -208,12 +208,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                             } else if (0 == (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
                                             {
                                                 if (((MyShipPtr->Ladung & MASK_SIEDLER)>0)
-                                                    && ((MyPlanetHeader->Class==CLASS_DESERT)
-                                                        || (MyPlanetHeader->Class==CLASS_HALFEARTH)
-                                                        || (MyPlanetHeader->Class==CLASS_EARTH)
-                                                        || (MyPlanetHeader->Class==CLASS_ICE)
-                                                        || (MyPlanetHeader->Class==CLASS_STONES)
-                                                        || (MyPlanetHeader->Class==CLASS_WATER)))
+                                                    && (0 != ClassLifeFactor[MyPlanetHeader->Class]))
                                                 {
                                                     /**** Planet unbewohnt ****/
                                                     if (NULL != MyPlanetHeader->ProjectPtr)

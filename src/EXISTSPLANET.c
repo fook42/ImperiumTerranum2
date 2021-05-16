@@ -15,10 +15,7 @@ bool EXISTSPLANET(int CivVar, int ActSys, int Mode)
 
         if ((((1 == Mode) && (56 < (MyPlanetHeader->Water / MyPlanetHeader->Size)))
           || ((2 == Mode) && (55 > (MyPlanetHeader->Water / MyPlanetHeader->Size))))
-         && (CLASS_STONES  != MyPlanetHeader->Class)
-         && (CLASS_GAS     != MyPlanetHeader->Class)
-         && (CLASS_SATURN  != MyPlanetHeader->Class)
-         && (CLASS_PHANTOM != MyPlanetHeader->Class))
+         && (0 != ClassTransFactor[MyPlanetHeader->Class]))
         {
             if ((CivFlag == (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
              || (0       == (MyPlanetHeader->PFlags & FLAG_CIV_MASK)))

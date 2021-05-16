@@ -26,9 +26,8 @@ uint8 GOTONEXTPLANET(uint8 ActSys, r_ShipHeader* MyShipPtr)
         {
             OtherShipPtr = OtherShipPtr->NextShip;
         }
-        if (((MyPlanetHeader->Class == CLASS_DESERT) || (MyPlanetHeader->Class == CLASS_HALFEARTH)
-           ||(MyPlanetHeader->Class == CLASS_EARTH ) || (MyPlanetHeader->Class == CLASS_ICE      )
-           ||(MyPlanetHeader->Class == CLASS_STONES) || (MyPlanetHeader->Class == CLASS_WATER    ))
+
+        if ((0 != ClassLifeFactor[MyPlanetHeader->Class])
           && (0 == MyPlanetHeader->PFlags) && (NULL == OtherShipPtr))
         {
             DistNew = it_round(abs(MyPlanetHeader->PosX - MyShipPtr->PosX));

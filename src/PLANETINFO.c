@@ -3,6 +3,9 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+const char ClassName[] = {'T','G','W','S','H','D','M','P','I'};
+//                         St, G , W , Sa, HE, De, E,  P , I
+
 void PLANETINFO(const int ActSys)
 {
 typedef struct SArr6 {
@@ -43,18 +46,7 @@ typedef struct SArr6 {
 
         _s=my_strcpy(s, _PT_Klasse);
         *_s++ = ' ';
-        switch (PlanetHeader->Class) {
-            case CLASS_DESERT    : *_s++ = 'D'; break;
-            case CLASS_HALFEARTH : *_s++ = 'H'; break;
-            case CLASS_EARTH     : *_s++ = 'M'; break;
-            case CLASS_SATURN    : *_s++ = 'S'; break;
-            case CLASS_GAS       : *_s++ = 'G'; break;
-            case CLASS_ICE       : *_s++ = 'I'; break;
-            case CLASS_PHANTOM   : *_s++ = 'P'; break;
-            case CLASS_STONES    : *_s++ = 'T'; break;
-            case CLASS_WATER     : *_s++ = 'W'; break;
-            default: *_s++ = '?';
-        }
+        *_s++ = ClassName[PlanetHeader->Class];
         *_s++ = '-';
         (void) my_strcpy(_s, _PT_Planet);
         WRITE(89,53,color,0,RPort_PTR,3,s);
@@ -136,16 +128,16 @@ typedef struct SArr6 {
 
         x = 0;
         y = 0;
-        l<<=5; // l*32
+        l = l*32;
         do
         {
             Delay(RDELAY);
             if (y<32)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x<<1)+12,(y<<1)+12,1,1,192);
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x<<1)+13,(y<<1)+12,1,1,192);
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x<<1)+12,(y<<1)+13,1,1,192);
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x<<1)+13,(y<<1)+13,1,1,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x*2)+12,(y*2)+12,1,1,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x*2)+13,(y*2)+12,1,1,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x*2)+12,(y*2)+13,1,1,192);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap7,l+x,y,RPort_PTR,(x*2)+13,(y*2)+13,1,1,192);
                 x++;
                 if (x>31)
                 {

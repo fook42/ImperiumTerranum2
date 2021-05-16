@@ -19,9 +19,7 @@ void INIT_HOMEPLANETS(uint8 Civ, uint8 HomeSystem, uint8 HomePlanet)
     {
         PlanetHeader = &(SystemHeader[HomeSystem].PlanetMemA[i]);
         if ((PlanetHeader->PFlags==FLAG_UNKNOWN) &&
-            (  (PlanetHeader->Class==CLASS_DESERT) || (PlanetHeader->Class==CLASS_HALFEARTH)
-             ||(PlanetHeader->Class==CLASS_EARTH)  || (PlanetHeader->Class==CLASS_WATER)
-             ||(PlanetHeader->Class==CLASS_STONES) || (PlanetHeader->Class==CLASS_ICE)))
+            (0 != ClassLifeFactor[PlanetHeader->Class]))
         {
             PlanetHeader->PFlags = GETCIVFLAG(Civ+1);
             PlanetHeader->Ethno  = PlanetHeader->PFlags;
