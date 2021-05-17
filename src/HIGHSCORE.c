@@ -55,11 +55,11 @@ void HIGHSCORE()
     INITSCREEN(SCREEN_HISCORE);
     WRITE_RP1(210,60,127,(WRITE_Center|WRITE_Shadow),4,"Imperium Terranum Highscores");
     (void) my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.dat");
-    FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+    FHandle = OPENSMOOTH(s,MODE_OLDFILE, NULL);
     if (0 == FHandle)
     {
         CREATEHIGHSCORE(s);
-        FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+        FHandle = OPENSMOOTH(s,MODE_OLDFILE, NULL);
     }
     if (0 != FHandle)
     {

@@ -95,12 +95,12 @@ _EXTERN_  uint8*        CacheMemA[CACHES];
 _EXTERN_  uint32        CacheMemL[CACHES];
 _EXTERN_  uint8*        LogoMemA[MAXCIVS-1];
 _EXTERN_  uint8*        LogoSMemA[MAXCIVS-1];
-_EXTERN_  uint32        LogoSMemL[MAXCIVS-1];
+_EXTERN_  LONG          LogoSMemL[MAXCIVS-1];
 _EXTERN_  UWORD*        ZeroSound;
 _EXTERN_  uint8*        IMemA[IMAGES];
 _EXTERN_  uint32        IMemL[IMAGES];
 _EXTERN_  uint8*        ModMemA[MODULES];
-_EXTERN_  uint32        ModMemL[MODULES];
+_EXTERN_  LONG          ModMemL[MODULES];
 _EXTERN_  char*         PathStr[PATHS];
 
 _EXTERN_  r_ShipData    ShipData[18]; // offset 8 -> range 0..17 = 8..25

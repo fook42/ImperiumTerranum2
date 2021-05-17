@@ -38,7 +38,7 @@ bool INITDESK(const int Mode)
         if (NULL == IMemA[1]) { return false; }
 
         (void) my_strcpy(_s, "DeskGads.img");
-        FHandle = OPENSMOOTH( s, MODE_OLDFILE);       /*Planets/Deskgads.img*/
+        FHandle = OPENSMOOTH( s, MODE_OLDFILE, NULL);       /*Planets/Deskgads.img*/
         if (0 == FHandle)
         {
             FreeMem( IMemA[1], IMemL[1] );

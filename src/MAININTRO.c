@@ -7,16 +7,15 @@
 
 void SETDARKCOLOR(char* FName, r_Col_t* Colors)
 {
-    uint32  AddrX, AddrEnd, ISize;
+    uint32  AddrX, AddrEnd;
+    LONG    ISize;
     uint8   i;
     uint32* ColorID;
     BPTR    FHandle;
 
-    FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(FName, MODE_OLDFILE, &ISize);
     if (0 != FHandle)
     {
-        (void)  Seek(FHandle, 0, OFFSET_END);
-        ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
         (void) Read(FHandle, (APTR) IMemA[0], ISize);
         Close(FHandle);
         AddrX = (uint32) IMemA[0];
@@ -94,20 +93,16 @@ void INTROEXIT(struct MMD0 *module, uint16** SMemA, uint32* SMemL)
 bool LOADSOUNDS(char* FNamePath, char* FName, uint16** SMemA, LONG* SMemL)
 {
     uint8   i;
-    LONG    ssize;
     BPTR    FHandle;
 
     (void) my_strcpy(FName, "Snd0.RAW");
     for (i = 0; i<3; ++i)
     {
         FName[3] = i+'1';
-        FHandle = OPENSMOOTH(FNamePath,MODE_OLDFILE);
+        FHandle = OPENSMOOTH(FNamePath, MODE_OLDFILE, &(SMemL[i]));
         if (0 != FHandle)
         {
-            (void)  Seek(FHandle, 0, OFFSET_END);
-            ssize = Seek(FHandle, 0, OFFSET_BEGINNING);
-            SMemL[i] = ssize;
-            SMemA[i] = (uint16*) AllocMem(ssize, MEMF_CHIP | MEMF_CLEAR);
+            SMemA[i] = (uint16*) AllocMem(SMemL[i], MEMF_CHIP | MEMF_CLEAR);
             if (NULL == SMemA[i]) { return false; }
             (void) Read(FHandle, (APTR) SMemA[i], SMemL[i]);
             Close(FHandle);

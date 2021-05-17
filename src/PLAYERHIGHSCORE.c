@@ -13,11 +13,11 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
 
     (void) my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.dat");
 
-    FHandle = OPENSMOOTH(s, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(s, MODE_OLDFILE, NULL);
     if (0 == FHandle)
     {
         CREATEHIGHSCORE(s);
-        FHandle = OPENSMOOTH(s, MODE_OLDFILE);
+        FHandle = OPENSMOOTH(s, MODE_OLDFILE, NULL);
     }
     if (0 != FHandle)
     {
@@ -25,7 +25,7 @@ void PLAYERHIGHSCORE(uint8 PHS_ActPlayer)
         Close(FHandle);
         if (HiScore.Points[7] < Save.ImperatorState[PHS_ActPlayer-1])
         {
-            FHandle = OPENSMOOTH(s, MODE_NEWFILE);
+            FHandle = OPENSMOOTH(s, MODE_NEWFILE, NULL);
             HiScore.Points[7] = Save.ImperatorState[PHS_ActPlayer-1];
             HiScore.CivVar[7] = PHS_ActPlayer;
             if ((!Save.PlayMySelf) && (Save.CivPlayer[PHS_ActPlayer-1] != 0))

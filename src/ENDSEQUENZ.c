@@ -49,7 +49,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     } else {
         (void) my_strcpy( _s, "MOD.DeadEnd" );
     }
-    FHandle = OPENSMOOTH(s, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(s, MODE_OLDFILE, NULL);
     if (0 != FHandle)
     {
         Close(FHandle);

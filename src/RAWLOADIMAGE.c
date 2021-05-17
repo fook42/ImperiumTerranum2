@@ -12,11 +12,9 @@ bool RAWLOADIMAGE(char* FName, const int LEdge, const int TEdge, const int Width
     bool            _RAWLOADIMAGE = false;
     struct BitMap   MyBitMap;
 
-    FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(FName, MODE_OLDFILE, &ISize);
     if (0 != FHandle)
     {
-        (void)  Seek(FHandle, 0, OFFSET_END);
-        ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
         if (0 < ISize)
         {
             (void) Read(FHandle, (IMemA[0]+IMemL[0]-ISize-250), ISize);

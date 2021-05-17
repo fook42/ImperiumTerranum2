@@ -5,14 +5,12 @@
 
 void LOADSOUND(char* FName, const int SoundID)
 {
-    int     Filesize;
+    LONG    Filesize;
     BPTR    FHandle;
 
-    FHandle = OPENSMOOTH( FName, MODE_OLDFILE );
+    FHandle = OPENSMOOTH( FName, MODE_OLDFILE, &Filesize);
     if (0 == FHandle) { return; }
 
-    (void) Seek(FHandle, 0, OFFSET_END);
-    Filesize = Seek(FHandle, 0, OFFSET_BEGINNING);
     SoundSize[SoundID] = (UWORD) (Filesize >> 1);
     SoundMemA[SoundID] = (UWORD*) AllocMem(Filesize, MEMF_CHIP);
     if (NULL == SoundMemA[SoundID])

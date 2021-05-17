@@ -34,16 +34,14 @@ uint8   Rotation;
 // BSFSoundSize, BSFSoundMemA
 bool LOADSAMPLE(char* FName, const int SID)
 {
-    uint32  size;
+    LONG    size;
     BPTR    FHandle;
 
-    FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(FName, MODE_OLDFILE, &size);
     if (0 == FHandle)
     {
         return false;
     }
-    (void) Seek(FHandle, 0, OFFSET_END);
-    size = Seek(FHandle, 0, OFFSET_BEGINNING);
     BSFSoundSize[SID] = (size >> 1);
     (void) Read(FHandle, (APTR) BSFSoundMemA[SID], size);
     Close(FHandle);

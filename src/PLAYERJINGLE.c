@@ -15,10 +15,9 @@ void PLAYERJINGLE(const int JingleID)
         _s=my_strcpy(FName, PathStr[9]);
         *_s++ = '1'+JingleID;
         (void) my_strcpy(_s, ".RAW");
-        FHandle = OPENSMOOTH(FName,MODE_OLDFILE);
+        FHandle = OPENSMOOTH(FName,MODE_OLDFILE, &(LogoSMemL[JingleID]));
         if (0 == FHandle) { return; }
-        (void) Seek(FHandle, 0, OFFSET_END);
-        LogoSMemL[JingleID] = Seek(FHandle, 0, OFFSET_BEGINNING);
+
         LogoSMemA[JingleID] = (uint8*) AllocMem(LogoSMemL[JingleID], MEMF_ANY );
         if (NULL == LogoSMemA[JingleID])
         {

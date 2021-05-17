@@ -14,14 +14,12 @@ bool    Error;
 
 void WORMHOLE_LOADSOUND(char* FName, const int SoundID)
 {
-    int     Filesize;
+    LONG    Filesize;
     BPTR    FHandle;
 
-    FHandle = OPENSMOOTH(FName,MODE_OLDFILE);
+    FHandle = OPENSMOOTH(FName,MODE_OLDFILE, &Filesize);
     if (0 != FHandle)
     {
-        (void) Seek(FHandle, 0, OFFSET_END);
-        Filesize = Seek(FHandle, 0, OFFSET_BEGINNING);
         Filesize = Filesize >> 1;
         if (0 == SoundID)
         {

@@ -22,7 +22,7 @@
 
 ITBitMap    ImgBitMap5;
 APTR        SLSoundMemA;
-uint32      SLSoundSize;
+LONG        SLSoundSize;
 sint16      ShipShield, ShipWeapon, GroundWeapon;
 uint8       DefaultColor;
 
@@ -70,11 +70,9 @@ bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, uint8 Ship_Weapon)
                 default: { }
             }
             _s=my_strcpy(_s, ".RAW");
-            FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+            FHandle = OPENSMOOTH(s, MODE_OLDFILE, &SLSoundSize);
             if (0 != FHandle)
             {
-                (void)        Seek(FHandle, 0, OFFSET_END);
-                SLSoundSize = Seek(FHandle, 0, OFFSET_BEGINNING);
                 SLSoundMemA = IMemA[0];
                 (void) Read(FHandle, SLSoundMemA, SLSoundSize);
                 SLSoundSize >>= 1;

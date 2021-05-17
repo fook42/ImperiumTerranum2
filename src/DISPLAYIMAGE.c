@@ -11,7 +11,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     uint8   realCacheNum=0;
     uint16  CNum, i;
     uint16  CNum3;
-    uint32  ImgSize_packed, ImgSize=0; // , Addr;
+    LONG    ImgSize_packed, ImgSize=0; // , Addr;
     uint32  Addr;
     uint16* Colors;
     r_Col_t*  RGB;
@@ -39,13 +39,11 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     // fill IMemA[0] with image data .. either load from file or copy from cache
     if (false == ImageIsValid)
     {
-        FHandle = OPENSMOOTH(Fn, MODE_OLDFILE);
+        FHandle = OPENSMOOTH(Fn, MODE_OLDFILE, &ImgSize_packed);
         if (0 == FHandle)
         {
             return false;
         }
-        (void)  Seek(FHandle, 0, OFFSET_END);
-        ImgSize_packed = Seek(FHandle, 0, OFFSET_BEGINNING);
         Addr = (uint32) (IMemA[0]+IMemL[0]-ImgSize_packed-250);   // start at 250+FileSize Bytes from the end (!) of IMem-Area
         (void) Read(FHandle, (APTR) Addr, ImgSize_packed);
         ImgSize = (Width*Height*Depth)>>3;    // w*h*depth/8 = num of bytes for uncompressed imagedata
@@ -74,7 +72,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
             Addr += 4;
             _s=my_strcpy(FName, Fn);
             (void) my_strcpy(_s-3, "pal");
-            FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
+            FHandle = OPENSMOOTH(FName, MODE_OLDFILE, NULL);
             if (0 == FHandle)
             {
                 return false;

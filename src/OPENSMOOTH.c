@@ -3,13 +3,13 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-BPTR OPENSMOOTH(const char* FName, const uint32 FMode)
+BPTR OPENSMOOTH(const char* FName, const uint32 FMode, LONG* FSize)
 {
     char    DName[50];
     BPTR    FHandle;
     int     i;
-    struct NewScreen    OS_Screen = {180,0,280,40,1,0,0,HIRES+LACE,CUSTOMSCREEN+SCREENQUIET,NULL,NULL,NULL,NULL};
-    struct Screen*      OS_XScreen;
+    const struct NewScreen  OS_Screen = {180,0,280,40,1,0,0,HIRES+LACE,CUSTOMSCREEN+SCREENQUIET,NULL,NULL,NULL,NULL};
+    struct Screen*          OS_XScreen;
 
     // try to open the file ...
     FHandle = Open((CONST_STRPTR) FName, FMode);
@@ -35,7 +35,7 @@ BPTR OPENSMOOTH(const char* FName, const uint32 FMode)
         // the only part left from the filename should start with the volume-seperator ":"
         if (':' == FName[i])
         {
-            // open a screen, the informs about the missing disk
+            // open a screen, that informs about the missing disk
             INITSTDTAGS();
             OS_XScreen = OpenScreenTagList(&OS_Screen, Tags);
 
@@ -80,6 +80,11 @@ BPTR OPENSMOOTH(const char* FName, const uint32 FMode)
             }
             CloseScreen(OS_XScreen);
         }
+    }
+    if ((0 != FHandle) && (MODE_OLDFILE == FMode) && (NULL != FSize))
+    {
+        (void) Seek(FHandle, 0, OFFSET_END);
+        *FSize = Seek(FHandle, 0, OFFSET_BEGINNING);
     }
     return FHandle;
 }

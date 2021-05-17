@@ -11,7 +11,7 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
     r_Col_t     Colors[128];
     struct RastPort*    actRastPort;
     uint8       i, k;
-    uint32      ISize;
+    LONG        ISize;
     uint16      dFactor;
 
     for (i = 0; i<2; i++)
@@ -58,7 +58,7 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
     _s=my_strcpy(s,PathStr[7]);
 
     (void) my_strcpy(_s, "MOD.Intro");
-    FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+    FHandle = OPENSMOOTH(s,MODE_OLDFILE, NULL);
     if (0 != FHandle)
     {
         Close(FHandle);
@@ -82,11 +82,9 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
 
     (void) my_strcpy(_s, "Frame5.img");       // little earth-image..
 
-    FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+    FHandle = OPENSMOOTH(s,MODE_OLDFILE, &ISize);
     if (0 != FHandle)
     {
-        (void)  Seek(FHandle, 0, OFFSET_END);
-        ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
         (void) Read(FHandle,(APTR) (IMemA[0]+IMemL[0]-ISize-250), ISize);
         UNPACK(IMemA[0],IMemA[0]+IMemL[0]-ISize-250,20160,0);
         Close(FHandle);

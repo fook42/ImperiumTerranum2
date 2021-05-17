@@ -174,7 +174,7 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
 // <<<
 struct Screen* OPENCINEMA(uint8 Depth);
 bool OPENMAINSCREENS();
-BPTR OPENSMOOTH(const char* FName, const uint32 FMode);
+BPTR OPENSMOOTH(const char* FName, const uint32 FMode, LONG* FSize);
 // >>> OPTIONMENU
 void CHECKGADS(int GadID);
 void OPTION_REDUCECOSTS(void);

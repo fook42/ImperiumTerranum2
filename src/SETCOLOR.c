@@ -5,18 +5,17 @@
 
 int SETCOLOR(struct Screen* SC_Screen, char* FName)
 {
-    uint32  AddrX, AddrEnd, l, ISize;
+    uint32  AddrX, AddrEnd, l;
+    LONG    ISize;
     int     i;
     uint32* ColorID;
     r_Col_t*  Col;
     BPTR    FHandle;
     int     _SETCOLOR = 0;
 
-    FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(FName, MODE_OLDFILE, &ISize);
     if (0 != FHandle)
     {
-        (void)  Seek(FHandle, 0, OFFSET_END);
-        ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
         (void) Read(FHandle, IMemA[0], ISize);
         Close(FHandle);
         AddrX   = (uint32) IMemA[0];

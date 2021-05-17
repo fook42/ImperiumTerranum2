@@ -7,11 +7,9 @@ void LOADMOD(char* FName, int MID)
 {
     BPTR    FHandle;
 
-    FHandle = OPENSMOOTH( FName, MODE_OLDFILE );
+    FHandle = OPENSMOOTH( FName, MODE_OLDFILE, &(ModMemL[MID]));
     if (0 != FHandle)
     {
-        (void)         Seek(FHandle, 0, OFFSET_END);
-        ModMemL[MID] = Seek(FHandle, 0, OFFSET_BEGINNING);
         ModMemA[MID] = (uint8*) AllocMem(ModMemL[MID], MEMF_ANY);
         if (NULL != ModMemA[MID])
         {

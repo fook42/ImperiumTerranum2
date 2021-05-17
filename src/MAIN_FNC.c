@@ -272,7 +272,7 @@ void MAIN_FNC()
                     {
                         _s=my_strcpy(s, PathStr[4]);
                         (void) my_strcpy(_s, "MOD.HappyEnd");
-                        FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+                        FHandle = OPENSMOOTH(s,MODE_OLDFILE, NULL);
                         if (0 != FHandle)
                         {
                             Close(FHandle);

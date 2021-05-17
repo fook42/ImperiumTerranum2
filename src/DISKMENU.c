@@ -117,7 +117,7 @@ void GETSAVENAME(char* Title, char* SName)
 
     _s1=my_strcpy(s, PathStr[8]);
     (void) my_strcpy(_s1, "IMPT.ID");
-    FHandle = OPENSMOOTH(s, MODE_OLDFILE);
+    FHandle = OPENSMOOTH(s, MODE_OLDFILE, NULL);
     if (0 == FHandle)
     {
         return;
@@ -263,7 +263,7 @@ uint8 DIS_LOADGAME()
     GETSAVENAME(PText[536], s);
     if (0 != s[0])
     {
-        FHandle = OPENSMOOTH(s,MODE_OLDFILE);
+        FHandle = OPENSMOOTH(s,MODE_OLDFILE, NULL);
         if (0 != FHandle)
         {
             exitvalue = LOAD_OKAY;
@@ -368,7 +368,7 @@ bool DIS_SAVEGAME()
     GETSAVENAME(PText[537], s);
     if (0 != s[0])
     {
-        FHandle = OPENSMOOTH(s,MODE_NEWFILE);
+        FHandle = OPENSMOOTH(s,MODE_NEWFILE, NULL);
         if (0 != FHandle)
         {
             l = ACTVERSION;

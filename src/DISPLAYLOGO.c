@@ -8,7 +8,7 @@ void DISPLAYLOGO(const int DL_ActPlayer, const int LEdge, const int TEdge)
     char    FName[60];
     char*   _s;
     BPTR    FHandle;
-    uint32  ISize;
+    LONG    ISize;
     uint8*  ActMem;
     struct Image    stImg = {0,0,128,128,7, NULL ,127,0,NULL};
 
@@ -31,11 +31,9 @@ void DISPLAYLOGO(const int DL_ActPlayer, const int LEdge, const int TEdge)
             _s=my_strcpy(FName, PathStr[10]);
             *_s++ = '0'+DL_ActPlayer;
             (void) my_strcpy(_s, ".img");
-            FHandle = OPENSMOOTH(FName, MODE_OLDFILE);
+            FHandle = OPENSMOOTH(FName, MODE_OLDFILE, &ISize);
             if (0 != FHandle)
             {
-                (void)  Seek(FHandle, 0, OFFSET_END);
-                ISize = Seek(FHandle, 0, OFFSET_BEGINNING);
                 (void) Read(FHandle, (APTR) (ActMem+LOGOSIZE-ISize-150), ISize);
                 UNPACK(ActMem, (ActMem+LOGOSIZE-ISize-150), LOGOMEMSIZE, 1);
                 Close(FHandle);
