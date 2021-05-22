@@ -254,8 +254,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
                     SetRGB32(MyVPort_PTR[AScr],0,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF);
                     PLAYSOUND(1,400);
                     ShipShield -= GroundWeapon;
-                    if (0  >  ShipShield) { ShipShield = 0; }
-                    if ((0 <= ShipShield) && (255 >= ShipShield))
+                    if (0   > ShipShield) { ShipShield = 0; }
+                    if (256 > ShipShield)
                     {
                         RECT_RP0_C0(ShipShield,245,254,254);
                         RECT_RP1_C0(ShipShield,245,254,254);
@@ -536,7 +536,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s++ = '>';
     *_s++ = ' ';
     MyPlanetHeader->Population = it_round(MyPlanetHeader->Population*Percs);
-    if ((Percs>0) && (MyPlanetHeader->Population == 0))
+    if ((0 < Percs) && (0 == MyPlanetHeader->Population))
     {
         MyPlanetHeader->Population = 1;
     }
@@ -553,12 +553,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s++ = ':';
     *_s++ = ' ';
     _s = dez2out((MyPlanetHeader->Infrastruktur >>1), 0, _s);
-    *_s++ = '%';
-    *_s++ = ' ';
-    *_s++ = '-';
-    *_s++ = '>';
-    *_s++ = ' ';
-    MyPlanetHeader->Infrastruktur -= (CityHit*MyPlanetHeader->Infrastruktur / CityDrawed);
+    _s = my_strcpy(_s, "% -> ");
+    MyPlanetHeader->Infrastruktur -= (uint8) ((MyPlanetHeader->Infrastruktur * CityHit) / CityDrawed);
     _s = dez2out((MyPlanetHeader->Infrastruktur >>1), 0, _s);
     *_s++ = '%';
     *_s  =0;
@@ -568,12 +564,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s++ = ':';
     *_s++ = ' ';
     _s = dez2out((MyPlanetHeader->Industrie >>1), 0, _s);
-    *_s++ = '%';
-    *_s++ = ' ';
-    *_s++ = '-';
-    *_s++ = '>';
-    *_s++ = ' ';
-    MyPlanetHeader->Industrie -= (CityHit*MyPlanetHeader->Industrie / CityDrawed);
+    _s = my_strcpy(_s, "% -> ");
+    MyPlanetHeader->Industrie -= (uint8) ((MyPlanetHeader->Industrie * CityHit) / CityDrawed);
     _s = dez2out((MyPlanetHeader->Industrie >>1), 0, _s);
     *_s++ = '%';
     *_s  =0;
@@ -583,12 +575,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     *_s++ = ':';
     *_s++ = ' ';
     _s = dez2out((MyPlanetHeader->Biosphaere >>1), 0, _s);
-    *_s++ = '%';
-    *_s++ = ' ';
-    *_s++ = '-';
-    *_s++ = '>';
-    *_s++ = ' ';
-    MyPlanetHeader->Biosphaere -= (BioHit* MyPlanetHeader->Biosphaere / BioDrawed);
+    _s = my_strcpy(_s, "% -> ");
+    MyPlanetHeader->Biosphaere -= (uint8) ((MyPlanetHeader->Biosphaere * BioHit) / BioDrawed);
     _s = dez2out((MyPlanetHeader->Biosphaere >>1), 0, _s);
     *_s++ = '%';
     *_s  =0;
