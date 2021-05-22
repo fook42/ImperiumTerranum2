@@ -117,8 +117,13 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
     // set all colours to the max. values
     for (i = 1; i<128; ++i)
     {
-        SetRGB32(MyVPort_PTR[1-AScr], i, Colors[i].r<<24, Colors[i].g<<24, Colors[i].b<<24);
-        SetRGB32(MyVPort_PTR[  AScr], i, Colors[i].r<<24, Colors[i].g<<24, Colors[i].b<<24);
+        SetRGB32(MyVPort_PTR[1-AScr], i, Colors[i].r*(ULONG)0x01010101,
+                                         Colors[i].g*(ULONG)0x01010101,
+                                         Colors[i].b*(ULONG)0x01010101);
+
+        SetRGB32(MyVPort_PTR[  AScr], i, Colors[i].r*(ULONG)0x01010101,
+                                         Colors[i].g*(ULONG)0x01010101,
+                                         Colors[i].b*(ULONG)0x01010101);
     }
     ScrollRaster(MyRPort_PTR[AScr],0,-4,0,75,639,434);
     WaitTOF();

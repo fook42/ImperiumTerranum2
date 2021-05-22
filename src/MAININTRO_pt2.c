@@ -219,9 +219,9 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     SetRGB32(MyVPort_PTR[AScr],0,0,0,0);
     for (i = 1; i < 32; ++i)
     {
-        SetRGB32(MyVPort_PTR[AScr],i, Colors[i].r*0x01010101,
-                                      Colors[i].g*0x01010101,
-                                      Colors[i].b*0x01010101);
+        SetRGB32(MyVPort_PTR[AScr],i, Colors[i].r*(ULONG)0x01010101,
+                                      Colors[i].g*(ULONG)0x01010101,
+                                      Colors[i].b*(ULONG)0x01010101);
     }
     Delay(50);
     // fade out the text below image (col 31) ...

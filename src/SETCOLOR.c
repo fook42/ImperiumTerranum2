@@ -35,7 +35,9 @@ int SETCOLOR(struct Screen* SC_Screen, char* FName)
             {
                 Col = (r_Col_t*) AddrX;
                 AddrX += sizeof(r_Col_t);
-                SetRGB32(&(SC_Screen->ViewPort), i, (Col->r)<<24, (Col->g)<<24, (Col->b)<<24);
+                SetRGB32(&(SC_Screen->ViewPort), i, (Col->r)*(ULONG)0x01010101,
+                                                    (Col->g)*(ULONG)0x01010101,
+                                                    (Col->b)*(ULONG)0x01010101);
                 i++;
             }
             while (AddrX < AddrEnd);

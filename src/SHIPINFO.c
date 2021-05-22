@@ -36,13 +36,13 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
         if (0 > Col1)      { c1 = 0; }
         else if (255<Col1) { c1 = 255; }
         else               { c1 = Col1; }
-        SetRGB32(MyVPort_PTR[1], i+6, c1<<24, 0, 0);
+        SetRGB32(MyVPort_PTR[1], i+6, c1*(ULONG)0x01010101, 0, 0);
         Col1 -= 30;
 
         if (0 > Col2)      { c2 = 0; }
         else if (255<Col2) { c2 = 255; }
         else               { c2 = Col2; }
-        SetRGB32(MyVPort_PTR[1],i+20, c2<<24, 0, c2<<24);
+        SetRGB32(MyVPort_PTR[1],i+20, c2*(ULONG)0x01010101, 0, c2*(ULONG)0x01010101);
         Col2 -= 30;
     }
     (void) dez2out(MyShipPtr->Shield + MyShipPtr->Tactical*3, 3, s);
