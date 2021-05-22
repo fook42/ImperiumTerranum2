@@ -36,8 +36,8 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
         }
     }
 
-    SPAddrC = SMemA[1]+(SMemL[1]/2)+6500; SPVolC = 64; SPFreqC = 380; SPLengthC = (SMemL[1]-13000)/4;
-    SPAddrD = SMemA[1]+6500;              SPVolD = 64; SPFreqD = 380; SPLengthD = (SMemL[1]-13000)/4;
+    SPAddrC = SMemA[1]+(SMemL[1]/2)+6500; SPVolC = 64; SPFreqC = 380; SPLengthC = (UWORD) ((SMemL[1]-13000)/4);
+    SPAddrD = SMemA[1]+6500;              SPVolD = 64; SPFreqD = 380; SPLengthD = (UWORD) ((SMemL[1]-13000)/4);
 
     custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
     WaitTOF();

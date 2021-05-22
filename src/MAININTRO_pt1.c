@@ -105,8 +105,8 @@ int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
     custom.dmacon = BITCLR | DMAF_AUDIO; // 0x000F
     Delay(15);
 
-    SPAddrA = SMemA[0];              SPVolA  = 0;  SPFreqA = 856; SPLengthA = SMemL[0]/4;
-    SPAddrB = SMemA[0]+(SMemL[0]/2); SPVolB  = 0;  SPFreqB = 856; SPLengthB = SMemL[0]/4;
+    SPAddrA = SMemA[0];              SPVolA  = 0;  SPFreqA = 856; SPLengthA = (UWORD) (SMemL[0]/4);
+    SPAddrB = SMemA[0]+(SMemL[0]/2); SPVolB  = 0;  SPFreqB = 856; SPLengthB = (UWORD) (SMemL[0]/4);
     SPAddrC = SMemA[1]+(SMemL[1]/2); SPVolC  = 64; SPFreqC = 380; SPLengthC = 1;
     SPAddrD = SMemA[1];              SPVolD  = 64; SPFreqD = 380; SPLengthD = 1;
 

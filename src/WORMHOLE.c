@@ -9,7 +9,7 @@ sint32  WORMHOLE_ShipShield;
 
 ITBitMap ImgBitMapW4;
 uint16* WHSoundMemA[2]; // 0..1
-int     WHSoundMemL[2]; // 0..1
+UWORD   WHSoundMemL[2]; // 0..1
 bool    Error;
 
 void WORMHOLE_LOADSOUND(char* FName, const int SoundID)
@@ -20,7 +20,7 @@ void WORMHOLE_LOADSOUND(char* FName, const int SoundID)
     FHandle = OPENSMOOTH(FName,MODE_OLDFILE, &Filesize);
     if (0 != FHandle)
     {
-        Filesize = Filesize >> 1;
+        Filesize = Filesize / 2;
         if (0 == SoundID)
         {
             Filesize += STEPS*3;
@@ -29,7 +29,7 @@ void WORMHOLE_LOADSOUND(char* FName, const int SoundID)
         if (NULL != WHSoundMemA[SoundID])
         {
             (void) Read(FHandle, (APTR) WHSoundMemA[SoundID], Filesize*2);
-            WHSoundMemL[SoundID] = Filesize;
+            WHSoundMemL[SoundID] = (UWORD) Filesize;
         }
         Close(FHandle);
     }
@@ -82,9 +82,9 @@ void TRAVEL()
 
     if (Audio_enable)
     {
-        SPAddrA = WHSoundMemA[0];                SPLengthA = WHSoundMemL[0];      SPVolA = 45; SPFreqA = 300;
-        SPAddrC = WHSoundMemA[1];                SPLengthC = WHSoundMemL[1] >> 1; SPVolC = 64; SPFreqC = 400;
-        SPAddrD = WHSoundMemA[1]+WHSoundMemL[1]; SPLengthD = WHSoundMemL[1] >> 1; SPVolD = 64; SPFreqD = 400;
+        SPAddrA = WHSoundMemA[0];                SPLengthA = (UWORD) WHSoundMemL[0];       SPVolA = 45; SPFreqA = 300;
+        SPAddrC = WHSoundMemA[1];                SPLengthC = (UWORD) (WHSoundMemL[1] / 2); SPVolC = 64; SPFreqC = 400;
+        SPAddrD = WHSoundMemA[1]+WHSoundMemL[1]; SPLengthD = (UWORD) (WHSoundMemL[1] / 2); SPVolD = 64; SPFreqD = 400;
         SPAddrB = 0; SPLengthB = 1;
         custom.dmacon = BITSET | DMAF_AUDIO;
     }

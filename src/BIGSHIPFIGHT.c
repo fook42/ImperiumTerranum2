@@ -286,11 +286,11 @@ void DRAWFIRE()
                 if (0 == Ship)
                 {
                     custom.dmacon = BITCLR | DMAF_AUD3;
-                    SPAddrD = BSFSoundMemA[0]; SPFreqD = 350; SPLengthD = BSFSoundSize[0]; SPVolD = 50;
+                    SPAddrD = BSFSoundMemA[0]; SPFreqD = 350; SPLengthD = (UWORD) BSFSoundSize[0]; SPVolD = 50;
                     custom.dmacon = BITSET | DMAF_AUD3;
                 } else {
                     custom.dmacon = BITCLR | DMAF_AUD2;
-                    SPAddrC = BSFSoundMemA[1]; SPFreqC = 300; SPLengthC = BSFSoundSize[1]; SPVolC = 50;
+                    SPAddrC = BSFSoundMemA[1]; SPFreqC = 300; SPLengthC = (UWORD) BSFSoundSize[1]; SPVolC = 50;
                     custom.dmacon = BITSET | DMAF_AUD2;
                 }
             }
@@ -369,8 +369,8 @@ void XTRAROUND()
     if (Audio_enable)
     {
         custom.dmacon = BITCLR | DMAF_AUDIO;
-        SPAddrA = BSFSoundMemA[2];                 SPFreqA = 450; SPLengthA = BSFSoundSize[2]; SPVolA = 40;
-        SPAddrB = BSFSoundMemA[2]+BSFSoundSize[2]; SPFreqB = 450; SPLengthB = BSFSoundSize[2]; SPVolB = 40;
+        SPAddrA = BSFSoundMemA[2];                 SPFreqA = 450; SPLengthA = (UWORD) BSFSoundSize[2]; SPVolA = 40;
+        SPAddrB = BSFSoundMemA[2]+BSFSoundSize[2]; SPFreqB = 450; SPLengthB = (UWORD) BSFSoundSize[2]; SPVolB = 40;
         custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1;
     }
     // lets fight .. until one of the shields is <0

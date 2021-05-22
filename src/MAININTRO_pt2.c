@@ -200,8 +200,8 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
         }
         if (10 == Ctr)
         {
-            SPAddrC   = SMemA[1]+(SMemL[1]/2); SPVolC = 64; SPFreqC = 380; SPLengthC = (SMemL[1]/4);
-            SPAddrD   = SMemA[1];              SPVolD = 64; SPFreqD = 380; SPLengthD = (SMemL[1]/4);
+            SPAddrC   = SMemA[1]+(SMemL[1]/2); SPVolC = 64; SPFreqC = 380; SPLengthC = (UWORD) (SMemL[1]/4);
+            SPAddrD   = SMemA[1];              SPVolD = 64; SPFreqD = 380; SPLengthD = (UWORD) (SMemL[1]/4);
 
             custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
         } else if (11 == Ctr)
@@ -267,8 +267,8 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
         }
     }
 
-    SPAddrC   = SMemA[2]+(SMemL[2]/2); SPVolC = 64; SPFreqC = 550; SPLengthC = SMemL[2]/4;
-    SPAddrD   = SMemA[2];              SPVolD = 64; SPFreqD = 550; SPLengthD = SMemL[2]/4;
+    SPAddrC   = SMemA[2]+(SMemL[2]/2); SPVolC = 64; SPFreqC = 550; SPLengthC = (UWORD) (SMemL[2]/4);
+    SPAddrD   = SMemA[2];              SPVolD = 64; SPFreqD = 550; SPLengthD = (UWORD) (SMemL[2]/4);
 
     custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3; // 0x800C
     Factor = 0x00000052; // 0101 0010 = 1/512 + 1/2048 + 1/16384 =~ 0,0025

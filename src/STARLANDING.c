@@ -129,8 +129,8 @@ void LANDING_DRAWFIRE()
         if (Audio_enable)
         {
             custom.dmacon = BITCLR | DMAF_AUD2 | DMAF_AUD3;
-            SPAddrC = SLSoundMemA; SPFreqC = 350; SPLengthC = SLSoundSize; SPVolC = 50;
-            SPAddrD = SLSoundMemA; SPFreqD = 300; SPLengthD = SLSoundSize; SPVolD = 50;
+            SPAddrC = SLSoundMemA; SPFreqC = 350; SPLengthC = (UWORD) SLSoundSize; SPVolC = 50;
+            SPAddrD = SLSoundMemA; SPFreqD = 300; SPLengthD = (UWORD) SLSoundSize; SPVolD = 50;
             custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3;
         }
         HitX = (MouseX(AScr)) >> 5;
@@ -345,8 +345,8 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         PLAYSOUND(1,1000);
         if (Audio_enable)
         {
-            SPAddrC = SoundMemA[2];              SPFreqC = 900; SPLengthC = SoundSize[2] / 2; SPVolC = 64;
-            SPAddrD = SoundMemA[2]+SoundSize[2]; SPFreqD = 900; SPLengthD = SoundSize[2] / 2; SPVolD = 64;
+            SPAddrC = SoundMemA[2];              SPFreqC = 900; SPLengthC = (UWORD) (SoundSize[2] / 2); SPVolC = 64;
+            SPAddrD = SoundMemA[2]+SoundSize[2]; SPFreqD = 900; SPLengthD = (UWORD) (SoundSize[2] / 2); SPVolD = 64;
         }
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
