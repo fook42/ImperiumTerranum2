@@ -27,6 +27,13 @@ int MAININTRO_PART4()
         "Ported to C & improved by",    "Fook42"};
     const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3, 3,4};
 
+    const struct worldcolors_t Frame6_Colours[] = { {0xEEEEEEEE,0xEEEEEEEE,0xFFFFFFFF},
+                                                    {0xDDDDDDDD,         0,         0},
+                                                    {0xFFFFFFFF,         0,0xFFFFFFFF},
+                                                    {0xBBBBBBBB,0xBBBBBBBB,0xFFFFFFFF},
+                                                    {0x99999999,0x99999999,0xBBBBBBBB} };
+
+
     r_Coords_t* ShipX;
     r_Coords_t* ShipY;
     r_Coords_t* ShipZ;
@@ -47,11 +54,11 @@ int MAININTRO_PART4()
     (void) my_strcpy(_s, "Frame6.pal");
     (void) SETCOLOR(MyScreen[  AScr],s);
     (void) SETCOLOR(MyScreen[1-AScr],s);
-    SetRGB4(MyVPort_PTR[AScr],127,9,9,11);   SetRGB4(MyVPort_PTR[1-AScr],127,9,9,11);
-    SetRGB4(MyVPort_PTR[AScr],126,11,11,15); SetRGB4(MyVPort_PTR[1-AScr],126,11,11,15);
-    SetRGB4(MyVPort_PTR[AScr],125,15,0,15);  SetRGB4(MyVPort_PTR[1-AScr],125,15,0,15);
-    SetRGB4(MyVPort_PTR[AScr],124,13,0,0);   SetRGB4(MyVPort_PTR[1-AScr],124,15,2,2); // @todo ?? should be the same as on AScr?
-    SetRGB4(MyVPort_PTR[AScr],123,14,14,15); SetRGB4(MyVPort_PTR[1-AScr],123,14,14,15);
+    for (i = 0; i < 5; ++i)
+    {
+        SetRGB32(MyVPort_PTR[  AScr], 123+i, Frame6_Colours[i].r, Frame6_Colours[i].g, Frame6_Colours[i].b);
+        SetRGB32(MyVPort_PTR[1-AScr], 123+i, Frame6_Colours[i].r, Frame6_Colours[i].g, Frame6_Colours[i].b);
+    }
 
     (void) my_strcpy(_s, "Frame6.img");
     if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[AScr],0)) { ret_code = -31; goto leave_part; }

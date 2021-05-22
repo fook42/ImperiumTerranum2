@@ -194,9 +194,9 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
 
         for (i = 1; i < 32; ++i)
         {
-            SetRGB32(MyVPort_PTR[AScr],i,   ((Colors[i].r*Factor)<<13) & 0xFF000000,
-                                            ((Colors[i].g*Factor)<<13) & 0xFF000000,
-                                            ((Colors[i].b*Factor)<<13) & 0xFF000000);
+            SetRGB32(MyVPort_PTR[AScr],i,   ((Colors[i].r*Factor)<<13) & 0xFFFFFFFF,
+                                            ((Colors[i].g*Factor)<<13) & 0xFFFFFFFF,
+                                            ((Colors[i].b*Factor)<<13) & 0xFFFFFFFF);
         }
         if (10 == Ctr)
         {
@@ -213,15 +213,15 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     }
 
     ScreenToFront(MyScreen[AScr]);
-    SetRGB4(MyVPort_PTR[AScr],0,8,8,10);
+    SetRGB32(MyVPort_PTR[AScr],0,0x88888888,0x88888888,0xAAAAAAAA);
     WaitTOF();
     WaitTOF();
-    SetRGB4(MyVPort_PTR[AScr],0,0,0,0);
+    SetRGB32(MyVPort_PTR[AScr],0,0,0,0);
     for (i = 1; i < 32; ++i)
     {
-        SetRGB32(MyVPort_PTR[AScr],i, Colors[i].r<<24,
-                                      Colors[i].g<<24,
-                                      Colors[i].b<<24);
+        SetRGB32(MyVPort_PTR[AScr],i, Colors[i].r*0x01010101,
+                                      Colors[i].g*0x01010101,
+                                      Colors[i].b*0x01010101);
     }
     Delay(50);
     // fade out the text below image (col 31) ...
@@ -229,9 +229,9 @@ void GREATEFFECT(uint8 Objects, r_Col_t* Colors, uint16** SMemA, uint32* SMemL)
     {
         AScr = 1-AScr;
         Factor -= 0x00000029; // 0010 1001 = 1/64 + 1/256 + 1/2048 =~~ 0,0200
-        SetRGB32(MyVPort_PTR[AScr],31,  ((Colors[31].r*Factor)<<13) & 0xFF000000,
-                                        ((Colors[31].g*Factor)<<13) & 0xFF000000,
-                                        ((Colors[31].b*Factor)<<13) & 0xFF000000);
+        SetRGB32(MyVPort_PTR[AScr],31,  ((Colors[31].r*Factor)<<13) & 0xFFFFFFFF,
+                                        ((Colors[31].g*Factor)<<13) & 0xFFFFFFFF,
+                                        ((Colors[31].b*Factor)<<13) & 0xFFFFFFFF);
         WaitTOF();
         ScreenToFront(MyScreen[AScr]);
     }

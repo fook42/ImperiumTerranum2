@@ -98,7 +98,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
         {
             RGB  = (r_Col_t*) Addr;
             Addr += sizeof(r_Col_t);
-            SetRGB32(&(DI_Screen->ViewPort), i, (RGB->r)<<24, (RGB->g)<<24, (RGB->b)<<24);
+            SetRGB32(&(DI_Screen->ViewPort), i, (RGB->r)*0x1010101, (RGB->g)*0x1010101, (RGB->b)*0x1010101);
         }
     }
     return true;

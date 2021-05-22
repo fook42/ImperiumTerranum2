@@ -62,9 +62,9 @@ void FUCKSYSTEM(uint8 ActSys)
         }
     }
     DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
-    for(i = 1; i <= 5; i++)
+    for(i = 1; i < 6; i++)
     {
-        SetRGB32(&(MyScreen[0]->ViewPort),0,0xFF000000,0xFF000000,0xFF000000);
+        SetRGB32(&(MyScreen[0]->ViewPort),0,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF);
         PLAYSOUND(1,1200+rand()%250);
         Delay((rand()%10)+1);
         SetRGB32(&(MyScreen[0]->ViewPort),0,0,0,0);

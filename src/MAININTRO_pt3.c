@@ -48,7 +48,7 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
 
     for (i = 255; i > 10; i -= 5)
     {
-        SetRGB32(MyVPort_PTR[1], 0, i<<24, i<<24, i<<24);
+        SetRGB32(MyVPort_PTR[1], 0, (i*0x01010101), (i*0x01010101), (i*0x01010101));
         WaitTOF();
     }
     SetRGB32(MyVPort_PTR[1],0,0,0,0);

@@ -12,9 +12,9 @@ void DISPLAYSTATE()
     --ActPlayer; // to shift the array
 
     Screen2 = 0;
-    SetRGB4(MyVPort_PTR[1],0,0,0,3);
-    SetRGB4(MyVPort_PTR[1],1,12,12,15);
-    SetRGB4(MyVPort_PTR[1],2,15,0,3);
+    SetRGB32(MyVPort_PTR[1],0,         0,         0,0x33333333);
+    SetRGB32(MyVPort_PTR[1],1,0xCCCCCCCC,0xCCCCCCCC,0xFFFFFFFF);
+    SetRGB32(MyVPort_PTR[1],2,0xCCCCCCCC,         0,0x33333333);
 
     SetRast(MyRPort_PTR[1], 0); // clear Rastport
     WRITE_RP1(320,40,1,WRITE_Center,4,_PT_HighscoreImpstatus);

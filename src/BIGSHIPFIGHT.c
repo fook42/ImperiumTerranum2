@@ -544,18 +544,26 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
 {
     uint8   _BIGSHIPFIGHT = 2;
     struct NewScreen BSF_NeuScreen = {0,0,640,512,4,0,0,HIRES+LACE,CUSTOMSCREEN|SCREENQUIET, NULL,NULL,NULL,NULL};
-    struct r_Col BSF_Colors[]= {{0,0,0},   {13,13,15}, {12,12,14}, {11,11,13},
-                                {10,10,12},{9,9,11},   {8,8,10},   {15,0,0},
-                                {7,5,5},   {15,15,0},  {15,2,12},  {15,15,15},
-                                {1,1,15}};
+    const struct worldcolors_t BSF_Colors[]= {
+                                        {         0,         0,         0},{0xDDDDDDDD,0xDDDDDDDD,0xFFFFFFFF},
+                                        {0xCCCCCCCC,0xCCCCCCCC,0xEEEEEEEE},{0xBBBBBBBB,0xBBBBBBBB,0xDDDDDDDD},
+                                        {0xAAAAAAAA,0xAAAAAAAA,0xCCCCCCCC},{0x99999999,0x99999999,0xBBBBBBBB},
+                                        {0x88888888,0x88888888,0xAAAAAAAA},{0xFFFFFFFF,         0,         0},
+                                        {0x77777777,0x55555555,0x55555555},{0xFFFFFFFF,0xFFFFFFFF,         0},
+                                        {0xFFFFFFFF,0x22222222,0xCCCCCCCC},{0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF},
+                                        {0x11111111,0x11111111,0xFFFFFFFF} };
+
+    const struct worldcolors_t ShipColors[] = { {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF},
+                                                {0x66666666,0x66666666,0xFFFFFFFF},
+                                                {0xFFFFFFFF,         0,         0},
+                                                {         0,0xFFFFFFFF,0x11111111},
+                                                {0xFFFFFFFF,0xFFFFFFFF,         0},
+                                                {0xBABABABA,0x8B8B8B8B,0x48484848},
+                                                {0xFFFFFFFF,         0,0xB0B0B0B0},
+                                                {0x77777777,0x77777777,0x77777777},
+                                                {         0,0xFFFFFFFF,0xFFFFFFFF}};
     uint8   l;
     uint8   i, j;
-
-    if ((HighRes_Width < 640) || (HighRes_Height < 512))
-    {
-        BSF_NeuScreen.Type |= AUTOSCROLL;
-    }
-
 
     ShipPtr1 = Ship1;
     ShipPtr2 = Ship2;
@@ -638,7 +646,7 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
             MyRPort_PTR[i] = &(MyScreen[i]->RastPort);
             for (j=0; j<13; ++j)
             {
-                SetRGB4(MyVPort_PTR[i], j+1, BSF_Colors[j].r, BSF_Colors[j].g, BSF_Colors[j].b);
+                SetRGB32(MyVPort_PTR[i], j+1, BSF_Colors[j].r, BSF_Colors[j].g, BSF_Colors[j].b);
             }
         }
     }
@@ -665,28 +673,30 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
         for(i = 0; i < 2; ++i)
         {
             switch (ShipPtr1->Owner) {
-                case FLAG_TERRA:  SetRGB32(MyVPort_PTR[i],14,0x66000000,0x66000000,0xFF000000); break;
-                case FLAG_KLEGAN: SetRGB32(MyVPort_PTR[i],14,0xFF000000,         0,         0); break;
-                case FLAG_REMALO: SetRGB32(MyVPort_PTR[i],14,         0,0xFF000000,0x11000000); break;
-                case FLAG_CARDAC: SetRGB32(MyVPort_PTR[i],14,0xFF000000,0xFF000000,         0); break;
-                case FLAG_FERAGI: SetRGB32(MyVPort_PTR[i],14,0xBA000000,0x8B000000,0x48000000); break;
-                case FLAG_BAROJA: SetRGB32(MyVPort_PTR[i],14,0xFF000000,         0,0xB0000000); break;
-                case FLAG_VOLKAN: SetRGB32(MyVPort_PTR[i],14,0x77000000,0x77000000,0x77000000); break;
-                case FLAG_OTHER:  SetRGB32(MyVPort_PTR[i],14,         0,0xFF000000,0xFF000000); break;
-                default:          SetRGB32(MyVPort_PTR[i],14,0xFF000000,0xFF000000,0xFF000000);
+                case FLAG_TERRA:  j = 1; break;
+                case FLAG_KLEGAN: j = 2; break;
+                case FLAG_REMALO: j = 3; break;
+                case FLAG_CARDAC: j = 4; break;
+                case FLAG_FERAGI: j = 5; break;
+                case FLAG_BAROJA: j = 6; break;
+                case FLAG_VOLKAN: j = 7; break;
+                case FLAG_OTHER:  j = 8; break;
+                default:          j = 0;
             }
+            SetRGB32(MyVPort_PTR[i], 14, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
 
             switch (ShipPtr2->Owner) {
-                case FLAG_TERRA:  SetRGB32(MyVPort_PTR[i],15,0x66000000,0x66000000,0xFF000000); break;
-                case FLAG_KLEGAN: SetRGB32(MyVPort_PTR[i],15,0xFF000000,         0,         0); break;
-                case FLAG_REMALO: SetRGB32(MyVPort_PTR[i],15,         0,0xFF000000,0x11000000); break;
-                case FLAG_CARDAC: SetRGB32(MyVPort_PTR[i],15,0xFF000000,0xFF000000,         0); break;
-                case FLAG_FERAGI: SetRGB32(MyVPort_PTR[i],15,0xBA000000,0x8B000000,0x48000000); break;
-                case FLAG_BAROJA: SetRGB32(MyVPort_PTR[i],15,0xFF000000,         0,0xB0000000); break;
-                case FLAG_VOLKAN: SetRGB32(MyVPort_PTR[i],15,0x77000000,0x77000000,0x77000000); break;
-                case FLAG_OTHER:  SetRGB32(MyVPort_PTR[i],15,         0,0xFF000000,0xFF000000); break;
-                default:          SetRGB32(MyVPort_PTR[i],15,0xFF000000,0xFF000000,0xFF000000);
+                case FLAG_TERRA:  j = 1; break;
+                case FLAG_KLEGAN: j = 2; break;
+                case FLAG_REMALO: j = 3; break;
+                case FLAG_CARDAC: j = 4; break;
+                case FLAG_FERAGI: j = 5; break;
+                case FLAG_BAROJA: j = 6; break;
+                case FLAG_VOLKAN: j = 7; break;
+                case FLAG_OTHER:  j = 8; break;
+                default:          j = 0;
             }
+            SetRGB32(MyVPort_PTR[i], 15, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
         }
         XTRAROUND();
         if (SSHeader[0].ShieldS < 0)

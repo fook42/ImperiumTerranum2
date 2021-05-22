@@ -86,7 +86,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
         return; // @TODO .. cleanup and free all memory!
     }
 
-    SetRGB4(&(MyScreen[0]->ViewPort),255,7,7,7);
+    SetRGB32(&(MyScreen[0]->ViewPort),255,0x77777777,0x77777777,0x77777777);
     if (-1 == Mode)
     {
         _s=my_strcpy(s, _PT_ImJahre);

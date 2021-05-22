@@ -57,7 +57,7 @@ void MAIN_FNC()
         GAMEEXIT();
         return;
     }
-    for (i = 1; i<128; ++i) { SetRGB4(&(XScreen->ViewPort),i,0,0,0); };
+    for (i = 1; i<128; ++i) { SetRGB32(&(XScreen->ViewPort),i,0,0,0); };
 
     /* Start the Intro ******************/
     MAININTRO();

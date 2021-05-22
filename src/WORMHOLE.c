@@ -251,9 +251,9 @@ void TRAVEL()
                 for(j = 0; j < random_wert; ++j)
                 {
                     PLAYSOUND(1,1100);
-                    SetRGB4(MyVPort_PTR[1-AScr],0,8,8,15);
+                    SetRGB32(MyVPort_PTR[1-AScr],0,0x88888888,0x88888888,0xFFFFFFFF);
                     Delay(3);
-                    SetRGB4(MyVPort_PTR[1-AScr],0,0,0,3);
+                    SetRGB32(MyVPort_PTR[1-AScr],0,         0,         0,0x33333333);
                     Delay(3);
                 }
                 return;

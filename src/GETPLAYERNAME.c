@@ -27,9 +27,9 @@ void GETPLAYERNAME(uint8 GPN_ActPlayer, char* PName)
     }
     RPort_PTR = GPN_Window->RPort;
 
-    SetRGB4(MyVPort_PTR[1],1,15,15,15);
-    SetRGB4(MyVPort_PTR[1],2,3,3,15);
-    SetRGB4(MyVPort_PTR[1],3,9,9,9);
+    SetRGB32(MyVPort_PTR[1],1,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF);
+    SetRGB32(MyVPort_PTR[1],2,0x33333333,0x33333333,0xFFFFFFFF);
+    SetRGB32(MyVPort_PTR[1],3,0x99999999,0x99999999,0x99999999);
     WRITE(320,100,1,WRITE_Center,RPort_PTR,3,PText[160]);
     if (!MultiPlayer)
     {

@@ -43,7 +43,7 @@ BPTR OPENSMOOTH(const char* FName, const uint32 FMode, LONG* FSize)
             if (NULL == OS_XScreen) { return (BPTR)0; }
 
             // setup a screen colour (light blue) and put the screen to the back
-            SetRGB32(&(OS_XScreen->ViewPort), 1, 0xBB000000, 0xBB000000, 0xFF000000);
+            SetRGB32(&(OS_XScreen->ViewPort), 1, 0xBBBBBBBB, 0xBBBBBBBB, 0xFFFFFFFF);
             ScreenToBack(OS_XScreen);
 
             WRITE(140, 0,1,WRITE_Center,&(OS_XScreen->RastPort),3, "Bitte Disk");
