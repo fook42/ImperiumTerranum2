@@ -51,71 +51,53 @@ typedef struct SArr6 {
         (void) my_strcpy(_s, _PT_Planet);
         WRITE(89,53,color,0,RPort_PTR,3,s);
 
-        i = it_round((double) (abs(PlanetHeader->PosX)+abs(PlanetHeader->PosY))/3.4f);
-        l = ((sint32) (13-i)*(13-i)*(13-i) / 3) -270;
-        if ((PlanetHeader->Class==CLASS_SATURN) || (PlanetHeader->Class==CLASS_GAS))
+        if (1 == ClassLifeFactor[PlanetHeader->Class])
         {
-            _s=my_strcpy(s, PText[332]);
-        } else {
             _s=my_strcpy(s, PText[333]);
+            *_s++ = ' ';
+            _s = dez2out((PlanetHeader->Water / PlanetHeader->Size), 0, _s);
+            *_s++ = '%';
+        } else if (CLASS_PHANTOM != PlanetHeader->Class)
+        {
+            i = it_round((double) (abs(PlanetHeader->PosX)+abs(PlanetHeader->PosY))/3.4f);
+            l = ((sint32) (13-i)*(13-i)*(13-i) / 3) -270;
+
+            _s=my_strcpy(s, PText[332]);
+            *_s++ = ' ';
+            _s = dez2out(l, 0, _s);
+            *_s++ = ' '; *_s++ = '.'; *_s++ = '.'; *_s++ = ' ';
+            _s = dez2out((l+(12-i)*10), 0, _s);
+            *_s++ = ' '; *_s++ = 0xB0; *_s++ = 'C';
         }
-        *_s++ = ' ';
+        *_s = 0;
+
         switch (PlanetHeader->Class) {
             case CLASS_DESERT:    {
-                                    _s = dez2out((PlanetHeader->Water / PlanetHeader->Size), 0, _s);
-                                    *_s++ = '%'; *_s = 0;
                                     SA6 = (SArr6) {{PText[334],PText[335],PText[336],PText[337],PText[338],s}};
-                                    l = 5;
                                     } break;
             case CLASS_HALFEARTH: {
-                                    _s = dez2out((PlanetHeader->Water / PlanetHeader->Size), 0, _s);
-                                    *_s++ = '%'; *_s = 0;
                                     SA6 = (SArr6) {{PText[340],PText[341],PText[342],PText[343],PText[344],s}};
-                                    l = 4;
                                     } break;
             case CLASS_EARTH:     {
-                                    _s = dez2out((PlanetHeader->Water / PlanetHeader->Size), 0, _s);
-                                    *_s++ = '%'; *_s = 0;
                                     SA6 = (SArr6) {{PText[346],PText[347],PText[348],PText[349],PText[350],s}};
-                                    l = 6;
-                                    } break;
-            case CLASS_SATURN:    {
-                                    _s = dez2out(l, 0, _s);
-                                    *_s++ = ' '; *_s++ = '.'; *_s++ = '.'; *_s++ = ' ';
-                                    _s = dez2out((l+(12-i)*10), 0, _s);
-                                    *_s++ = ' '; *_s++ = 0xB0; *_s++ = 'C'; *_s = 0;
-                                    SA6 = (SArr6) {{PText[352],PText[353],PText[354],PText[355],PText[356],s}};
-                                    l = 3;
-                                    } break;
-            case CLASS_GAS:       {
-                                    _s = dez2out(l, 0, _s);
-                                    *_s++ = ' '; *_s++ = '.'; *_s++ = '.'; *_s++ = ' ';
-                                    _s = dez2out((l+(12-i)*10), 0, _s);
-                                    *_s++ = ' '; *_s++ = 0xB0; *_s++ = 'C'; *_s = 0;
-                                    SA6 = (SArr6) {{PText[358],PText[359],PText[360],PText[361],PText[362],s}};
-                                    l = 1;
                                     } break;
             case CLASS_ICE:       {
-                                    _s = dez2out((PlanetHeader->Water / PlanetHeader->Size), 0, _s);
-                                    *_s++ = '%'; *_s = 0;
                                     SA6 = (SArr6) {{PText[364],PText[365],PText[366],PText[367],PText[368],s}};
-                                    l = 8;
-                                    } break;
-            case CLASS_PHANTOM:   {
-                                    SA6 = (SArr6) {{PText[370],PText[371],NULL,NULL,NULL,NULL}};
-                                    l = 7;
                                     } break;
             case CLASS_STONES:    {
-                                    _s = dez2out((PlanetHeader->Water / PlanetHeader->Size), 0, _s);
-                                    *_s++ = '%'; *_s = 0;
                                     SA6 = (SArr6) {{PText[373],PText[374],PText[375],PText[376],PText[377],s}};
-                                    l = 0;
                                     } break;
             case CLASS_WATER:     {
-                                    _s = dez2out((PlanetHeader->Water / PlanetHeader->Size), 0, _s);
-                                    *_s++ = '%'; *_s = 0;
                                     SA6 = (SArr6) {{PText[379],PText[380],PText[381],PText[382],PText[383],s}};
-                                    l = 2;
+                                    } break;
+            case CLASS_SATURN:    {
+                                    SA6 = (SArr6) {{PText[352],PText[353],PText[354],PText[355],PText[356],s}};
+                                    } break;
+            case CLASS_GAS:       {
+                                    SA6 = (SArr6) {{PText[358],PText[359],PText[360],PText[361],PText[362],s}};
+                                  } break;
+            case CLASS_PHANTOM:   {
+                                    SA6 = (SArr6) {{PText[370],PText[371],NULL,NULL,NULL,NULL}};
                                     } break;
             default: { }
         }
@@ -128,7 +110,7 @@ typedef struct SArr6 {
 
         x = 0;
         y = 0;
-        l = l*32;
+        l = 32 * PlanetHeader->Class;
         do
         {
             Delay(RDELAY);
