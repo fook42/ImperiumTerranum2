@@ -10,7 +10,6 @@ void INITSTDTAGS()
     struct TagItem newTags[] = {{SA_DisplayID,   ScreenModeID_HighRes},
                                 {SA_Interleaved, true},
                                 {SA_Draggable,   false},
-                                {SA_AutoScroll,  true},
                                 {SA_Pens,        (ULONG) &Pens},
                                 {SA_Colors,      (ULONG) &ColSpec},
 #ifdef _DEBUG_
@@ -22,5 +21,5 @@ void INITSTDTAGS()
     memset(&Pens, 0, sizeof(PenArr));
     ColSpec = (ColSpecArr) {{ 0,0,0,0,-1 }};
 
-    memcpy( Tags, newTags, 7*sizeof(struct TagItem));
+    memcpy( Tags, newTags, sizeof(newTags));
 }

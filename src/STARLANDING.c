@@ -633,10 +633,6 @@ void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
                                 {TAG_DONE,0},
                                 {TAG_DONE,0}};
 
-    if ((LowRes_Width < 256) || (LowRes_Height < 256))
-    {
-        SL_NeuScreen.Type |= AUTOSCROLL;
-    }
     if (Save.SmallLand)
     {
         MOVESHIP_SMALLANDING(PPtr,SPtr,ActSys);
@@ -653,7 +649,7 @@ void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
         return;
     }
 
-    memcpy( Tags, newTags, 7*sizeof(struct TagItem));
+    memcpy( Tags, newTags, sizeof(newTags));
 
     for(i = 0; i < 2; i++)
     {

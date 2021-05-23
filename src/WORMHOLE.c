@@ -373,11 +373,6 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
                             {TAG_DONE,0},
                             {TAG_DONE,0}};
  
-    if ((LowRes_Width < 320) || (LowRes_Height < 256))
-    {
-        WH_NeuScreen.Type |= AUTOSCROLL;
-    }
-
     Error = true;
     MyShipPtr = ShipPtr;
     WORMHOLE_ShipShield = it_round((double) (MyShipPtr->Shield * 760.0) / ShipData(MyShipPtr->SType).MaxShield);
@@ -395,7 +390,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
         return _WORMFLIGHT;
     }
 
-    memcpy(Tags, newTags, (7*sizeof(struct TagItem)));
+    memcpy(Tags, newTags, sizeof(newTags));
     for(i = 0; i < 2; ++i)
     {
         MyScreen[i] = OpenScreenTagList(&WH_NeuScreen, Tags);
