@@ -363,21 +363,25 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     char        s[40];
     char*       _s;
     r_Col_t     Colors[128];
-    PLANEPTR    MyRastPtr = NULL;
+    PLANEPTR    MyRastPtr[2] = {NULL, NULL};
     APTR        IntroAreaMem = NULL;
-    struct TmpRas       MyTmpRas;
+    struct TmpRas       MyTmpRas[2];
     struct AreaInfo     MyAI;
     uint8       i;
     int         ret_code = -1;
     APTR        TextVectorMem = NULL;
 
-    MyRastPtr = AllocRaster(640, 360);
-    if (NULL == MyRastPtr)
+    for (i = 0; i < 2; ++i)
     {
-        ret_code = -11;
-        goto leave_part;
+        MyRastPtr[i] = AllocRaster(640, 360);
+        if (NULL == MyRastPtr[i])
+        {
+            ret_code = -11;
+            goto leave_part;
+        }
+        InitTmpRas(&MyTmpRas[i], MyRastPtr[i], 21000);
+        MyRPort_PTR[i]->TmpRas = &MyTmpRas[i];
     }
-    InitTmpRas(&MyTmpRas, MyRastPtr, 21000);
 
     IntroAreaMem = AllocMem(IntroAreaSize, MEMF_CHIP);
     if (NULL == IntroAreaMem)
@@ -387,9 +391,6 @@ int MAININTRO_PART2(uint16** SMemA, LONG* SMemL)
     }
     InitArea(&MyAI, IntroAreaMem, 200);
 
-    MyRPort_PTR[0]->TmpRas = &MyTmpRas;
-    MyRPort_PTR[1]->TmpRas = &MyTmpRas; // maybe illegal!!!
-    //  hint from Autodocs(InitTmpRas): BUGS: Would be nice if RastPorts could share one TmpRas.
     MyRPort_PTR[0]->AreaInfo = &MyAI;
     MyRPort_PTR[1]->AreaInfo = &MyAI;
 
@@ -610,9 +611,12 @@ leave_part:
         FreeMem(IntroAreaMem, IntroAreaSize);
     }
 
-    if (NULL != MyRastPtr)
+    for (i = 0; i < 2; ++i)
     {
-        FreeRaster(MyRastPtr, 640, 360);
+        if (NULL != MyRastPtr[i])
+        {
+            FreeRaster(MyRastPtr[i], 640, 360);
+        }
     }
 
     if (NULL != IMemA[0])
