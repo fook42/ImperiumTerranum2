@@ -69,20 +69,20 @@ char* GETCIVNAME(const int CivVar)
 {
    char* Result;
    switch (CivVar) {
-      case 1: Result = _PT_Terraner;  break;
-      case 2: Result = _PT_Kleganer;  break;
-      case 3: Result = _PT_Remalonen; break;
-      case 4: Result = _PT_Cardaccer; break;
-      case 5: Result = _PT_Feragis;   break;
-      case 6: Result = _PT_Barojaner; break;
-      case 7: Result = _PT_Volkanier; break;
-      case 8: switch (Save.WorldFlag) {
+      case CIVVAR_TERRA:  Result = _PT_Terraner;  break;
+      case CIVVAR_KLEGAN: Result = _PT_Kleganer;  break;
+      case CIVVAR_REMALO: Result = _PT_Remalonen; break;
+      case CIVVAR_CARDAC: Result = _PT_Cardaccer; break;
+      case CIVVAR_FERAGI: Result = _PT_Feragis;   break;
+      case CIVVAR_BAROJA: Result = _PT_Barojaner; break;
+      case CIVVAR_VOLKAN: Result = _PT_Volkanier; break;
+      case CIVVAR_OTHER: switch (Save.WorldFlag) {
                 case WFLAG_CEBORC: Result = _PT_Ceborcs;   break;
                 case WFLAG_DCON:   Result = _PT_Dconianer; break;
                 case WFLAG_JAHADR: Result = _PT_JaHadr;    break;
                 default: Result = GETCIVNAME(GETCIVVAR(Save.WorldFlag));
               }; break;
-      case 9: Result = _PT_Die_Maques; break;
+      case CIVVAR_MAQUES: Result = _PT_Die_Maques; break;
       default: Result = (char*) &Error_Text;
    }
    return Result;

@@ -11,21 +11,21 @@ bool FINDMAQUESSHIP(uint8 ActSys, r_ShipHeader* MyShipPtr)
     bool    _FINDMAQUESSHIP = false;
 
     CivVar = GETCIVVAR(MyShipPtr->Owner);
-    if ((0 != CivVar) && (9 != CivVar))
+    if ((CIVVAR_NONE != CivVar) && (CIVVAR_MAQUES != CivVar))
     {
         DistOld = 10000;
         OtherShipPtr = SystemHeader[ActSys].FirstShip.NextShip;
         while (NULL != OtherShipPtr)
         {
             CivVar2 = GETCIVVAR(OtherShipPtr->Owner);
-            if ((OtherShipPtr->Moving >= 0) && (CivVar2 == 9))
+            if ((0 <= OtherShipPtr->Moving) && (CIVVAR_MAQUES == CivVar2))
             {
                 DistNew = abs(OtherShipPtr->PosX - MyShipPtr->PosX);
-                if (abs(OtherShipPtr->PosY - MyShipPtr->PosY)>DistNew)
+                if (abs(OtherShipPtr->PosY - MyShipPtr->PosY) > DistNew)
                 {
                     DistNew = abs(OtherShipPtr->PosY-MyShipPtr->PosY);
                 }
-                if (DistNew<DistOld)
+                if (DistNew < DistOld)
                 {
                     DistOld = DistNew;
                     _FINDMAQUESSHIP = true;

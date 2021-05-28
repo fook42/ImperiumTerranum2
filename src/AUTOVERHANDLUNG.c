@@ -26,8 +26,8 @@ void AUTOVERHANDLUNG(const int CivFlag1, const int CivFlag2, const int Mode)
         INFORMUSER();
     }
 
-    --CivVar1;
-    --CivVar2;
+    --CivVar1;  // 1..8 -> 0..7
+    --CivVar2;  // 1..8 -> 0..7
     if ((!Save.PlayMySelf)
         && ((0 != Save.CivPlayer[CivVar1]) || (0 != Save.CivPlayer[CivVar2])))
     {
@@ -52,16 +52,19 @@ void AUTOVERHANDLUNG(const int CivFlag1, const int CivFlag2, const int Mode)
         return;
     }
     if (0 != (Year % 4)) { return; }
+
     if ((7 == CivVar1) && (WFLAG_JAHADR == Save.WorldFlag)
         && (Save.WarPower[7] > (Save.WarPower[CivVar2]*2)))
     {
-        if ((Save.JSteuer[CivVar2] > 0) && (Save.JSteuer[CivVar2] < 100))
+        if ((0 < Save.JSteuer[CivVar2]) && (100 > Save.JSteuer[CivVar2]))
         {
             ++(Save.JSteuer[CivVar2]);
         } else {
-            Save.JSteuer[CivVar2] = (uint8) (2+2*(Save.WarPower[7] / (double) (Save.WarPower[CivVar2]+1)));
-            if (Save.JSteuer[CivVar2] > 53)
-                { Save.JSteuer[CivVar2] = 53; }
+            Save.JSteuer[CivVar2] = 2 + ((uint8) (2.0*(Save.WarPower[7] / (double) (Save.WarPower[CivVar2] + 1.0))));
+            if (53 < Save.JSteuer[CivVar2])
+            {
+                Save.JSteuer[CivVar2] = 53;
+            }
         }
         GOTOPEACE(CivVar1,CivVar2);
     } else {
