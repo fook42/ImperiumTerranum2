@@ -223,11 +223,11 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                     && (Save.CivPlayer[ActPlayer-1] != 0) && (!DconDone))
                                 {
                                     INFORMUSER();
-                                    AST_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
+                                    AST_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
                                     if (NULL != AST_Window)
                                     {
                                         RPort_PTR = AST_Window->RPort;
-                                        MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
+
 
                                         _s=my_strcpy(s, GETMYADJ(MyShipPtr->Owner, &DconDone));
                                         if (!DconDone)

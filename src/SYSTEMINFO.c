@@ -28,13 +28,13 @@ void SYSTEMINFO(uint8 ActSys)
         return;
     }
 
-    SYS_Window=MAKEWINDOW(194,119,123,114,MyScreen[0]);
+    SYS_Window=MAKEWINDOWBORDER(194,119,123,114,MyScreen[0]);
     if (NULL == SYS_Window)
     {
         return;
     }
     RPort_PTR = SYS_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,122,113,12,6,1);
+
 
     UseShipPtr = MyShipPtr;
     if (SHIPTYPE_FLEET == MyShipPtr->SType)
@@ -92,7 +92,7 @@ void SYSTEMINFO(uint8 ActSys)
                     while((RMB_NOTPRESSED) && (0 == SysID));
  
                     if (RMB_PRESSED) { PLAYSOUND(0,300); }
-                    if ((0 < SysID) && (MAXSYSTEMS >= SysID) && (ActSys != SysID))
+                    else if ((0 < SysID) && (MAXSYSTEMS >= SysID) && (ActSys != SysID))
                     {
                         if (0 == SystemHeader[SysID-1].Planets) { CREATENEWSYSTEM(SysID-1, 0, 1); }
                         MyShipPtr->Target = SysID;
@@ -183,11 +183,11 @@ void SYSTEMINFO(uint8 ActSys)
                         if (it_round((double) sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))) >= 10)
                         {
                             // too far from sun
-                            SYS_Window=MAKEWINDOW(70,115,371,86,MyScreen[0]);
+                            SYS_Window=MAKEWINDOWBORDER(70,115,371,86,MyScreen[0]);
                             if (NULL != SYS_Window)
                             {
                                 RPort_PTR = SYS_Window->RPort;
-                                MAKEWINBORDER(RPort_PTR,0,0,370,85,12,6,1);
+
                                 WRITE(186,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[481]);
                                 WRITE(186,32,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[482]);
                                 WRITE(186,54,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[483]);

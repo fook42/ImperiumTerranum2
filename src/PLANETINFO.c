@@ -33,13 +33,13 @@ void PLANETINFO(const int ActSys)
     PlanetHeader = ObjPtr;
     if ((PlanetHeader->PFlags & FLAG_CIV_MASK) != ActPlayerFlag)
     {
-        PLI_Window=MAKEWINDOW(81,81,348,198,MyScreen[0]);
+        PLI_Window=MAKEWINDOWBORDER(81,81,348,198,MyScreen[0]);
         if (NULL == PLI_Window)
         {
             return;
         }
         RPort_PTR = PLI_Window->RPort;
-        MAKEWINBORDER(RPort_PTR,0,0,347,197,12,6,1);
+
         MAKEWINBORDER(RPort_PTR,9,9, 80, 80,12,6,1);
         color = 12;
         if (0 < PlanetHeader->PFlags)

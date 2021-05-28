@@ -21,13 +21,13 @@ void STATISTIK()
 
     struct Window* STA_Window;
     struct RastPort* RPort_PTR;
-    STA_Window = MAKEWINDOW(10,30,491,361,MyScreen[0]);
+    STA_Window = MAKEWINDOWBORDER(10,30,491,361,MyScreen[0]);
     if (NULL == STA_Window)
     {
         return;
     }
     RPort_PTR = STA_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,490,360,12,6,1);
+
 
     --ActPlayer; // to shift the array
 

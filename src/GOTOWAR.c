@@ -38,11 +38,11 @@ void GOTOWAR(int CivFlag1, int CivFlag2)
         return;
     }
 
-    GTW_Window = MAKEWINDOW(85,120,341,81,MyScreen[0]);
+    GTW_Window = MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
     if (NULL != GTW_Window)
     {
         RPort_PTR = GTW_Window->RPort;
-        MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
+
         WRITE(171,11,CivFlag1,(1|WRITE_Center),RPort_PTR,3, GETCIVNAME(CivVar1));
         WRITE(171,31,      12,(1|WRITE_Center),RPort_PTR,3, _PT_beginnenKrieggegen);
         WRITE(171,51,CivFlag2,(1|WRITE_Center),RPort_PTR,3, GETCIVNAME(CivVar2));

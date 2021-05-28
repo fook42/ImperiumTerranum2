@@ -19,13 +19,13 @@ void REGIERUNG()
                               FORSCHUNG,
                               PUMPUPTHELEVEL };
 
-    REG_Window=MAKEWINDOW(194,119,123,158,MyScreen[0]);
+    REG_Window=MAKEWINDOWBORDER(194,119,123,158,MyScreen[0]);
     if (NULL == REG_Window)
     {
         return;
     }
     RPort_PTR = REG_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,122,157,12,6,1);
+
 
     ypos = 3;
     button_Textcol = 0;

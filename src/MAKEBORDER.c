@@ -29,3 +29,17 @@ struct Window* MAKEWINDOW(const int LEdge, const int TEdge, const int SizeX, con
 
     return( OpenWindow( &MK_NeuWindow ) );
 }
+
+struct Window* MAKEWINDOWBORDER(const int LEdge, const int TEdge, const int SizeX, const int SizeY, struct Screen* onScreen)
+{
+    struct NewWindow MK_NeuWindow = {(WORD) LEdge,(WORD) TEdge,(WORD) SizeX,(WORD) SizeY,0,0,
+                                    RAWKEY,SMART_REFRESH+BORDERLESS,NULL,NULL,NULL,onScreen,NULL,0,0,0,0,CUSTOMSCREEN};
+    struct Window* winPointer = NULL;
+
+    winPointer = OpenWindow( &MK_NeuWindow );
+    if (winPointer)
+    {
+        MAKEWINBORDER(winPointer->RPort, 0, 0, SizeX-1, SizeY-1, 12, 6, 1);
+    }
+    return winPointer;
+}

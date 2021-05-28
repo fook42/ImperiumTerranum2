@@ -78,11 +78,11 @@ void SD_TEXTWINDOW(const char* TextPtr1,const char* TextPtr2,const char* TextPtr
     struct Window*   STD_Window;
     struct RastPort* RPort_PTR;
 
-    STD_Window=MAKEWINDOW(50,100,411,81,MyScreen[0]);
+    STD_Window=MAKEWINDOWBORDER(50,100,411,81,MyScreen[0]);
     if (NULL != STD_Window)
     {
         RPort_PTR = STD_Window->RPort;
-        MAKEWINBORDER(RPort_PTR,0,0,410,80,12,6,1);
+
         WRITE(206,10,ActPlayerFlag,WRITE_Center|JAM1,RPort_PTR,3,TextPtr1);
         WRITE(206,30,ActPlayerFlag,WRITE_Center|JAM1,RPort_PTR,3,TextPtr2);
         WRITE(206,50,ActPlayerFlag,WRITE_Center|JAM1,RPort_PTR,3,TextPtr3);

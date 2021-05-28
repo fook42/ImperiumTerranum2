@@ -446,13 +446,13 @@ bool DISKMENU(uint8 Autoselect)
                                   PText[532], PText[533], PText[534]};
     int button_Textcol, button_Textstyle;
 
-    DIS_Window=MAKEWINDOW(194,119,123,136,MyScreen[0]);
+    DIS_Window=MAKEWINDOWBORDER(194,119,123,136,MyScreen[0]);
     if (NULL == DIS_Window)
     {
         return false;
     }
     RPort_PTR = DIS_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,122,135,12,6,1);
+
 
     ypos = 3;
     button_Textcol = 0;

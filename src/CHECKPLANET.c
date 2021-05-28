@@ -39,11 +39,11 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                         if (0 != Save.CivPlayer[ActPlayer-1])
                         {
                             INFORMUSER();
-                            CHP_Window=MAKEWINDOW(80,120,351,131,MyScreen[0]);
+                            CHP_Window=MAKEWINDOWBORDER(80,120,351,131,MyScreen[0]);
                             if (NULL != CHP_Window)
                             {
                                 RPort_PTR = CHP_Window->RPort;
-                                MAKEWINBORDER(RPort_PTR,0,0,350,130,12,6,1);
+
                                 WRITE(176,16,GETCIVFLAG(HomeWorld),(1|WRITE_Center),RPort_PTR,3,PText[208]);
                                 _s=my_strcpy(s, GETCIVNAME(HomeWorld));
                                 *_s++ = ' ';

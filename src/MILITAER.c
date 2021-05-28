@@ -63,13 +63,13 @@ void MILITAER()
 
     struct Window* MIL_Window;
     struct RastPort* RPort_PTR;
-    MIL_Window=MAKEWINDOW(50,70,411,331,MyScreen[0]);
+    MIL_Window=MAKEWINDOWBORDER(50,70,411,331,MyScreen[0]);
     if (NULL == MIL_Window)
     {
         return;
     }
     RPort_PTR = MIL_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,410,330,12,6,1);
+
 
     ypos = 50;
     for (i = 0; i < 6; ++i)

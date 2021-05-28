@@ -17,11 +17,11 @@ void QUOTEPICARD()
 
     struct Window* QPI_Window = NULL;
     struct RastPort* RPort_PTR;
-    QPI_Window=MAKEWINDOW(20,70,471,221,MyScreen[0]);
+    QPI_Window=MAKEWINDOWBORDER(20,70,471,221,MyScreen[0]);
     if (NULL != QPI_Window)
     {
         RPort_PTR = QPI_Window->RPort;
-        MAKEWINBORDER(RPort_PTR,0,0,470,220,12,6,1);
+
 
         ypos = 20;
         for (i = 0; i < (sizeof(Txt_Picard)/sizeof(Txt_Picard[0])); ++i)

@@ -49,13 +49,13 @@ void FINANZEN()
         jahadr_winheight = 66;
     }
 
-    FIN_Window=MAKEWINDOW(60,100,371,176+jahadr_winheight,MyScreen[0]);
+    FIN_Window=MAKEWINDOWBORDER(60,100,371,176+jahadr_winheight,MyScreen[0]);
     if (NULL == FIN_Window)
     {
         return;
     }
     RPort_PTR = FIN_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,370,175,12,6,1);
+
 
     ActPlayer--;    // TODO ... due to shifted Save-array...
 
@@ -74,7 +74,7 @@ void FINANZEN()
     WRITE(250,115,12,0,RPort_PTR,1,"J I");      // v ^
     if (0 != jahadr_winheight)
     {
-        MAKEWINBORDER(RPort_PTR,0,176,370,241,12,6,0);
+
         WRITE(265,181,8,0,RPort_PTR,1,"I");     // ^
         WRITE( 20,192,FLAG_OTHER,0,RPort_PTR,3,PText[683]);
         MAKEWINBORDER(RPort_PTR,231,198,310,221,12,6,1);

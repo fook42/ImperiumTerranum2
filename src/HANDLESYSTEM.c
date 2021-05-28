@@ -21,16 +21,16 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
     for(i =  1; i < 36; ++i) { PSys[i] = 0; }
     for(i = 36; i < 38; ++i) { PSys[i] = 1; }
 
-    for (i = stSys; i<=Save.Systems; ++i)
+    for (i = stSys; i <= Save.Systems; ++i)
     {
-        if ((SystemFlags[ActPlayer-1][i-1] & FLAG_KNOWN) == FLAG_KNOWN)
+        MyShipPtr = SystemHeader[i-1].FirstShip.NextShip;
+        while (NULL != MyShipPtr)
         {
-            MyShipPtr = SystemHeader[i-1].FirstShip.NextShip;
-            while (NULL != MyShipPtr)
+            if (ActPlayerFlag == MyShipPtr->Owner)
             {
-                if ((ActPlayerFlag == MyShipPtr->Owner) &&
-                    (((-1 == Mode) && (TARGET_POSITION == MyShipPtr->Target)) ||
-                     ((-2 == Mode) && (SHIPFLAG_WATER  == MyShipPtr->Flags) && (MyShipPtr->Moving >= 0))))
+                if (((-1 == Mode) && (TARGET_POSITION == MyShipPtr->Target)) ||
+                    ((-2 == Mode) && (SHIPFLAG_WATER  == MyShipPtr->Flags) && (0 <= MyShipPtr->Moving)) ||
+                    ((-3 == Mode) && (0 > MyShipPtr->Moving)))
                 {
                     ++z;
                     if (36 == z)
@@ -45,6 +45,22 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     if (SHIPTYPE_FLEET == MyShipPtr->SType)
                     {
                         WRITE_RP0(40,y,ActPlayerFlag,0,2, _PT_Flotte);
+                    } else if (-3 == Mode) {
+                        WRITE_RP0(40,y,ActPlayerFlag,0,2, Project.data[MyShipPtr->SType]);
+                        _s = my_strcpy(s, Save.SystemName.data[MyShipPtr->Source-1]);
+                        *_s++ = ' ';
+                        *_s++ = '-';
+                        *_s++ = '>';
+                        *_s++ = ' ';
+                        _s = my_strcpy(_s, Save.SystemName.data[MyShipPtr->Target-1]);
+                        *_s++ = ' ';
+                        *_s++ = '(';
+                        _s = dez2out(-MyShipPtr->Moving,0,_s);
+                        *_s++ = ' ';
+                        _s = my_strcpy(_s, _PT_Jahre);
+                        *_s++ = ')';
+                        *_s = 0;
+                        WRITE_RP0(135,y,12,0,2,s);
                     } else {
                         WRITE_RP0(40,y,ActPlayerFlag,0,2, Project.data[MyShipPtr->SType]);
 
@@ -71,8 +87,8 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     }
                     y = y+14;
                 }
-                MyShipPtr = MyShipPtr->NextShip;
             }
+            MyShipPtr = MyShipPtr->NextShip;
         }
     }
     //    LastSys = 1;
@@ -120,11 +136,11 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                     if (CivFlag == ActPlayerFlag)
                     {
                         switch (MyPlanet->ProjectID) {
-                            case -3: _s = PText[163]; break;
-                            case -2: _s = PText[164]; break;
-                            case -1: _s = PText[165]; break;
-                            case  0: _s = _Txt_Separator; break;
-                            default: _s = Project.data[MyPlanet->ProjectID];
+                            case PROJECT_CLEAR_BIOPHERE:  _s = PText[163]; break;
+                            case PROJECT_REPAIR_INFRA:    _s = PText[164]; break;
+                            case PROJECT_REPAIR_INDUSTRY: _s = PText[165]; break;
+                            case PROJECT_NONE:            _s = _Txt_Separator; break;
+                            default:                      _s = Project.data[MyPlanet->ProjectID];
                         }
                         WRITE_RP0(170,y,12,0,2, _s);
 
@@ -177,12 +193,12 @@ void SEARCHOBJECT(uint8* ActSys)
     _s=my_strcpy(_Txt_nextPage, _PT_Naechste_Seite);
     (void) my_strcpy(_s, "      >>>");
 
-    SEO_Window=MAKEWINDOW(194,119,123,136,MyScreen[0]);
+    SEO_Window=MAKEWINDOWBORDER(194,119,123,158,MyScreen[0]);
     RPort_PTR = SEO_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,0,122,135,12,6,1);
+
 
     ypos = 3;
-    for(i = 0; i < 5; i++)
+    for(i = 0; i < 6; i++)
     {
         ypos += 22;
         if (2 == i) { continue; }
@@ -195,6 +211,7 @@ void SEARCHOBJECT(uint8* ActSys)
     WRITE(61, 71,12,WRITE_Center,RPort_PTR,3,_PT_Schiffe);
     WRITE(61, 93, 0,WRITE_Center,RPort_PTR,3,_PT_Position);
     WRITE(61,115, 0,WRITE_Center,RPort_PTR,3,_PT_Bewaessern);
+    WRITE(61,137, 0,WRITE_Center,RPort_PTR,3, PText[587]);
 
     while (LMB_PRESSED) { };
 
@@ -224,6 +241,11 @@ void SEARCHOBJECT(uint8* ActSys)
                 {
                     KLICKWINGAD(RPort_PTR,4,113);
                     Mode = -2;                      // watering ships
+                    b = true;
+                } else if ((SEO_Window->MouseY>134) && (SEO_Window->MouseY<156))
+                {
+                    KLICKWINGAD(RPort_PTR,4,135);
+                    Mode = -3;                      // traveling ships
                     b = true;
                 }
             }
@@ -294,11 +316,14 @@ void SEARCHOBJECT(uint8* ActSys)
                     {
                         LastSys = HANDLESYSTEM_DRAWSHIPS(Mode, LastSys, PSys, ShipPos);
                     } else {
-                        if (PSys[ThisP] != 0)
+                        if (0 != PSys[ThisP])
                         {
-                            OffsetX = -ShipPos[ThisP]->PosX-1;
-                            OffsetY = -ShipPos[ThisP]->PosY-1;
-                            *ActSys = PSys[ThisP];
+                            if ((SystemFlags[ActPlayer-1][PSys[ThisP]-1] & FLAG_KNOWN) == FLAG_KNOWN)
+                            {
+                                OffsetX = -ShipPos[ThisP]->PosX-1;
+                                OffsetY = -ShipPos[ThisP]->PosY-1;
+                                *ActSys = PSys[ThisP];
+                            }
                         }
                         DRAWSYSTEM(MODE_REDRAW,*ActSys,NULL);
                         b = true;

@@ -294,9 +294,9 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         INFORMUSER();
 
-                        ROT_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
+                        ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
                         RPort_PTR = ROT_Window->RPort;
-                        MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
+
 
                         _s=my_strcpy(s, _PT_System);
                         *_s++ = ':';
@@ -418,27 +418,30 @@ void ROTATEPLANETS(uint8 ActSys)
                         {
                             switch (PlanetHeader->ProjectID)
                             {
-                                case -3:{   PlanetHeader->Biosphaere += 9;
-                                            if (PlanetHeader->Biosphaere>200)
-                                            {
-                                                l = 1;
-                                                PlanetHeader->Biosphaere = 200;
-                                            }
-                                        } break;
-                                case -2:{   PlanetHeader->Infrastruktur += 9;
-                                            if (PlanetHeader->Infrastruktur>200)
-                                            {
-                                                l = 1;
-                                                PlanetHeader->Infrastruktur = 200;
-                                            }
-                                        } break;
-                                default:{   PlanetHeader->Industrie += 9;
-                                            if (PlanetHeader->Industrie>200)
-                                            {
-                                                l = 1;
-                                                PlanetHeader->Industrie = 200;
-                                            }
-                                        }
+                                case PROJECT_CLEAR_BIOPHERE: {
+                                                                PlanetHeader->Biosphaere += 9;
+                                                                if (200 < PlanetHeader->Biosphaere)
+                                                                {
+                                                                    l = 1;
+                                                                    PlanetHeader->Biosphaere = 200;
+                                                                }
+                                                            } break;
+                                case PROJECT_REPAIR_INFRA: {
+                                                                PlanetHeader->Infrastruktur += 9;
+                                                                if (200 < PlanetHeader->Infrastruktur)
+                                                                {
+                                                                    l = 1;
+                                                                    PlanetHeader->Infrastruktur = 200;
+                                                                }
+                                                            } break;
+                                default: {
+                                                                PlanetHeader->Industrie += 9;
+                                                                if (200 < PlanetHeader->Industrie)
+                                                                {
+                                                                    l = 1;
+                                                                    PlanetHeader->Industrie = 200;
+                                                                }
+                                                            }
                             }
                         } else {
                             PMoney = 1+it_round(PProd*(PlanetHeader->Infrastruktur/17.0
@@ -564,9 +567,9 @@ void ROTATEPLANETS(uint8 ActSys)
                                     Save.ImperatorState[ActPlayer-1] += 50;
                                     Save.stProject[ProjID-1] = ActPlayer;
 
-                                    ROT_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
+                                    ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
                                     RPort_PTR = ROT_Window->RPort;
-                                    MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
+
 
                                     _s=my_strcpy(s, GETCIVNAME(ActPlayer));
                                     *_s++ = ' ';
@@ -626,9 +629,9 @@ void ROTATEPLANETS(uint8 ActSys)
                         if ((l == 1) && (Save.CivPlayer[ActPlayer-1] != 0))
                         {
                             INFORMUSER();
-                            ROT_Window=MAKEWINDOW(85,120,341,81,MyScreen[0]);
+                            ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
                             RPort_PTR = ROT_Window->RPort;
-                            MAKEWINBORDER(RPort_PTR,0,0,340,80,12,6,1);
+
 
                             _s=my_strcpy(s, _PT_System);
                             *_s++ = ':';
@@ -662,9 +665,9 @@ void ROTATEPLANETS(uint8 ActSys)
                              && (25 > ProjID) && (!Save.PlayMySelf))
                             {
                                 // building ships... where to place it?
-                                ROT_Window2=MAKEWINDOW(85,208,341,41,MyScreen[0]);
+                                ROT_Window2=MAKEWINDOWBORDER(85,208,341,41,MyScreen[0]);
                                 RPort_PTR2 = ROT_Window2->RPort;
-                                MAKEWINBORDER(RPort_PTR2,0,0,340,40,12,6,1);
+
 
                                 BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(ProjID-8)*32,32,RPort_PTR2,10, 4,32,32,192);
                                 DrawImage(RPort_PTR2,&GadImg1, 55,10);
@@ -672,7 +675,7 @@ void ROTATEPLANETS(uint8 ActSys)
 
                                 WRITE(113,12,0,WRITE_Center,RPort_PTR2,3,PText[587]);   // Space
                                 WRITE(253,12,0,WRITE_Center,RPort_PTR2,3,PText[588]);   // Orbit
-                                b = false;
+                                // b = false;
                                 do
                                 {
                                     Delay(RDELAY);
@@ -683,19 +686,21 @@ void ROTATEPLANETS(uint8 ActSys)
                                             if ((ROT_Window2->MouseX >= 55) && (ROT_Window2->MouseX <= 171))
                                             {
                                                 KLICKWINGAD(RPort_PTR2,55,10);
-                                                b = true;
+                                                // b = true;
                                                 ActShipPtr->PosX = it_round(PlanetHeader->PosX);
                                                 ActShipPtr->PosY = it_round(PlanetHeader->PosY);
                                                 LINKSHIP(ActShipPtr, &(SystemHeader[i].FirstShip), 1);
+                                                break;
                                             } else if ((ROT_Window2->MouseX >= 195) && (ROT_Window2->MouseX <= 311))
                                             {
                                                 KLICKWINGAD(RPort_PTR2,195,10);
-                                                b = true;
+                                                // b = true;
+                                                break;
                                             }
                                         }
                                     }
                                 }
-                                while (!b);
+                                while (true); // (!b);
                                 CloseWindow(ROT_Window2);
                             } else {
                                 if (Save.PlayMySelf) { Delay(PAUSE); }
@@ -1181,9 +1186,9 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         if (0 == (Year % 13))
                         {
-                            ROT_Window=MAKEWINDOW(100,100,311,81,MyScreen[0]);
+                            ROT_Window=MAKEWINDOWBORDER(100,100,311,81,MyScreen[0]);
                             RPort_PTR = ROT_Window->RPort;
-                            MAKEWINBORDER(RPort_PTR,0,0,310,80,12,6,1);
+
 
                             WRITE(156,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[590]); // Wissenschaftler fordern
                             WRITE(156,32,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[591]); // Durchführung des
@@ -1193,9 +1198,9 @@ void ROTATEPLANETS(uint8 ActSys)
                         }
                     }
                     INFORMUSER();
-                    ROT_Window=MAKEWINDOW(60,100,309,168,MyScreen[0]);
+                    ROT_Window=MAKEWINDOWBORDER(60,100,309,168,MyScreen[0]);
                     RPort_PTR = ROT_Window->RPort;
-                    MAKEWINBORDER(RPort_PTR,0,0,308,167,12,6,1);
+
 
                     WRITE(154, 10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[593]); // Was soll entwickelt werden?
                     for(j = 0; j < 6; ++j)

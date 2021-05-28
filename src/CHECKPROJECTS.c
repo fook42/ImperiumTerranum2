@@ -24,11 +24,11 @@ void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner)
             if ((0 != Save.CivPlayer[GETCIVVAR(NewOwner)-1              ])
              || (0 != Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1]))
             {
-                CPJ_Window=MAKEWINDOW(85,118,341,83,MyScreen[0]);
+                CPJ_Window=MAKEWINDOWBORDER(85,118,341,83,MyScreen[0]);
                 if (NULL != CPJ_Window)
                 {
                     RPort_PTR = CPJ_Window->RPort;
-                    MAKEWINBORDER(RPort_PTR,0,0,340,82,12,6,1);
+
 
                     _s=my_strcpy(s, GETCIVNAME(GETCIVVAR(MyPlanetHeader->PFlags)));
                     *_s++ = ' ';

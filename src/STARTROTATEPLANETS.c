@@ -14,11 +14,11 @@ void CREATEINFOBOX(struct Window** CIB_Window, struct RastPort** CIB_RPort_PTR)
         INFORMUSER();
         --ActPlayer;    // for array shifting...
 
-        *CIB_Window = MAKEWINDOW(30,100,451,171,MyScreen[0]);
+        *CIB_Window = MAKEWINDOWBORDER(30,100,451,171,MyScreen[0]);
         if (NULL != (*CIB_Window))
         {
             *CIB_RPort_PTR = (*CIB_Window)->RPort;
-            MAKEWINBORDER(*CIB_RPort_PTR,0,0,450,170,12,6,1);
+
 
             _s=my_strcpy(s, PText[646]);
             *_s++ = ' ';
