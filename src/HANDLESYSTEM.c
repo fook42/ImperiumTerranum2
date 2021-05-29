@@ -45,45 +45,45 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     if (SHIPTYPE_FLEET == MyShipPtr->SType)
                     {
                         WRITE_RP0(40,y,ActPlayerFlag,0,2, _PT_Flotte);
-                    } else if (-3 == Mode) {
-                        WRITE_RP0(40,y,ActPlayerFlag,0,2, Project.data[MyShipPtr->SType]);
-                        _s = my_strcpy(s, Save.SystemName.data[MyShipPtr->Source-1]);
-                        *_s++ = ' ';
-                        *_s++ = '-';
-                        *_s++ = '>';
-                        *_s++ = ' ';
-                        _s = my_strcpy(_s, Save.SystemName.data[MyShipPtr->Target-1]);
-                        *_s++ = ' ';
-                        *_s++ = '(';
-                        _s = dez2out(-MyShipPtr->Moving,0,_s);
-                        *_s++ = ' ';
-                        _s = my_strcpy(_s, _PT_Jahre);
-                        *_s++ = ')';
-                        *_s = 0;
-                        WRITE_RP0(135,y,12,0,2,s);
                     } else {
                         WRITE_RP0(40,y,ActPlayerFlag,0,2, Project.data[MyShipPtr->SType]);
+                        if (-3 == Mode) {
+                            _s = my_strcpy(s, Save.SystemName.data[MyShipPtr->Source-1]);
+                            *_s++ = ' ';
+                            *_s++ = '-';
+                            *_s++ = '>';
+                            *_s++ = ' ';
+                            _s = my_strcpy(_s, Save.SystemName.data[MyShipPtr->Target-1]);
+                            *_s++ = ' ';
+                            *_s++ = '(';
+                            _s = dez2out(-MyShipPtr->Moving,0,_s);
+                            *_s++ = ' ';
+                            _s = my_strcpy(_s, _PT_Jahre);
+                            *_s++ = ')';
+                            *_s = 0;
+                            WRITE_RP0(135,y,12,0,2,s);
+                        } else {
+                            _s=my_strcpy(s, PText[456]);
+                            *_s++ = ':';
+                            *_s++ = ' ';
+                            (void) dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 0, _s);
+                            WRITE_RP0(135,y,12,0,2,s);
 
-                        _s=my_strcpy(s, PText[456]);
-                        *_s++ = ':';
-                        *_s++ = ' ';
-                        (void) dez2out(((MyShipPtr->Ladung & MASK_SIEDLER)>>4), 0, _s);
-                        WRITE_RP0(135,y,12,0,2,s);
+                            _s=my_strcpy(s, PText[457]);
+                            *_s++ = ':';
+                            *_s++ = ' ';
+                            (void) dez2out(MyShipPtr->Ladung & MASK_LTRUPPS, 0, _s);
+                            WRITE_RP0(230,y,12,0,2,s);
 
-                        _s=my_strcpy(s, PText[457]);
-                        *_s++ = ':';
-                        *_s++ = ' ';
-                        (void) dez2out(MyShipPtr->Ladung & MASK_LTRUPPS, 0, _s);
-                        WRITE_RP0(230,y,12,0,2,s);
-
-                        _s=my_strcpy(s, PText[459]);
-                        *_s++ = ':';
-                        *_s++ = ' ';
-                        _s = dez2out(it_round(MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, _s);
-                        *_s++ = ' ';
-                        *_s++ = '%';
-                        *_s = 0;
-                        WRITE_RP0(365,y,12,0,2,s);
+                            _s=my_strcpy(s, PText[459]);
+                            *_s++ = ':';
+                            *_s++ = ' ';
+                            _s = dez2out(it_round(MyShipPtr->Fracht / ShipData(MyShipPtr->SType).MaxLoad*100.0), 0, _s);
+                            *_s++ = ' ';
+                            *_s++ = '%';
+                            *_s = 0;
+                            WRITE_RP0(365,y,12,0,2,s);
+                        }
                     }
                     y = y+14;
                 }
