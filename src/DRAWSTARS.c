@@ -20,12 +20,13 @@ void DRAWSTARS(const int Mode)
     if ((MODE_REDRAW   == Mode)
      || (MODE_STARGATE == Mode))
     {
-        pos = 416;
-        for (i = 0; i < 3; ++i)
+        pos = 388;
+        for (i = 0; i < 4; ++i)
         {
             DrawImage(MyRPort_PTR[0], &GadImg1, 518, pos);
             pos += 28;
         }
+        WRITE_RP0(576,390,0, WRITE_Center              ,3, PText[737]);
         WRITE_RP0(576,418,0, WRITE_Center              ,3,_PT_Regierung);
         WRITE_RP0(576,446,0, WRITE_Center              ,3,_PT_Hauptmenue);
         WRITE_RP0(576,474,8,(WRITE_Center|WRITE_Shadow),3,_PT_Rundenende);

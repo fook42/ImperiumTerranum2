@@ -178,19 +178,19 @@ void MAIN_FNC()
                 KLICKGAD(518,472);
                 STARTROTATEPLANETS();
             }
-            if (LMB_PRESSED && (Save.CivPlayer[ActPlayer-1] != 0))
+            if (LMB_PRESSED && (0 != Save.CivPlayer[ActPlayer-1]))
             {
-                if ((MouseX(0) >= 0) && (MouseX(0) <= 512)
-                        && (MouseY(0) >= 0) && (MouseY(0) <= 512))
+                if ((0 <= MouseX(0)) && (513 > MouseX(0))
+                 && (0 <= MouseY(0)) && (513 > MouseY(0)))
                 {
                     PLAYSOUND(0,300);
                     if ((SystemFlags[ActPlayer-1][LastSystem-1] & FLAG_KNOWN) == FLAG_KNOWN)
                     {
                         HANDLESYSTEM(&LastSystem,NULL);
                     }
-                } else if ((MouseX(0) >= 518) && (MouseX(0) <= 634))
+                } else if ((517 < MouseX(0)) && (635 > MouseX(0)))
                 {
-                    if ((MouseY(0) >= 444) && (MouseY(0) <= 464))
+                    if ((443 < MouseY(0)) && (465 > MouseY(0)))
                     {
                         KLICKGAD(518,444);
                         if (!DISKMENU(DISKMENU_PROMPT))
@@ -198,10 +198,14 @@ void MAIN_FNC()
                             GAMEEXIT();
                             return;
                         }
-                    } else if ((MouseY(0) >= 416) && (MouseY(0) <= 436))
+                    } else if ((415 < MouseY(0)) && (437 > MouseY(0)))
                     {
                         KLICKGAD(518,416);
                         REGIERUNG();
+                    } else if ((387 < MouseY(0)) && (409 > MouseY(0)))
+                    {
+                        KLICKGAD(518,388);
+                        //TECHSCREEN();
                     }
                 }
             } else
