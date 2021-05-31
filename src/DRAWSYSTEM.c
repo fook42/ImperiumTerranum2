@@ -24,9 +24,9 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
             {
                 DrawImage(MyRPort_PTR[0],&GadImg1,518,416+i*28);
             }
-            WRITE_RP0(576,418,0, WRITE_Center              ,3,_PT_Suchen);
-            WRITE_RP0(576,446,0, WRITE_Center              ,3,_PT_Sternenkarte);
-            WRITE_RP0(576,474,8,(WRITE_Center|WRITE_Shadow),3,_PT_Rundenende);
+            WRITE_RP0(576,418,0,JAM1|WRITE_Center             ,3,_PT_Suchen);
+            WRITE_RP0(576,446,0,JAM1|WRITE_Center             ,3,_PT_Sternenkarte);
+            WRITE_RP0(576,474,8,JAM1|WRITE_Center|WRITE_Shadow,3,_PT_Rundenende);
         }
         // Display = ActSys;
         SetAPen(MyRPort_PTR[0], 0);
@@ -105,7 +105,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                         {
                             BelongsTo = 12;
                         }
-                        WRITE_RP0(x+16,y+20,BelongsTo,WRITE_Center,0, Save.SystemName.data[MyWormHole[j].System[1-i]-1]);
+                        WRITE_RP0(x+16,y+20,BelongsTo,JAM1|WRITE_Center,0, Save.SystemName.data[MyWormHole[j].System[1-i]-1]);
                     }
                     if (0 != Save.CivPlayer[ActPlayer-1])
                     {
@@ -156,7 +156,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                     SetAPen(MyRPort_PTR[0],0);
                 }
                 DrawEllipse(MyRPort_PTR[0],x+15,y+15,24,23);
-                DrawMode = 1;
+                DrawMode = JAM2;
                 if (NULL != PlanetHeader->ProjectPtr)
                 {
                     if (1 == PlanetHeader->ProjectPtr->data[PROJECT_SPACEDOCK])
@@ -166,7 +166,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                     if ((0 != PlanetHeader->ProjectPtr->data[PROJECT_SDI]) ||
                         (0 != PlanetHeader->ProjectPtr->data[PROJECT_SPACEPHALANX]))
                     {
-                        DrawMode = 5;
+                        DrawMode = JAM2|INVERSVID;
                     }
                 }
                 WRITE_RP0(x+15,y+32,BelongsTo,(DrawMode|WRITE_Center),0,PlanetHeader->PName);
@@ -221,13 +221,24 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                     }
                     if (SHIPFLAG_WATER == MyShipPtr->Flags)
                     {
-                        WRITE_RP0(x+ 7,y+9,12,WRITE_Shadow,3,"W");
+                        WRITE_RP0(x+ 7,y+9,12,JAM1|WRITE_Shadow,3,"W");
                     }
                     if (TARGET_POSITION == MyShipPtr->Target)
                     {
-                        WRITE_RP0(x+10,y+9,12,WRITE_Shadow,3,"P");
+                        WRITE_RP0(x+10,y+9,12,JAM1|WRITE_Shadow,3,"P");
+                    }
+                    // show ship condition
+                    i = (int) (25.0 * (1.0 - (double) UseShipPtr->Shield / ShipData(UseShipPtr->SType).MaxShield));
+                    if (0 < i)
+                    {
+                        SetAPen(MyRPort_PTR[0],8); //red
+                        Move(MyRPort_PTR[0],x+3,  y+3);
+                        Draw(MyRPort_PTR[0],x+3+i,y+3);
+                        Move(MyRPort_PTR[0],x+3,  y+4);
+                        Draw(MyRPort_PTR[0],x+3+i,y+4);
                     }
                 }
+                
             }
         }
         MyShipPtr = MyShipPtr->NextShip;
@@ -244,7 +255,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     {
         BelongsTo = 12;
     }
-    WRITE_RP0(200,491,BelongsTo,0,3,Save.SystemName.data[ActSys]);
+    WRITE_RP0(200,491,BelongsTo,JAM1,3,Save.SystemName.data[ActSys]);
     PRINTGLOBALINFOS(ActPlayer-1);
     if (!Save.PlayMySelf) { ScreenToFront(MyScreen[0]); }
 }
