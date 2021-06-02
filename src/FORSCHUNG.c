@@ -12,17 +12,23 @@ void FORSCHUNG()
     uint8   haveTechColor;
     char    s[50];
     char*   _s;
-    struct Window* FOR_Window;
+    const char* FOR_ShipInfos[] = {PText[740], PText[741], PText[742], PText[743], PText[744]};
+
+    struct Window* FOR_Window = NULL;
     struct RastPort* RPort_PTR;
     FOR_Window=MAKEWINDOW(0,0,512,512,MyScreen[0]);
-    if (NULL == FOR_Window)
+    if (NULL != FOR_Window)
     {
-        return;
+        RPort_PTR = FOR_Window->RPort;
+        i = 1;
+    } else {
+        // fallback if we ran out of chip/graphic memory
+        RPort_PTR = MyRPort_PTR[0];
+        i = 0;
     }
-    RPort_PTR = FOR_Window->RPort;
-    MAKEWINBORDER(RPort_PTR,0,  0,511,330,12,6,1);
-    MAKEWINBORDER(RPort_PTR,0,331,511,400,12,6,1);
-    MAKEWINBORDER(RPort_PTR,0,401,511,511,12,6,1);
+    MAKEWINBORDER(RPort_PTR,0,  0,511,330,12,6,i);
+    MAKEWINBORDER(RPort_PTR,0,331,511,400,12,6,i);
+    MAKEWINBORDER(RPort_PTR,0,401,511,511,12,6,i);
 
     WRITE(255,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[737]);
     posx = 10;
@@ -43,7 +49,7 @@ void FORSCHUNG()
         posx += 245;
     }
 
-    if (Save.ActTech[ActPlayer-1]>0)
+    if (0 < Save.ActTech[ActPlayer-1])
     {
         _s=my_strcpy(s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
         *_s++ = ',';
@@ -62,19 +68,20 @@ void FORSCHUNG()
     }
 
     /* ShipData:    MaxLoad,MaxShield,MaxMove,WeaponPower */
-    WRITE( 10,410,12,0,RPort_PTR,2,PText[740]);
-    WRITE(110,410,12,0,RPort_PTR,2,PText[741]);
-    WRITE(210,410,12,0,RPort_PTR,2,PText[742]);
-    WRITE(310,410,12,0,RPort_PTR,2,PText[743]);
-    WRITE(410,410,12,0,RPort_PTR,2,PText[744]);
+    posx = 10;
+    for (i = 0; i < (sizeof(FOR_ShipInfos)/sizeof(FOR_ShipInfos[0])); ++i)
+    {
+        WRITE(posx,410,12,0,RPort_PTR,2,FOR_ShipInfos[i]);
+        posx += 100;
+    }
     l = 0;
     for (i = 24; (i>=8) && (l<4); i--)
     {
-        if (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[i]]<=0)
+        if (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[i]])
         {
-            if (l<4)
+            if (4 > l)
             {
-                l++;
+                ++l;
                 posy=415+l*18;
                 WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR,2, Project.data[i]);
                 (void) dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
@@ -85,5 +92,10 @@ void FORSCHUNG()
         }
     }
     WAITLOOP(false);
-    CloseWindow(FOR_Window);
+    if (NULL != FOR_Window)
+    {
+        CloseWindow(FOR_Window);
+    } else {
+        DRAWSTARS(MODE_REDRAW);
+    }
 }

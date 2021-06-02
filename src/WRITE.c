@@ -12,7 +12,7 @@ void WRITE(const int IPosX, const int IPosY, const int Color, const int DMode, s
 0= JAM1 	    FrontPen is used to draw the text; background color is unchanged.
 1= JAM2 	    FrontPen is used to draw the text; background color is changed to the color in BackPen.
 2= COMPLEMENT 	The characters are drawn in the complement of the colors that were in the background.
-3= INVERSID 	Inverses the draw modes describe above. For instance INVERVID used with JAM1 means the
+4= INVERSVID 	Inverses the draw modes describe above. For instance INVERSVID used with JAM1 means the
                 character is untouched while the background is filled with the color of the FrontPen. 
 */
 
