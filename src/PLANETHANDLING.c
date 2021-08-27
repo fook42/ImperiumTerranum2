@@ -60,10 +60,11 @@ void POSITIVEANSWER(uint8 CivVar)
     Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_PEACE;
 }
 
-uint8 GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
+int GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
 {
-    sint8   Pos = 0, i = 0;
     uint16  ypos;
+    int     Pos = 0, i, opt_color;
+    WORD    mouse_ypos;
     struct Window* GOP_Window;
     struct RastPort* RPort_PTR;
 
@@ -82,10 +83,11 @@ uint8 GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
         do
         {
             Delay(RDELAY);
-            if ( (9           < GOP_Window->MouseY) &&
-                ((11+Opts*20) > GOP_Window->MouseY))
+            mouse_ypos = GOP_Window->MouseY;
+            if ( (9           < mouse_ypos) &&
+                ((11+Opts*20) > mouse_ypos))
             {
-                i = (GOP_Window->MouseY-10) / 20;
+                i = (mouse_ypos-10) / 20;
                 if ((i != Pos) && (0 <= i) && (i < Opts))
                 {
                     Pos = i;
@@ -94,10 +96,11 @@ uint8 GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
                     {
                         if (i == Pos)
                         {
-                            WRITE(10, ypos,CivFlag,JAM1,RPort_PTR,3,OptArr[i]);
+                            opt_color = CivFlag;
                         } else {
-                            WRITE(10, ypos,     12,JAM1,RPort_PTR,3,OptArr[i]);
+                            opt_color = 12;
                         }
+                        WRITE(10, ypos,opt_color,JAM1,RPort_PTR,3,OptArr[i]);
                         ypos += 20;
                     }
                 }
@@ -109,7 +112,7 @@ uint8 GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
         PLAYSOUND(0,300);
         CloseWindow(GOP_Window);
     }
-    return ((uint8) Pos);
+    return Pos;
 }
 
 bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
@@ -176,7 +179,8 @@ void CALLOTHERPLAYER(const int CivVar, const int CivFlag)
 
 void DIPLOMACY()
 {
-    uint8   XSystem, XTech, CivVar, CivFlag, Answer;
+    uint8   XSystem, XTech, CivVar, CivFlag;
+    int     Answer;
     int     Opts;
     uint32  XCosts;
     char    OptArr[8][40];
@@ -731,10 +735,10 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
         while ((0 == ShipsInOrbit) && (NULL != XShipPtr));
     }
     PlanetOwner = PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK;
-    if ((0 != PlanetOwner) && (ActPlayerFlag != PlanetOwner))
+    if ((0 < PlanetOwner) && (ActPlayerFlag != PlanetOwner))
     {
         GadSet[GadCnt++] = GADGET_DIPLOMAT;
-        if (0 != ShipsInOrbit)
+        if (0 < ShipsInOrbit)
         {
             GadSet[GadCnt++] = GADGET_ATTACK;
         }

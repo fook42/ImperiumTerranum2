@@ -6,7 +6,7 @@ char Error_Text[] = "ERROR\0";
 #include "IT2_Functions.h"
 /* -------------------------------------------------------- */
 
-const uint8 CIVFLAGs[]={0,           FLAG_TERRA,  FLAG_KLEGAN, FLAG_REMALO, FLAG_CARDAC,
+const uint8 CIVFLAGs[]={FLAG_UNKNOWN,FLAG_TERRA,  FLAG_KLEGAN, FLAG_REMALO, FLAG_CARDAC,
                         FLAG_FERAGI, FLAG_BAROJA, FLAG_VOLKAN, FLAG_OTHER,  FLAG_MAQUES};
 
 const uint8 CIVADJs[] ={0, 115, 116, 117, 118, 119, 120, 121};

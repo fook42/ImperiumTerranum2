@@ -35,18 +35,18 @@ int SETCOLOR(struct Screen* SC_Screen, char* FName)
             {
                 Col = (r_Col_t*) AddrX;
                 AddrX += sizeof(r_Col_t);
-                SetRGB32(&(SC_Screen->ViewPort), i, (Col->r)*(ULONG)0x01010101,
-                                                    (Col->g)*(ULONG)0x01010101,
-                                                    (Col->b)*(ULONG)0x01010101);
-                i++;
+                SetRGB32(&(SC_Screen->ViewPort), (ULONG) i, (Col->r)*(ULONG)0x01010101,
+                                                            (Col->g)*(ULONG)0x01010101,
+                                                            (Col->b)*(ULONG)0x01010101);
+                ++i;
             }
             while (AddrX < AddrEnd);
             l = (uint32) ((ISize-8) / 3);
             i = 0;
             do
             {
-                l = l>>1;
-                i++;
+                l = l / 2;
+                ++i;
             }
             while (l>1);
             _SETCOLOR = i;

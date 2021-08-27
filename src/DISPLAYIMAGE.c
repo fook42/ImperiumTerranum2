@@ -9,7 +9,8 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     char*   _s;
     BPTR    FHandle;
     uint8   realCacheNum=0;
-    uint16  CNum, i;
+    uint16  CNum;
+    ULONG   i;
     uint16  CNum3;
     LONG    ImgSize_packed, ImgSize=0; // , Addr;
     uint32  Addr;
@@ -17,13 +18,13 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     r_Col_t*  RGB;
     bool    ImageIsValid = false;
 
-    if (1==Depth)
+    if (1 == Depth)
     {
         CNum = 1;
     } else {
         CNum = 1<<Depth;     // 2 -> 4, 3 -> 8 ... 8 -> 256
     }
-    CNum3=3*CNum;       // 2 -> 12,3 -> 24... 8 -> 768
+    CNum3 = 3*CNum;       // 2 -> 12,3 -> 24... 8 -> 768
 
     if (0 != CacheNum)
     {
@@ -46,7 +47,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
         }
         Addr = (uint32) (IMemA[0]+IMemL[0]-ImgSize_packed-250);   // start at 250+FileSize Bytes from the end (!) of IMem-Area
         (void) Read(FHandle, (APTR) Addr, ImgSize_packed);
-        ImgSize = (Width*Height*Depth)>>3;    // w*h*depth/8 = num of bytes for uncompressed imagedata
+        ImgSize = (Width*Height*Depth) / 8;    // w*h*depth/8 = num of bytes for uncompressed imagedata
         UNPACK(IMemA[0], (uint8*) Addr, ImgSize, 0);
         Close(FHandle);
     } else {

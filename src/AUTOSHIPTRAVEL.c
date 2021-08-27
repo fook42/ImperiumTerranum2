@@ -5,7 +5,7 @@
 
 void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
 {
-    int             i = 0;
+    int             i = 0, string_id;
     r_ShipHeader*   MyShipPtr = NULL;
     r_ShipHeader*   BAKShipPtr = NULL;
     uint8           CivVar,CivVar2,SysSteps,iStep;
@@ -235,12 +235,12 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                             if (SHIPTYPE_FLEET == MyShipPtr->SType)
                                             {
                                                 _s--;
-                                                *_s++ = ' ';
-                                                (void) my_strcpy(_s, PText[552]);
+                                                string_id = 552;
                                             } else {
-                                                *_s++ = ' ';
-                                                (void) my_strcpy(_s, PText[553]);
+                                                string_id = 553;
                                             }
+                                            *_s++ = ' ';
+                                            (void) my_strcpy(_s, PText[string_id]);
                                         }
                                         WRITE(195,16,MyShipPtr->Owner,(1|WRITE_Center),RPort_PTR,3,s);
                                         _s=my_strcpy(s, _PT_System);
