@@ -66,7 +66,8 @@ enum Civilization { CIVVAR_NONE  = 0,
 #define SHIPTYPE_FLEET  200
 #define SHIPTYPE_STARGATE   21
 
-enum {  CLASS_STONES = 0,
+enum PlanetClasses {
+        CLASS_STONES = 0,
         CLASS_GAS,
         CLASS_WATER,
         CLASS_SATURN,
@@ -200,29 +201,31 @@ enum {  SCREEN_PLANET = 1,
 #define SHIPDATA_OFFSET     8
 #define ShipData(...)       ShipData[(__VA_ARGS__) - SHIPDATA_OFFSET]
 
-#define PROJECT_CLEAR_BIOPHERE  (-3)
-#define PROJECT_REPAIR_INFRA    (-2)
-#define PROJECT_REPAIR_INDUSTRY (-1)
-#define PROJECT_NONE            0
-#define PROJECT_SPACEDOCK       25
-#define PROJECT_SETTLERS        26
-#define PROJECT_LANDINGTROOPS   27
-#define PROJECT_CONT_UNION      28
-#define PROJECT_GLOBAL_UNION    29
-#define PROJECT_RECYCLINGPLANT  30
-#define PROJECT_FUSIONPOWER     31
-#define PROJECT_HYDROPOWER      32
-#define PROJECT_PART_ACCEL      33
-#define PROJECT_SDI             34
-#define PROJECT_INTERNET        35
-#define PROJECT_VIRT_UNIVERSITY 36
-#define PROJECT_INT_PLANT       37
-#define PROJECT_INFO_HIGHWAY    38
-#define PROJECT_VON_NEUMANN     39
-#define PROJECT_SPACEPHALANX    40
-#define PROJECT_MICROIDS        41
-#define PROJECT_WEATHERSTATION  42
-#define PROJECT_NOMORE          43
+enum Projects {
+        PROJECT_CLEAR_BIOPHERE  = -3,
+        PROJECT_REPAIR_INFRA    = -2,
+        PROJECT_REPAIR_INDUSTRY = -1,
+        PROJECT_NONE            =  0,
+        PROJECT_SPACEDOCK       = 25,
+        PROJECT_SETTLERS,       // 26
+        PROJECT_LANDINGTROOPS,  // 27
+        PROJECT_CONT_UNION,     // 28
+        PROJECT_GLOBAL_UNION,   // 29
+        PROJECT_RECYCLINGPLANT, // 30
+        PROJECT_FUSIONPOWER,    // 31
+        PROJECT_HYDROPOWER,     // 32
+        PROJECT_PART_ACCEL,     // 33
+        PROJECT_SDI,            // 34
+        PROJECT_INTERNET,       // 35
+        PROJECT_VIRT_UNIVERSITY,// 36
+        PROJECT_INT_PLANT,      // 37
+        PROJECT_INFO_HIGHWAY,   // 38
+        PROJECT_VON_NEUMANN,    // 39
+        PROJECT_SPACEPHALANX,   // 40
+        PROJECT_MICROIDS,       // 41
+        PROJECT_WEATHERSTATION, // 42
+        PROJECT_NOMORE          // 43
+};
 
 #define AreaFillVectors (200)
 #define IntroAreaSize (AreaFillVectors*5)
