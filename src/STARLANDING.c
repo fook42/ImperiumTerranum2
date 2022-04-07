@@ -42,15 +42,7 @@ bool STARLANDING_INITIMAGES(r_PlanetHeader* MyPlanetHeader, uint8 Ship_Weapon)
 
     _s=my_strcpy(s, PathStr[0]);
     _s=my_strcpy(_s, "LandScape");
-    switch (MyPlanetHeader->Class) {
-        case CLASS_DESERT:   *_s++ = 'D'; break;
-        case CLASS_HALFEARTH:*_s++ = 'H'; break;
-        case CLASS_EARTH:    *_s++ = 'M'; break;
-        case CLASS_ICE:      *_s++ = 'I'; break;
-        case CLASS_STONES:   *_s++ = 'T'; break;
-        case CLASS_WATER:    *_s++ = 'W'; break;
-        default: { }
-    }
+    *_s++ = PlanetClassName[MyPlanetHeader->Class];
     _s=my_strcpy(_s, ".img");
     if (RAWLOADIMAGE(s,0,0,640,32,5,&ImgBitMap5))
     {

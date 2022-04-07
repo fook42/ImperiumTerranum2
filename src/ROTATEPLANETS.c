@@ -64,7 +64,7 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    if (0 >= Save.ProjectCosts[ActPlayer].data[39])
+    if (0 >= Save.ProjectCosts[ActPlayer].data[PROJECT_VON_NEUMANN])
     {
         for(i = 0; i < Save.Systems; ++i)
         {
@@ -95,14 +95,12 @@ void ROTATEPLANETS(uint8 ActSys)
                 FromY = SystemHeader[i].FirstShip.PosY;
 
                 // calculate some distance to the sun...
-                d = 1.0/(sqrt(SystemHeader[i].FirstShip.PosX * SystemHeader[i].FirstShip.PosX
-                            + SystemHeader[i].FirstShip.PosY * SystemHeader[i].FirstShip.PosY));
+                d = 1.0/(sqrt(FromX * FromX + FromY * FromY));
                 // rotate the stargate around the sun...
                 sin_rot = sin(d);
                 cos_rot = cos(d);
-                d = SystemHeader[i].FirstShip.PosX;
-                SystemHeader[i].FirstShip.PosX = it_round(d * cos_rot - SystemHeader[i].FirstShip.PosY * sin_rot);
-                SystemHeader[i].FirstShip.PosY = it_round(d * sin_rot + SystemHeader[i].FirstShip.PosY * cos_rot);
+                SystemHeader[i].FirstShip.PosX = it_round(FromX * cos_rot - FromY * sin_rot);
+                SystemHeader[i].FirstShip.PosY = it_round(FromX * sin_rot + FromY * cos_rot);
 
                 // MyShipPtr = &SystemHeader[i].FirstShip; // not needed .. MyShipPtr is not changed at all.
                 if (FINDOBJECT(i, 256+(SystemHeader[i].FirstShip.PosX+OffsetX)*32,
@@ -119,10 +117,12 @@ void ROTATEPLANETS(uint8 ActSys)
                     if (0 < SystemHeader[i].FirstShip.PosX) { SystemHeader[i].FirstShip.PosX--; }
                     if (0 > SystemHeader[i].FirstShip.PosX) { SystemHeader[i].FirstShip.PosX++; }
                 }
-                if ((SystemHeader[i].FirstShip.PosX>=-3) && (SystemHeader[i].FirstShip.PosX<=2)
-                 && (SystemHeader[i].FirstShip.PosY>=-3) && (SystemHeader[i].FirstShip.PosY<=2))
+                d = sqrt(SystemHeader[i].FirstShip.PosX * SystemHeader[i].FirstShip.PosX
+                       + SystemHeader[i].FirstShip.PosY * SystemHeader[i].FirstShip.PosY);
+
+                if (4 > d)
                 {
-                    // if the stargate is too close to the sun (-3..+2) .. its orbit collapses/it is destroyed
+                    // if the stargate is too close to the sun (radius < 4) .. its orbit collapses/it is destroyed
 /* OpenWindow() ---- */
                     MAKEBORDER(MyScreen[0],85,120,425,200,12,6,0);
                     _s=my_strcpy(s, _PT_System);
@@ -295,36 +295,38 @@ void ROTATEPLANETS(uint8 ActSys)
                         INFORMUSER();
 
                         ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
-                        RPort_PTR = ROT_Window->RPort;
-
-
-                        _s=my_strcpy(s, _PT_System);
-                        *_s++ = ':';
-                        *_s++ = ' ';
-                        (void) my_strcpy(_s, Save.SystemName.data[i]);
-                        WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
-
-                        _s=my_strcpy(s, _PT_Planet);
-                        *_s++ = ':';
-                        *_s++ = ' ';
-                        (void) my_strcpy(_s, PlanetHeader->PName);
-                        WRITE(171, 27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
-
-                        _s=my_strcpy(s, PText[578]);
-                        *_s++ = ' ';
-                        switch (PlanetHeader->Class)
+                        if (ROT_Window)
                         {
-                            case CLASS_DESERT    : *_s++ = 'D'; break;
-                            case CLASS_HALFEARTH : *_s++ = 'H'; break;
-                            case CLASS_EARTH     : *_s++ = 'M'; break;
-                            case CLASS_WATER     : *_s++ = 'W'; break;
-                            default: { }
+                            RPort_PTR = ROT_Window->RPort;
+
+                            _s=my_strcpy(s, _PT_System);
+                            *_s++ = ':';
+                            *_s++ = ' ';
+                            (void) my_strcpy(_s, Save.SystemName.data[i]);
+                            WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
+
+                            _s=my_strcpy(s, _PT_Planet);
+                            *_s++ = ':';
+                            *_s++ = ' ';
+                            (void) my_strcpy(_s, PlanetHeader->PName);
+                            WRITE(171, 27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
+
+                            _s=my_strcpy(s, PText[578]);
+                            *_s++ = ' ';
+                            switch (PlanetHeader->Class)
+                            {
+                                case CLASS_DESERT    : *_s++ = 'D'; break;
+                                case CLASS_HALFEARTH : *_s++ = 'H'; break;
+                                case CLASS_EARTH     : *_s++ = 'M'; break;
+                                case CLASS_WATER     : *_s++ = 'W'; break;
+                                default: { }
+                            }
+                            *_s = 0;
+                            WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
+                            if (Save.PlayMySelf) { Delay(PAUSE); }
+                            WAITLOOP(Save.PlayMySelf);
+                            CloseWindow(ROT_Window);
                         }
-                        *_s = 0;
-                        WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
-                        if (Save.PlayMySelf) { Delay(PAUSE); }
-                        WAITLOOP(Save.PlayMySelf);
-                        CloseWindow(ROT_Window);
                     }
                 }
                 if ((PlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
@@ -507,8 +509,8 @@ void ROTATEPLANETS(uint8 ActSys)
                             if ((PROJECT_SDI == ProjID) || (PROJECT_SPACEPHALANX == ProjID))
                             {
                                 ActPProjects->data[ProjID] = 100;
-                            } else if (((0  < ProjID) && (8   > ProjID))
-                                     ||((24 < ProjID) && (PROJECT_VON_NEUMANN != ProjID) && (PROJECT_NOMORE > ProjID)))
+                            } else if (   (8 > ProjID)
+                                     || ((24 < ProjID) && (PROJECT_VON_NEUMANN != ProjID) && (PROJECT_NOMORE > ProjID)) )
                             {
                                 ActPProjects->data[ProjID]++;
                             } else if  ((7 < ProjID)  && (25 > ProjID))
@@ -550,7 +552,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     }
                                 }
                             }
-                            if (((0 < ProjID) && (8 > ProjID)) || (PROJECT_VON_NEUMANN == ProjID))
+                            if ((8 > ProjID) || (PROJECT_VON_NEUMANN == ProjID))
                             {
                                 Save.ProjectCosts[ActPlayer-1].data[ProjID] = 0;
                             }
@@ -568,31 +570,33 @@ void ROTATEPLANETS(uint8 ActSys)
                                     Save.stProject[ProjID-1] = ActPlayer;
 
                                     ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
-                                    RPort_PTR = ROT_Window->RPort;
-
-
-                                    _s=my_strcpy(s, GETCIVNAME(ActPlayer));
-                                    *_s++ = ' ';
-                                    (void) my_strcpy(_s, PText[579]); // fuehren als erste
-                                    WRITE(171, 7,GETCIVFLAG(ActPlayer),(1|WRITE_Center),RPort_PTR,3,s);
-
-                                    _s=my_strcpy(s, Project.data[ProjID]);
-                                    *_s++ = '-';
-                                    *_s = 0;
-                                    WRITE(171,29,                   12,(1|WRITE_Center),RPort_PTR,3,s);
-                                    s[0]=0;
-                                    _s=s;
-                                    if ((0 < ProjID) && (4 > ProjID))
+                                    if (ROT_Window)
                                     {
-                                        _s=my_strcpy(s, PText[582]); // Projekt
-                                        *_s++ = ' ';
-                                    }
-                                    (void) my_strcpy(_s, PText[580]); // durch
-                                    WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
-                                    if (Save.PlayMySelf) { Delay(PAUSE); }
-                                    WAITLOOP(Save.PlayMySelf);
+                                        RPort_PTR = ROT_Window->RPort;
 
-                                    CloseWindow(ROT_Window);
+                                        _s=my_strcpy(s, GETCIVNAME(ActPlayer));
+                                        *_s++ = ' ';
+                                        (void) my_strcpy(_s, PText[579]); // fuehren als erste
+                                        WRITE(171, 7,GETCIVFLAG(ActPlayer),(1|WRITE_Center),RPort_PTR,3,s);
+
+                                        _s=my_strcpy(s, Project.data[ProjID]);
+                                        *_s++ = '-';
+                                        *_s = 0;
+                                        WRITE(171,29,                   12,(1|WRITE_Center),RPort_PTR,3,s);
+                                        // s[0]=0;
+                                        _s = s;
+                                        if (4 > ProjID)
+                                        {
+                                            _s=my_strcpy(s, PText[582]); // Projekt
+                                            *_s++ = ' ';
+                                        }
+                                        (void) my_strcpy(_s, PText[580]); // durch
+                                        WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
+                                        if (Save.PlayMySelf) { Delay(PAUSE); }
+                                        WAITLOOP(Save.PlayMySelf);
+
+                                        CloseWindow(ROT_Window);
+                                    }
                                 }
                             } else if ((7 < ProjID) && (25 > ProjID))
                             {
@@ -613,7 +617,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     Save.ImperatorState[ActPlayer-1] -= XState;
                                     ActShipPtr->ShieldBonus = Fight;
                                 } else {
-                                    ActShipPtr->ShieldBonus = it_round(Level*2.0-2);
+                                    ActShipPtr->ShieldBonus = (Level*2)-2;
                                 }
                             } else if ((PROJECT_SETTLERS == ProjID)
                                     || ((PROJECT_LANDINGTROOPS < ProjID) && (PROJECT_NOMORE > ProjID)))
@@ -630,85 +634,84 @@ void ROTATEPLANETS(uint8 ActSys)
                         {
                             INFORMUSER();
                             ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
-                            RPort_PTR = ROT_Window->RPort;
-
-
-                            _s=my_strcpy(s, _PT_System);
-                            *_s++ = ':';
-                            *_s++ = ' ';
-                            (void) my_strcpy(_s, Save.SystemName.data[i]);
-                            WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
-
-                            _s=my_strcpy(s, _PT_Planet);
-                            *_s++ = ':';
-                            *_s++ = ' ';
-                            (void) my_strcpy(_s, PlanetHeader->PName);
-                            WRITE(171,27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
-
-                            if (PROJECT_NONE < ProjID)
+                            if (ROT_Window)
                             {
-                                _s=my_strcpy(s, PText[583]);  // baut
+                                RPort_PTR = ROT_Window->RPort;
+
+                                _s=my_strcpy(s, _PT_System);
+                                *_s++ = ':';
                                 *_s++ = ' ';
-                                (void) my_strcpy(_s, Project.data[ProjID]);
-                            } else {
-                                switch (ProjID)
+                                (void) my_strcpy(_s, Save.SystemName.data[i]);
+                                WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
+
+                                _s=my_strcpy(s, _PT_Planet);
+                                *_s++ = ':';
+                                *_s++ = ' ';
+                                (void) my_strcpy(_s, PlanetHeader->PName);
+                                WRITE(171,27,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
+
+                                if (PROJECT_NONE < ProjID)
                                 {
-                                    case PROJECT_CLEAR_BIOPHERE: (void) my_strcpy(s, _PT_Biosphaere_gereinigt);    break;
-                                    case PROJECT_REPAIR_INFRA:   (void) my_strcpy(s, _PT_Infrastructur_repariert); break;
-                                    default: (void) my_strcpy(s, _PT_IndustrAnlage_repariert);
-                                }
-                            }
-                            WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
-
-                            Delay(5);
-                            if (( 7 < ProjID)
-                             && (25 > ProjID) && (!Save.PlayMySelf))
-                            {
-                                // building ships... where to place it?
-                                ROT_Window2=MAKEWINDOWBORDER(85,208,341,41,MyScreen[0]);
-                                RPort_PTR2 = ROT_Window2->RPort;
-
-
-                                BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(ProjID-8)*32,32,RPort_PTR2,10, 4,32,32,192);
-                                DrawImage(RPort_PTR2,&GadImg1, 55,10);
-                                DrawImage(RPort_PTR2,&GadImg1,195,10);
-
-                                WRITE(113,12,0,WRITE_Center,RPort_PTR2,3,PText[587]);   // Space
-                                WRITE(253,12,0,WRITE_Center,RPort_PTR2,3,PText[588]);   // Orbit
-                                // b = false;
-                                do
-                                {
-                                    Delay(RDELAY);
-                                    if (LMB_PRESSED)
+                                    _s=my_strcpy(s, PText[583]);  // baut
+                                    *_s++ = ' ';
+                                    (void) my_strcpy(_s, Project.data[ProjID]);
+                                } else {
+                                    switch (ProjID)
                                     {
-                                        if ((ROT_Window2->MouseY >= 10) && (ROT_Window2->MouseY <= 30))
-                                        {
-                                            if ((ROT_Window2->MouseX >= 55) && (ROT_Window2->MouseX <= 171))
-                                            {
-                                                KLICKWINGAD(RPort_PTR2,55,10);
-                                                // b = true;
-                                                ActShipPtr->PosX = it_round(PlanetHeader->PosX);
-                                                ActShipPtr->PosY = it_round(PlanetHeader->PosY);
-                                                LINKSHIP(ActShipPtr, &(SystemHeader[i].FirstShip), 1);
-                                                break;
-                                            } else if ((ROT_Window2->MouseX >= 195) && (ROT_Window2->MouseX <= 311))
-                                            {
-                                                KLICKWINGAD(RPort_PTR2,195,10);
-                                                // b = true;
-                                                break;
-                                            }
-                                        }
+                                        case PROJECT_CLEAR_BIOPHERE: (void) my_strcpy(s, _PT_Biosphaere_gereinigt);    break;
+                                        case PROJECT_REPAIR_INFRA:   (void) my_strcpy(s, _PT_Infrastructur_repariert); break;
+                                        default: (void) my_strcpy(s, _PT_IndustrAnlage_repariert);
                                     }
                                 }
-                                while (true); // (!b);
-                                CloseWindow(ROT_Window2);
-                            } else {
-                                if (Save.PlayMySelf) { Delay(PAUSE); }
-                                WAITLOOP(Save.PlayMySelf);
-                            }
-                            CloseWindow(ROT_Window);
+                                WRITE(171,53,12,(1|WRITE_Center),RPort_PTR,3,s);
 
-//                            REFRESHDISPLAY();
+                                Delay(5);
+                                if ((7 < ProjID) && (PROJECT_SPACEDOCK > ProjID)
+                                   && (!Save.PlayMySelf))
+                                {
+                                    // building ships... where to place it?
+                                    ROT_Window2=MAKEWINDOWBORDER(85,208,341,41,MyScreen[0]);
+                                    if (ROT_Window2)
+                                    {
+                                        RPort_PTR2 = ROT_Window2->RPort;
+
+                                        BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(ProjID-8)*32,32,RPort_PTR2,10, 4,32,32,192);
+                                        DrawImage(RPort_PTR2,&GadImg1, 55,10);
+                                        DrawImage(RPort_PTR2,&GadImg1,195,10);
+
+                                        WRITE(113,12,0,WRITE_Center,RPort_PTR2,3,PText[587]);   // Space
+                                        WRITE(253,12,0,WRITE_Center,RPort_PTR2,3,PText[588]);   // Orbit
+                                        do
+                                        {
+                                            Delay(RDELAY);
+                                            if (LMB_PRESSED)
+                                            {
+                                                if ((ROT_Window2->MouseY > 9) && (ROT_Window2->MouseY < 31))
+                                                {
+                                                    if ((ROT_Window2->MouseX > 54) && (ROT_Window2->MouseX < 172))
+                                                    {
+                                                        KLICKWINGAD(RPort_PTR2,55,10);
+                                                        ActShipPtr->PosX = it_round(PlanetHeader->PosX);
+                                                        ActShipPtr->PosY = it_round(PlanetHeader->PosY);
+                                                        LINKSHIP(ActShipPtr, &(SystemHeader[i].FirstShip), 1);
+                                                        break;
+                                                    } else if ((ROT_Window2->MouseX > 194) && (ROT_Window2->MouseX < 312))
+                                                    {
+                                                        KLICKWINGAD(RPort_PTR2,195,10);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        while (true);
+                                        CloseWindow(ROT_Window2);
+                                    }
+                                } else {
+                                    if (Save.PlayMySelf) { Delay(PAUSE); }
+                                    WAITLOOP(Save.PlayMySelf);
+                                }
+                                CloseWindow(ROT_Window);
+                            }
                             /* if we did build a ship or a settler or a landing troop, build another one... else no new project is selected */
                             if ((( 8  > PlanetHeader->ProjectID) || (24  < PlanetHeader->ProjectID))
                               && (PROJECT_SETTLERS      != PlanetHeader->ProjectID)

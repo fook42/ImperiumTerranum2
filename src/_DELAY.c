@@ -17,7 +17,7 @@ char* dez2out(int value, int digits, char* dest)
     uint8        c;
     bool         show = true;
 
-    if (0 == digits)
+    if ((0 == digits) || (7 < digits))
     {
         digits = 8;
         show = false;

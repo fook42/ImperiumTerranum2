@@ -22,7 +22,6 @@ void QUOTEPICARD()
     {
         RPort_PTR = QPI_Window->RPort;
 
-
         ypos = 20;
         for (i = 0; i < (sizeof(Txt_Picard)/sizeof(Txt_Picard[0])); ++i)
         {
