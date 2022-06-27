@@ -20,20 +20,20 @@ void INFORMUSER()
     }
     LastPlayer = ActPlayer;
     Display = LastDisplay[ActPlayer];
-    RECT_RP0_C0(522,9,629,117);      // clear Minimap
+    RECT_RP0_C0((HighRes_Width-118),9,(HighRes_Width-11),117);      // clear Minimap
     if (MultiPlayer)
     {
         if (!Save.PlayMySelf)
         {
-            RECT_RP0_C0(0,0,511,511);   // clear Main Star-area
+            RECT_RP0_C0(0,0,Area_Width-1,Area_Height-1);   // clear Main Star-area
         }
         s[7]=Save.CivPlayer[ActPlayer-1]+'0';
         PLAYERJINGLE(ActPlayer-1);
 
-        MAKEWINBORDER(MyRPort_PTR[0],35,80,475,290,12,6,0);
-        WRITE_RP0(256,100,           12,WRITE_Center,3,PText[207]);
-        WRITE_RP0(256,125,ActPlayerFlag,WRITE_Center,3,s);
-        DISPLAYLOGO(ActPlayer,192,150);
+        MAKEWINBORDER(MyRPort_PTR[0],30,80,Area_Width-30,290,12,6,0);
+        WRITE_RP0(Area_CenterX,100,           12,WRITE_Center,3,PText[207]);
+        WRITE_RP0(Area_CenterX,125,ActPlayerFlag,WRITE_Center,3,s);
+        DISPLAYLOGO(ActPlayer,Area_CenterX-64,150);
         PRINTGLOBALINFOS(ActPlayer-1);
         if (Save.PlayMySelf)
         {

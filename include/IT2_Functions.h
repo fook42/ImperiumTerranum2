@@ -113,7 +113,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
 void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr);
 // <<<
 // >>> HANDLESYSTEM
-uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader** ShipPos);
+uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader** ShipPos, uint8 Y_maxRow);
 uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* PCol);
 void SEARCHOBJECT(uint8* ActSys);
 void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr);
@@ -182,7 +182,7 @@ void OPTION_MULTIPLAYER(void);
 void OPTIONMENU(int Mode);
 // <<<
 // >>> ORBITINFO
-int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr);
+int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr, int max_ships, struct RastPort* RPort_PTR);
 void SETFLEETPOSITION(uint8 ActSys, r_ShipHeader* StShipPtr, r_ShipHeader* MyShipPtr);
 void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX, sint8 XPosY);
 // <<<

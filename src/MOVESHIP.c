@@ -30,16 +30,16 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     {
         return;
     }
-    MOVESHIP_x = 256+(MyShipPtr->PosX+OffsetX)*32;
-    MOVESHIP_y = 256+(MyShipPtr->PosY+OffsetY)*32;
-    if ((((MOVESHIP_x<1) || (MOVESHIP_x>478) || (MOVESHIP_y<1) || (MOVESHIP_y>478)) && (Display == ActSys))
+    MOVESHIP_x = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+    MOVESHIP_y = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
+    if ((((MOVESHIP_x<1) || (MOVESHIP_x>(Area_Width-34)) || (MOVESHIP_y<1) || (MOVESHIP_y>(Area_Height-34))) && (Display == ActSys))
          && (((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) == FLAG_KNOWN)
              || (Visible)))
     {
         OffsetX = (-MyShipPtr->PosX)-1;
         OffsetY = (-MyShipPtr->PosY)-1;
-        MOVESHIP_x = 256+(MyShipPtr->PosX + OffsetX)*32;
-        MOVESHIP_y = 256+(MyShipPtr->PosY + OffsetY)*32;
+        MOVESHIP_x = Area_CenterX+(MyShipPtr->PosX + OffsetX)*32;
+        MOVESHIP_y = Area_CenterY+(MyShipPtr->PosY + OffsetY)*32;
         if (((MyShipPtr->Owner == ActPlayerFlag) && (Save.CivPlayer[ActPlayer-1] != 0))
             || (Visible))
         {
@@ -48,7 +48,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     }
     if (MyShipPtr->Owner == ActPlayerFlag)
     {
-        RECT(MyScreen[0],0,520,291,632,308);
+        RECT(MyScreen[0],0,HighRes_Width-120,291,HighRes_Width-8,308);
     }
     if ((0 == Save.CivPlayer[CivVar-1])
      || (SHIPFLAG_WATER == MyShipPtr->Flags) || (Save.PlayMySelf))
@@ -67,7 +67,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 /**** STARGATE INSTALLIEREN ****/
                 if (sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))<10)
                 {
-                    if (!FINDOBJECT(ActSys-1,(MyShipPtr->PosX+OffsetX)*32,(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
+                    if (!FINDOBJECT(ActSys-1, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr))
                     {
                         SystemHeader[ActSys-1].FirstShip.SType = TARGET_STARGATE;
                         SystemHeader[ActSys-1].FirstShip.PosX = MyShipPtr->PosX;
@@ -132,8 +132,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 else if (it_round(MyPlanetHeader->PosY) > MyShipPtr->PosY) { MyShipPtr->PosY++; }
             }
             if (CHECKSUN(MyShipPtr)) { return; }
-            MOVESHIP_ToX = 256+(MyShipPtr->PosX+OffsetX)*32;
-            MOVESHIP_ToY = 256+(MyShipPtr->PosY+OffsetY)*32;
+            MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX) << 5);
+            MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY) << 5);
             if ((abs(MyShipPtr->PosX)>50) || (abs(MyShipPtr->PosY)>50)
              || ( ((MyShipPtr->Target<1) || (MyShipPtr->Target>SystemHeader[ActSys-1].Planets))
                 && (MyShipPtr->Target!=TARGET_POSITION) && (MyShipPtr->Target!=TARGET_STARGATE)
@@ -143,7 +143,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 MyShipPtr->Owner = 0;
                 return;
             }
-            if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-256,MOVESHIP_ToY+16-256,MyShipPtr))
+            if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-Area_CenterX,MOVESHIP_ToY+16-Area_CenterY,MyShipPtr))
             {
                 if (MyShipPtr->Flags == SHIPFLAG_WATER)
                 {
@@ -476,7 +476,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     *_s++ = '-';
                     _s = dez2out(it_round((MyShipPtr->Shield+MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, _s);
                     *_s++ = '%'; *_s = 0;
-                    WRITE_RP0(521,293,GETCIVFLAG(ActPlayer),1,1,s);
+                    WRITE_RP0(HighRes_Width-119,293,GETCIVFLAG(ActPlayer),JAM2,1,s);
                     OldMoving = MyShipPtr->Moving;
                 }
             }
@@ -494,12 +494,12 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         ++blink;
         if (15 == blink)
         {
-            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
+            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=(Area_Width-32)) && (MOVESHIP_y>=0) && (MOVESHIP_y<=(Area_Height-32)))
             {
                 DRAWRECT(MOVESHIP_x,MOVESHIP_y, MyShipPtr, 0);
             }
 
-            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=505) && (MOVESHIP_y>=0) && (MOVESHIP_y<=512) && (MyShipPtr->SType != SHIPTYPE_FLEET))
+            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=(Area_Width-7)) && (MOVESHIP_y>=0) && (MOVESHIP_y<=Area_Height) && (MyShipPtr->SType != SHIPTYPE_FLEET))
             {
                 s[0]=0;
                 slen=0;
@@ -513,11 +513,11 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     slen = _s - s;
                 }
                 s[slen]=0;
-                WRITE_RP0(MOVESHIP_x+2,MOVESHIP_y+21,MyShipPtr->Owner,0,0,s);
+                WRITE_RP0(MOVESHIP_x+2,MOVESHIP_y+21,MyShipPtr->Owner,JAM1,0,s);
             }
         } else if (30 == blink)
         {
-            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
+            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=(Area_Width-32)) && (MOVESHIP_y>=0) && (MOVESHIP_y<=(Area_Height-32)))
             {
                 DRAWRECT(MOVESHIP_x,MOVESHIP_y, MyShipPtr, MyShipPtr->Owner);
             }
@@ -534,7 +534,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 || ((28 < RawCode) && (32 > RawCode)) || (45 == RawCode) || (47 == RawCode)
                 || ((60 < RawCode) && (64 > RawCode)) || ((75 < RawCode) && (80 > RawCode)))
             {
-                if (FINDOBJECT(ActSys-1,MouseX(0)-256,MouseY(0)-256,NULL))
+                if (FINDOBJECT(ActSys-1, MouseX(0)-Area_CenterX, MouseY(0)-Area_CenterY, NULL))
                 {   // clicked on something?
                     PLAYSOUND(0,300);
                     switch (ObjType) {
@@ -582,9 +582,9 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         if ( 50 < MyShipPtr->PosY) { MyShipPtr->PosY =  50; }
                         if (-50 > MyShipPtr->PosY) { MyShipPtr->PosY = -50; }
                         /* */
-                        MOVESHIP_ToX = 256+((MyShipPtr->PosX+OffsetX)*32);
-                        MOVESHIP_ToY = 256+((MyShipPtr->PosY+OffsetY)*32);
-                        if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-256,MOVESHIP_ToY+16-256,MyShipPtr))
+                        MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX) << 5);
+                        MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY) << 5);
+                        if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-Area_CenterX,MOVESHIP_ToY+16-Area_CenterY,MyShipPtr))
                         {
                             switch (ObjType) {
                                 case TYPE_PLANET:   {
@@ -749,27 +749,27 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         }
                     }
                 }
-            } else if ((0 == RawCode) && (521 < MouseX(0)) && (630 > MouseX(0))
+            } else if ((0 == RawCode) && ((HighRes_Width-119) < MouseX(0)) && ((HighRes_Width-10) > MouseX(0))
                                       && (8   < MouseY(0)) && (118 > MouseY(0)))
             {
                 // clicked on minimap to move the view
-                OffsetX = 576-MouseX(0);
+                OffsetX = (HighRes_Width-64)-MouseX(0);
                 OffsetY =  63-MouseY(0);
                 DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
             }
         } else if (RMB_PRESSED)
         {
-            if ((521 < MouseX(0)) && (630 > MouseX(0)) && (8 < MouseY(0)) && (118 > MouseY(0)))
+            if (((HighRes_Width-119) < MouseX(0)) && ((HighRes_Width-10) > MouseX(0)) && (8 < MouseY(0)) && (118 > MouseY(0)))
             {
                 // clicked on minimap area
                 if (( 30 > MouseY(0)) && ( 42 > OffsetY)) { OffsetY += 2; }
                 if (( 96 < MouseY(0)) && (-42 < OffsetY)) { OffsetY -= 2; }
-                if ((539 > MouseX(0)) && ( 42 > OffsetX)) { OffsetX += 2; }
-                if ((613 < MouseX(0)) && (-42 < OffsetX)) { OffsetX -= 2; }
+                if (((HighRes_Width-101) > MouseX(0)) && ( 42 > OffsetX)) { OffsetX += 2; }
+                if (((HighRes_Width- 27) < MouseX(0)) && (-42 < OffsetX)) { OffsetX -= 2; }
                 DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
             } else {
                 PLAYSOUND(0,300);
-                if (FINDOBJECT(ActSys-1,MOVESHIP_x+16-256,MOVESHIP_y+16-256,NULL))
+                if (FINDOBJECT(ActSys-1,MOVESHIP_x+16-Area_CenterX,MOVESHIP_y+16-Area_CenterY,NULL))
                 {
                     if (TYPE_SHIP == ObjType)
                     {
@@ -795,15 +795,15 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 *_s = 0;
             }
             OldMoving = MyShipPtr->Moving;
-            WRITE_RP0(521,293,GETCIVFLAG(ActPlayer),1,1,s);
+            WRITE_RP0((HighRes_Width-119),293,GETCIVFLAG(ActPlayer),1,1,s);
         }
-        MOVESHIP_x = 256+((MyShipPtr->PosX+OffsetX)*32);
-        MOVESHIP_y = 256+((MyShipPtr->PosY+OffsetY)*32);
+        MOVESHIP_x = Area_CenterX+((MyShipPtr->PosX+OffsetX) << 5);
+        MOVESHIP_y = Area_CenterY+((MyShipPtr->PosY+OffsetY) << 5);
         CLEARINTUITION();
     }
     while ((0 < MyShipPtr->Moving)
         && (TARGET_POSITION != MyShipPtr->Target)
         && (0 != MyShipPtr->Owner));
 
-    RECT_RP0_C0(520,291,632,308);
+    RECT_RP0_C0((HighRes_Width-120),291,(HighRes_Width-8),308);
 }
