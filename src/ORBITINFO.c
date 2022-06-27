@@ -3,13 +3,13 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
+int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr, int max_ships, struct RastPort* RPort_PTR)
 {
     int     j;
     char    s[14];
     char*   _s;
-    RECT_RP0_C0(22,69,416,456);
-    for(j = 0; j < 12; j++) { ShipNames[j][0] = 0; }
+//    RECT_RP0_C0(22,69,Area_Width-96,Area_Height-56);
+    for(j = 0; j < max_ships; j++) { ShipNames[j][0] = 0; }
     j = 0;
     do
     {
@@ -19,8 +19,8 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
         } else {
             if (0 != MyShipPtr->Owner)
             {
-                BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->SType-8)*32,32,MyRPort_PTR[0],35,37+i*32,32,32,192);
-                WRITE_RP0(72,45+i*32,12,0,3,ProjectName[MyShipPtr->SType]);
+                BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->SType-8)*32,32,RPort_PTR,15,7+i*32,32,32,192);
+                WRITE(52,15+i*32,12,0,RPort_PTR,3,Project.data[MyShipPtr->SType]);
 
                 (void) my_strcpy(ShipNames[j], ProjectName[MyShipPtr->SType]);
 
@@ -33,14 +33,14 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
                 _s = dez2out(it_round((MyShipPtr->Shield + MyShipPtr->Tactical*3.0)/ShipData(MyShipPtr->SType).MaxShield*100.0), 3, _s);
                 *_s++ = '%';
                 *_s = 0;
-                WRITE_RP0(235,45+i*32,8,0,1,s);
+                WRITE(215,15+i*32,8,0,RPort_PTR,1,s);
                 i++;
                 j++;
             }
         }
         MyShipPtr = MyShipPtr->NextShip;
     }
-    while ((NULL != MyShipPtr) && (i<=12));
+    while ((NULL != MyShipPtr) && (i<=max_ships));
     return i;
 }
 
@@ -50,7 +50,7 @@ void SETFLEETPOSITION(uint8 ActSys, r_ShipHeader* StShipPtr, r_ShipHeader* MyShi
     MyShipPtr->PosY   = StShipPtr->PosY;
     MyShipPtr->Moving = StShipPtr->Moving+1;
     MyShipPtr->Target = 0;
-    while (FINDOBJECT(ActSys, (MyShipPtr->PosX+OffsetX)*32, (MyShipPtr->PosY+OffsetY)*32, MyShipPtr))
+    while (FINDOBJECT(ActSys, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr))
     {
         switch (rand()%4) {
             case 0: ++MyShipPtr->PosX; break;
@@ -69,9 +69,12 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     uint8   ShipFactor = 0;
     sint16  SelShip;
     r_ShipHeader*   MyShipPtr;
+    struct Window* OI_Window;
+    struct RastPort* RPort_PTR;
     int     i, j, k;
     int     ypos;
-    char    ShipNames[12][15];
+    const int   max_num_ships = 12;
+    char    ShipNames[max_num_ships][15];
 
     if (NULL == StShipPtr) { return; }
     MyShipPtr = StShipPtr;
@@ -88,18 +91,26 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     } else {
         FleetUsed = false;
     }
-// OpenWindow()
-    MAKEBORDER(MyScreen[0],20,30,420,480,12,6,0);
-    WRITE_RP0(63,37,ActPlayerFlag,0,3,ReqText);
-    WRITE_RP0( 36,56,12,0,0,PText[408]);
-    WRITE_RP0(232,56,12,0,0,PText[409]);
 
-    i = DRAWSHIPS(1, ShipNames, MyShipPtr);
-    if ((i>12) && (NULL != MyShipPtr))
+    OI_Window=MAKECENTERWINDOW(460,Area_Height-32,MyScreen[0]);
+    if (NULL == OI_Window)
+    {
+        return;
+    }
+    RPort_PTR = OI_Window->RPort;
+
+// OpenWindow()
+//    MAKEBORDER(MyScreen[0],20,30,Area_Width-92,Area_Height-32,12,6,0);
+    WRITE( 43, 7,ActPlayerFlag,0,RPort_PTR,3,ReqText);
+    WRITE( 16,26,12,0,RPort_PTR,0,PText[408]);
+    WRITE(212,26,12,0,RPort_PTR,0,PText[409]);
+
+    i = DRAWSHIPS(1, ShipNames, MyShipPtr, max_num_ships, RPort_PTR);
+    if ((i>max_num_ships) && (NULL != MyShipPtr))
     {
 //         MoreThanShown = true;
-        DrawImage(MyRPort_PTR[0],&GadImg1,300,457);
-        WRITE_RP0(335,460,0,0,3,PText[410]);
+        DrawImage(RPort_PTR,&GadImg1,280,Area_Height-55);
+        WRITE(315,Area_Height-52,0,0,RPort_PTR,3,PText[410]);
 //     } else {
 //         MoreThanShown = false;
     }
@@ -108,19 +119,19 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     do
     {
         Delay(RDELAY);
-        if ((MouseX(0)>=60) && (MouseX(0)<=370))
+        if ((OI_Window->MouseX>=40) && (OI_Window->MouseX<=350))
         {
-            k = (MouseY(0)-35) >> 5;
+            k = (OI_Window->MouseY-5)/32;
             if (k != SelShip)
             {
-                ypos = 77;
-                for(j = 0; j < 12; j++)
+                ypos = 47;
+                for(j = 0; j < max_num_ships; j++)
                 {
                     if ((j+1) != k)
                     {
-                        WRITE_RP0(72,ypos,           12,0,3,ShipNames[j]);
+                        WRITE(52,ypos,           12,0,RPort_PTR,3,ShipNames[j]);
                     } else {
-                        WRITE_RP0(72,ypos,ActPlayerFlag,0,3,ShipNames[j]);
+                        WRITE(52,ypos,ActPlayerFlag,0,RPort_PTR,3,ShipNames[j]);
                     }
                     ypos += 32;
                 }
@@ -129,10 +140,10 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
         }
         if (LMB_PRESSED)
         {
-            if ((MouseX(0)>=300) && (MouseX(0)<=416)
-              &&(MouseY(0)>=457) && (MouseY(0)<=477))
+            if ((OI_Window->MouseX>=280) && (OI_Window->MouseX<=396)
+              &&(OI_Window->MouseY>=(Area_Height-55)) && (OI_Window->MouseY<=(Area_Height-35)))
             {
-                KLICKGAD(300,457);
+                KLICKWINGAD(RPort_PTR,280,Area_Height-55);
                 if (NULL == MyShipPtr)
                 {
                     MyShipPtr = StShipPtr;
@@ -143,21 +154,21 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
                     i = 1;
                     ShipFactor = 0;
                 } else {
-                    i = i-12;
+                    i = i-max_num_ships;
                     ++ShipFactor;
                 }
-                i = DRAWSHIPS(i, ShipNames, MyShipPtr);
-            } else if ((MouseX(0)>=60) && (MouseX(0)<=370))
+                i = DRAWSHIPS(i, ShipNames, MyShipPtr, max_num_ships, RPort_PTR);
+            } else if ((OI_Window->MouseX>=40) && (OI_Window->MouseX<=350))
             {
                 PLAYSOUND(0,300);
-                SelShip += ShipFactor*12;
+                SelShip += ShipFactor*max_num_ships;
                 b = true;
             }
         }
     }
     while ((!b) && RMB_NOTPRESSED);
     if (RMB_PRESSED) { PLAYSOUND(0,300); }
-    RECT_RP0_C0(20,30,422,482);
+    CloseWindow(OI_Window);
 // CloseWindow()
     if (b)
     {

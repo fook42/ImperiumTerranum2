@@ -41,9 +41,6 @@ BOOL getScreenmode(char* RequestTitle, int ReqWidth, int ReqHeight, ULONG orgScr
                                     {TAG_DONE,0},
                                     {TAG_END,0} };
     bool    rc = false;
-    *newScreenmodeID = orgScreenmodeID;
-    *newScreenWidth  = ReqWidth;
-    *newScreenHeight = ReqHeight;
 
     gSm_SMRequester = AllocAslRequest(ASL_ScreenModeRequest, RequesterTags);
 
@@ -70,6 +67,9 @@ int main(int argc,char** argv)
     bool             prCLI;
     BPTR             CLIout;
     int              rc = RETURN_OK;
+    uint32           result;
+    
+    struct DimensionInfo display_info;
 
     proc = (struct Process *)FindTask(NULL);
 
@@ -100,18 +100,45 @@ int main(int argc,char** argv)
             {
                 CurrentDir(wbarg->wa_Lock);
             }
- 
+
+            HighRes_Width  = def_HighRes_Width;
+            HighRes_Height = def_HighRes_Height;
+            ScreenModeID_HighRes = def_HighRes_Mode;
+            LowRes_Width   = def_LowRes_Width;
+            LowRes_Height  = def_LowRes_Height;
+            ScreenModeID_LowRes = def_LowRes_Mode;
+
             if (!getMyScreenToolTypes( wbarg->wa_Name, &ScreenModeID_HighRes, &ScreenModeID_LowRes ))
             {
-                (void) getScreenmode(SCREENREQTITLE_High, 640, 512, 0xA9004, &ScreenModeID_HighRes, &HighRes_Width, &HighRes_Height);
-                (void) getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000, &ScreenModeID_LowRes,  &LowRes_Width,  &LowRes_Height);
+                (void) getScreenmode(SCREENREQTITLE_High, def_HighRes_Width, def_HighRes_Height, def_HighRes_Mode, &ScreenModeID_HighRes, &HighRes_Width, &HighRes_Height);
+                (void) getScreenmode(SCREENREQTITLE_Low,  def_LowRes_Width, def_LowRes_Height, def_LowRes_Mode, &ScreenModeID_LowRes,  &LowRes_Width,  &LowRes_Height);
                 (void) setMyScreenToolTypes( wbarg->wa_Name, ScreenModeID_HighRes, ScreenModeID_LowRes );
+            } else {
+                result = GetDisplayInfoData(NULL, (uint8*) &display_info, sizeof(display_info), DTAG_DIMS, ScreenModeID_HighRes);
+                if (0 != result)
+                {
+                    HighRes_Width  = display_info.Nominal.MaxX-display_info.Nominal.MinX+1;
+                    HighRes_Height = display_info.Nominal.MaxY-display_info.Nominal.MinY+1;
+                }
+                result = GetDisplayInfoData(NULL, (uint8*) &display_info, sizeof(display_info), DTAG_DIMS, ScreenModeID_LowRes);
+                if (0 != result)
+                {
+                    LowRes_Width  = display_info.Nominal.MaxX-display_info.Nominal.MinX+1;
+                    LowRes_Height = display_info.Nominal.MaxY-display_info.Nominal.MinY+1;
+                }
             }
         } else {
             /* started from CLI ... open the screenmode-requesters anyway */
             (void) getScreenmode(SCREENREQTITLE_High, 640, 512, 0xA9004, &ScreenModeID_HighRes, &HighRes_Width, &HighRes_Height);
             (void) getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000, &ScreenModeID_LowRes,  &LowRes_Width,  &LowRes_Height);
         }
+        CenterX = (uint16) HighRes_Width/2;
+        CenterY = (uint16) HighRes_Height/2;
+
+        Area_Width   = HighRes_Width-128;
+        Area_Height  = HighRes_Height;
+        Area_CenterX = (uint16) (Area_Width/2);
+        Area_CenterY = (uint16) (Area_Height/2);
 
         MAIN_FNC();
         rc = RETURN_OK;

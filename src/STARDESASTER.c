@@ -78,7 +78,7 @@ void SD_TEXTWINDOW(const char* TextPtr1,const char* TextPtr2,const char* TextPtr
     struct Window*   STD_Window;
     struct RastPort* RPort_PTR;
 
-    STD_Window=MAKEWINDOWBORDER(50,100,411,81,MyScreen[0]);
+    STD_Window=MAKECENTERWINDOW(411,81,MyScreen[0]);
     if (NULL != STD_Window)
     {
         RPort_PTR = STD_Window->RPort;
@@ -134,7 +134,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     {
                         do
                         {
-                            SystemX[i] = 10+(rand()%458);
+                            SystemX[i] = 26+(rand()%474);
                             SystemY[i] = 10+(rand()%490);
                             system_too_close = false;
                             // check if the new system is too close to any previous one..

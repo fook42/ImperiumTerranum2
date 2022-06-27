@@ -33,7 +33,7 @@ void ROTATEPLANETS(uint8 ActSys)
     struct RastPort* RPort_PTR2;
 
     if ((2000 < Year) && (1 == ActPlayer)) { DOHUMANITY(); }
-    RECT_RP0_C0(520,291,632,308);
+    RECT_RP0_C0(HighRes_Width-120,291,HighRes_Width-8,308);
     Valid = false;
     if (1 == ActPlayer) { ++Year; }
     FreeSystem = false;
@@ -103,8 +103,8 @@ void ROTATEPLANETS(uint8 ActSys)
                 SystemHeader[i].FirstShip.PosY = it_round(FromX * sin_rot + FromY * cos_rot);
 
                 // MyShipPtr = &SystemHeader[i].FirstShip; // not needed .. MyShipPtr is not changed at all.
-                if (FINDOBJECT(i, (SystemHeader[i].FirstShip.PosX+OffsetX)*32,
-                                  (SystemHeader[i].FirstShip.PosY+OffsetY)*32,
+                if (FINDOBJECT(i, (SystemHeader[i].FirstShip.PosX+OffsetX)<<5,
+                                  (SystemHeader[i].FirstShip.PosY+OffsetY)<<5,
                                   &SystemHeader[i].FirstShip))
                 {
                     // would the stargate "hit" another object? then we dont move it - revert to the previous coordinates
@@ -294,7 +294,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         INFORMUSER();
 
-                        ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
+                        ROT_Window=MAKECENTERWINDOW(341,81,MyScreen[0]);
                         if (ROT_Window)
                         {
                             RPort_PTR = ROT_Window->RPort;
@@ -569,7 +569,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     Save.ImperatorState[ActPlayer-1] += 50;
                                     Save.stProject[ProjID-1] = ActPlayer;
 
-                                    ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
+                                    ROT_Window=MAKECENTERWINDOW(341,81,MyScreen[0]);
                                     if (ROT_Window)
                                     {
                                         RPort_PTR = ROT_Window->RPort;
@@ -633,7 +633,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         if ((l == 1) && (Save.CivPlayer[ActPlayer-1] != 0))
                         {
                             INFORMUSER();
-                            ROT_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
+                            ROT_Window=MAKECENTERWINDOW(341,81,MyScreen[0]);
                             if (ROT_Window)
                             {
                                 RPort_PTR = ROT_Window->RPort;
@@ -670,7 +670,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                    && (!Save.PlayMySelf))
                                 {
                                     // building ships... where to place it?
-                                    ROT_Window2=MAKEWINDOWBORDER(85,208,341,41,MyScreen[0]);
+                                    ROT_Window2=MAKECENTERWINDOW(341,41,MyScreen[0]);
                                     if (ROT_Window2)
                                     {
                                         RPort_PTR2 = ROT_Window2->RPort;
@@ -1189,7 +1189,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         if (0 == (Year % 13))
                         {
-                            ROT_Window=MAKEWINDOWBORDER(100,100,311,81,MyScreen[0]);
+                            ROT_Window=MAKECENTERWINDOW(311,81,MyScreen[0]);
                             RPort_PTR = ROT_Window->RPort;
 
 
@@ -1201,7 +1201,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         }
                     }
                     INFORMUSER();
-                    ROT_Window=MAKEWINDOWBORDER(60,100,309,168,MyScreen[0]);
+                    ROT_Window=MAKECENTERWINDOW(309,168,MyScreen[0]);
                     RPort_PTR = ROT_Window->RPort;
 
 

@@ -16,7 +16,7 @@ void FORSCHUNG()
 
     struct Window* FOR_Window = NULL;
     struct RastPort* RPort_PTR;
-    FOR_Window=MAKEWINDOW(0,0,512,512,MyScreen[0]);
+    FOR_Window=MAKEWINDOW(0,0,Area_Width,Area_Height,MyScreen[0]);
     if (NULL != FOR_Window)
     {
         RPort_PTR = FOR_Window->RPort;
@@ -26,11 +26,11 @@ void FORSCHUNG()
         RPort_PTR = MyRPort_PTR[0];
         i = 0;
     }
-    MAKEWINBORDER(RPort_PTR,0,  0,511,330,12,6,i);
-    MAKEWINBORDER(RPort_PTR,0,331,511,400,12,6,i);
-    MAKEWINBORDER(RPort_PTR,0,401,511,511,12,6,i);
+    MAKEWINBORDER(RPort_PTR,0,  0,(HighRes_Width-129),330,12,6,i);
+    MAKEWINBORDER(RPort_PTR,0,331,(HighRes_Width-129),400,12,6,i);
+    MAKEWINBORDER(RPort_PTR,0,401,(HighRes_Width-129),(Area_Height-1),12,6,i);
 
-    WRITE(255,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[737]);
+    WRITE(Area_CenterX,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[737]);
     posx = 10;
     for (i = 0; i < 2; ++i)
     {
@@ -57,14 +57,14 @@ void FORSCHUNG()
         _s = dez2out((Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
         *_s++ = ' ';
         (void) my_strcpy(_s, _PT_Jahre);
-        WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,s);
+        WRITE(Area_CenterX,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,s);
 
-        MAKEWINBORDER(RPort_PTR,20,365,492,390,6,12,0);
-        l = Save.TechCosts[ActPlayer-1][Save.ActTech[0]];
+        MAKEWINBORDER(RPort_PTR,20,365,(HighRes_Width-148),390,6,12,0);
+        l = Save.TechCosts[ActPlayer-1].data[Save.ActTech[0]];
         if (l < 0) { l = 0; }
-        RECTWIN(RPort_PTR,8,22,367,490-it_round(468.0*l/Save.TechCosts[ActPlayer-1][42]),388);
+        RECTWIN(RPort_PTR,8,22,367,(Area_Width-22)-it_round((Area_Width-44)*((double) l/Save.TechCosts[ActPlayer-1].data[42])),388);
     } else {
-        WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[173]);
+        WRITE(Area_CenterX,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[173]);
     }
 
     /* ShipData:    MaxLoad,MaxShield,MaxMove,WeaponPower */

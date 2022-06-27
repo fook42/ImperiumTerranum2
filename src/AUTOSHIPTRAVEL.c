@@ -154,8 +154,8 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                             {
                                 if (Visible)
                                 {
-                                    if (((256+(MyShipPtr->PosX+OffsetX)*32) < 1) || ((256+(MyShipPtr->PosX+OffsetX)*32) > 478)
-                                        ||((256+(MyShipPtr->PosY+OffsetY)*32) < 1) || ((256+(MyShipPtr->PosY+OffsetY)*32) > 478)
+                                    if (((Area_CenterX+(MyShipPtr->PosX+OffsetX)*32) < 1) || ((Area_CenterX+(MyShipPtr->PosX+OffsetX)*32) > (Area_Width-44))
+                                        ||((Area_CenterY+(MyShipPtr->PosY+OffsetY)*32) < 1) || ((Area_CenterY+(MyShipPtr->PosY+OffsetY)*32) > (Area_Width-44))
                                         || (Display != i))
                                     {
                                         OffsetX = -MyShipPtr->PosX-1;
@@ -217,13 +217,13 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                         default: { }
                                     }
                                 }
-                                while (FINDOBJECT(i-1, (MyShipPtr->PosX+OffsetX)*32, (MyShipPtr->PosY+OffsetY)*32, MyShipPtr));
+                                while (FINDOBJECT(i-1, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr));
 
                                 if ((((SystemFlags[0][i-1] & ActPlayerFlag) == ActPlayerFlag) || (CivVar == ActPlayer))
                                     && (Save.CivPlayer[ActPlayer-1] != 0) && (!DconDone))
                                 {
                                     INFORMUSER();
-                                    AST_Window=MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
+                                    AST_Window=MAKECENTERWINDOW(341,81,MyScreen[0]);
                                     if (NULL != AST_Window)
                                     {
                                         RPort_PTR = AST_Window->RPort;

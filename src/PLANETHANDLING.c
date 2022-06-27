@@ -30,7 +30,7 @@ void PH_GIVEANSWER(const char* TextPtr1, const char* TextPtr2)
     struct Window* ANS_Window;
     struct RastPort* RPort_PTR;
 
-    ANS_Window = MAKEWINDOWBORDER(85, 120, 341, 81, MyScreen[0]);
+    ANS_Window = MAKECENTERWINDOW(341, 81, MyScreen[0]);
     if (NULL != ANS_Window)
     {
         RPort_PTR = ANS_Window->RPort;
@@ -66,7 +66,7 @@ int GETOPTION(const int Opts, char (*OptArr)[40], uint8 CivFlag)
     struct Window* GOP_Window;
     struct RastPort* RPort_PTR;
 
-    GOP_Window=MAKEWINDOWBORDER(50,100,411,141,MyScreen[0]);
+    GOP_Window=MAKECENTERWINDOW(411,141,MyScreen[0]);
     if (NULL != GOP_Window)
     {
         RPort_PTR = GOP_Window->RPort;
@@ -122,7 +122,7 @@ bool SMALLREQUEST(char* s, uint8 CivVar, uint8 CivFlag)
 
     struct Window* SRE_Window;
 
-    SRE_Window=MAKEWINDOWBORDER(35,110,441,111,MyScreen[0]);
+    SRE_Window=MAKECENTERWINDOW(441,111,MyScreen[0]);
     if (NULL != SRE_Window)
     {
         RPort_PTR = SRE_Window->RPort;

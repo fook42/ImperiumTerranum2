@@ -9,11 +9,10 @@ void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2)
     struct RastPort* RPort_PTR;
 
     INFORMUSER();
-    PEI_Window=MAKEWINDOWBORDER(85,120,341,101,MyScreen[0]);
+    PEI_Window=MAKECENTERWINDOW(341,101,MyScreen[0]);
     if (NULL != PEI_Window)
     {
         RPort_PTR = PEI_Window->RPort;
-
 
         WRITE(170,12,CivFlag1,(1|WRITE_Center),RPort_PTR,3, GETCIVNAME(CivVar1));
         WRITE(170,32,      12,(1|WRITE_Center),RPort_PTR,3, _PT_und);

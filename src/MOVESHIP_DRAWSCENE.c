@@ -9,8 +9,8 @@ void MOVESHIP_DRAWSCENE(uint8 ActSys, r_ShipHeader* MyShipPtr)
     {
         OffsetX = -MyShipPtr->PosX-1;
         OffsetY = -MyShipPtr->PosY-1;
-        MOVESHIP_x = 256+(MyShipPtr->PosX+OffsetX)*32;
-        MOVESHIP_y = 256+(MyShipPtr->PosY+OffsetY)*32;
+        MOVESHIP_x = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+        MOVESHIP_y = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     } else {
         REFRESHDISPLAY();

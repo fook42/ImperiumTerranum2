@@ -20,20 +20,22 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     {
         if ((0 == Display) || (100 == Display))
         {
+            y = 416;
             for (i = 0; i<3; ++i)
             {
-                DrawImage(MyRPort_PTR[0],&GadImg1,518,416+i*28);
+                DrawImage(MyRPort_PTR[0],&GadImg1,(HighRes_Width-122), y);
+                y+=28;
             }
-            WRITE_RP0(576,418,0,JAM1|WRITE_Center             ,3,_PT_Suchen);
-            WRITE_RP0(576,446,0,JAM1|WRITE_Center             ,3,_PT_Sternenkarte);
-            WRITE_RP0(576,474,8,JAM1|WRITE_Center|WRITE_Shadow,3,_PT_Rundenende);
+            WRITE_RP0((HighRes_Width-64),418,0,JAM1|WRITE_Center             ,3,_PT_Suchen);
+            WRITE_RP0((HighRes_Width-64),446,0,JAM1|WRITE_Center             ,3,_PT_Sternenkarte);
+            WRITE_RP0((HighRes_Width-64),474,8,JAM1|WRITE_Center|WRITE_Shadow,3,_PT_Rundenende);
         }
         // Display = ActSys;
         SetAPen(MyRPort_PTR[0], 0);
-        RectFill(MyRPort_PTR[0], 0, 0, 511, 511);   // clear main display
-        RectFill(MyRPort_PTR[0], 522, 9, 629, 116); // clear little map
+        RectFill(MyRPort_PTR[0], 0, 0, Area_Width-1, Area_Height-1);   // clear main display
+        RectFill(MyRPort_PTR[0], (HighRes_Width-118), 9, (HighRes_Width-11), 116); // clear little map
         SetAPen(MyRPort_PTR[0], 10);
-        RectFill(MyRPort_PTR[0], 575, 62, 577, 63); // draw sun-spot inside little map
+        RectFill(MyRPort_PTR[0], (HighRes_Width-65), 62, (HighRes_Width-63), 63); // draw sun-spot inside little map
     }
     Display = ActSys;
     SetAPen(MyRPort_PTR[0],109);
@@ -41,14 +43,14 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     y = 63-OffsetY+8;       // lower line (little map)
     if (x<9)   { x = 9; }
     if (y>116) { y = 116; }
-    Move(MyRPort_PTR[0],522,x);
-    Draw(MyRPort_PTR[0],629,x);
-    Move(MyRPort_PTR[0],522,y);
-    Draw(MyRPort_PTR[0],629,y);
-    x = 576-OffsetX-10;     // left  line (little map)
-    y = 576-OffsetX+8;      // right line (little map)
-    if (x<522) { x = 522; }
-    if (y>629) { y = 629; }
+    Move(MyRPort_PTR[0],(HighRes_Width-118),x);
+    Draw(MyRPort_PTR[0],(HighRes_Width- 11),x);
+    Move(MyRPort_PTR[0],(HighRes_Width-118),y);
+    Draw(MyRPort_PTR[0],(HighRes_Width- 11),y);
+    x = (HighRes_Width-64)-OffsetX-10;     // left  line (little map)
+    y = (HighRes_Width-64)-OffsetX+8;      // right line (little map)
+    if (x<(HighRes_Width-118)) { x = (HighRes_Width-118); }
+    if (y>(HighRes_Width- 11)) { y = (HighRes_Width- 11); }
     Move(MyRPort_PTR[0],x,9);
     Draw(MyRPort_PTR[0],x,116);
     Move(MyRPort_PTR[0],y,9);
@@ -69,18 +71,18 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
 
         if       ((-8 == OffsetY) || (8 == OffsetY)) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft, 8-OffsetY,MyRPort_PTR[0],
-                                                           240+Sunleft+(OffsetX*32),248-OffsetY+(OffsetY*32),Sunwidth,16,192); // A or B
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY-8-OffsetY+(OffsetY*32),Sunwidth,16,192); // A or B
         } else if (-9 != OffsetY) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft, 0,MyRPort_PTR[0],
-                                                           240+Sunleft+(OffsetX*32),240+(OffsetY*32),Sunwidth,32,192); // A+B
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY-16+(OffsetY*32),Sunwidth,32,192); // A+B
         }
 
         if       ((-9 == OffsetY) || (7 == OffsetY)) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft, 7-OffsetY,MyRPort_PTR[0],
-                                                           240+Sunleft+(OffsetX*32),279-OffsetY+(OffsetY*32),Sunwidth,16,192); // C or D
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY+23-OffsetY+(OffsetY*32),Sunwidth,16,192); // C or D
         } else if ( 8 != OffsetY) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft, 0,MyRPort_PTR[0],
-                                                           240+Sunleft+(OffsetX*32),272+(OffsetY*32),Sunwidth,32,192); // C+D
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY+16+(OffsetY*32),Sunwidth,32,192); // C+D
         }
     }
 
@@ -93,12 +95,12 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
         {
             if (MyWormHole[j].System[i] == ActSys)
             {
-                x = 256+((MyWormHole[j].PosX[i]+OffsetX)*32);
-                y = 256+((MyWormHole[j].PosY[i]+OffsetY)*32);
-                if ((0 <= x) && (481 > x) && (0 <= y) && (481 > y))
+                x = Area_CenterX+((MyWormHole[j].PosX[i]+OffsetX)*32);
+                y = Area_CenterY+((MyWormHole[j].PosY[i]+OffsetY)*32);
+                if ((0 <= x) && ((Area_Width-32) > x) && (0 <= y) && ((Area_Height-32) > y))
                 {
                     RectFill(MyRPort_PTR[0],x+15,y+15,x+17,y+17);
-                    if ((31 < x) && (449 > x) /*&& (31 < y)*/ && (449 > y))
+                    if ((31 < x) && ((Area_Width-63) > x) /*&& (31 < y)*/ && ((Area_Height-63) > y))
                     {
                         BelongsTo = SystemFlags[0][MyWormHole[j].System[1-i]-1] & FLAG_CIV_MASK;
                         if (0 == BelongsTo)
@@ -114,7 +116,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                 }
                 if (FLAG_KNOWN == MyWormHole[j].CivKnowledge[ActPlayer-1])
                 {
-                    WritePixel(MyRPort_PTR[0],575+MyWormHole[j].PosX[i],62+MyWormHole[j].PosY[i]);
+                    WritePixel(MyRPort_PTR[0],(HighRes_Width-65)+MyWormHole[j].PosX[i],62+MyWormHole[j].PosY[i]);
                 }
             }
         }
@@ -135,14 +137,14 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
         if (MODE_REDRAW == Mode)
         {
             SetAPen(MyRPort_PTR[0],BelongsTo);
-            RectFill(MyRPort_PTR[0], 575+x, 62+y, 576+x, 63+y);
+            RectFill(MyRPort_PTR[0], (HighRes_Width-65)+x, 62+y, (HighRes_Width-64)+x, 63+y);
         }
-        x = 256+((x+OffsetX)*32);
-        y = 256+((y+OffsetY)*32);
-        if ((0 <= x) && (481 > x) && (0 <= y) && (481 > y))
+        x = Area_CenterX+((x+OffsetX)*32);
+        y = Area_CenterY+((y+OffsetY)*32);
+        if ((0 <= x) && ((Area_Width-32) > x) && (0 <= y) && ((Area_Height-32) > y))
         {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,PlanetHeader->Class*32,0,MyRPort_PTR[0],x,y,32,32,192);
-            if ((31 < x) && (449 > x) /*&& (31 < y)*/ && (449 > y))
+            if ((31 < x) && ((Area_Width-63) > x) /*&& (31 < y)*/ && ((Area_Height-63) > y))
             {
                 MyShipPtr = PlanetHeader->FirstShip.NextShip;
                 while ((NULL != MyShipPtr) && (0 == MyShipPtr->Owner))
@@ -192,15 +194,15 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
             if (((0 < MyShipPtr->Owner) && (0 < UseShipPtr->Owner) && (0 <= MyShipPtr->Moving)
                     && (0 < MyShipPtr->SType)) || (TARGET_STARGATE == MyShipPtr->SType))
             {
-                x = 256+((MyShipPtr->PosX+OffsetX)*32);
-                y = 256+((MyShipPtr->PosY+OffsetY)*32);
+                x = Area_CenterX+((MyShipPtr->PosX+OffsetX)*32);
+                y = Area_CenterY+((MyShipPtr->PosY+OffsetY)*32);
                 if (SHIPTYPE_FLEET == MyShipPtr->SType)
                 {
                     UseShipPtr = MyShipPtr->TargetShip;
                 } else {
                     UseShipPtr = MyShipPtr;
                 }
-                if ((0 <= x) && (481 > x) && (0 <= y) && (481 > y))
+                if ((0 <= x) && ((Area_Width-32) > x) && (0 <= y) && ((Area_Height-32) > y))
                 {
                     RECT_RP0_C0(x,y,x+31,y+31);
                     BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(UseShipPtr->SType-8)*32,32,MyRPort_PTR[0],x,y,31,31,192);
@@ -211,8 +213,8 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                 } else {
                     SetAPen(MyRPort_PTR[0],12);
                 }
-                WritePixel(MyRPort_PTR[0],575+MyShipPtr->PosX,62+MyShipPtr->PosY);
-                if ((0 <= x) && (481 > x) && (0 <= y) && (481 > y) && (TARGET_STARGATE != MyShipPtr->SType))
+                WritePixel(MyRPort_PTR[0],(HighRes_Width-65)+MyShipPtr->PosX,62+MyShipPtr->PosY);
+                if ((0 <= x) && ((Area_Width-32) > x) && (0 <= y) && ((Area_Height-32) > y) && (TARGET_STARGATE != MyShipPtr->SType))
                 {
                     BOX(MyRPort_PTR[0],x,y,x+31,y+31);
                     if (SHIPTYPE_FLEET == MyShipPtr->SType)
@@ -258,7 +260,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     {
         BelongsTo = 12;
     }
-    WRITE_RP0(200,491,BelongsTo,JAM1,3,Save.SystemName[ActSys]);
+    WRITE_RP0(Area_CenterX, (HighRes_Height-21),BelongsTo,(JAM1 | WRITE_Center),3,Save.SystemName.data[ActSys]);
     PRINTGLOBALINFOS(ActPlayer-1);
     if (!Save.PlayMySelf) { ScreenToFront(MyScreen[0]); }
 }

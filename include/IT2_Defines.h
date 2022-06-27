@@ -4,6 +4,13 @@
 #include <hardware/custom.h>
 #include "IT2_PText_Defines.h"
 
+#define def_HighRes_Width  (640)
+#define def_HighRes_Height (512)
+#define def_HighRes_Mode   (0xA9004)
+#define def_LowRes_Width   (320)
+#define def_LowRes_Height  (256)
+#define def_LowRes_Mode    (0xA1000)
+
 #define FLAG_UNKNOWN    0           /* 0x00 */
 #define FLAG_KNOWN      0x80        /* 0x80 = 1000 0000 */
 #define FLAG_TERRA      20          /* 0x14 = 0001 0100 */
@@ -153,6 +160,7 @@ enum {  SCREEN_PLANET = 1,
 // fakefunctions
 
 #define MAKEBORDER(A,B,C,D,E,F,G,H)  MAKEWINBORDER(&((A)->RastPort),B,C,D,E,F,G,H)
+#define MAKECENTERWINDOW(A,B,C)      MAKEWINDOWBORDER(Area_CenterX-((A)/2), Area_CenterY-((B)/2),A,B,C)
 #define RECT(A,B,C,D,E,F)            RECTWIN(&((A)->RastPort),B,C,D,E,F)
 
 // WRITE-Defines
