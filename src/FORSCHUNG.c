@@ -26,9 +26,15 @@ void FORSCHUNG()
         RPort_PTR = MyRPort_PTR[0];
         i = 0;
     }
+<<<<<<< HEAD
     MAKEWINBORDER(RPort_PTR,0,  0,Area_Width-1,330,12,6,i);
     MAKEWINBORDER(RPort_PTR,0,331,Area_Width-1,400,12,6,i);
     MAKEWINBORDER(RPort_PTR,0,401,Area_Width-1,Area_Height-1,12,6,i);
+=======
+    MAKEWINBORDER(RPort_PTR,0,  0,(HighRes_Width-129),330,12,6,i);
+    MAKEWINBORDER(RPort_PTR,0,331,(HighRes_Width-129),400,12,6,i);
+    MAKEWINBORDER(RPort_PTR,0,401,(HighRes_Width-129),(Area_Height-1),12,6,i);
+>>>>>>> 21aadae (resize Play-area with screensize)
 
     WRITE(Area_CenterX,10,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[737]);
     posx = 10;
@@ -59,10 +65,17 @@ void FORSCHUNG()
         (void) my_strcpy(_s, _PT_Jahre);
         WRITE(Area_CenterX,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,s);
 
+<<<<<<< HEAD
         MAKEWINBORDER(RPort_PTR,20,365,(Area_Width-20),390,6,12,0);
         l = Save.TechCosts[ActPlayer-1][Save.ActTech[0]];
         if (l < 0) { l = 0; }
         RECTWIN(RPort_PTR,8,22,367,(Area_Width-22)-it_round((Area_Width-44)*((double) l/Save.TechCosts[ActPlayer-1][42])),388);
+=======
+        MAKEWINBORDER(RPort_PTR,20,365,(HighRes_Width-148),390,6,12,0);
+        l = Save.TechCosts[ActPlayer-1].data[Save.ActTech[0]];
+        if (l < 0) { l = 0; }
+        RECTWIN(RPort_PTR,8,22,367,(Area_Width-22)-it_round((Area_Width-44)*((double) l/Save.TechCosts[ActPlayer-1].data[42])),388);
+>>>>>>> 21aadae (resize Play-area with screensize)
     } else {
         WRITE(Area_CenterX,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[173]);
     }
