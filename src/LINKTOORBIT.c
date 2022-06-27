@@ -12,9 +12,9 @@ void LINKTOORBIT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr, const 
     }
     if (((SystemFlags[ActPlayer-1][ActSys] & FLAG_KNOWN) != 0) || (MyShipPtr->Owner == ActPlayerFlag))
     {
-        x = 256+(MyShipPtr->PosX+OffsetX)*32;
-        y = 256+(MyShipPtr->PosY+OffsetY)*32;
-        if ((x>=0) && (x<=480) && (y>=0) && (y<=480))
+        x = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+        y = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
+        if ((x>=0) && (x<=(Area_Width-32)) && (y>=0) && (y<=(Area_Height-32)))
         {
             RECT_RP0_C0(x,y,x+31,y+31);
             REFRESHDISPLAY();

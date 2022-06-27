@@ -38,7 +38,7 @@ void GOTOWAR(int CivFlag1, int CivFlag2)
         return;
     }
 
-    GTW_Window = MAKEWINDOWBORDER(85,120,341,81,MyScreen[0]);
+    GTW_Window = MAKECENTERWINDOW(341,81,MyScreen[0]);
     if (NULL != GTW_Window)
     {
         RPort_PTR = GTW_Window->RPort;

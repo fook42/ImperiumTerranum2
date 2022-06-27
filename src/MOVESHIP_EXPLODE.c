@@ -19,15 +19,15 @@ void MOVESHIP_EXPLODE(uint8 ActSys, r_ShipHeader* MyShipPtr)
             {
                 MOVESHIP_DRAWSCENE((ActSys+1), MyShipPtr);
                 PLAYSOUND(1,1100);
-                MOVESHIP_x = 256+(MyShipPtr->PosX+OffsetX)*32;
-                MOVESHIP_y = 256+(MyShipPtr->PosY+OffsetY)*32;
+                MOVESHIP_x = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+                MOVESHIP_y = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
                 if ((0 != MyShipPtr->PosX) || (0 != MyShipPtr->PosY))
                 {
                     MyShipPtr->PosX = MOVESHIP_FromX;
                     MyShipPtr->PosY = MOVESHIP_FromY;
                 }
-                if ((0 <= MOVESHIP_x) && (481 > MOVESHIP_x) &&
-                    (0 <= MOVESHIP_y) && (481 > MOVESHIP_y) &&
+                if ((0 <= MOVESHIP_x) && ((Area_Width -32) > MOVESHIP_x) &&
+                    (0 <= MOVESHIP_y) && ((Area_Height-32) > MOVESHIP_y) &&
                     ((0 != MyShipPtr->PosX) || (0 != MyShipPtr->PosY)))
                 {
                     RECT(MyScreen[0],0,MOVESHIP_x,MOVESHIP_y,MOVESHIP_x+31,MOVESHIP_y+31);

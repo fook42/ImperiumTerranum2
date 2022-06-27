@@ -17,7 +17,7 @@ void QUOTEPICARD()
 
     struct Window* QPI_Window = NULL;
     struct RastPort* RPort_PTR;
-    QPI_Window=MAKEWINDOWBORDER(20,70,471,221,MyScreen[0]);
+    QPI_Window=MAKECENTERWINDOW(471,221,MyScreen[0]);
     if (NULL != QPI_Window)
     {
         RPort_PTR = QPI_Window->RPort;

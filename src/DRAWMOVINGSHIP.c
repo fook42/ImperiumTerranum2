@@ -10,7 +10,7 @@ void FASTREFRESH(sint16 OldX, sint16 OldY, r_ShipHeader* XCludeShip)
     r_ShipHeader*   OtherShipPtr;
     r_PlanetHeader* PlanetHeader;
     r_ShipHeader*   UseShipPtr;
-    
+
     OtherShipPtr = &SystemHeader[locDisplay].FirstShip;
     while (NULL != OtherShipPtr)
     {
@@ -20,8 +20,8 @@ void FASTREFRESH(sint16 OldX, sint16 OldY, r_ShipHeader* XCludeShip)
             if (((XCludeShip != OtherShipPtr) && (0 < OtherShipPtr->Owner) && (0 <= OtherShipPtr->Moving))
              || (TARGET_STARGATE == OtherShipPtr->SType))
             {
-                x = 256+((OtherShipPtr->PosX + OffsetX)*32);
-                y = 256+((OtherShipPtr->PosY + OffsetY)*32);
+                x = Area_CenterX+((OtherShipPtr->PosX + OffsetX)*32);
+                y = Area_CenterY+((OtherShipPtr->PosY + OffsetY)*32);
                 if (SHIPTYPE_FLEET == OtherShipPtr->SType)
                 {
                     UseShipPtr = OtherShipPtr->TargetShip;
@@ -43,8 +43,8 @@ void FASTREFRESH(sint16 OldX, sint16 OldY, r_ShipHeader* XCludeShip)
         if ((it_round(PlanetHeader->PosX) > (OldX-2)) && (it_round(PlanetHeader->PosX) < (OldX+2))
           &&(it_round(PlanetHeader->PosY) > (OldY-2)) && (it_round(PlanetHeader->PosY) < (OldY+2)))
         {
-            x = 256+((it_round(PlanetHeader->PosX) + OffsetX)*32);
-            y = 256+((it_round(PlanetHeader->PosY) + OffsetY)*32);
+            x = Area_CenterX+((it_round(PlanetHeader->PosX) + OffsetX)*32);
+            y = Area_CenterY+((it_round(PlanetHeader->PosY) + OffsetY)*32);
             if ((x>=0) && (x<481) && (y>=0) && (y<481))
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap7,PlanetHeader->Class*32,0,MyRPort_PTR[0],x,y,32,32,192);
@@ -117,12 +117,12 @@ void DRAWMOVINGSHIP(r_ShipHeader* MyShipPtr, uint8 ActSys)
         }
     }
     while ((MOVESHIP_x != MOVESHIP_ToX) || (MOVESHIP_y != MOVESHIP_ToY));
-    if (((MOVESHIP_x<1) || (MOVESHIP_x>478) || (MOVESHIP_y<1) || (MOVESHIP_y>478)) && (MyShipPtr->Moving>0) && (b))
+    if (((MOVESHIP_x<1) || (MOVESHIP_x>(Area_Width-34)) || (MOVESHIP_y<1) || (MOVESHIP_y>(Area_Height-34))) && (MyShipPtr->Moving>0) && (b))
     {
         OffsetX = -MyShipPtr->PosX-1;
         OffsetY = -MyShipPtr->PosY-1;
-        MOVESHIP_x = 256+((MyShipPtr->PosX+OffsetX)*32);
-        MOVESHIP_y = 256+((MyShipPtr->PosY+OffsetY)*32);
+        MOVESHIP_x = Area_CenterX+((MyShipPtr->PosX+OffsetX)*32);
+        MOVESHIP_y = Area_CenterY+((MyShipPtr->PosY+OffsetY)*32);
         MOVESHIP_ToX = MOVESHIP_x;
         MOVESHIP_ToY = MOVESHIP_y;
         DRAWSYSTEM(MODE_REDRAW,Display,NULL);

@@ -33,8 +33,8 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         {
             OffsetX = -MyShipPtr->PosX-1;
             OffsetY = -MyShipPtr->PosY-1;
-            MOVESHIP_ToX = 256+((MyShipPtr->PosX+OffsetX)*32);
-            MOVESHIP_ToY = 256+((MyShipPtr->PosY+OffsetY)*32);
+            MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX)*32);
+            MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY)*32);
             DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
         }
         PLAYSOUND(2,280);
@@ -60,7 +60,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         MyShipPtr->PosX += (rand()%3)-1;
         MyShipPtr->PosY += (rand()%3)-1;
     }
-    while ((FINDOBJECT(NewSys,(MyShipPtr->PosX+OffsetX)*32,(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
+    while ((FINDOBJECT(NewSys, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr))
         || ((4 > MyShipPtr->PosX) && (-4 < MyShipPtr->PosX) && (4 > MyShipPtr->PosY) && (-4 < MyShipPtr->PosY)));
 
     if (Visible)

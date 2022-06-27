@@ -19,8 +19,8 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
         if ((TARGET_STARGATE == SystemHeader[ActSys].FirstShip.SType)
          && (TARGET_STARGATE != ((r_ShipHeader*) ExcludeObj)->SType))
         {
-            x = (SystemHeader[ActSys].FirstShip.PosX+OffsetX)*32;
-            y = (SystemHeader[ActSys].FirstShip.PosY+OffsetY)*32;
+            x = ((SystemHeader[ActSys].FirstShip.PosX+OffsetX) << 5);
+            y = ((SystemHeader[ActSys].FirstShip.PosY+OffsetY) << 5);
             if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
             {
                 ObjType = TYPE_STARGATE;
@@ -33,7 +33,12 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
     for(i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
         PlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
-        if (PlanetHeader != (r_PlanetHeader*) ExcludeObj)
+        if (PlanetHeader == (r_PlanetHeader*) ExcludeObj) { continue; }
+
+        x = ((it_round(PlanetHeader->PosX)+OffsetX) << 5);
+        y = ((it_round(PlanetHeader->PosY)+OffsetY) << 5);
+
+        if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
         {
             x = (it_round(PlanetHeader->PosX)+OffsetX)*32;
             y = (it_round(PlanetHeader->PosY)+OffsetY)*32;
@@ -53,8 +58,8 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
     {
         if ((ActShipPtr != (r_ShipHeader*) ExcludeObj) && (ActShipPtr->Owner != 0) && (ActShipPtr->Moving >= 0))
         {
-            x = (ActShipPtr->PosX+OffsetX)*32;
-            y = (ActShipPtr->PosY+OffsetY)*32;
+            x = ((ActShipPtr->PosX+OffsetX) << 5);
+            y = ((ActShipPtr->PosY+OffsetY) << 5);
             if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
             {
                 ObjType = TYPE_SHIP;
@@ -74,8 +79,8 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
         {
             if (MyWormHole[i].System[j] == (ActSys+1))
             {
-                x = (MyWormHole[i].PosX[j]+OffsetX)*32;
-                y = (MyWormHole[i].PosY[j]+OffsetY)*32;
+                x = ((MyWormHole[i].PosX[j]+OffsetX) << 5);
+                y = ((MyWormHole[i].PosY[j]+OffsetY) << 5);
                 if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
                 {
                     ObjType = TYPE_WORMHOLE;
