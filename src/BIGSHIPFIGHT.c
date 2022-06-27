@@ -237,7 +237,7 @@ void STARFLY(uint8 Ship)
         }
         sx2[Ship][AScr] = sx1[Ship][AScr]+ FireFactor * mx[Angle[Ship] >> 5];
         sy2[Ship][AScr] = sy1[Ship][AScr]+ FireFactor * my[Angle[Ship] >> 5];
-        if ((sx2[Ship][AScr]<1) || (sx2[Ship][AScr]>639) || (sy2[Ship][AScr]<1) || (sy2[Ship][AScr]>511))
+        if ((sx2[Ship][AScr]<1) || (sx2[Ship][AScr]>(HighRes_Width-1)) || (sy2[Ship][AScr]<1) || (sy2[Ship][AScr]>(HighRes_Height-1)))
         {
             sx1[Ship][AScr] = 0;
         }

@@ -14,11 +14,11 @@ bool INITDESK(const int Mode)
     (void) SETCOLOR( MyScreen[0], s);
 
     (void) my_strcpy(_s-3, "img");
-    if (!DISPLAYIMAGE( s, 512, 0, 128, 512, 7, MyScreen[0], 0)) {  return false; }
+    if (!DISPLAYIMAGE( s, Area_Width, 0, 128, 512, 7, MyScreen[0], 0)) {  return false; }
     SETWORLDCOLORS();
-    WRITE_RP0(576,156,45,WRITE_Center, 3, _PT_Jahr);
-    WRITE_RP0(576,207,45,WRITE_Center, 3, PText[146]);
-    WRITE_RP0(576,258,45,WRITE_Center, 3, PText[147]);
+    WRITE_RP0((HighRes_Width-64),156,45,WRITE_Center, 3, _PT_Jahr);
+    WRITE_RP0((HighRes_Width-64),207,45,WRITE_Center, 3, PText[146]);
+    WRITE_RP0((HighRes_Width-64),258,45,WRITE_Center, 3, PText[147]);
 
     _s=my_strcpy(s, PathStr[5]);
     (void) my_strcpy(_s, "DeskImages.img");

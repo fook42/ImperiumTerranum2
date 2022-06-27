@@ -21,13 +21,12 @@ void STATISTIK()
 
     struct Window* STA_Window;
     struct RastPort* RPort_PTR;
-    STA_Window = MAKEWINDOWBORDER(10,30,491,361,MyScreen[0]);
+    STA_Window = MAKECENTERWINDOW(491,361,MyScreen[0]);
     if (NULL == STA_Window)
     {
         return;
     }
     RPort_PTR = STA_Window->RPort;
-
 
     --ActPlayer; // to shift the array
 
@@ -133,7 +132,7 @@ void STATISTIK()
         _s = StimmungTexts[it_round(l/31.0)];
         WRITE(270,250,ActPlayerFlag,JAM1,RPort_PTR,3, _s);
 
-        l = (uint32) (l / 30.0);
+        l = l/30;
         if (9 < l) { l = 9; }
         _s = EntwicklungTexts[l];
         WRITE(250,180,12,JAM1,RPort_PTR,3, _s);
