@@ -118,6 +118,8 @@ _EXTERN_  uint8*        PathMemA;
 _EXTERN_  uint32        TextMemL, PathMemL, MaquesShips;
 _EXTERN_  uint32        ScreenModeID_HighRes, ScreenModeID_LowRes;
 _EXTERN_  uint16        HighRes_Width, HighRes_Height, LowRes_Width, LowRes_Height;
+_EXTERN_  uint16        Area_CenterX, Area_CenterY, Area_Width, Area_Height;
+
 _EXTERN_  sint32        Year;
 _EXTERN_  sint16        OffsetX, OffsetY, OldX, OldY;
 

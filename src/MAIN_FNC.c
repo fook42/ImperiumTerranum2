@@ -170,17 +170,17 @@ void MAIN_FNC()
             {
                 Delay(3);
             }
-            if ((LMB_PRESSED && (MouseX(0) >= 518) && (MouseX(0) <= 634)
-                             && (MouseY(0) >= 472) && (MouseY(0) <= 492))
+            if ((LMB_PRESSED && (MouseX(0) > (HighRes_Width-123)) && (MouseX(0) < (HighRes_Width-5))
+                             && (MouseY(0) > 471) && (MouseY(0) < 493))
                 || (LMB_PRESSED && RMB_PRESSED)
                 || ((64 == RawCode) || (67 == RawCode) || (68 == RawCode)))
             {
-                KLICKGAD(518,472);
+                KLICKGAD((HighRes_Width-122), 472);
                 STARTROTATEPLANETS();
             }
             if (LMB_PRESSED && (Save.CivPlayer[ActPlayer-1] != 0))
             {
-                if ((MouseX(0) >= 0) && (MouseX(0) <= 512)
+                if ((MouseX(0) >= 0) && (MouseX(0) <= )
                         && (MouseY(0) >= 0) && (MouseY(0) <= 512))
                 {
                     PLAYSOUND(0,300);
@@ -188,19 +188,19 @@ void MAIN_FNC()
                     {
                         HANDLESYSTEM(&LastSystem,NULL);
                     }
-                } else if ((MouseX(0) >= 518) && (MouseX(0) <= 634))
+                } else if ((MouseX(0) > (HighRes_Width-123)) && (MouseX(0) < (HighRes_Width-5)))
                 {
-                    if ((MouseY(0) >= 444) && (MouseY(0) <= 464))
+                    if ((MouseY(0) > 443) && (MouseY(0) < 465))
                     {
-                        KLICKGAD(518,444);
+                        KLICKGAD((HighRes_Width-122), 444);
                         if (!DISKMENU(DISKMENU_PROMPT))
                         {
                             GAMEEXIT();
                             return;
                         }
-                    } else if ((MouseY(0) >= 416) && (MouseY(0) <= 436))
+                    } else if ((MouseY(0) > 415) && (MouseY(0) < 437))
                     {
-                        KLICKGAD(518,416);
+                        KLICKGAD((HighRes_Width-122), 416);
                         REGIERUNG();
                     }
                 }
@@ -286,12 +286,12 @@ void MAIN_FNC()
                         }
 
                         // OpenWin
-                        MAKEWINBORDER(MyRPort_PTR[0],40,100,470,190,12,6,0);
-                        WRITE_RP0(256,113,ActPlayerFlag,WRITE_Center,3,PText[834]);
-                        WRITE_RP0(256,137,ActPlayerFlag,WRITE_Center,3,PText[835]);
-                        WRITE_RP0(256,161,ActPlayerFlag,WRITE_Center,3,PText[836]);
+                        MAKEWINBORDER(MyRPort_PTR[0],40,100,Area_Width-40,190,12,6,0);
+                        WRITE_RP0(Area_CenterX,113,ActPlayerFlag,WRITE_Center,3,PText[834]);
+                        WRITE_RP0(Area_CenterX,137,ActPlayerFlag,WRITE_Center,3,PText[835]);
+                        WRITE_RP0(Area_CenterX,161,ActPlayerFlag,WRITE_Center,3,PText[836]);
                         WAITLOOP(Save.PlayMySelf);
-                        RECT_RP0_C0(40,100,470,190);
+                        RECT_RP0_C0(40,100,Area_Width-40,190);
                         REFRESHDISPLAY();
                         // CloseWin
 

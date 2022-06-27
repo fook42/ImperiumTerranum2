@@ -112,6 +112,10 @@ int main(int argc,char** argv)
             (void) getScreenmode(SCREENREQTITLE_High, 640, 512, 0xA9004, &ScreenModeID_HighRes, &HighRes_Width, &HighRes_Height);
             (void) getScreenmode(SCREENREQTITLE_Low,  320, 256, 0xA1000, &ScreenModeID_LowRes,  &LowRes_Width,  &LowRes_Height);
         }
+        Area_Width   = HighRes_Width-128;
+        Area_Height  = HighRes_Height;
+        Area_CenterX = (uint16) (Area_Width/2);
+        Area_CenterY = (uint16) (Area_Height/2);
 
         MAIN_FNC();
         rc = RETURN_OK;

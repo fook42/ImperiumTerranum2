@@ -140,7 +140,7 @@ void INIT_SOLARSYSTEM(void)
     }
 
     // place the system somewhere
-    SystemX[0] = 10+(rand()%458);
+    SystemX[0] = 26+(rand()%(HighRes_Width-166));
     SystemY[0] = 10+(rand()%490);
 }
 
@@ -163,7 +163,7 @@ bool INITSTARS()
         SystemHeader[i] = (r_SystemHeader) {NULL,0,DefaultShip,0,0,0};
         do
         {
-            SystemX[i] = 10+(rand()%458);
+            SystemX[i] = 26+(rand()%(HighRes_Width-166));
             SystemY[i] = 10+(rand()%490);
             system_too_close = false;
             // check if the new system is too close to any previous one..
