@@ -433,8 +433,8 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     {
         OffsetX = -MyShipPtr->PosX-1;
         OffsetY = -MyShipPtr->PosY-1;
-        MOVESHIP_ToX = 256+(MyShipPtr->PosX+OffsetX)*32;
-        MOVESHIP_ToY = 256+(MyShipPtr->PosY+OffsetY)*32;
+        MOVESHIP_ToX = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+        MOVESHIP_ToY = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
         DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
     }
     PLAYSOUND(2,250);
@@ -476,7 +476,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
 
         if (0 == (rand()%2)) { MyShipPtr->PosX = -MyShipPtr->PosX; }
         if (0 == (rand()%2)) { MyShipPtr->PosY = -MyShipPtr->PosY; }
-    } while (FINDOBJECT(SysID,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
+    } while (FINDOBJECT(SysID,Area_CenterX+(MyShipPtr->PosX+OffsetX)*32,Area_CenterY+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
 
     WAITLOOP(false);
     RECT_RP0_C0(70,Offset,440,Offset+85);

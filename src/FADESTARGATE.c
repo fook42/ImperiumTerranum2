@@ -24,7 +24,7 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
             DRAWMOVINGSHIP(MyShipPtr, ActSys);
         }
         PLAYSOUND(2,250);
-        if ((MOVESHIP_ToX>=0) && (MOVESHIP_ToX<=478) && (MOVESHIP_ToY>=0) && (MOVESHIP_ToY<=478))
+        if ((MOVESHIP_ToX>=0) && (MOVESHIP_ToX<=(Area_Width-34)) && (MOVESHIP_ToY>=0) && (MOVESHIP_ToY<=(Area_Height-34)))
         {
             for(i = 1; i <= 1800; i++)
             {
@@ -45,12 +45,12 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
     MyShipPtr->PosY = SystemHeader[SysID-1].FirstShip.PosY;
     OffsetX = -MyShipPtr->PosX-1;
     OffsetY = -MyShipPtr->PosY-1;
-    MOVESHIP_x = 256+(MyShipPtr->PosX+OffsetX)*32;
-    MOVESHIP_y = 256+(MyShipPtr->PosY+OffsetY)*32;
+    MOVESHIP_x = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+    MOVESHIP_y = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
     if ((((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) == FLAG_KNOWN) && (Save.CivPlayer[ActPlayer-1] != 0))
      || (Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1] != 0))
     {
-        if ((MOVESHIP_x>=0) && (MOVESHIP_x<=478) && (MOVESHIP_y>=0) && (MOVESHIP_y<=478))
+        if ((MOVESHIP_x>=0) && (MOVESHIP_x<=(Area_Width-34)) && (MOVESHIP_y>=0) && (MOVESHIP_y<=(Area_Height-34)))
         {
             MyShipPtr->Moving = -MyShipPtr->Moving;
             if (MyShipPtr->Moving == 0)
@@ -59,7 +59,7 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
             }
             DRAWSYSTEM(MODE_REDRAW,SysID,NULL);
             Delay(5);
-            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=478) && (MOVESHIP_y>=0) && (MOVESHIP_y<=478))
+            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=(Area_Width-34)) && (MOVESHIP_y>=0) && (MOVESHIP_y<=(Area_Height-34)))
             {
                 for(i = 1; i <= 1800; i++)
                 {
@@ -89,9 +89,9 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
             default: { }
         }
     }
-    while(FINDOBJECT(SysID-1,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
-    MOVESHIP_ToX = 256+(MyShipPtr->PosX+OffsetX)*32;
-    MOVESHIP_ToY = 256+(MyShipPtr->PosY+OffsetY)*32;
+    while(FINDOBJECT(SysID-1,Area_CenterX+(MyShipPtr->PosX+OffsetX)*32,Area_CenterY+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
+    MOVESHIP_ToX = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+    MOVESHIP_ToY = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
     if ((((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) == FLAG_KNOWN) && (Save.CivPlayer[ActPlayer-1] != 0))
      || (Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1] != 0))
     {

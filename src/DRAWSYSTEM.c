@@ -113,7 +113,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                 }
                 if (FLAG_KNOWN == MyWormHole[j].CivKnowledge[ActPlayer-1])
                 {
-                    WritePixel(MyRPort_PTR[0],575+MyWormHole[j].PosX[i],62+MyWormHole[j].PosY[i]);
+                    WritePixel(MyRPort_PTR[0],(HighRes_Width-65)+MyWormHole[j].PosX[i],62+MyWormHole[j].PosY[i]);
                 }
             }
         }

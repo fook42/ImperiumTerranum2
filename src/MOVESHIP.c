@@ -30,16 +30,16 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
     {
         return;
     }
-    MOVESHIP_x = 256+(MyShipPtr->PosX+OffsetX)*32;
-    MOVESHIP_y = 256+(MyShipPtr->PosY+OffsetY)*32;
+    MOVESHIP_x = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+    MOVESHIP_y = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
     if ((((MOVESHIP_x<1) || (MOVESHIP_x>478) || (MOVESHIP_y<1) || (MOVESHIP_y>478)) && (Display == ActSys))
          && (((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) == FLAG_KNOWN)
              || (Visible)))
     {
         OffsetX = (-MyShipPtr->PosX)-1;
         OffsetY = (-MyShipPtr->PosY)-1;
-        MOVESHIP_x = 256+(MyShipPtr->PosX + OffsetX)*32;
-        MOVESHIP_y = 256+(MyShipPtr->PosY + OffsetY)*32;
+        MOVESHIP_x = Area_CenterX+(MyShipPtr->PosX + OffsetX)*32;
+        MOVESHIP_y = Area_CenterY+(MyShipPtr->PosY + OffsetY)*32;
         if (((MyShipPtr->Owner == ActPlayerFlag) && (Save.CivPlayer[ActPlayer-1] != 0))
             || (Visible))
         {
@@ -67,7 +67,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 /**** STARGATE INSTALLIEREN ****/
                 if (sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))<10)
                 {
-                    if (!FINDOBJECT(ActSys-1,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
+                    if (!FINDOBJECT(ActSys-1,Area_CenterX+(MyShipPtr->PosX+OffsetX)*32,Area_CenterY+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
                     {
                         SystemHeader[ActSys-1].FirstShip.SType = TARGET_STARGATE;
                         SystemHeader[ActSys-1].FirstShip.PosX = MyShipPtr->PosX;
@@ -132,8 +132,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 else if (it_round(MyPlanetHeader->PosY) > MyShipPtr->PosY) { MyShipPtr->PosY++; }
             }
             if (CHECKSUN(MyShipPtr)) { return; }
-            MOVESHIP_ToX = 256+(MyShipPtr->PosX+OffsetX)*32;
-            MOVESHIP_ToY = 256+(MyShipPtr->PosY+OffsetY)*32;
+            MOVESHIP_ToX = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
+            MOVESHIP_ToY = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
             if ((abs(MyShipPtr->PosX)>50) || (abs(MyShipPtr->PosY)>50)
              || ( ((MyShipPtr->Target<1) || (MyShipPtr->Target>SystemHeader[ActSys-1].Planets))
                 && (MyShipPtr->Target!=TARGET_POSITION) && (MyShipPtr->Target!=TARGET_STARGATE)
@@ -581,8 +581,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         if ( 50 < MyShipPtr->PosY) { MyShipPtr->PosY =  50; }
                         if (-50 > MyShipPtr->PosY) { MyShipPtr->PosY = -50; }
                         /* */
-                        MOVESHIP_ToX = 256+((MyShipPtr->PosX+OffsetX)*32);
-                        MOVESHIP_ToY = 256+((MyShipPtr->PosY+OffsetY)*32);
+                        MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX)*32);
+                        MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY)*32);
                         if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16,MOVESHIP_ToY+16,MyShipPtr))
                         {
                             switch (ObjType) {
@@ -797,8 +797,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             OldMoving = MyShipPtr->Moving;
             WRITE_RP0(521,293,GETCIVFLAG(ActPlayer),1,1,s);
         }
-        MOVESHIP_x = 256+((MyShipPtr->PosX+OffsetX)*32);
-        MOVESHIP_y = 256+((MyShipPtr->PosY+OffsetY)*32);
+        MOVESHIP_x = Area_CenterX+((MyShipPtr->PosX+OffsetX)*32);
+        MOVESHIP_y = Area_CenterY+((MyShipPtr->PosY+OffsetY)*32);
         CLEARINTUITION();
     }
     while ((0 < MyShipPtr->Moving)

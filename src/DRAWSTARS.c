@@ -29,11 +29,11 @@ void DRAWSTARS(const int Mode)
         WRITE_RP0((HighRes_Width-64),418,0, WRITE_Center              ,3,_PT_Regierung);
         WRITE_RP0((HighRes_Width-64),446,0, WRITE_Center              ,3,_PT_Hauptmenue);
         WRITE_RP0((HighRes_Width-64),474,8,(WRITE_Center|WRITE_Shadow),3,_PT_Rundenende);
-        RECT_RP0_C0(0,0,(HighRes_Width-129),511);
+        RECT_RP0_C0(0,0,Area_Width-1,Area_Height-1);
         SetAPen(MyRPort_PTR[0],6);
         for (i = 0; i<310; ++i)
         {
-            WritePixel(MyRPort_PTR[0],rand()%(HighRes_Width-129), (rand()%255)+(rand()%255));
+            WritePixel(MyRPort_PTR[0],rand()%Area_Width, rand()%Area_Height);
         }
     }
     if (Save.PlayMySelf)
@@ -50,10 +50,10 @@ void DRAWSTARS(const int Mode)
         {
             if ((i<7) || ((0 != Save.WorldFlag) && (WFLAG_FIELD != Save.WorldFlag)))
             {
-                RECT_RP0_C0(pos, HighRes_Height-22, pos+62,  (HighRes_Height-1)-it_round(CVal[i]/Factor));
-                RECTWIN(MyRPort_PTR[0],GETCIVFLAG(i+1), pos, (HighRes_Height-1)-it_round(CVal[i]/Factor), pos+62, HighRes_Height-1);
+                RECT_RP0_C0(pos, Area_Height-22, pos+62,  (Area_Height-1)-it_round(CVal[i]/Factor));
+                RECTWIN(MyRPort_PTR[0],GETCIVFLAG(i+1), pos, (Area_Height-1)-it_round(CVal[i]/Factor), pos+62, Area_Height-1);
                 (void) dez2out(CVal[i], 0, s);
-                WRITE_RP0(pos+66,HighRes_Height-10,45,WRITE_Right,0,s);
+                WRITE_RP0(pos+66,Area_Height-10,45,WRITE_Right,0,s);
             }
             pos += 64;
         }

@@ -34,13 +34,13 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag)
     }
     if (0 < MyPlanets)
     {
-        MAKEBORDER(MyScreen[0],30,250,480,360,12,6,0);
+        MAKEBORDER(MyScreen[0],30,250,Area_Width-30,360,12,6,0);
 
         _s=my_strcpy(s, _PT_System);
         *_s++ = ':';
         *_s++ = ' ';
         (void) my_strcpy(_s, Save.SystemName.data[SysID]);
-        WRITE_RP0(256,260,SystemFlags[0][SysID] & FLAG_CIV_MASK,WRITE_Center,3,s);
+        WRITE_RP0(Area_CenterX,260,SystemFlags[0][SysID] & FLAG_CIV_MASK,WRITE_Center,3,s);
 
         _s=my_strcpy(s, _PT_Bevoelkerung);
         *_s++ = ':';
@@ -48,7 +48,7 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag)
         _s = dez2out(SysPop, 0, _s);
         *_s++ = ' ';
         (void) my_strcpy(_s, _PT_Millionen);
-        WRITE_RP0(256,290,ThePlayerFlag,WRITE_Center,3,s);
+        WRITE_RP0(Area_CenterX,290,ThePlayerFlag,WRITE_Center,3,s);
 
         _s=my_strcpy(s, _PT_Planeten);
         *_s++ = ':';
@@ -61,7 +61,7 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag)
         _s = dez2out(MyPlanets, 0, _s);
         *_s++ = ' ';
         (void) my_strcpy(_s, GETCIVADJ(GETCIVVAR(ThePlayerFlag)));
-        WRITE_RP0(256,310,ThePlayerFlag,WRITE_Center,3,s);
+        WRITE_RP0(Area_CenterX,310,ThePlayerFlag,WRITE_Center,3,s);
 
         Buildings = (Buildings / MyPlanets) +1;
         if      (3  > Buildings) { _s = _PT_praktisch_nicht_entwickelt; }
@@ -69,6 +69,6 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag)
         else if (10 > Buildings) { _s = _PT_maessig_hoch_entwickelt; }
         else if (18 > Buildings) { _s = _PT_hoch_entwickelt; }
         else if (33 < Buildings) { _s = _PT_hoechste_Entwicklungsstufe; }
-        WRITE_RP0(256,330,ThePlayerFlag,WRITE_Center,3, _s);
+        WRITE_RP0(Area_CenterX,330,ThePlayerFlag,WRITE_Center,3, _s);
     }
 }

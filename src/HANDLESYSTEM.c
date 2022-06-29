@@ -527,7 +527,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
     if (0 != Display)
     {
         KLICKGAD(518,444);
-        RECT_RP0_C0(522,9,629,117);
+        RECT_RP0_C0(HighRes_Width-118,9,HighRes_Width-11,117);
         DRAWSTARS(MODE_REDRAW);
     }
 }

@@ -21,7 +21,7 @@ void STATISTIK()
 
     struct Window* STA_Window;
     struct RastPort* RPort_PTR;
-    STA_Window = MAKEWINDOWBORDER(10,30,491,361,MyScreen[0]);
+    STA_Window = MAKEWINDOWBORDER((Area_Width-491)/2,30,491,361,MyScreen[0]);
     if (NULL == STA_Window)
     {
         return;

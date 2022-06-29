@@ -124,11 +124,11 @@ void SYSTEMINFO(uint8 ActSys)
                     CloseWindow(SYS_Window);
                     SYS_Window = NULL;
 
-                    x = 256+(UseShipPtr->PosX+OffsetX)*32;
-                    y = 256+(UseShipPtr->PosY+OffsetY)*32;
+                    x = Area_CenterX+(UseShipPtr->PosX+OffsetX)*32;
+                    y = Area_CenterY+(UseShipPtr->PosY+OffsetY)*32;
                     PLAYSOUND(1,1100);
                     // show explosion-animation
-                    if ((0 <= x) && (481 > x) && (0 <= y) && (481 > y))
+                    if ((0 <= x) && ((Area_Width-31) > x) && (0 <= y) && ((Area_Height-31) > y))
                     {
                         RECT_RP0_C0(x,y,x+31,y+31);
                         for(i = 0; i < 16; ++i)
