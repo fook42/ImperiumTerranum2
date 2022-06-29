@@ -15,7 +15,7 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
     char*   _s;
     r_ShipHeader* MyShipPtr;
 
-    RECT_RP0_C0(0,0,511,511);
+    RECT_RP0_C0(0,0,Area_Width-1,Area_Height-1);
     y = 0;
     z = 0;
     for(i =  1; i < 36; ++i) { PSys[i] = 0; }
@@ -105,7 +105,7 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
     char    s[60];
     char*   _s;
 
-    RECT_RP0_C0(0,0,511,511);
+    RECT_RP0_C0(0,0,Area_Width-1,Area_Height-1);
     y = 0;
     z = 0;
     for(i =  1; i < 36; ++i) { PSys[i] = 0; }

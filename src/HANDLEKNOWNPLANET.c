@@ -140,7 +140,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
     char    s[4];
 
     // clear right project icon area
-    RECT_RP1_C0(359,92,639,511);
+    RECT_RP1_C0(359,92,HighRes_Width-1,HighRes_Height-1);
     x = 0;
     y = 0;
     for(i = 0; i < 7; ++i)
@@ -238,7 +238,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         RECT_RP1_C0(56,101+j,256,120+j);
         j+=49;
     }
-    RECT_RP1_C0(0,0,639,90);
+    RECT_RP1_C0(0,0,HighRes_Width-1,90);
 
     _s=my_strcpy(s, _PT_System);
     *_s++ = ':';
@@ -435,7 +435,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 --j;
 //                Img = (struct Image) {0,0,384,407,7,IMemA[0],127,0,NULL};
                 // clear right project-area to print the list of available Projects to build
-                RECT_RP1_C0(360,92,639,511);
+                RECT_RP1_C0(360,92,HighRes_Width-1,HighRes_Height-1);
                 WRITE_RP1(365,474,4,1,3,PText[177]);
                 for(i = 1; i <= j; ++i)
                 {
