@@ -11,7 +11,7 @@ void PROJEKTE()
 	struct Window*      PRJ_Window;
 	struct RastPort*    RPort_PTR;
 
-	PRJ_Window=MAKEWINDOWBORDER(0,0,512,512,MyScreen[0]);
+	PRJ_Window=MAKEWINDOWBORDER(0,0,Area_Width,Area_Height,MyScreen[0]);
 	if (NULL == PRJ_Window)
 	{
 		return;
@@ -61,11 +61,11 @@ void PROJEKTE()
         }
     }
     j += 15;
-    if (500 > j)
+    if ((Area_Height-12) > j)
     {
         SetAPen(RPort_PTR,12);
-        Move(RPort_PTR, 10,j-10);
-        Draw(RPort_PTR,500,j-10);
+        Move(RPort_PTR,           10,j-10);
+        Draw(RPort_PTR,Area_Width-10,j-10);
 
         for (i = 1; i<8; ++i)
         {
@@ -114,12 +114,12 @@ void PROJEKTE()
         }
     }
     j += 30;
-    if (500 > j)
+    if ((Area_Height-12) > j)
     {
         SetAPen(RPort_PTR,12);
-        Move(RPort_PTR, 10,j-25);
-        Draw(RPort_PTR,500,j-25);
-        WRITE(255,j-15,12,WRITE_Center,RPort_PTR,0,PText[698]);
+        Move(RPort_PTR,           10,j-25);
+        Draw(RPort_PTR,Area_Width-10,j-25);
+        WRITE(Area_CenterX,j-15,12,WRITE_Center,RPort_PTR,0,PText[698]);
         for (i = 4; i<8; ++i)
         {
             YPos[i] = j;
@@ -137,7 +137,7 @@ void PROJEKTE()
                 if ((Save.SSMoney[ActPlayer][CivVar] > (Save.WarPower[CivVar]*39)) || (CivVar == ActPlayer))
                 {
                     k = MyPlanetHeader->ProjectID;
-                    if ((3 < k) && (8 > k) && (500 > YPos[k]))
+                    if ((3 < k) && (8 > k) && ((Area_Height-12) > YPos[k]))
                     {
                         WRITE((k-4)*125+130,YPos[k],MyPlanetHeader->PFlags,WRITE_Right,RPort_PTR,0,MyPlanetHeader->PName);
                         YPos[k] += 11;

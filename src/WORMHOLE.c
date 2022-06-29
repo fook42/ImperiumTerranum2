@@ -364,7 +364,7 @@ bool WORMFLIGHT(r_ShipHeader* ShipPtr, uint8 ActSys)
     bool    _WORMFLIGHT = false;
 
     r_ShipHeader*   MyShipPtr;
-    struct NewScreen WH_NeuScreen = {0,0,320,256,4,0,0,GENLOCK_VIDEO,CUSTOMSCREEN|SCREENQUIET,NULL,NULL,NULL,NULL};
+    struct NewScreen WH_NeuScreen = {0,0,LowRes_Width,LowRes_Height,4,0,0,GENLOCK_VIDEO,CUSTOMSCREEN|SCREENQUIET,NULL,NULL,NULL,NULL};
     struct TagItem  newTags[] ={{SA_DisplayID,  ScreenModeID_LowRes},
                             {SA_Interleaved,    true},
                             {SA_Draggable,      false},

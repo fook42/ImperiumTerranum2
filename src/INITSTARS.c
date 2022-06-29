@@ -163,8 +163,8 @@ bool INITSTARS()
         SystemHeader[i] = (r_SystemHeader) {NULL,0,DefaultShip,0,0,0};
         do
         {
-            SystemX[i] = 26+(rand()%(HighRes_Width-166));
-            SystemY[i] = 10+(rand()%490);
+            SystemX[i] = 26+(rand()%(Area_Width-38));
+            SystemY[i] = 10+(rand()%(Area_Height-22));
             system_too_close = false;
             // check if the new system is too close to any previous one..
             // reduced calculation: dist^2=x^2+y^2 ... x,y = delta x,y

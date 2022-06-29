@@ -7,19 +7,20 @@ char _Txt_nextPage[40];
 
 
 //void DRAWSHIPS(uint8 CivFlag, uint8 stSys)
-uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader** ShipPos)
+uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader** ShipPos, uint8 Y_maxRow)
 {
     uint8   i;
     int     y, z;
     char    s[60];
     char*   _s;
     r_ShipHeader* MyShipPtr;
+    const int   y_step = 14;
 
     RECT_RP0_C0(0,0,Area_Width-1,Area_Height-1);
     y = 0;
     z = 0;
-    for(i =  1; i < 36; ++i) { PSys[i] = 0; }
-    for(i = 36; i < 38; ++i) { PSys[i] = 1; }
+    for(i =            1; i < (Y_maxRow-1); ++i) { PSys[i] = 0; }
+    for(i = (Y_maxRow-1); i < (Y_maxRow+1); ++i) { PSys[i] = 1; }
 
     for (i = stSys; i <= Save.Systems; ++i)
     {
@@ -32,13 +33,13 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     ((-2 == Mode) && (SHIPFLAG_WATER  == MyShipPtr->Flags) && (0 <= MyShipPtr->Moving)) ||
                     ((-3 == Mode) && (0 > MyShipPtr->Moving)))
                 {
-                    ++z;
-                    if (36 == z)
+                    if (Y_maxRow == z)
                     {
                         // LastSys = i;
-                        WRITE_RP0(100,497,12,0,2, _Txt_nextPage);
+                        WRITE_RP0(100,Area_Height-15,12,0,2, _Txt_nextPage);
                         return i;
                     }
+                    ++z;
                     ShipPos[z] = MyShipPtr;
                     PSys[z] = i;
 
@@ -85,14 +86,14 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                             WRITE_RP0(365,y,12,0,2,s);
                         }
                     }
-                    y = y+14;
+                    y += y_step;
                 }
             }
             MyShipPtr = MyShipPtr->NextShip;
         }
     }
     //    LastSys = 1;
-    WRITE_RP0(100,497,12,0,2,_Txt_nextPage);
+    WRITE_RP0(100,Area_Height-15,12,0,2,_Txt_nextPage);
     return 1;
 }
 
@@ -104,6 +105,7 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
     r_PlanetHeader* MyPlanet;
     char    s[60];
     char*   _s;
+    const int   y_step = 14;
 
     RECT_RP0_C0(0,0,Area_Width-1,Area_Height-1);
     y = 0;
@@ -125,7 +127,7 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                     ++z;
                     if (36 == z)
                     {
-                        WRITE_RP0(100,497,12,0,2, _Txt_nextPage);
+                        WRITE_RP0(100,Area_Height-1-y_step,12,0,2, _Txt_nextPage);
                         return (i+1);
                     }
                     PSys[z] = i+1;
@@ -167,7 +169,7 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
             }
         }
     }
-    WRITE_RP0(100,497,12,0,2,_Txt_nextPage);
+    WRITE_RP0(100,Area_Height-1-y_step,12,0,2,_Txt_nextPage);
     return 1;
 }
 
@@ -176,8 +178,9 @@ void SEARCHOBJECT(uint8* ActSys)
     sint8   Mode = 0;
     bool    b = false;
     r_ShipHeader* MyShipPtr;
-    r_ShipHeader* ShipPos[38];
-    uint8   PSys[38], PNum[38], PCol[38];
+    r_ShipHeader** ShipPos;
+    uint8   *PSys, *PNum, *PCol;
+
     uint8   LastSys;
     uint8   ThisP,LastP;
     r_PlanetHeader* MyPlanet;
@@ -186,6 +189,17 @@ void SEARCHOBJECT(uint8* ActSys)
     int     ypos;
     struct Window*   SEO_Window;
     struct RastPort* RPort_PTR;
+    const int   maxShown = (int)((Area_Height-15)/14);
+    const int   maxEntries = 2+maxShown;
+
+    ShipPos = (r_ShipHeader**) AllocMem(maxEntries * sizeof(r_ShipHeader*), MEMF_ANY);
+    if (NULL == ShipPos) { return; }
+    PSys = (uint8*) AllocMem(maxEntries * sizeof(uint8), MEMF_ANY);
+    if (NULL == PSys) { goto SO_exit1; }
+    PNum = (uint8*) AllocMem(maxEntries * sizeof(uint8), MEMF_ANY);
+    if (NULL == PNum) { goto SO_exit2; }
+    PCol = (uint8*) AllocMem(maxEntries * sizeof(uint8), MEMF_ANY);
+    if (NULL == PCol) { goto SO_exit3; }
 
     ThisP = 1;
     LastP = 0;
@@ -195,7 +209,6 @@ void SEARCHOBJECT(uint8* ActSys)
 
     SEO_Window=MAKEWINDOWBORDER(194,119,123,158,MyScreen[0]);
     RPort_PTR = SEO_Window->RPort;
-
 
     ypos = 3;
     for(i = 0; i < 6; i++)
@@ -257,7 +270,7 @@ void SEARCHOBJECT(uint8* ActSys)
     if (RMB_PRESSED)
     {
         PLAYSOUND(0,300);
-        return;
+        goto SO_exit4;
     }
     b = false;
     if (0 > Mode)
@@ -266,7 +279,7 @@ void SEARCHOBJECT(uint8* ActSys)
         do
         {
             Delay(RDELAY);
-            LastSys = HANDLESYSTEM_DRAWSHIPS(Mode, 1, PSys, ShipPos);
+            LastSys = HANDLESYSTEM_DRAWSHIPS(Mode, 1, PSys, ShipPos, maxEntries);
             do
             {
                 Delay(RDELAY);
@@ -275,7 +288,7 @@ void SEARCHOBJECT(uint8* ActSys)
                     Delay(RDELAY);
                     ThisP = (MouseY(0) / 14)+1;
                     if ((PSys[ThisP] != 0) && (ThisP != LastP)
-                        && (MouseX(0)>=0) && (MouseX(0)<=511))
+                        && (MouseX(0)>=0) && (MouseX(0) < Area_Width))
                     {
                         if ((LastP<36) && (PSys[LastP] != 0))
                         {
@@ -288,7 +301,7 @@ void SEARCHOBJECT(uint8* ActSys)
                             }
                             WRITE_RP0(40,(LastP-1)*14,ActPlayerFlag,1,2, _s);
                         } else {
-                            WRITE_RP0(100,497,12,1,2,_Txt_nextPage);
+                            WRITE_RP0(100,Area_Height-15,12,1,2,_Txt_nextPage);
                         }
                         if (ThisP<36)
                         {
@@ -301,7 +314,7 @@ void SEARCHOBJECT(uint8* ActSys)
                             }
                             WRITE_RP0(40,(ThisP-1)*14,ActPlayerFlag,5,2, _s);
                         } else {
-                            WRITE_RP0(100,497,12,5,2,_Txt_nextPage);
+                            WRITE_RP0(100,Area_Height-15,12,5,2,_Txt_nextPage);
                         }
                         LastP = ThisP;
                     } else {
@@ -314,7 +327,7 @@ void SEARCHOBJECT(uint8* ActSys)
                     PLAYSOUND(0,300);
                     if (ThisP >= 36)
                     {
-                        LastSys = HANDLESYSTEM_DRAWSHIPS(Mode, LastSys, PSys, ShipPos);
+                        LastSys = HANDLESYSTEM_DRAWSHIPS(Mode, LastSys, PSys, ShipPos, maxEntries);
                     } else {
                         if (0 != PSys[ThisP])
                         {
@@ -347,21 +360,21 @@ void SEARCHOBJECT(uint8* ActSys)
                     Delay(RDELAY);
                     ThisP = (MouseY(0) / 14)+1;
                     if ((0 != PSys[ThisP]) && (ThisP != LastP)
-                        && (MouseX(0)>=0) && (MouseX(0)<=511))
+                        && (MouseX(0)>=0) && (MouseX(0) < Area_Width))
                     {
                         if ((36 > LastP) && (0 != PSys[LastP]))
                         {
                             MyPlanet = &(SystemHeader[PSys[LastP]-1].PlanetMemA[PNum[LastP]-1]);
                             WRITE_RP0(50,(LastP-1)*14,PCol[LastP],1,2,MyPlanet->PName);
                         } else {
-                            WRITE_RP0(100,497,12,1,2,_Txt_nextPage);
+                            WRITE_RP0(100,Area_Height-15,12,1,2,_Txt_nextPage);
                         }
                         if (36 > ThisP)
                         {
                             MyPlanet = &(SystemHeader[PSys[ThisP]-1].PlanetMemA[PNum[ThisP]-1]);
                             WRITE_RP0(50,(ThisP-1)*14,PCol[ThisP],5,2,MyPlanet->PName);
                         } else {
-                            WRITE_RP0(100,497,12,5,2,_Txt_nextPage);
+                            WRITE_RP0(100,Area_Height-15,12,5,2,_Txt_nextPage);
                         }
                         LastP = ThisP;
                     } else {
@@ -396,6 +409,19 @@ void SEARCHOBJECT(uint8* ActSys)
         PLAYSOUND(0,300);
         DRAWSYSTEM(MODE_REDRAW,*ActSys,NULL);
     }
+
+SO_exit4:
+    if (NULL != PCol) { FreeMem(PCol, (maxEntries * sizeof(uint8))); }
+
+SO_exit3:
+    if (NULL != PNum) { FreeMem(PNum, (maxEntries * sizeof(uint8))); }
+
+SO_exit2:
+    if (NULL != PSys) { FreeMem(PSys, (maxEntries * sizeof(uint8))); }
+
+SO_exit1:
+    if (NULL != ShipPos) { FreeMem(ShipPos, (maxEntries * sizeof(r_ShipHeader*))); }
+
 }
 
 
@@ -426,7 +452,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
             STARTROTATEPLANETS();
         } else {
             if (LMB_PRESSED || RMB_PRESSED) { Delay(3); }
-            if ((LMB_PRESSED && (MouseX(0)>=518) && (MouseX(0)<=634)
+            if ((LMB_PRESSED && (MouseX(0)>(HighRes_Width-123)) && (MouseX(0)<(HighRes_Width-5))
                              && (MouseY(0)>=472) && (MouseY(0)<=492))
              || (LMB_PRESSED && RMB_PRESSED) || (64 == RawCode) || (67 == RawCode) || (68 == RawCode))
             {
@@ -436,7 +462,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
 
             if (LMB_PRESSED && (!Save.PlayMySelf))
             {
-                if ((MouseX(0)>=518) && (MouseX(0)<=634))   // click to gadget-area
+                if ((MouseX(0)>(HighRes_Width-123)) && (MouseX(0)<(HighRes_Width-5)))   // click to gadget-area
                 {
                     if ((MouseY(0)>8) && (MouseY(0)<118)) // click to mini map
                     {
@@ -449,8 +475,8 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                         KLICKGAD(518,416);
                         SEARCHOBJECT(ActSys);
                     }
-                } else if ((MouseX(0)>=0) && (MouseX(0)<=511)
-                        && (MouseY(0)>=0) && (MouseY(0)<=511))      // click to main view
+                } else if ((MouseX(0)>=0) && (MouseX(0)<Area_Width)
+                        && (MouseY(0)>=0) && (MouseY(0)<Area_Height))      // click to main view
                 {
                     PLAYSOUND(0,300);
                     if (FINDOBJECT(*ActSys-1, MouseX(0), MouseY(0), NULL))
@@ -472,32 +498,28 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                 }
             } else if (RMB_PRESSED)
             {
-                if ((MouseX(0)>=518) && (MouseX(0)<=634)
+                if ((MouseX(0)>(HighRes_Width-123)) && (MouseX(0)<(HighRes_Width-5))
                  && (MouseY(0)>=  9) && (MouseY(0)<=117))           // click to mini map
                 {
                     if ((MouseY(0)>=  9) && (MouseY(0)<= 29))
                     {
                         if (OffsetY<42)  { OffsetY += 2; }
-                    }
-
-                    if ((MouseY(0)>= 97) && (MouseY(0)<=117))
+                    } else if ((MouseY(0)>= 97) && (MouseY(0)<=117))
                     {
                         if (OffsetY>-42) { OffsetY -= 2; }
                     }
 
-                    if ((MouseX(0)>=518) && (MouseX(0)<=538))
+                    if ((MouseX(0)>(HighRes_Width-123)) && (MouseX(0)<(HighRes_Width-101)))
                     {
                         if (OffsetX<42)  { OffsetX += 2; }
-                    }
-
-                    if ((MouseX(0)>=614) && (MouseX(0)<=634))
+                    } else if ((MouseX(0)>(HighRes_Width-27)) && (MouseX(0)<(HighRes_Width-5)))
                     {
                         if (OffsetX>-42) { OffsetX -= 2; }
                     }
                     DRAWSYSTEM(MODE_REDRAW,*ActSys,NULL);
                 }
-                if ((MouseX(0)>=0) && (MouseX(0)<=511)
-                 && (MouseY(0)>=0) && (MouseY(0)<=511))             // click to main view
+                if ((MouseX(0)>=0) && (MouseX(0)< Area_Width)
+                 && (MouseY(0)>=0) && (MouseY(0)< Area_Height))             // click to main view
                 {
                     PLAYSOUND(0,300);
                     if (FINDOBJECT(*ActSys-1, MouseX(0), MouseY(0), NULL))

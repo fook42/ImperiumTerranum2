@@ -128,7 +128,7 @@ void SYSTEMINFO(uint8 ActSys)
                     y = Area_CenterY+(UseShipPtr->PosY+OffsetY)*32;
                     PLAYSOUND(1,1100);
                     // show explosion-animation
-                    if ((0 <= x) && ((Area_Width-31) > x) && (0 <= y) && ((Area_Height-31) > y))
+                    if ((0 <= x) && ((Area_Width-32) > x) && (0 <= y) && ((Area_Height-32) > y))
                     {
                         RECT_RP0_C0(x,y,x+31,y+31);
                         for(i = 0; i < 16; ++i)

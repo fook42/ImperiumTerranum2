@@ -113,7 +113,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
 void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr);
 // <<<
 // >>> HANDLESYSTEM
-uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader** ShipPos);
+uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader** ShipPos, uint8 Y_maxRow);
 uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* PCol);
 void SEARCHOBJECT(uint8* ActSys);
 void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr);

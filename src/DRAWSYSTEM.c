@@ -11,6 +11,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     r_PlanetHeader* PlanetHeader;
     uint8           Leave, j;
     uint8           BelongsTo, DrawMode;
+    int             Sunleft, Sunwidth;
 
 /*    OffsetX,Y = centre of current view */
     OldX = OffsetX;
@@ -68,18 +69,18 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
 
         if       ((-8 == OffsetY) || (8 == OffsetY)) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft, 8-OffsetY,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),248-OffsetY+(OffsetY*32),Sunwidth,16,192); // A or B
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY-8-OffsetY+(OffsetY*32),Sunwidth,16,192); // A or B
         } else if (-9 != OffsetY) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft, 0,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),240+(OffsetY*32),Sunwidth,32,192); // A+B
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY-16+(OffsetY*32),Sunwidth,32,192); // A+B
         }
 
         if       ((-9 == OffsetY) || (7 == OffsetY)) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft, 7-OffsetY,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),279-OffsetY+(OffsetY*32),Sunwidth,16,192); // C or D
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY+23-OffsetY+(OffsetY*32),Sunwidth,16,192); // C or D
         } else if ( 8 != OffsetY) {
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft, 0,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),272+(OffsetY*32),Sunwidth,32,192); // C+D
+                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY+16+(OffsetY*32),Sunwidth,32,192); // C+D
         }
     }
 

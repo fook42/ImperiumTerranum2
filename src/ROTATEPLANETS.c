@@ -33,7 +33,7 @@ void ROTATEPLANETS(uint8 ActSys)
     struct RastPort* RPort_PTR2;
 
     if ((2000 < Year) && (1 == ActPlayer)) { DOHUMANITY(); }
-    RECT_RP0_C0(520,291,632,308);
+    RECT_RP0_C0(HighRes_Width-120,291,HighRes_Width-8,308);
     Valid = false;
     if (1 == ActPlayer) { ++Year; }
     FreeSystem = false;

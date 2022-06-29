@@ -5,9 +5,8 @@
 
 bool OPENMAINSCREENS()
 {
-
     struct NewScreen  NeuScreen = {0,0,HighRes_Width,HighRes_Height,0,0,0,HIRES+LACE,CUSTOMSCREEN|SCREENQUIET, NULL,NULL,NULL,NULL};
-    struct NewWindow  NeuWindow = {0,0,HighRes_Width,HighRes_Height,0,0,RAWKEY,SMART_REFRESH+BACKDROP+BORDERLESS, NULL,NULL,NULL,NULL,NULL,640,512,640,512,CUSTOMSCREEN};
+    struct NewWindow  NeuWindow = {0,0,HighRes_Width,HighRes_Height,0,0,RAWKEY,SMART_REFRESH+BACKDROP+BORDERLESS, NULL,NULL,NULL,NULL,NULL,640,512,HighRes_Width,HighRes_Height,CUSTOMSCREEN};
 //  struct NewWindow  NeuWindow = {0,0,640,512,0,0,RAWKEY,SIMPLE_REFRESH+BACKDROP+BORDERLESS, NULL,NULL,NULL,NULL,NULL,640,512,640,512,CUSTOMSCREEN};
     int     i;
 
@@ -20,6 +19,7 @@ bool OPENMAINSCREENS()
         MyScreen[i] = OpenScreenTagList( &NeuScreen, Tags );
         if (NULL == MyScreen[i])
         {
+            puts("## screen open failed ##\n");
             return false;
         }
         MyScreen[i]->BarHeight = 0;
@@ -32,6 +32,7 @@ bool OPENMAINSCREENS()
         MyWindow[i] = OpenWindow( &NeuWindow );
         if (NULL == MyWindow[i])
         {
+            puts("## window open failed ##\n");
             return false;
         }
         MyVPort_PTR[i] = &(MyScreen[i]->ViewPort);

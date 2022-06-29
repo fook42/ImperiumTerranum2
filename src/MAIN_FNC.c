@@ -180,8 +180,8 @@ void MAIN_FNC()
             }
             if (LMB_PRESSED && (Save.CivPlayer[ActPlayer-1] != 0))
             {
-                if ((MouseX(0) >= 0) && (MouseX(0) <= )
-                        && (MouseY(0) >= 0) && (MouseY(0) <= 512))
+                if ((MouseX(0) >= 0) && (MouseX(0) <= Area_Width)
+                        && (MouseY(0) >= 0) && (MouseY(0) <= Area_Height))
                 {
                     PLAYSOUND(0,300);
                     if ((SystemFlags[ActPlayer-1][LastSystem-1] & FLAG_KNOWN) == FLAG_KNOWN)
