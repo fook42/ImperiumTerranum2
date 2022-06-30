@@ -140,7 +140,7 @@ void INIT_SOLARSYSTEM(void)
     }
 
     // place the system somewhere
-    SystemX[0] = 26+(rand()%(HighRes_Width-166));
+    SystemX[0] = 26+(rand()%474);
     SystemY[0] = 10+(rand()%490);
 }
 
@@ -163,8 +163,8 @@ bool INITSTARS()
         SystemHeader[i] = (r_SystemHeader) {NULL,0,DefaultShip,0,0,0};
         do
         {
-            SystemX[i] = 26+(rand()%(Area_Width-38));
-            SystemY[i] = 10+(rand()%(Area_Height-22));
+            SystemX[i] = 26+(rand()%474);   // not linked to "Area_Width" for safe-game compatibility
+            SystemY[i] = 10+(rand()%490);
             system_too_close = false;
             // check if the new system is too close to any previous one..
             // reduced calculation: dist^2=x^2+y^2 ... x,y = delta x,y

@@ -47,12 +47,12 @@ int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
     for (i = 0; i<8; ++i)
     {
         AScr = 1-AScr;
-        BltBitMapRastPort((struct BitMap*) &IntroBitMap,0,0,MyRPort_PTR[AScr],640-xpos,340,xpos,90,192);
+        BltBitMapRastPort((struct BitMap*) &IntroBitMap,0,0,MyRPort_PTR[AScr],HighRes_Width-xpos,340,xpos,90,192);
         xpos += 5;
         WaitTOF();
         ScreenToFront(MyScreen[AScr]);
     }
-    xpos = 590;
+    xpos = HighRes_Width-xpos-5;
     do
     {
         xpos -= 5;
@@ -69,14 +69,14 @@ int MAININTRO_PART1(uint16** SMemA, LONG* SMemL)
     for (i = 0; i<9; ++i)
     {
         AScr = 1-AScr;
-        BltBitMapRastPort((struct BitMap*) &IntroBitMap,50,0,MyRPort_PTR[AScr],640-xpos,340,xpos,90,192);
+        BltBitMapRastPort((struct BitMap*) &IntroBitMap,50,0,MyRPort_PTR[AScr],HighRes_Width-xpos,340,xpos,90,192);
         xpos += 5;
         WaitTOF();
         ScreenToFront(MyScreen[AScr]);
     }
     SetAPen(MyRPort_PTR[  AScr],0);
     SetAPen(MyRPort_PTR[1-AScr],0);
-    xpos = 595;
+    xpos = HighRes_Width-xpos+5;
     do
     {
         xpos -= 5;

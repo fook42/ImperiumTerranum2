@@ -429,7 +429,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     char*   _s;
 
     MyShipPtr = ShipPtr;
-    if ((MOVESHIP_ToX<0) || (MOVESHIP_ToX>478) || (MOVESHIP_ToY<0) || (MOVESHIP_ToY>478))
+    if ((MOVESHIP_ToX<0) || (MOVESHIP_ToX>(Area_Height-34)) || (MOVESHIP_ToY<0) || (MOVESHIP_ToY>(Area_Height-34)))
     {
         OffsetX = -MyShipPtr->PosX-1;
         OffsetY = -MyShipPtr->PosY-1;
@@ -454,13 +454,13 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     }
     /* find a random destination system */
     SysID = (rand()%Save.Systems);  // shifted by -1 for the arrays
-    MAKEWINBORDER(MyRPort_PTR[0],70,Offset,440,Offset+85,12,6,0);
-    WRITE_RP0(256,Offset+13,ActPlayerFlag,WRITE_Center,3,PText[467]);
-    WRITE_RP0(256,Offset+35,ActPlayerFlag,WRITE_Center,3,PText[468]);
+    MAKEWINBORDER(MyRPort_PTR[0],70,Offset,Area_Width-70,Offset+85,12,6,0);
+    WRITE_RP0(Area_CenterX,Offset+13,ActPlayerFlag,WRITE_Center,3,PText[467]);
+    WRITE_RP0(Area_CenterX,Offset+35,ActPlayerFlag,WRITE_Center,3,PText[468]);
     _s=my_strcpy(s, PText[469]);
     *_s++ = ' ';
     (void) my_strcpy(_s, Save.SystemName.data[SysID]);
-    WRITE_RP0(256,Offset+57,ActPlayerFlag,WRITE_Center,3,s);
+    WRITE_RP0(Area_CenterX,Offset+57,ActPlayerFlag,WRITE_Center,3,s);
     if (0 == SystemHeader[SysID].Planets)
     {
         CREATENEWSYSTEM(SysID, ActPlayer-1, 1);
@@ -479,7 +479,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     } while (FINDOBJECT(SysID,Area_CenterX+(MyShipPtr->PosX+OffsetX)*32,Area_CenterY+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
 
     WAITLOOP(false);
-    RECT_RP0_C0(70,Offset,440,Offset+85);
+    RECT_RP0_C0(70,Offset,Area_Width-70,Offset+85);
     REFRESHDISPLAY();
 
     PLAYSOUND(2,250);

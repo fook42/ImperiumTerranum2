@@ -453,10 +453,10 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
         } else {
             if (LMB_PRESSED || RMB_PRESSED) { Delay(3); }
             if ((LMB_PRESSED && (MouseX(0)>(HighRes_Width-123)) && (MouseX(0)<(HighRes_Width-5))
-                             && (MouseY(0)>=472) && (MouseY(0)<=492))
+                             && (MouseY(0)>471) && (MouseY(0)<493))
              || (LMB_PRESSED && RMB_PRESSED) || (64 == RawCode) || (67 == RawCode) || (68 == RawCode))
             {
-                KLICKGAD(518,472);
+                KLICKGAD(HighRes_Width-122,472);
                 STARTROTATEPLANETS();
             }
 
@@ -467,12 +467,12 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                     if ((MouseY(0)>8) && (MouseY(0)<118)) // click to mini map
                     {
                         PLAYSOUND(0,300);
-                        OffsetX = 576-MouseX(0);
-                        OffsetY =  63-MouseY(0);
+                        OffsetX = (HighRes_Width-64)-MouseX(0);
+                        OffsetY =                 63-MouseY(0);
                         DRAWSYSTEM(MODE_REDRAW,*ActSys,NULL);
-                    } else if ((MouseY(0)>=416) && (MouseY(0)<=436))    // click to "search"
+                    } else if ((MouseY(0)>415) && (MouseY(0)<437))    // click to "search"
                     {
-                        KLICKGAD(518,416);
+                        KLICKGAD(HighRes_Width-122,416);
                         SEARCHOBJECT(ActSys);
                     }
                 } else if ((MouseX(0)>=0) && (MouseX(0)<Area_Width)
@@ -542,13 +542,13 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
         CLEARINTUITION();
     }
     while ((0 != Display) && (0 != (SystemFlags[ActPlayer-1][*ActSys-1] & FLAG_KNOWN))
-        && (LMB_NOTPRESSED || (MouseX(0)<518) || (MouseX(0)>634)
+        && (LMB_NOTPRESSED || (MouseX(0)<(HighRes_Width-122)) || (MouseX(0)>(HighRes_Width-6))
                            || (MouseY(0)<444) || (MouseY(0)>464))
         && (!Save.PlayMySelf));
 
     if (0 != Display)
     {
-        KLICKGAD(518,444);
+        KLICKGAD(HighRes_Width-122,444);
         RECT_RP0_C0(HighRes_Width-118,9,HighRes_Width-11,117);
         DRAWSTARS(MODE_REDRAW);
     }
