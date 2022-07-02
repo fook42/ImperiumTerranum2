@@ -160,7 +160,7 @@ void GETSAVENAME(char* Title, char* SName)
         while (0 == ID[i][0]);
     }
 
-    GSN_Window=MAKEWINDOW(100,80,311,226,MyScreen[0]);
+    GSN_Window=MAKEWINDOW(Area_CenterX-(311/2),Area_CenterY-(226/2),311,226,MyScreen[0]);
     if (NULL == GSN_Window)
     {
         return;
@@ -446,7 +446,7 @@ bool DISKMENU(uint8 Autoselect)
                                   PText[532], PText[533], PText[534]};
     int button_Textcol, button_Textstyle;
 
-    DIS_Window=MAKEWINDOWBORDER(194,119,123,136,MyScreen[0]);
+    DIS_Window=MAKEWINDOWBORDER(Area_CenterX-(123/2),Area_CenterY-(136/2),123,136,MyScreen[0]);
     if (NULL == DIS_Window)
     {
         return false;

@@ -3,13 +3,13 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
+int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr, int max_ships)
 {
     int     j;
     char    s[14];
     char*   _s;
-    RECT_RP0_C0(22,69,416,456);
-    for(j = 0; j < 12; j++) { ShipNames[j][0] = 0; }
+    RECT_RP0_C0(22,69,Area_Width-96,Area_Height-56);
+    for(j = 0; j < max_ships; j++) { ShipNames[j][0] = 0; }
     j = 0;
     do
     {
@@ -40,7 +40,7 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr)
         }
         MyShipPtr = MyShipPtr->NextShip;
     }
-    while ((NULL != MyShipPtr) && (i<=12));
+    while ((NULL != MyShipPtr) && (i<=max_ships));
     return i;
 }
 
@@ -71,7 +71,8 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     r_ShipHeader*   MyShipPtr;
     int     i, j, k;
     int     ypos;
-    char    ShipNames[12][15];
+    const int   max_num_ships = 12;
+    char    ShipNames[max_num_ships][15];
 
     if (NULL == StShipPtr) { return; }
     MyShipPtr = StShipPtr;
@@ -89,17 +90,17 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
         FleetUsed = false;
     }
 // OpenWindow()
-    MAKEBORDER(MyScreen[0],20,30,420,480,12,6,0);
-    WRITE_RP0(63,37,ActPlayerFlag,0,3,ReqText);
+    MAKEBORDER(MyScreen[0],20,30,Area_Width-92,Area_Height-32,12,6,0);
+    WRITE_RP0( 63,37,ActPlayerFlag,0,3,ReqText);
     WRITE_RP0( 36,56,12,0,0,PText[408]);
     WRITE_RP0(232,56,12,0,0,PText[409]);
 
-    i = DRAWSHIPS(1, ShipNames, MyShipPtr);
-    if ((i>12) && (NULL != MyShipPtr))
+    i = DRAWSHIPS(1, ShipNames, MyShipPtr, max_num_ships);
+    if ((i>max_num_ships) && (NULL != MyShipPtr))
     {
 //         MoreThanShown = true;
-        DrawImage(MyRPort_PTR[0],&GadImg1,300,457);
-        WRITE_RP0(335,460,0,0,3,PText[410]);
+        DrawImage(MyRPort_PTR[0],&GadImg1,300,Area_Height-55);
+        WRITE_RP0(335,Area_Height-52,0,0,3,PText[410]);
 //     } else {
 //         MoreThanShown = false;
     }
@@ -110,11 +111,11 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
         Delay(RDELAY);
         if ((MouseX(0)>=60) && (MouseX(0)<=370))
         {
-            k = (MouseY(0)-35) >> 5;
+            k = (MouseY(0)-35)/32;
             if (k != SelShip)
             {
                 ypos = 77;
-                for(j = 0; j < 12; j++)
+                for(j = 0; j < max_num_ships; j++)
                 {
                     if ((j+1) != k)
                     {
@@ -130,9 +131,9 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
         if (LMB_PRESSED)
         {
             if ((MouseX(0)>=300) && (MouseX(0)<=416)
-              &&(MouseY(0)>=457) && (MouseY(0)<=477))
+              &&(MouseY(0)>=(Area_Height-55)) && (MouseY(0)<=(Area_Height-35)))
             {
-                KLICKGAD(300,457);
+                KLICKGAD(300,Area_Height-55);
                 if (NULL == MyShipPtr)
                 {
                     MyShipPtr = StShipPtr;
@@ -143,21 +144,21 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
                     i = 1;
                     ShipFactor = 0;
                 } else {
-                    i = i-12;
+                    i = i-max_num_ships;
                     ++ShipFactor;
                 }
-                i = DRAWSHIPS(i, ShipNames, MyShipPtr);
+                i = DRAWSHIPS(i, ShipNames, MyShipPtr, max_num_ships);
             } else if ((MouseX(0)>=60) && (MouseX(0)<=370))
             {
                 PLAYSOUND(0,300);
-                SelShip += ShipFactor*12;
+                SelShip += ShipFactor*max_num_ships;
                 b = true;
             }
         }
     }
     while ((!b) && RMB_NOTPRESSED);
     if (RMB_PRESSED) { PLAYSOUND(0,300); }
-    RECT_RP0_C0(20,30,422,482);
+    RECT_RP0_C0(20,30,Area_Width-90,Area_Height-30);
 // CloseWindow()
     if (b)
     {
