@@ -19,8 +19,8 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
         if ((TARGET_STARGATE == SystemHeader[ActSys].FirstShip.SType)
          && (TARGET_STARGATE != ((r_ShipHeader*) ExcludeObj)->SType))
         {
-            x = Area_CenterX+((SystemHeader[ActSys].FirstShip.PosX+OffsetX)*32);
-            y = Area_CenterY+((SystemHeader[ActSys].FirstShip.PosY+OffsetY)*32);
+            x = ((SystemHeader[ActSys].FirstShip.PosX+OffsetX) << 5);
+            y = ((SystemHeader[ActSys].FirstShip.PosY+OffsetY) << 5);
             if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
             {
                 ObjType = TYPE_STARGATE;
@@ -33,10 +33,12 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
     for(i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
         PlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
-        x = Area_CenterX+((it_round(PlanetHeader->PosX)+OffsetX) << 5);
-        y = Area_CenterY+((it_round(PlanetHeader->PosY)+OffsetY) << 5);
+        if (PlanetHeader == (r_PlanetHeader*) ExcludeObj) { continue; }
 
-        if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)) && (PlanetHeader != (r_PlanetHeader*) ExcludeObj))
+        x = ((it_round(PlanetHeader->PosX)+OffsetX) << 5);
+        y = ((it_round(PlanetHeader->PosY)+OffsetY) << 5);
+
+        if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
         {
             ObjType = TYPE_PLANET;
             ObjPtr = PlanetHeader;
@@ -48,14 +50,16 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
     ActShipPtr = SystemHeader[ActSys].FirstShip.NextShip;
     while (NULL != ActShipPtr)
     {
-        x = Area_CenterX+((ActShipPtr->PosX+OffsetX)*32);
-        y = Area_CenterY+((ActShipPtr->PosY+OffsetY)*32);
-        if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)) && (ActShipPtr != (r_ShipHeader*) ExcludeObj)
-            && (ActShipPtr->Owner != 0) && (ActShipPtr->Moving >= 0))
+        if ((ActShipPtr != (r_ShipHeader*) ExcludeObj) && (ActShipPtr->Owner != 0) && (ActShipPtr->Moving >= 0))
         {
-            ObjType = TYPE_SHIP;
-            ObjPtr = ActShipPtr;
-            return true;
+            x = ((ActShipPtr->PosX+OffsetX) << 5);
+            y = ((ActShipPtr->PosY+OffsetY) << 5);
+            if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
+            {
+                ObjType = TYPE_SHIP;
+                ObjPtr = ActShipPtr;
+                return true;
+            }
         }
         ActShipPtr = ActShipPtr->NextShip;
     }
@@ -69,8 +73,8 @@ bool FINDOBJECT(const int ActSys, const int GetX, const int GetY, void* ExcludeO
         {
             if (MyWormHole[i].System[j] == (ActSys+1))
             {
-                x = Area_CenterX+((MyWormHole[i].PosX[j]+OffsetX)*32);
-                y = Area_CenterY+((MyWormHole[i].PosY[j]+OffsetY)*32);
+                x = ((MyWormHole[i].PosX[j]+OffsetX) << 5);
+                y = ((MyWormHole[i].PosY[j]+OffsetY) << 5);
                 if ((GetX>=x) && (GetX<=(x+32)) && (GetY>=y) && (GetY<=(y+32)))
                 {
                     ObjType = TYPE_WORMHOLE;
