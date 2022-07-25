@@ -50,7 +50,7 @@ void SETFLEETPOSITION(uint8 ActSys, r_ShipHeader* StShipPtr, r_ShipHeader* MyShi
     MyShipPtr->PosY   = StShipPtr->PosY;
     MyShipPtr->Moving = StShipPtr->Moving+1;
     MyShipPtr->Target = 0;
-    while (FINDOBJECT(ActSys, Area_CenterX+(MyShipPtr->PosX+OffsetX)*32, Area_CenterY+(MyShipPtr->PosY+OffsetY)*32, MyShipPtr))
+    while (FINDOBJECT(ActSys, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr))
     {
         switch (rand()%4) {
             case 0: ++MyShipPtr->PosX; break;

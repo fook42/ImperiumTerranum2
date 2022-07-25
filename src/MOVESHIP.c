@@ -67,7 +67,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 /**** STARGATE INSTALLIEREN ****/
                 if (sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))<10)
                 {
-                    if (!FINDOBJECT(ActSys-1,Area_CenterX+(MyShipPtr->PosX+OffsetX)*32,Area_CenterY+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
+                    if (!FINDOBJECT(ActSys-1, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr))
                     {
                         SystemHeader[ActSys-1].FirstShip.SType = TARGET_STARGATE;
                         SystemHeader[ActSys-1].FirstShip.PosX = MyShipPtr->PosX;
@@ -132,8 +132,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 else if (it_round(MyPlanetHeader->PosY) > MyShipPtr->PosY) { MyShipPtr->PosY++; }
             }
             if (CHECKSUN(MyShipPtr)) { return; }
-            MOVESHIP_ToX = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
-            MOVESHIP_ToY = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
+            MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX) << 5);
+            MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY) << 5);
             if ((abs(MyShipPtr->PosX)>50) || (abs(MyShipPtr->PosY)>50)
              || ( ((MyShipPtr->Target<1) || (MyShipPtr->Target>SystemHeader[ActSys-1].Planets))
                 && (MyShipPtr->Target!=TARGET_POSITION) && (MyShipPtr->Target!=TARGET_STARGATE)
@@ -143,7 +143,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 MyShipPtr->Owner = 0;
                 return;
             }
-            if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16,MOVESHIP_ToY+16,MyShipPtr))
+            if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-Area_CenterX,MOVESHIP_ToY+16-Area_CenterY,MyShipPtr))
             {
                 if (MyShipPtr->Flags == SHIPFLAG_WATER)
                 {
@@ -494,7 +494,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
         ++blink;
         if (15 == blink)
         {
-            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
+            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=(Area_Width-32)) && (MOVESHIP_y>=0) && (MOVESHIP_y<=(Area_Height-32)))
             {
                 DRAWRECT(MOVESHIP_x,MOVESHIP_y, MyShipPtr, 0);
             }
@@ -517,7 +517,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             }
         } else if (30 == blink)
         {
-            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=480) && (MOVESHIP_y>=0) && (MOVESHIP_y<=480))
+            if ((MOVESHIP_x>=0) && (MOVESHIP_x<=(Area_Width-32)) && (MOVESHIP_y>=0) && (MOVESHIP_y<=(Area_Height-32)))
             {
                 DRAWRECT(MOVESHIP_x,MOVESHIP_y, MyShipPtr, MyShipPtr->Owner);
             }
@@ -534,7 +534,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 || ((28 < RawCode) && (32 > RawCode)) || (45 == RawCode) || (47 == RawCode)
                 || ((60 < RawCode) && (64 > RawCode)) || ((75 < RawCode) && (80 > RawCode)))
             {
-                if (FINDOBJECT(ActSys-1,MouseX(0),MouseY(0),NULL))
+                if (FINDOBJECT(ActSys-1, MouseX(0)-Area_CenterX, MouseY(0)-Area_CenterY, NULL))
                 {   // clicked on something?
                     PLAYSOUND(0,300);
                     switch (ObjType) {
@@ -581,9 +581,9 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         if ( 50 < MyShipPtr->PosY) { MyShipPtr->PosY =  50; }
                         if (-50 > MyShipPtr->PosY) { MyShipPtr->PosY = -50; }
                         /* */
-                        MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX)*32);
-                        MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY)*32);
-                        if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16,MOVESHIP_ToY+16,MyShipPtr))
+                        MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX) << 5);
+                        MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY) << 5);
+                        if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-Area_CenterX,MOVESHIP_ToY+16-Area_CenterY,MyShipPtr))
                         {
                             switch (ObjType) {
                                 case TYPE_PLANET:   {
@@ -768,7 +768,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
             } else {
                 PLAYSOUND(0,300);
-                if (FINDOBJECT(ActSys-1,MOVESHIP_x+16,MOVESHIP_y+16,NULL))
+                if (FINDOBJECT(ActSys-1,MOVESHIP_x+16-Area_CenterX,MOVESHIP_y+16-Area_CenterY,NULL))
                 {
                     if (TYPE_SHIP == ObjType)
                     {
@@ -797,8 +797,8 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             OldMoving = MyShipPtr->Moving;
             WRITE_RP0((HighRes_Width-119),293,GETCIVFLAG(ActPlayer),1,1,s);
         }
-        MOVESHIP_x = Area_CenterX+((MyShipPtr->PosX+OffsetX)*32);
-        MOVESHIP_y = Area_CenterY+((MyShipPtr->PosY+OffsetY)*32);
+        MOVESHIP_x = Area_CenterX+((MyShipPtr->PosX+OffsetX) << 5);
+        MOVESHIP_y = Area_CenterY+((MyShipPtr->PosY+OffsetY) << 5);
         CLEARINTUITION();
     }
     while ((0 < MyShipPtr->Moving)

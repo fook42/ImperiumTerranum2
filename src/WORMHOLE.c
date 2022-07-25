@@ -476,7 +476,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
 
         if (0 == (rand()%2)) { MyShipPtr->PosX = -MyShipPtr->PosX; }
         if (0 == (rand()%2)) { MyShipPtr->PosY = -MyShipPtr->PosY; }
-    } while (FINDOBJECT(SysID,Area_CenterX+(MyShipPtr->PosX+OffsetX)*32,Area_CenterY+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
+    } while (FINDOBJECT(SysID, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr));
 
     WAITLOOP(false);
     RECT_RP0_C0(70,Offset,Area_Width-70,Offset+85);

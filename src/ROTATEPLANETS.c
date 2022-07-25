@@ -103,8 +103,8 @@ void ROTATEPLANETS(uint8 ActSys)
                 SystemHeader[i].FirstShip.PosY = it_round(FromX * sin_rot + FromY * cos_rot);
 
                 // MyShipPtr = &SystemHeader[i].FirstShip; // not needed .. MyShipPtr is not changed at all.
-                if (FINDOBJECT(i, Area_CenterX+(SystemHeader[i].FirstShip.PosX+OffsetX)*32,
-                                  Area_CenterY+(SystemHeader[i].FirstShip.PosY+OffsetY)*32,
+                if (FINDOBJECT(i, (SystemHeader[i].FirstShip.PosX+OffsetX)<<5,
+                                  (SystemHeader[i].FirstShip.PosY+OffsetY)<<5,
                                   &SystemHeader[i].FirstShip))
                 {
                     // would the stargate "hit" another object? then we dont move it - revert to the previous coordinates

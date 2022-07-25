@@ -89,9 +89,9 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
             default: { }
         }
     }
-    while(FINDOBJECT(SysID-1,Area_CenterX+(MyShipPtr->PosX+OffsetX)*32,Area_CenterY+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr));
-    MOVESHIP_ToX = Area_CenterX+(MyShipPtr->PosX+OffsetX)*32;
-    MOVESHIP_ToY = Area_CenterY+(MyShipPtr->PosY+OffsetY)*32;
+    while(FINDOBJECT(SysID-1, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr));
+    MOVESHIP_ToX = Area_CenterX+((MyShipPtr->PosX+OffsetX)<<5);
+    MOVESHIP_ToY = Area_CenterY+((MyShipPtr->PosY+OffsetY)<<5);
     if ((((SystemFlags[ActPlayer-1][ActSys-1] & FLAG_KNOWN) == FLAG_KNOWN) && (Save.CivPlayer[ActPlayer-1] != 0))
      || (Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1] != 0))
     {
