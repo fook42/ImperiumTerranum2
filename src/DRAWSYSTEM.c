@@ -20,9 +20,11 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     {
         if ((0 == Display) || (100 == Display))
         {
+            y = 416;
             for (i = 0; i<3; ++i)
             {
-                DrawImage(MyRPort_PTR[0],&GadImg1,(HighRes_Width-122), 416+i*28);
+                DrawImage(MyRPort_PTR[0],&GadImg1,(HighRes_Width-122), y);
+                y+=28;
             }
             WRITE_RP0((HighRes_Width-64),418,0,JAM1|WRITE_Center             ,3,_PT_Suchen);
             WRITE_RP0((HighRes_Width-64),446,0,JAM1|WRITE_Center             ,3,_PT_Sternenkarte);

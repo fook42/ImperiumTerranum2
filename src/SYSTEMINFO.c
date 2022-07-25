@@ -28,7 +28,7 @@ void SYSTEMINFO(uint8 ActSys)
         return;
     }
 
-    SYS_Window=MAKEWINDOWBORDER(194,119,123,114,MyScreen[0]);
+    SYS_Window=MAKECENTERWINDOW(123,114,MyScreen[0]);
     if (NULL == SYS_Window)
     {
         return;
@@ -183,7 +183,7 @@ void SYSTEMINFO(uint8 ActSys)
                         if (it_round((double) sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))) >= 10)
                         {
                             // too far from sun
-                            SYS_Window=MAKEWINDOWBORDER(70,115,371,86,MyScreen[0]);
+                            SYS_Window=MAKECENTERWINDOW(371,86,MyScreen[0]);
                             if (NULL != SYS_Window)
                             {
                                 RPort_PTR = SYS_Window->RPort;

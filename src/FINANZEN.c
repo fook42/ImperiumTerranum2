@@ -49,7 +49,7 @@ void FINANZEN()
         jahadr_winheight = 66;
     }
 
-    FIN_Window=MAKEWINDOWBORDER(60,100,371,176+jahadr_winheight,MyScreen[0]);
+    FIN_Window=MAKECENTERWINDOW(371,176+jahadr_winheight,MyScreen[0]);
     if (NULL == FIN_Window)
     {
         return;

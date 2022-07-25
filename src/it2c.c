@@ -1,4 +1,4 @@
-const char __ver[] = "$VER: ImperiumTerranum 2.818 (02.06.2021)\0";
+const char __ver[] = "$VER: ImperiumTerranum 2.820 (03.07.2022)\0";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,13 +15,6 @@ const char __ver[] = "$VER: ImperiumTerranum 2.818 (02.06.2021)\0";
 
 #define AUTOCON "CON:20/20/500/120/mycon/auto/close/wait"
 #define _EXTERN_
-
-#define def_HighRes_Width  (640)
-#define def_HighRes_Height (512)
-#define def_HighRes_Mode   (0xA9004)
-#define def_LowRes_Width   (320)
-#define def_LowRes_Height  (256)
-#define def_LowRes_Mode    (0xA1000)
 
 #define SCREENREQTITLE_High "HIGHRES 640x512 screenmode"
 #define SCREENREQTITLE_Low  "LOWRES 320x256 screenmode"

@@ -188,7 +188,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             ModC = GETTHESOUND(1);
         }
 
-        CPA_Window=MAKEWINDOWBORDER(85,110,341,91,MyScreen[0]);
+        CPA_Window=MAKEWINDOWBORDER(Area_CenterX-(341/2),Area_CenterY-91-1,341,91,MyScreen[0]);
         if (NULL == CPA_Window)
         {
             return;
@@ -222,14 +222,12 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         if ((0 != Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1])
                 && (ActPlayer == GETCIVVAR(MyPlanetHeader->PFlags)))
         {
-            CPA2_Window=MAKEWINDOWBORDER(85,208,341,41,MyScreen[0]);
+            CPA2_Window=MAKEWINDOWBORDER(Area_CenterX-(341/2),Area_CenterY,341,41,MyScreen[0]);
             if (NULL == CPA2_Window)
             {
                 return;
             }
             RPort2_PTR = CPA2_Window->RPort;
-
-
 
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7, MyPlanetHeader->Class*32,0,RPort2_PTR,10,4,32,32,192);
             DrawImage(RPort2_PTR,&GadImg1, 55,10);

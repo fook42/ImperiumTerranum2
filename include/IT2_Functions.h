@@ -182,7 +182,7 @@ void OPTION_MULTIPLAYER(void);
 void OPTIONMENU(int Mode);
 // <<<
 // >>> ORBITINFO
-int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr, int max_ships);
+int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr, int max_ships, struct RastPort* RPort_PTR);
 void SETFLEETPOSITION(uint8 ActSys, r_ShipHeader* StShipPtr, r_ShipHeader* MyShipPtr);
 void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX, sint8 XPosY);
 // <<<

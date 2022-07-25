@@ -7,7 +7,7 @@ void DRAWRECT(const int x, const int y, const r_ShipHeader* MyShipPtr, const int
 {
     SetAPen(MyRPort_PTR[0], color);
     // paint on main-screen
-    if ((0 < x) && (481 > x) && (0 < y) && (481 > y))
+    if ((0 < x) && ((Area_Width-31) > x) && (0 < y) && ((Area_Height-31) > y))
     {
         Move(MyRPort_PTR[0], x,    y);
         Draw(MyRPort_PTR[0], x+31, y);
@@ -16,5 +16,5 @@ void DRAWRECT(const int x, const int y, const r_ShipHeader* MyShipPtr, const int
         Draw(MyRPort_PTR[0], x,    y);
     }
     // paint on minimap-area
-    WritePixel(MyRPort_PTR[0], 575+MyShipPtr->PosX, 62+MyShipPtr->PosY);
+    WritePixel(MyRPort_PTR[0], (HighRes_Width-65)+MyShipPtr->PosX, 62+MyShipPtr->PosY);
 }

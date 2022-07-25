@@ -78,7 +78,7 @@ void SD_TEXTWINDOW(const char* TextPtr1,const char* TextPtr2,const char* TextPtr
     struct Window*   STD_Window;
     struct RastPort* RPort_PTR;
 
-    STD_Window=MAKEWINDOWBORDER(50,100,411,81,MyScreen[0]);
+    STD_Window=MAKECENTERWINDOW(411,81,MyScreen[0]);
     if (NULL != STD_Window)
     {
         RPort_PTR = STD_Window->RPort;

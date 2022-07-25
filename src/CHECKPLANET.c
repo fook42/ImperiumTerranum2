@@ -39,7 +39,7 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                         if (0 != Save.CivPlayer[ActPlayer-1])
                         {
                             INFORMUSER();
-                            CHP_Window=MAKEWINDOWBORDER(80,120,351,131,MyScreen[0]);
+                            CHP_Window=MAKECENTERWINDOW(351,131,MyScreen[0]);
                             if (NULL != CHP_Window)
                             {
                                 RPort_PTR = CHP_Window->RPort;

@@ -138,6 +138,8 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
     uint8   i;
     uint16  x, y, projectBmapx, projectBmapy;
     char    s[4];
+    const int     max_horiz_projects=((HighRes_Width-360)/PROJECTS_XSIZE)-1;
+    const int     max_vert_projects =((HighRes_Height-92)/PROJECTS_YSIZE)-1;
 
     // clear right project icon area
     RECT_RP1_C0(359,92,HighRes_Width-1,HighRes_Height-1);
@@ -156,7 +158,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
             // copy project icon bitmap to screen
             BltBitMapRastPort((struct BitMap*) &ImgBitMap8,i*64,0,MyRPort_PTR[1],362+x,94+y,64,64,192);
             x += PROJECTS_XSIZE;
-            if ((3*PROJECTS_XSIZE) < x)
+            if ((max_horiz_projects*PROJECTS_XSIZE) < x)
             {
                 // next row
                 x = 0;
@@ -196,12 +198,12 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
                 WRITE_RP1(367+x,141+y,4,0,1,s);
             }
             x += PROJECTS_XSIZE;
-            if ((3*PROJECTS_XSIZE) < x)
+            if ((max_horiz_projects*PROJECTS_XSIZE) < x)
             {
                 x = 0;
                 y += PROJECTS_YSIZE;
             }
-            if ((6*PROJECTS_YSIZE) == y) { return; }
+            if ((max_vert_projects*PROJECTS_YSIZE) < y) { return; }
         }
     }
 }
@@ -449,7 +451,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     l = (l / PMoney ) +1;
                     if (1 > l) { l = 1; }
                     (void) dez2out(l, 7 ,s);
-                    WRITE_RP1(575,78+i*16,ProjectType[i],1,2,s);
+                    WRITE_RP1(HighRes_Width-65,78+i*16,ProjectType[i],1,2,s);
                 }
                 btx = 1;
                 MyPlanetHeader->ProjectID = PROJECT_NONE;

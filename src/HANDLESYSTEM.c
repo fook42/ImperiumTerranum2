@@ -207,7 +207,7 @@ void SEARCHOBJECT(uint8* ActSys)
     _s=my_strcpy(_Txt_nextPage, _PT_Naechste_Seite);
     (void) my_strcpy(_s, "      >>>");
 
-    SEO_Window=MAKEWINDOWBORDER(194,119,123,158,MyScreen[0]);
+    SEO_Window=MAKECENTERWINDOW(123,158,MyScreen[0]);
     RPort_PTR = SEO_Window->RPort;
 
     ypos = 3;

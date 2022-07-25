@@ -31,11 +31,10 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
         && (  (0 != Save.CivPlayer[CivVar1-1])
            || (0 != Save.CivPlayer[CivVar2-1])))
         {
-            TKT_Window=MAKEWINDOWBORDER(85,118,341,83,MyScreen[0]);
+            TKT_Window=MAKECENTERWINDOW(341,83,MyScreen[0]);
             if (NULL != TKT_Window)
             {
                 RPort_PTR = TKT_Window->RPort;
-
 
                 _s=my_strcpy(s, GETCIVNAME(CivVar1));
                 *_s++ = ' ';

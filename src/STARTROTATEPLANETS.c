@@ -14,11 +14,10 @@ void CREATEINFOBOX(struct Window** CIB_Window, struct RastPort** CIB_RPort_PTR)
         INFORMUSER();
         --ActPlayer;    // for array shifting...
 
-        *CIB_Window = MAKEWINDOWBORDER(30,100,451,171,MyScreen[0]);
+        *CIB_Window = MAKECENTERWINDOW(451,171,MyScreen[0]);
         if (NULL != (*CIB_Window))
         {
             *CIB_RPort_PTR = (*CIB_Window)->RPort;
-
 
             _s=my_strcpy(s, PText[646]);
             *_s++ = ' ';
@@ -249,7 +248,7 @@ void STARTROTATEPLANETS()
     }
     if ((0 != Save.CivPlayer[ActPlayer-1]) && (Informed))
     {
-        RECT_RP0_C0(520,291,632,308);
-        WRITE_RP0(521,292,12,JAM2,3,PText[663]);
+        RECT_RP0_C0(HighRes_Width-120,291,HighRes_Width-8,308);
+        WRITE_RP0(HighRes_Width-119,292,12,JAM2,3,PText[663]);
     }
 }
