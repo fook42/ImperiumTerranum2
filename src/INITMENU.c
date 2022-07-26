@@ -16,7 +16,7 @@ void INITMENU()
     (void) SETCOLOR(MyScreen[1], s);
 
     (void) my_strcpy(_s-3, "img");
-    if (!DISPLAYIMAGE(s,(HighRes_Width/2)-(img_width/2),(HighRes_Height/2)-(img_height/2),img_width,img_height,6,MyScreen[1],4))
+    if (!DISPLAYIMAGE(s,CenterX-(img_width/2),CenterY-(img_height/2),img_width,img_height,6,MyScreen[1],4))
     {
         DisplayBeep(NULL);
     }
