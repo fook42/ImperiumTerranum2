@@ -453,7 +453,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                         && (MouseY(0)>=0) && (MouseY(0)<=511))      // click to main view
                 {
                     PLAYSOUND(0,300);
-                    if (FINDOBJECT(*ActSys-1, MouseX(0), MouseY(0), NULL))
+                    if (FINDOBJECT(*ActSys-1, MouseX(0)-256, MouseY(0)-256, NULL))
                     {
                         switch (ObjType) {
                             case TYPE_PLANET: PLANETINFO(*ActSys); break;
@@ -500,7 +500,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                  && (MouseY(0)>=0) && (MouseY(0)<=511))             // click to main view
                 {
                     PLAYSOUND(0,300);
-                    if (FINDOBJECT(*ActSys-1, MouseX(0), MouseY(0), NULL))
+                    if (FINDOBJECT(*ActSys-1, MouseX(0)-256, MouseY(0)-256, NULL))
                     {
                         switch (ObjType) {
                             case TYPE_PLANET: {

@@ -217,7 +217,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                         default: { }
                                     }
                                 }
-                                while (FINDOBJECT(i-1, 256+(MyShipPtr->PosX+OffsetX)*32, 256+(MyShipPtr->PosY+OffsetY)*32, MyShipPtr));
+                                while (FINDOBJECT(i-1, (MyShipPtr->PosX+OffsetX)*32, (MyShipPtr->PosY+OffsetY)*32, MyShipPtr));
 
                                 if ((((SystemFlags[0][i-1] & ActPlayerFlag) == ActPlayerFlag) || (CivVar == ActPlayer))
                                     && (Save.CivPlayer[ActPlayer-1] != 0) && (!DconDone))

@@ -67,7 +67,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 /**** STARGATE INSTALLIEREN ****/
                 if (sqrt((MyShipPtr->PosX*MyShipPtr->PosX)+(MyShipPtr->PosY*MyShipPtr->PosY))<10)
                 {
-                    if (!FINDOBJECT(ActSys-1,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
+                    if (!FINDOBJECT(ActSys-1,(MyShipPtr->PosX+OffsetX)*32,(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
                     {
                         SystemHeader[ActSys-1].FirstShip.SType = TARGET_STARGATE;
                         SystemHeader[ActSys-1].FirstShip.PosX = MyShipPtr->PosX;
@@ -143,7 +143,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 MyShipPtr->Owner = 0;
                 return;
             }
-            if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16,MOVESHIP_ToY+16,MyShipPtr))
+            if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-256,MOVESHIP_ToY+16-256,MyShipPtr))
             {
                 if (MyShipPtr->Flags == SHIPFLAG_WATER)
                 {
@@ -534,7 +534,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 || ((28 < RawCode) && (32 > RawCode)) || (45 == RawCode) || (47 == RawCode)
                 || ((60 < RawCode) && (64 > RawCode)) || ((75 < RawCode) && (80 > RawCode)))
             {
-                if (FINDOBJECT(ActSys-1,MouseX(0),MouseY(0),NULL))
+                if (FINDOBJECT(ActSys-1,MouseX(0)-256,MouseY(0)-256,NULL))
                 {   // clicked on something?
                     PLAYSOUND(0,300);
                     switch (ObjType) {
@@ -583,7 +583,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                         /* */
                         MOVESHIP_ToX = 256+((MyShipPtr->PosX+OffsetX)*32);
                         MOVESHIP_ToY = 256+((MyShipPtr->PosY+OffsetY)*32);
-                        if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16,MOVESHIP_ToY+16,MyShipPtr))
+                        if (FINDOBJECT(ActSys-1,MOVESHIP_ToX+16-256,MOVESHIP_ToY+16-256,MyShipPtr))
                         {
                             switch (ObjType) {
                                 case TYPE_PLANET:   {
@@ -768,7 +768,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 DRAWSYSTEM(MODE_REDRAW,ActSys,NULL);
             } else {
                 PLAYSOUND(0,300);
-                if (FINDOBJECT(ActSys-1,MOVESHIP_x+16,MOVESHIP_y+16,NULL))
+                if (FINDOBJECT(ActSys-1,MOVESHIP_x+16-256,MOVESHIP_y+16-256,NULL))
                 {
                     if (TYPE_SHIP == ObjType)
                     {

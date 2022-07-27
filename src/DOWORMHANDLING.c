@@ -60,7 +60,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
         MyShipPtr->PosX += (rand()%3)-1;
         MyShipPtr->PosY += (rand()%3)-1;
     }
-    while ((FINDOBJECT(NewSys,256+(MyShipPtr->PosX+OffsetX)*32,256+(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
+    while ((FINDOBJECT(NewSys,(MyShipPtr->PosX+OffsetX)*32,(MyShipPtr->PosY+OffsetY)*32,MyShipPtr))
         || ((4 > MyShipPtr->PosX) && (-4 < MyShipPtr->PosX) && (4 > MyShipPtr->PosY) && (-4 < MyShipPtr->PosY)));
 
     if (Visible)
