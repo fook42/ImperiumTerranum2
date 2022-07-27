@@ -173,29 +173,11 @@ enum {  SCREEN_PLANET = 1,
 #define MouseX(...)     MyScreen[(__VA_ARGS__)]->MouseX
 #define MouseY(...)     MyScreen[(__VA_ARGS__)]->MouseY
 
-#define SPAddrA      custom.aud[0].ac_ptr
-#define SPLengthA    custom.aud[0].ac_len
-#define SPFreqA      custom.aud[0].ac_per
-#define SPVolA       custom.aud[0].ac_vol
-#define SPDataA      custom.aud[0].ac_dat
-
-#define SPAddrB      custom.aud[1].ac_ptr
-#define SPLengthB    custom.aud[1].ac_len
-#define SPFreqB      custom.aud[1].ac_per
-#define SPVolB       custom.aud[1].ac_vol
-#define SPDataB      custom.aud[1].ac_dat
-
-#define SPAddrC      custom.aud[2].ac_ptr
-#define SPLengthC    custom.aud[2].ac_len
-#define SPFreqC      custom.aud[2].ac_per
-#define SPVolC       custom.aud[2].ac_vol
-#define SPDataC      custom.aud[2].ac_dat
-
-#define SPAddrD      custom.aud[3].ac_ptr
-#define SPLengthD    custom.aud[3].ac_len
-#define SPFreqD      custom.aud[3].ac_per
-#define SPVolD       custom.aud[3].ac_vol
-#define SPDataD      custom.aud[3].ac_dat
+#define SPAddr(...)      custom.aud[(__VA_ARGS__)].ac_ptr
+#define SPLength(...)    custom.aud[(__VA_ARGS__)].ac_len
+#define SPFreq(...)      custom.aud[(__VA_ARGS__)].ac_per
+#define SPVol(...)       custom.aud[(__VA_ARGS__)].ac_vol
+#define SPData(...)      custom.aud[(__VA_ARGS__)].ac_dat
 
 // example to access array with offset
 #define SHIPDATA_OFFSET     8

@@ -82,10 +82,10 @@ void TRAVEL()
 
     if (Audio_enable)
     {
-        SPAddrA = WHSoundMemA[0];                SPLengthA = (UWORD) WHSoundMemL[0];       SPVolA = 45; SPFreqA = 300;
-        SPAddrC = WHSoundMemA[1];                SPLengthC = (UWORD) (WHSoundMemL[1] / 2); SPVolC = 64; SPFreqC = 400;
-        SPAddrD = WHSoundMemA[1]+WHSoundMemL[1]; SPLengthD = (UWORD) (WHSoundMemL[1] / 2); SPVolD = 64; SPFreqD = 400;
-        SPAddrB = 0; SPLengthB = 1;
+        SPAddr(0) = WHSoundMemA[0];                SPLength(0) = (UWORD) WHSoundMemL[0];       SPVol(0) = 45; SPFreq(0) = 300;
+        SPAddr(2) = WHSoundMemA[1];                SPLength(2) = (UWORD) (WHSoundMemL[1] / 2); SPVol(2) = 64; SPFreq(2) = 400;
+        SPAddr(3) = WHSoundMemA[1]+WHSoundMemL[1]; SPLength(3) = (UWORD) (WHSoundMemL[1] / 2); SPVol(3) = 64; SPFreq(3) = 400;
+        SPAddr(1) = 0; SPLength(1) = 1;
         custom.dmacon = BITSET | DMAF_AUDIO;
     }
     srand((unsigned) time(&t));
@@ -221,19 +221,19 @@ void TRAVEL()
             {
                 if (Audio_enable)
                 {
-                    SPFreqB    = 120;
+                    SPFreq(1)    = 120;
                 }
                 WORMHOLE_ShipShield -= 2;
             } else {
                 if (Audio_enable)
                 {
-                    SPFreqB    = 80;
+                    SPFreq(1)    = 80;
                 }
                 WORMHOLE_ShipShield -= 4;
             }
             if (Audio_enable)
             {
-                SPAddrB = WHSoundMemA[0]; SPLengthB = 1500; SPVolB = 52;
+                SPAddr(1) = WHSoundMemA[0]; SPLength(1) = 1500; SPVol(1) = 52;
             }
 
             RectCol = 15;
@@ -292,20 +292,20 @@ void TRAVEL()
 
         if (Audio_enable)
         {
-            SPAddrB   = ZeroSound; SPLengthB = 1;
+            SPAddr(1)   = ZeroSound; SPLength(1) = 1;
         }
         if (i>(STEPS-30))
         {
             if (Audio_enable)
             {
-                SPAddrA   = ZeroSound; SPLengthA = 1;
+                SPAddr(0)   = ZeroSound; SPLength(0) = 1;
             }
             Clear += 4;
             RECTWIN(MyRPort_PTR[AScr],0,160-Clear,128-Clear,160+Clear,128+Clear);
         } else {
             if (Audio_enable)
             {
-                SPLengthA = WHSoundMemL[0]-i-i-i;
+                SPLength(0) = WHSoundMemL[0]-i-i-i;
             }
         }
         WaitTOF();

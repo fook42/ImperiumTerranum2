@@ -95,10 +95,10 @@ void LANDING_DRAWFIRE()
 
     if (Audio_enable)
     {
-        SPAddrA = ZeroSound; SPLengthA = 1;
-        SPAddrB = ZeroSound; SPLengthB = 1;
-        SPAddrC = ZeroSound; SPLengthC = 1;
-        SPAddrD = ZeroSound; SPLengthD = 1;
+        SPAddr(0) = ZeroSound; SPLength(0) = 1;
+        SPAddr(1) = ZeroSound; SPLength(1) = 1;
+        SPAddr(2) = ZeroSound; SPLength(2) = 1;
+        SPAddr(3) = ZeroSound; SPLength(3) = 1;
     }
 
     if ((HitX>-1) && (HitY>-1))
@@ -129,8 +129,8 @@ void LANDING_DRAWFIRE()
         if (Audio_enable)
         {
             custom.dmacon = BITCLR | DMAF_AUD2 | DMAF_AUD3;
-            SPAddrC = SLSoundMemA; SPFreqC = 350; SPLengthC = (UWORD) SLSoundSize; SPVolC = 50;
-            SPAddrD = SLSoundMemA; SPFreqD = 300; SPLengthD = (UWORD) SLSoundSize; SPVolD = 50;
+            SPAddr(2) = SLSoundMemA; SPFreq(2) = 350; SPLength(2) = (UWORD) SLSoundSize; SPVol(2) = 50;
+            SPAddr(3) = SLSoundMemA; SPFreq(3) = 300; SPLength(3) = (UWORD) SLSoundSize; SPVol(3) = 50;
             custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3;
         }
         HitX = (MouseX(AScr)) >> 5;
@@ -345,22 +345,22 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         PLAYSOUND(1,1000);
         if (Audio_enable)
         {
-            SPAddrC = SoundMemA[2];              SPFreqC = 900; SPLengthC = (UWORD) (SoundSize[2] / 2); SPVolC = 64;
-            SPAddrD = SoundMemA[2]+SoundSize[2]; SPFreqD = 900; SPLengthD = (UWORD) (SoundSize[2] / 2); SPVolD = 64;
+            SPAddr(2) = SoundMemA[2];              SPFreq(2) = 900; SPLength(2) = (UWORD) (SoundSize[2] / 2); SPVol(2) = 64;
+            SPAddr(3) = SoundMemA[2]+SoundSize[2]; SPFreq(3) = 900; SPLength(3) = (UWORD) (SoundSize[2] / 2); SPVol(3) = 64;
         }
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
         WaitTOF();
         if (Audio_enable)
         {
-            SPAddrA   = ZeroSound; SPLengthA = 1;
+            SPAddr(0)   = ZeroSound; SPLength(0) = 1;
         }
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
         WaitTOF();
         if (Audio_enable)
         {
-            SPAddrB   = ZeroSound; SPLengthB = 1;
+            SPAddr(1)   = ZeroSound; SPLength(1) = 1;
             custom.dmacon = BITSET | DMAF_AUD2 | DMAF_AUD3;
         }
         ScreenToFront(MyScreen[AScr]);
@@ -368,14 +368,14 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
         WaitTOF();
         if (Audio_enable)
         {
-            SPAddrD   = ZeroSound; SPLengthD = 1;
+            SPAddr(3)   = ZeroSound; SPLength(3) = 1;
         }
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
         WaitTOF();
         if (Audio_enable)
         {
-            SPAddrC   = ZeroSound; SPLengthC = 1;
+            SPAddr(2)   = ZeroSound; SPLength(2) = 1;
         }
 
         for(i = 0; i < 20; ++i)

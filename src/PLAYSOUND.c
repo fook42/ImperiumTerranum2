@@ -14,14 +14,14 @@ void PLAYSOUND(const int SoundID, const int SoundRate)
         WaitTOF();
         if (0 == SoundID)
         {
-            SPAddrA = SoundMemA[0]; SPFreqA = (UWORD) SoundRate; SPLengthA = SoundSize[0]; SPVolA = (UWORD) (64-LRFader);
-            SPAddrB = SoundMemA[0]; SPFreqB = (UWORD) SoundRate; SPLengthB = SoundSize[0]; SPVolB = (UWORD) (LRFader);
+            SPAddr(0) = SoundMemA[0]; SPFreq(0) = (UWORD) SoundRate; SPLength(0) = SoundSize[0]; SPVol(0) = (UWORD) (64-LRFader);
+            SPAddr(1) = SoundMemA[0]; SPFreq(1) = (UWORD) SoundRate; SPLength(1) = SoundSize[0]; SPVol(1) = (UWORD) (LRFader);
 
             custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1; // 0x8003 .. playback audio on channel 0+1
             WaitTOF();
 
-            SPAddrA = ZeroSound; SPLengthA = 1;
-            SPAddrB = ZeroSound; SPLengthB = 1;
+            SPAddr(0) = ZeroSound; SPLength(0) = 1;
+            SPAddr(1) = ZeroSound; SPLength(1) = 1;
             
             do
             {
@@ -33,27 +33,27 @@ void PLAYSOUND(const int SoundID, const int SoundRate)
             custom.dmacon = BITCLR | DMAF_AUD0 | DMAF_AUD1; // 0x0003 .. stop audio on channel 0+1
             WaitTOF();
         } else {
-            SPAddrA = SoundMemA[SoundID];
-            SPFreqA = (UWORD) SoundRate; SPVolA = 64;
-            SPFreqB = (UWORD) SoundRate; SPVolB = 64;
+            SPAddr(0) = SoundMemA[SoundID];
+            SPFreq(0) = (UWORD) SoundRate; SPVol(0) = 64;
+            SPFreq(1) = (UWORD) SoundRate; SPVol(1) = 64;
             if (3 == SoundID)
             {
-                SPAddrB   = SoundMemA[SoundID];
-                SPLengthA = SoundSize[SoundID];
-                SPLengthB = SoundSize[SoundID];
+                SPAddr(1)   = SoundMemA[SoundID];
+                SPLength(0) = SoundSize[SoundID];
+                SPLength(1) = SoundSize[SoundID];
             } else {
                 // play the sound on 2 different channels :
                 //  1 half on channel 0.. 2nd half on channel 1
-                SPAddrB   = SoundMemA[SoundID]+SoundSize[SoundID];
-                SPLengthA = SoundSize[SoundID] >> 1;
-                SPLengthB = SoundSize[SoundID] >> 1;
+                SPAddr(1)   = SoundMemA[SoundID]+SoundSize[SoundID];
+                SPLength(0) = SoundSize[SoundID] >> 1;
+                SPLength(1) = SoundSize[SoundID] >> 1;
             }
 
             custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1; // 0x8003 .. playback audio on channel 0+1
             WaitTOF();
 
-            SPAddrA = ZeroSound; SPLengthA = 1;
-            SPAddrB = ZeroSound; SPLengthB = 1;
+            SPAddr(0) = ZeroSound; SPLength(0) = 1;
+            SPAddr(1) = ZeroSound; SPLength(1) = 1;
         }
     } else {
         WaitTOF();

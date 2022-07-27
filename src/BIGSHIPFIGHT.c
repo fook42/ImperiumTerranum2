@@ -252,8 +252,8 @@ void STARFLY(uint8 Ship)
 
     if (Audio_enable)
     {
-        SPAddrC = ZeroSound; SPLengthC = 1;
-        SPAddrD = ZeroSound; SPLengthD = 1;
+        SPAddr(2) = ZeroSound; SPLength(2) = 1;
+        SPAddr(3) = ZeroSound; SPLength(3) = 1;
     }
 }
 
@@ -286,11 +286,11 @@ void DRAWFIRE()
                 if (0 == Ship)
                 {
                     custom.dmacon = BITCLR | DMAF_AUD3;
-                    SPAddrD = BSFSoundMemA[0]; SPFreqD = 350; SPLengthD = (UWORD) BSFSoundSize[0]; SPVolD = 50;
+                    SPAddr(3) = BSFSoundMemA[0]; SPFreq(3) = 350; SPLength(3) = (UWORD) BSFSoundSize[0]; SPVol(3) = 50;
                     custom.dmacon = BITSET | DMAF_AUD3;
                 } else {
                     custom.dmacon = BITCLR | DMAF_AUD2;
-                    SPAddrC = BSFSoundMemA[1]; SPFreqC = 300; SPLengthC = (UWORD) BSFSoundSize[1]; SPVolC = 50;
+                    SPAddr(2) = BSFSoundMemA[1]; SPFreq(2) = 300; SPLength(2) = (UWORD) BSFSoundSize[1]; SPVol(2) = 50;
                     custom.dmacon = BITSET | DMAF_AUD2;
                 }
             }
@@ -306,11 +306,11 @@ void DRAWFIRE()
                     if (0 == Ship)
                     {
                         custom.dmacon = BITCLR | DMAF_AUD2;
-                        SPAddrC = SoundMemA[1]; SPFreqC = 300; SPLengthC = SoundSize[1] / 2; SPVolC = 64;
+                        SPAddr(2) = SoundMemA[1]; SPFreq(2) = 300; SPLength(2) = SoundSize[1] / 2; SPVol(2) = 64;
                         custom.dmacon = BITSET | DMAF_AUD2;
                     } else {
                         custom.dmacon = BITCLR | DMAF_AUD3;
-                        SPAddrD = SoundMemA[1]; SPFreqD = 350; SPLengthD = SoundSize[1] / 2; SPVolD = 64;
+                        SPAddr(3) = SoundMemA[1]; SPFreq(3) = 350; SPLength(3) = SoundSize[1] / 2; SPVol(3) = 64;
                         custom.dmacon = BITSET | DMAF_AUD3;
                     }
                 }
@@ -336,8 +336,8 @@ void KILLSHIP(uint8 Ship, uint8 Phase)
         BltBitMapRastPort((struct BitMap*) &ImgBitMap4,Phase*32,0,MyRPort_PTR[AScr],x[Ship],y[Ship],32,32,192);
         if (Audio_enable)
         {
-            SPAddrA   = ZeroSound; SPLengthA = 1;
-            SPAddrB   = ZeroSound; SPLengthB = 1;
+            SPAddr(0)   = ZeroSound; SPLength(0) = 1;
+            SPAddr(1)   = ZeroSound; SPLength(1) = 1;
         }
     }
 }
@@ -369,8 +369,8 @@ void XTRAROUND()
     if (Audio_enable)
     {
         custom.dmacon = BITCLR | DMAF_AUDIO;
-        SPAddrA = BSFSoundMemA[2];                 SPFreqA = 450; SPLengthA = (UWORD) BSFSoundSize[2]; SPVolA = 40;
-        SPAddrB = BSFSoundMemA[2]+BSFSoundSize[2]; SPFreqB = 450; SPLengthB = (UWORD) BSFSoundSize[2]; SPVolB = 40;
+        SPAddr(0) = BSFSoundMemA[2];                 SPFreq(0) = 450; SPLength(0) = (UWORD) BSFSoundSize[2]; SPVol(0) = 40;
+        SPAddr(1) = BSFSoundMemA[2]+BSFSoundSize[2]; SPFreq(1) = 450; SPLength(1) = (UWORD) BSFSoundSize[2]; SPVol(1) = 40;
         custom.dmacon = BITSET | DMAF_AUD0 | DMAF_AUD1;
     }
     // lets fight .. until one of the shields is <0
