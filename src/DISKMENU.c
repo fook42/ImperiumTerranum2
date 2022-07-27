@@ -39,7 +39,7 @@ void LOADSHIPS(r_ShipHeader* ShipPtr, BPTR FHandle)
                     if (NULL == memory)
                     {
                         ActShipPtr->TargetShip = NULL;
-                        ActShipPtr->SType = 8;   // which shiptype is used as default?
+                        ActShipPtr->SType = 8;   // "Wostok" is used as default shiptype
                         return;
                     }
                     (void) Read(FHandle, memory, sizeof(r_ShipHeader));

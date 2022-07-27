@@ -31,6 +31,7 @@ _EXTERN_ struct Image    GadImg1, GadImg2;
 _EXTERN_ char _PTx_Player[];
 _EXTERN_ const uint8 ClassLifeFactor[];
 _EXTERN_ const uint8 ClassTransFactor[];
+_EXTERN_ const char PlanetClassName[];
 #else
 struct CIA *ciaa = (struct CIA *) 0xBFE001;
 
@@ -57,6 +58,8 @@ char _PTx_Player[] = "Player\0";
 const uint8 ClassLifeFactor[]  = { 1, 0,  1, 0,  1,  1,  1, 0,  1};
 const uint8 ClassTransFactor[] = { 0, 0,  1, 0,  1,  1,  1, 0,  1};
 //                                St, G,  W,Sa, HE, De,  E, P,  I
+const char PlanetClassName[] = {'T', 'G','W',  'S',   'H',      'D',   'M',  'P',    'I'};
+//                             Stone,Gas,Water,Saturn,HalfEarth,Desert,Earth,Phantom,Ice
 #endif
 
 _EXTERN_  struct Library *MEDPlayerBase;

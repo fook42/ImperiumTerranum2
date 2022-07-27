@@ -1,9 +1,14 @@
 #
 #
 
+# Optimization flag
+OPT_FLAG = -Os
+
+#
+
 CC      = /opt/amiga/bin/m68k-amigaos-gcc
 STRIP   = /opt/amiga/bin/m68k-amigaos-strip
-CFLAGS  = -Wpointer-arith -noixemul -flto -s -g0 -Os -m68020-60 -Wall -Wno-pointer-sign 
+CFLAGS  = -Wpointer-arith -noixemul -flto -s -g0 $(OPT_FLAG) -m68020-60 -Wall -Wno-pointer-sign 
 LDFLAGS = -lm -noixemul -flto
 
 TARGET  = IT2C

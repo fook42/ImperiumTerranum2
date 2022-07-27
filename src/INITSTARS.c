@@ -140,8 +140,8 @@ void INIT_SOLARSYSTEM(void)
     }
 
     // place the system somewhere
-    SystemX[0] = 10+(rand()%250)+(rand()%208);
-    SystemY[0] = 10+(rand()%250)+(rand()%240);
+    SystemX[0] = 10+(rand()%458);
+    SystemY[0] = 10+(rand()%490);
 }
 
 bool INITSTARS()
@@ -163,8 +163,8 @@ bool INITSTARS()
         SystemHeader[i] = (r_SystemHeader) {NULL,0,DefaultShip,0,0,0};
         do
         {
-            SystemX[i] = 10+(rand()%250)+(rand()%208);
-            SystemY[i] = 10+(rand()%250)+(rand()%240);
+            SystemX[i] = 10+(rand()%458);
+            SystemY[i] = 10+(rand()%490);
             system_too_close = false;
             // check if the new system is too close to any previous one..
             // reduced calculation: dist^2=x^2+y^2 ... x,y = delta x,y
@@ -174,6 +174,7 @@ bool INITSTARS()
                 if ((abs(SystemX[i]-SystemX[j])+abs(SystemY[i]-SystemY[j])) < 30)
                 {
                     system_too_close = true;
+                    break;
                 }
             }
         }
@@ -186,13 +187,16 @@ bool INITSTARS()
 
     for(k = 1; k < (MAXCIVS-2); ++k)
     {
-        // pick a random, empty star-system as homesystem for this civ
-        do
+        WRITE(20+k*8,30,1,WRITE_Left|WRITE_Shadow,&(XScreen->RastPort),0,"O");
+        // pick the next, empty star-system as homesystem for this civ
+        for (i = 1; i < MAXSYSTEMS; ++i)
         {
-            i = (rand()%(MAXSYSTEMS-1))+1;
+            if (0 == SystemHeader[i].Planets)
+            {
+                break;
+            }
         }
-        while (0 != SystemHeader[i].Planets);
-        // mark this system for _all other_ players as "taken" by Civ
+        // mark this system (i) for _all other_ players (j) as "taken" by Civ (k)
         for (j = 0; j < (MAXCIVS-2); ++j) { SystemFlags[j][i] = GETCIVFLAG(k+1); }
         CREATENEWSYSTEM(i, k, HomePlanets); // create at least #HomePlanets in this system
         if (0 == SystemHeader[i].Planets)

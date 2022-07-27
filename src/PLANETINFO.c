@@ -17,9 +17,6 @@ void PLANETINFO(const int ActSys)
                                     {PText[364],PText[365],PText[366],PText[367],PText[368]}
                                 };
 
-    const char ClassName[] = {'T','G','W','S','H','D','M','P','I'};
-    //                         St, G , W , Sa, HE, De, E,  P , I
-
     char    s[60];
     char*   _s;
     sint32  l;
@@ -55,7 +52,7 @@ void PLANETINFO(const int ActSys)
         PClass = PlanetHeader->Class;
         _s=my_strcpy(s, _PT_Klasse);
         *_s++ = ' ';
-        *_s++ = ClassName[PClass];
+        *_s++ = PlanetClassName[PClass];
         *_s++ = '-';
         (void) my_strcpy(_s, _PT_Planet);
         WRITE(89,53,color,0,RPort_PTR,3,s);

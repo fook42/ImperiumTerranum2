@@ -27,53 +27,51 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
     TheProject = PROJECT_NONE;
     if ((0 == (Year % 10)) && (((Year / 10)&1) == (PlanetNum&1)))
     {
+        // year == xyz0 and if z is even/odd same as the planetnumber
+        // ... example: 1950 (plannum=1,3,5,7,9,11) or 1960 (plannum=2,4,6,8,10) ...etc
         _s1 = PText[559];
-        if (0 == ActPProjects->data[PROJECT_MICROIDS])
+        if (0 != ActPProjects->data[PROJECT_MICROIDS])
         {
-            if (0 == ActPProjects->data[PROJECT_RECYCLINGPLANT])
+            // if Microids exists then we dont panic
+            return;
+        }
+        if (0 == ActPProjects->data[PROJECT_RECYCLINGPLANT])
+        {
+            /* RECYCLINGANLAGE */
+            if ((5500 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_RECYCLINGPLANT]] > 0)
+                    || (PROJECT_RECYCLINGPLANT == MyPlanetHeader->ProjectID))
             {
-                /* RECYCLINGANLAGE */
-                if ((5500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_RECYCLINGPLANT]] <= 0)
-                        && (PROJECT_RECYCLINGPLANT != MyPlanetHeader->ProjectID))
-                {
-                    TheProject = PROJECT_RECYCLINGPLANT;
-                    _s1 = PText[560];
-                } else {
-                    return;
-                }
-            } else if (0 == ActPProjects->data[PROJECT_HYDROPOWER])
-            {
-                /* HYDROKRAFTWERK */
-                if ((7000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_HYDROPOWER]] <= 0)
-                        && (PROJECT_HYDROPOWER != MyPlanetHeader->ProjectID))
-                {
-                    TheProject = PROJECT_HYDROPOWER;
-                } else {
-                    return;
-                }
-            } else if (0 == ActPProjects->data[PROJECT_FUSIONPOWER])
-            {
-                /* FUSIONSKRAFTWERK */
-                if ((9000 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_FUSIONPOWER]] <= 0)
-                        && (PROJECT_FUSIONPOWER != MyPlanetHeader->ProjectID))
-                {
-                    TheProject = PROJECT_FUSIONPOWER;
-                } else {
-                    return;
-                }
-            } else if (0 == ActPProjects->data[PROJECT_WEATHERSTATION])
-            {
-                if ((11500 < MyPlanetHeader->Population) && (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_WEATHERSTATION]] <= 0)
-                        && (PROJECT_WEATHERSTATION != MyPlanetHeader->ProjectID))
-                {
-                    TheProject = PROJECT_WEATHERSTATION;
-                    _s1 = PText[561];
-                } else {
-                    return;
-                }
-            } else {
                 return;
             }
+            TheProject = PROJECT_RECYCLINGPLANT;
+            _s1 = PText[560];
+        } else if (0 == ActPProjects->data[PROJECT_HYDROPOWER])
+        {
+            /* HYDROKRAFTWERK */
+            if ((7000 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_HYDROPOWER]] > 0)
+                    || (PROJECT_HYDROPOWER == MyPlanetHeader->ProjectID))
+            {
+                return;
+            }
+            TheProject = PROJECT_HYDROPOWER;
+        } else if (0 == ActPProjects->data[PROJECT_FUSIONPOWER])
+        {
+            /* FUSIONSKRAFTWERK */
+            if ((9000 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_FUSIONPOWER]] > 0)
+                    || (PROJECT_FUSIONPOWER == MyPlanetHeader->ProjectID))
+            {
+                return;
+            }
+            TheProject = PROJECT_FUSIONPOWER;
+        } else if (0 == ActPProjects->data[PROJECT_WEATHERSTATION])
+        {
+            if ((11500 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_WEATHERSTATION]] > 0)
+                    || (PROJECT_WEATHERSTATION == MyPlanetHeader->ProjectID))
+            {
+                return;
+            }
+            TheProject = PROJECT_WEATHERSTATION;
+            _s1 = PText[561];
         } else {
             return;
         }
@@ -93,34 +91,40 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             i = rand()%10;
         }
         switch (i) {
-        case 0: if (0 == ActPProjects->data[PROJECT_CONT_UNION])
+        case 0:
+            if (0 != ActPProjects->data[PROJECT_CONT_UNION])
             {   /*kontinentale Union*/
-                TheProject = PROJECT_CONT_UNION;
-                _s1 = PText[562];   // Bürgerkrieg ausgebrochen
-            } else {
                 return;
-            }; break;
+            }
+            TheProject = PROJECT_CONT_UNION;
+            _s1 = PText[562];   // Bürgerkrieg ausgebrochen
+            break;
 
-        case 1: if (0 == ActPProjects->data[PROJECT_GLOBAL_UNION])
+        case 1:
+            if (0 != ActPProjects->data[PROJECT_GLOBAL_UNION])
             {   /*globale Union*/
-                TheProject = PROJECT_GLOBAL_UNION;
-                _s1 = PText[563];   // Kriege zwischen den Nationen
-            } else {
                 return;
-            }; break;
+            }
+            TheProject = PROJECT_GLOBAL_UNION;
+            _s1 = PText[563];   // Kriege zwischen den Nationen
+            break;
 
-        case 2: if (0 != Save.ProjectCosts[ActPlayer-1].data[4])
+        case 2:
+            if (0 == Save.ProjectCosts[ActPlayer-1].data[4])
             {
-                _s1 = PText[564];   // Massenepidemie durch unbekannten Virus
-            } else {
                 return;
-            }; break;
+            }
+            _s1 = PText[564];   // Massenepidemie durch unbekannten Virus
+            break;
 
-        case 3: _s1 = PText[565];   // Klimakatastrophe durch Kometeneinschläge
-                break;
-        default: if ( ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) != MyPlanetHeader->Ethno)
-                     && (NULL == MyPlanetHeader->FirstShip.NextShip)
-                     && (0 == GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1]))
+        case 3:
+            _s1 = PText[565];   // Klimakatastrophe durch Kometeneinschläge
+            break;
+
+        default:
+            if ( ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) != MyPlanetHeader->Ethno)
+                && (NULL == MyPlanetHeader->FirstShip.NextShip)
+                && (0 == GetPlanetSys[GETCIVVAR(MyPlanetHeader->Ethno)-1]))
             {
                 if ((0 != Warnung[ActPlayer-1]) && (0 != (rand()%10))) { return; }
                 GetPlanet[   GETCIVVAR(MyPlanetHeader->Ethno)-1] = MyPlanetHeader;

@@ -232,10 +232,13 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                     if (0 < i)
                     {
                         SetAPen(MyRPort_PTR[0],8); //red
+                        RectFill(MyRPort_PTR[0], x+3, y+3, x+3+i, y+4);
+/*
                         Move(MyRPort_PTR[0],x+3,  y+3);
                         Draw(MyRPort_PTR[0],x+3+i,y+3);
                         Move(MyRPort_PTR[0],x+3,  y+4);
                         Draw(MyRPort_PTR[0],x+3+i,y+4);
+*/
                     }
                 }
                 

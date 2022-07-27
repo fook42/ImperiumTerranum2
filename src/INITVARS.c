@@ -63,9 +63,9 @@ const LongArr42 techcosts =
         55000,85000,135000}};
 
 const LongArr42 projcosts =
-    {{ 0,  92010, 184020, 276030, 368040, 561050, 664060, 795000,
-        15080, 17090, 22100, 25110, 28120, 31130, 34140, 37150,
-        39160, 43170, 49180, 55190, 63200, 70210, 78220, 86230, 96240,
+    {{  0,     92010,184020,276030,368040,561050,664060,795000,
+        15080, 17090, 22100, 25110, 28120, 31130, 34140, 37150,         // ships costs 0..7
+        39160, 43170, 49180, 55190, 63200, 70210, 78220, 86230, 96240,  // ships costs 8..17
         45250, 12260, 17270, 45280, 50290, 19300, 55310,
         35320, 50330, 55340,
         30350, 25360, 25370,
@@ -103,24 +103,16 @@ void INITVARS()
     Valid = true;
     DoClock = false;
     Audio_enable = true;
-    Save.PlayMySelf = false;
-    Save.NoWorm     = false;
-    Save.SmallLand  = false;
-    Save.SmallFight = false;
-    Save.FastMove   = false;
-    Save.WorldFlag  = 0;
-    Save.CivilWar   = 0;
+
+    memset(&Save, 0, sizeof(Save)); // saves time to clean all values in Save-struct
 
     for (i = 0;  i<25; ++i ) { (void) my_strcpy(Save.SystemName.data[i], PText[i+1] ); }
 
-    memcpy(&Save.TechCosts[0],    &techcosts, sizeof(LongArr42));
-    memcpy(&Save.ProjectCosts[0], &projcosts, sizeof(LongArr42));
+    for (i = 0;  i<42; ++i ) { (void) my_strcpy(TechnologyL.data[i+1], PText[i+30]); }
 
-    for (i = 1;  i<43; ++i ) { (void) my_strcpy(TechnologyL.data[i], PText[i+29]); }
-
-    for (i = 1;  i<8;  ++i ) { (void) my_strcpy(Project.data[i], PText[i+74]); }
-    for (i = 8;  i<25; ++i ) { (void) my_strcpy(Project.data[i], ProjectShips[i-8]); }
-    for (i = 25; i<43; ++i ) { (void) my_strcpy(Project.data[i], PText[i+60]); }
+    for (i = 1;  i<8;  ++i )            { (void) my_strcpy(Project.data[i], PText[i+74]); }
+    for (i = 8;  i<25; ++i )            { (void) my_strcpy(Project.data[i], ProjectShips[i-8]); }
+    for (i = 25; i<PROJECT_NOMORE; ++i ){ (void) my_strcpy(Project.data[i], PText[i+60]); }
 
     for (i = 0; i < MAXCIVS; ++i)        // TODO ... added due to shift of Save-array
     {
@@ -133,29 +125,18 @@ void INITVARS()
         GetPlanet[i] = NULL;
         GetPlanetSys[i] = 0;
         vNSonde[i] = false;
-        Save.CivPlayer[i] = 0;
         Save.GlobalFlags[i] = GFLAG_EXPLORE;
-        Save.MaxWarPower[i] = 0;
-        Save.SService[i] = 0;
-        Save.Military[i] = 0;
-        Save.TechCosts[i] = Save.TechCosts[0];
-        Save.ProjectCosts[i] = Save.ProjectCosts[0];
+
+        memcpy(&Save.TechCosts[i],    &techcosts, sizeof(LongArr42));
+        memcpy(&Save.ProjectCosts[i], &projcosts, sizeof(LongArr42));
         Save.ImperatorState[i] = 2500;
-        Save.Staatstopf[i] = 0;
         Save.Bevoelkerung[i] = 5;
-        Save.WarPower[i] = 0;
-        Save.ActTech[i] = 0;
         Save.GSteuer[i] = 10;
-        Save.JSteuer[i] = 0;
-        Save.stProject[i] = 0;
         for (j = 0; j < MAXCIVS; ++j)
         {
-            Save.SSMoney[i][j] = 0;
             Save.WarState[i][j] = LEVEL_UNKNOWN;
             Save.LastWarState[i][j] = LEVEL_UNKNOWN;
         }
-        Save.WarState[i][7] = LEVEL_DIED;
-        Save.WarState[i][8] = LEVEL_DIED;
     }
     Save.WarState[0][0] = LEVEL_PEACE;
     Save.CivPlayer[0] = 1;

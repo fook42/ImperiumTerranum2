@@ -48,7 +48,7 @@ void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanet
         _s=my_strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
         (void) my_strcpy(_s, Romanum[i]);
 
-        MyPlanetHeader->PosX = (float) (i+i+i+4);
+        MyPlanetHeader->PosX = (float) ((rand()%2 == 0) ? (i+i+i+4) : -(i+i+i+4));
         MyPlanetHeader->PosY = (rand()%2 == 0) ? MyPlanetHeader->PosX : (-MyPlanetHeader->PosX);
         if (((CLASS_EARTH == MyPlanetHeader->Class) || (CLASS_WATER == MyPlanetHeader->Class)) && (0 == (rand()%10)))
         {
