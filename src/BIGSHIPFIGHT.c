@@ -670,34 +670,15 @@ uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 A
                                             it_round((double)(ShipPtr1->Weapon/10.0+1.0)*ShipData(ShipPtr1->SType).WeaponPower)-ShipPtr1->Tactical};
         SSHeader[1] = (r_SmallShipHeader) {(ShipPtr2->Shield + ShipPtr2->ShieldBonus + ShipPtr2->Tactical*3)*2,
                                             it_round((double)(ShipPtr2->Weapon/10.0+1.0)*ShipData(ShipPtr2->SType).WeaponPower)-ShipPtr2->Tactical};
-        for(i = 0; i < 2; ++i)
-        {
-            switch (ShipPtr1->Owner) {
-                case FLAG_TERRA:  j = 1; break;
-                case FLAG_KLEGAN: j = 2; break;
-                case FLAG_REMALO: j = 3; break;
-                case FLAG_CARDAC: j = 4; break;
-                case FLAG_FERAGI: j = 5; break;
-                case FLAG_BAROJA: j = 6; break;
-                case FLAG_VOLKAN: j = 7; break;
-                case FLAG_OTHER:  j = 8; break;
-                default:          j = 0;
-            }
-            SetRGB32(MyVPort_PTR[i], 14, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
 
-            switch (ShipPtr2->Owner) {
-                case FLAG_TERRA:  j = 1; break;
-                case FLAG_KLEGAN: j = 2; break;
-                case FLAG_REMALO: j = 3; break;
-                case FLAG_CARDAC: j = 4; break;
-                case FLAG_FERAGI: j = 5; break;
-                case FLAG_BAROJA: j = 6; break;
-                case FLAG_VOLKAN: j = 7; break;
-                case FLAG_OTHER:  j = 8; break;
-                default:          j = 0;
-            }
-            SetRGB32(MyVPort_PTR[i], 15, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
-        }
+        j = GETCIVVAR(ShipPtr1->Owner);
+        SetRGB32(MyVPort_PTR[0], 14, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
+        SetRGB32(MyVPort_PTR[1], 14, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
+
+        j = GETCIVVAR(ShipPtr2->Owner);
+        SetRGB32(MyVPort_PTR[0], 15, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
+        SetRGB32(MyVPort_PTR[1], 15, ShipColors[j].r, ShipColors[j].g, ShipColors[j].b);
+
         XTRAROUND();
         if (SSHeader[0].ShieldS < 0)
         {
