@@ -43,7 +43,7 @@ uint8 STARTBIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, ui
 // <<<
 
 void CEBORCATTACK(uint8 CA_ActPlayerFlag);
-void CHECKPLANET(r_PlanetHeader* MyPlanetHeader);
+void CHECKPLANET(const r_PlanetHeader* MyPlanetHeader);
 void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner);
 bool CHECKSUN(r_ShipHeader* MyShipPtr);
 void CLEARINTUITION();
