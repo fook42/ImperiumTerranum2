@@ -290,9 +290,7 @@ void OPTIONMENU(int Mode)
     const int   NewXBase = (HighRes_Width-def_HighRes_Width)/2;
     const int   NewYBase = (HighRes_Height-def_HighRes_Height)/2;
     int     i, y;
-    const sint32 bitmap_srcCord[5][2] = { {NewXBase+384,NewYBase+448},{NewXBase+384,NewYBase+448},
-                                          {NewXBase+384,NewYBase+512},{NewXBase+384,NewYBase+448},
-                                          {NewXBase+576,NewYBase+512} };
+    const sint32 bitmap_srcCord[5][2] = { {384,448},{384,448},{384,512},{384,448},{576,512} };
     const char*  button_txt[5] = {_PTx_Player, PText[514], PText[515], PText[516], PText[517]};
 
     SWITCHDISPLAY();
@@ -320,29 +318,29 @@ void OPTIONMENU(int Mode)
         y += 80;
     }
 
-    WRITE_RP1(460,100,40,WRITE_Center,3,"Level");
+    WRITE_RP1(NewXBase+460,NewYBase+100,40,WRITE_Center,3,"Level");
     if (1 == Mode)
     {
-        WRITE_RP1(455,120,40,0,1,"I");
-        WRITE_RP1(455,320,40,0,1,"J");
+        WRITE_RP1(NewXBase+455,NewYBase+120,40,0,1,"I");
+        WRITE_RP1(NewXBase+455,NewYBase+320,40,0,1,"J");
     }
-    MAKEWINBORDER(MyRPort_PTR[1],445,139,475,312,14,40,1);
-    MAKEWINBORDER(MyRPort_PTR[1],410,339,510,362,14,40,1);
+    MAKEWINBORDER(MyRPort_PTR[1],NewXBase+445,NewYBase+139,NewXBase+475,NewYBase+312,14,40,1);
+    MAKEWINBORDER(MyRPort_PTR[1],NewXBase+410,NewYBase+339,NewXBase+510,NewYBase+362,14,40,1);
 
-    WRITE_RP1(555,100,40,WRITE_Center,3,_PTx_Player);
+    WRITE_RP1(NewXBase+555,100,40,WRITE_Center,3,_PTx_Player);
     if (1 == Mode)
     {
-        WRITE_RP1(550,120,40,0,1,"I");
-        WRITE_RP1(550,320,40,0,1,"J");
+        WRITE_RP1(NewXBase+550,NewYBase+120,40,0,1,"I");
+        WRITE_RP1(NewXBase+550,NewYBase+320,40,0,1,"J");
     }
-    MAKEWINBORDER(MyRPort_PTR[1],540,139,570,312,14,40,1);
+    MAKEWINBORDER(MyRPort_PTR[1],NewXBase+540,NewYBase+139,NewXBase+570,NewYBase+312,14,40,1);
 
     // new .. audio-option!!!
-    WRITE_RP1(507,410,40,WRITE_Center,3,"Audio");
-    RECT_RP1_C0(442,431,504,454);
-    WRITE_RP1(473,435,40,WRITE_Center,3,_PT_ein);
-    RECT_RP1_C0(510,431,572,454);
-    WRITE_RP1(541,435,40,WRITE_Center,3,_PT_aus);
+    WRITE_RP1(NewXBase+507,NewYBase+410,40,WRITE_Center,3,"Audio");
+    RECT_RP1_C0(NewXBase+442,NewYBase+431,NewXBase+504,NewYBase+454);
+    WRITE_RP1(NewXBase+473,NewYBase+435,40,WRITE_Center,3,_PT_ein);
+    RECT_RP1_C0(NewXBase+510,NewYBase+431,NewXBase+572,NewYBase+454);
+    WRITE_RP1(NewXBase+541,NewYBase+435,40,WRITE_Center,3,_PT_aus);
     // ----
 
     CHECKGADS(0);
