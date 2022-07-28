@@ -3,13 +3,14 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
+void CHECKPLANET(const r_PlanetHeader* MyPlanetHeader)
 {
     uint8   HomeWorld,SplitWorld,i,j;
-    r_ShipHeader*    MyShipPtr;
+    r_ShipHeader*   CHP_MyShipPtr;
+    r_PlanetHeader* CHP_MyPlanetHeader;
     char    s[60];
     char*   _s;
-    struct Window* CHP_Window;
+    struct Window*  CHP_Window;
     struct RastPort* RPort_PTR;
 
     HomeWorld = 0;
@@ -18,6 +19,7 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
         if ((!strcmp(PNames[i].data[2],MyPlanetHeader->PName)) && (GETCIVVAR(MyPlanetHeader->PFlags) == i))
         {
             HomeWorld = i;
+            break;
         }
     }
     if (0 != HomeWorld)
@@ -28,14 +30,14 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
         {
             for(j = 0; j < SystemHeader[i].Planets; ++j)
             {
-                MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
+                CHP_MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
 
-                if (GETCIVVAR(MyPlanetHeader->PFlags) == HomeWorld)
+                if (GETCIVVAR(CHP_MyPlanetHeader->PFlags) == HomeWorld)
                 {
                     if ((0 == SplitWorld)
-                        && (MyPlanetHeader->Ethno != (MyPlanetHeader->PFlags & FLAG_CIV_MASK)))
+                        && (CHP_MyPlanetHeader->Ethno != (CHP_MyPlanetHeader->PFlags & FLAG_CIV_MASK)))
                     {
-                        SplitWorld = MyPlanetHeader->Ethno;
+                        SplitWorld = CHP_MyPlanetHeader->Ethno;
                         if (0 != Save.CivPlayer[ActPlayer-1])
                         {
                             INFORMUSER();
@@ -66,14 +68,14 @@ void CHECKPLANET(r_PlanetHeader* MyPlanetHeader)
                             }
                         }
                     }
-                    if (MyPlanetHeader->Ethno == SplitWorld)
+                    if (CHP_MyPlanetHeader->Ethno == SplitWorld)
                     {
-                        MyPlanetHeader->PFlags = MyPlanetHeader->Ethno;
-                        MyShipPtr = MyPlanetHeader->FirstShip.NextShip;
-                        while (NULL != MyShipPtr)
+                        CHP_MyPlanetHeader->PFlags = CHP_MyPlanetHeader->Ethno;
+                        CHP_MyShipPtr = CHP_MyPlanetHeader->FirstShip.NextShip;
+                        while (NULL != CHP_MyShipPtr)
                         {
-                            MyShipPtr->Owner = (MyPlanetHeader->PFlags & FLAG_CIV_MASK);
-                            MyShipPtr = MyShipPtr->NextShip;
+                            CHP_MyShipPtr->Owner = (CHP_MyPlanetHeader->PFlags & FLAG_CIV_MASK);
+                            CHP_MyShipPtr = CHP_MyShipPtr->NextShip;
                         }
                     }
                 }
