@@ -3,14 +3,13 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void SYSTEMINFO(uint8 ActSys)
+void SYSTEMINFO(uint8 ActSys, r_ShipHeader* MyShipPtr)
 {
     int     i;
     sint32  l;
     uint8   SysID;
     sint16  x,y;
     bool    b;
-    r_ShipHeader*   MyShipPtr;
     r_ShipHeader*   UseShipPtr;
     bool    FleetUsed;
     struct Window* SYS_Window;
@@ -18,11 +17,10 @@ void SYSTEMINFO(uint8 ActSys)
     char*  button_txt[] = {_PT_Sterne, _PT_Sprengen, _PT_Position, _PT_Bewaessern, _PT_Warten};
 
     b = false;
-    if (NULL == ObjPtr)
+    if (NULL == MyShipPtr)
     {
         return;
     }
-    MyShipPtr = (r_ShipHeader*) ObjPtr;
     if (0 == Save.CivPlayer[GETCIVVAR(MyShipPtr->Owner)-1])
     {
         return;
@@ -34,7 +32,6 @@ void SYSTEMINFO(uint8 ActSys)
         return;
     }
     RPort_PTR = SYS_Window->RPort;
-
 
     UseShipPtr = MyShipPtr;
     if (SHIPTYPE_FLEET == MyShipPtr->SType)

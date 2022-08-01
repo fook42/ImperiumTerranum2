@@ -77,15 +77,13 @@ void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr)
     WRITE_RP1(522,428,5,1,1,s);
 }
 
-void SHIPINFO(uint8 ActSys)
+void SHIPINFO(uint8 ActSys, r_ShipHeader* MyShipPtr)
 {
     char    s[50];
     char*   _s;
     char*   _s2;
-    r_ShipHeader*   MyShipPtr;
     APTR    ModC = NULL;
 
-    MyShipPtr = ObjPtr;
     if (( 8 > MyShipPtr->SType)
      || (24 < MyShipPtr->SType)
      || (ActPlayerFlag != MyShipPtr->Owner))
