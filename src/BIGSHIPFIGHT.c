@@ -94,7 +94,7 @@ bool INITIMAGES()
     BSFSoundMemA[2] = BSFSoundMemA[1] + BSFSoundSize[1];
     _s1=my_strcpy(s, PathStr[6]);  /* SFX/ */
     (void) my_strcpy(_s1, "FightSoundDS.RAW");
-    if (!LOADSAMPLE(s,2)) { return false; }
+    if (!LOADSAMPLE(s, 2)) { return false; }
 
     BSFSoundSize[2] /= 2;
 

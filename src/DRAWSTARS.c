@@ -33,7 +33,7 @@ void DRAWSTARS(const int Mode)
         SetAPen(MyRPort_PTR[0],6);
         for (i = 0; i<310; ++i)
         {
-            WritePixel(MyRPort_PTR[0],(rand()%255)+(rand()%255),(rand()%255)+(rand()%255));
+            WritePixel(MyRPort_PTR[0], rand()%511, rand()%511);
         }
     }
     if (Save.PlayMySelf)

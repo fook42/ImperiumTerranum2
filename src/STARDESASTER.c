@@ -134,8 +134,8 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     {
                         do
                         {
-                            SystemX[i] = 10+(rand()%250)+(rand()%208);
-                            SystemY[i] = 10+(rand()%250)+(rand()%240);
+                            SystemX[i] = 10+(rand()%458);
+                            SystemY[i] = 10+(rand()%490);
                             system_too_close = false;
                             // check if the new system is too close to any previous one..
                             // reduced calculation: dist^2=x^2+y^2 ... x,y = delta x,y
