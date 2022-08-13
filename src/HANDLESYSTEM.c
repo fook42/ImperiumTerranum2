@@ -456,14 +456,14 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                     if (FINDOBJECT(*ActSys-1, MouseX(0)-256, MouseY(0)-256, NULL))
                     {
                         switch (ObjType) {
-                            case TYPE_PLANET: PLANETINFO(*ActSys); break;
+                            case TYPE_PLANET: PLANETINFO(*ActSys, (r_PlanetHeader*) ObjPtr); break;
                             case TYPE_SHIP: {
                                                 MyShipPtr = (r_ShipHeader*) ObjPtr;
                                                 if (MyShipPtr->SType == SHIPTYPE_FLEET)
                                                 {
                                                     ORBITINFO(MyShipPtr, _PT_Flotte, *ActSys,0,0);
                                                 } else {
-                                                    SHIPINFO(*ActSys);
+                                                    SHIPINFO(*ActSys, MyShipPtr);
                                                 }
                                             } break;
                             default: { }
@@ -510,7 +510,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
                                                 (void) my_strcpy(_s, MyPlanetHeader->PName);
                                                 ORBITINFO(MyPlanetHeader->FirstShip.NextShip, s, *ActSys, it_round(MyPlanetHeader->PosX), it_round(MyPlanetHeader->PosY));
                                             } break;
-                            case TYPE_SHIP: SYSTEMINFO(*ActSys); break;
+                            case TYPE_SHIP: SYSTEMINFO(*ActSys, (r_ShipHeader*) ObjPtr); break;
                             default: { }
                         }
                     }

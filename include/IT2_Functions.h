@@ -188,7 +188,7 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
 // <<<
 void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2);
 bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* _MyShipPtr);
-void PLANETINFO(const int ActSys);
+void PLANETINFO(const int ActSys, r_PlanetHeader* PlanetHeader);
 void PLAYERHIGHSCORE(uint8 PHS_ActPlayer);
 void PLAYERJINGLE(const int JingleID);
 void PLAYSOUND(const int SoundID, const int SoundRate);
@@ -209,7 +209,7 @@ bool SETNEWPLANETOWNER(r_PlanetHeader* MyPlanetHeader, r_PlanetHeader* OldPlanet
 void SETWORLDCOLORS();
 // >>> SHIPINFO
 void SHIPINFO_WRITEDATA(r_ShipHeader* MyShipPtr);
-void SHIPINFO(uint8 ActSys);
+void SHIPINFO(uint8 ActSys, r_ShipHeader* MyShipPtr);
 // <<<
 void SMALLGAMEEXIT();
 // >>> STARDESASTER
@@ -227,7 +227,7 @@ void STOPCIVILWAR(uint8 EndText);
 void SUPPORTCIVI(uint32 XValue);
 void SWITCHDISPLAY();
 void SYSINFO(int SysID, uint8 ThePlayerFlag);
-void SYSTEMINFO(uint8 ActSys);
+void SYSTEMINFO(uint8 ActSys, r_ShipHeader* MyShipPtr);
 void SYSTEMTOENEMY(uint8 ActSys, uint8 NewOwner, uint8 OldOwner);
 bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2);
 void UNPACK(uint8* Anfang, uint8* PackedD, const LONG Laenge, const int Mode);

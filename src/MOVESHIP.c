@@ -147,7 +147,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
             {
                 if (MyShipPtr->Flags == SHIPFLAG_WATER)
                 {
-                    if ((ObjType!=TYPE_STARGATE) && (ObjType!=TYPE_WORMHOLE))
+                    if ((TYPE_STARGATE != ObjType) && (TYPE_WORMHOLE != ObjType))
                     {
                         MyShipPtr->PosX = MOVESHIP_FromX;
                         MyShipPtr->PosY = MOVESHIP_FromY;
@@ -538,13 +538,15 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 {   // clicked on something?
                     PLAYSOUND(0,300);
                     switch (ObjType) {
-                        case TYPE_PLANET:   PLANETINFO(ActSys); break;
-                        case TYPE_SHIP:     if (SHIPTYPE_FLEET == MyShipPtr->SType)
-                                            {
-                                                ORBITINFO(MyShipPtr, _PT_Flotte, ActSys, 0, 0);
-                                            } else {
-                                                SHIPINFO(ActSys);
-                                            } break;
+                        case TYPE_PLANET:   PLANETINFO(ActSys, (r_PlanetHeader*) ObjPtr); break;
+                        case TYPE_SHIP:     {
+                                                if (SHIPTYPE_FLEET == ((r_ShipHeader*) ObjPtr)->SType)
+                                                {
+                                                    ORBITINFO((r_ShipHeader*) ObjPtr, _PT_Flotte, ActSys, 0, 0);
+                                                } else {
+                                                    SHIPINFO(ActSys, (r_ShipHeader*) ObjPtr);
+                                                } break;
+                                            }
                         default: {}
                     }
                 } else {
@@ -572,8 +574,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                     if ((MOVESHIP_FromX == MyShipPtr->PosX) && (MOVESHIP_FromY == MyShipPtr->PosY))
                     {
                         /* clicked on ship itself */
-                        ObjPtr = MyShipPtr;
-                        SHIPINFO(ActSys);
+                        SHIPINFO(ActSys, MyShipPtr);
                     } else {
                         /* limit the action-area to -50..+50 */
                         if ( 50 < MyShipPtr->PosX) { MyShipPtr->PosX =  50; }
@@ -772,15 +773,14 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 {
                     if (TYPE_SHIP == ObjType)
                     {
-                        SYSTEMINFO(ActSys);
+                        SYSTEMINFO(ActSys, (r_ShipHeader*) ObjPtr);
                     }
                 }
             }
         }
         if ((60 < MyShipPtr->PosX) || (60 < MyShipPtr->PosY))
         {
-            ObjPtr = MyShipPtr;
-            SYSTEMINFO(ActSys);
+            SYSTEMINFO(ActSys, MyShipPtr);
         }
         if ((0 <= MyShipPtr->Moving) && (OldMoving != MyShipPtr->Moving))
         {

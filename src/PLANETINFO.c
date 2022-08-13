@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-void PLANETINFO(const int ActSys)
+void PLANETINFO(const int ActSys, r_PlanetHeader* PlanetHeader)
 {
     const char* ClassDescript[][5] = {
                                     {PText[373],PText[374],PText[375],PText[376],PText[377]},
@@ -23,11 +23,9 @@ void PLANETINFO(const int ActSys)
     int     i, color;
     int     x, y;
     int     PClass;
-    r_PlanetHeader* PlanetHeader;
     struct Window* PLI_Window;
     struct RastPort* RPort_PTR;
 
-    PlanetHeader = ObjPtr;
     if ((PlanetHeader->PFlags & FLAG_CIV_MASK) != ActPlayerFlag)
     {
         PLI_Window=MAKEWINDOWBORDER(81,81,348,198,MyScreen[0]);
