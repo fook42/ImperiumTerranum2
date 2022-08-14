@@ -20,8 +20,6 @@
 #define OPT_HELP    60
 #define OPT_SHIP    70
 
-r_ShipHeader*   PLANET_MyShipPtr;
-r_PlanetHeader* PLANET_MyPlanetHeader;
 ByteArr42*      ActPProjects;
 //
 
@@ -177,7 +175,7 @@ void CALLOTHERPLAYER(const int CivVar, const int CivFlag)
     REFRESHDISPLAY();
 }
 
-void DIPLOMACY()
+void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
 {
     uint8   XSystem, XTech, CivVar, CivFlag;
     int     Answer;
@@ -189,7 +187,7 @@ void DIPLOMACY()
     char*   _s;
     uint8   i;
 
-    CivFlag = PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK;
+    CivFlag = MyPlanetHeader->PFlags & FLAG_CIV_MASK;
     CivVar = GETCIVVAR(CivFlag);
     XSystem = 0;
     for(i = 0; i < Save.Systems; ++i)
@@ -549,12 +547,12 @@ void DIPLOMACY()
                             REFRESHDISPLAY();
                         } break;
         case OPT_SHIP:  {
-                            if (PLANET_MyShipPtr->SType == SHIPTYPE_FLEET)
+                            if (MyShipPtr->SType == SHIPTYPE_FLEET)
                             {
                                 PLAYSOUND(0,600);
                             } else {
-                                PLANET_MyShipPtr->Owner = CivFlag;
-                                PLANET_MyShipPtr->Moving = 0;
+                                MyShipPtr->Owner = CivFlag;
+                                MyShipPtr->Moving = 0;
                             }
                             RECT_RP0_C0(85,120,425,200);
                             REFRESHDISPLAY();
@@ -564,14 +562,14 @@ void DIPLOMACY()
     }
 }
 
-void MAKELOADWINDOW()
+void MAKELOADWINDOW(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
 {
     uint8   i;
     uint16  xpos;
 
     MAKEWINBORDER(MyRPort_PTR[0],42,148,469,273,12,6,0);
-    BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(PLANET_MyShipPtr->SType-8)*32,32,MyRPort_PTR[0],59,163,32,32,192);
-    BltBitMapRastPort((struct BitMap*) &ImgBitMap7,PLANET_MyPlanetHeader->Class*32,0,MyRPort_PTR[0],59,227,32,32,192);
+    BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->SType-8)*32,32,MyRPort_PTR[0],59,163,32,32,192);
+    BltBitMapRastPort((struct BitMap*) &ImgBitMap7,MyPlanetHeader->Class*32,0,MyRPort_PTR[0],59,227,32,32,192);
     xpos = 112;
     for(i = 0; i < 3; ++i)
     {
@@ -579,7 +577,7 @@ void MAKELOADWINDOW()
         xpos += 115;
     }
 
-    if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
+    if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
     {
         xpos = 112;
         for(i = 0; i < 3; ++i)
@@ -589,18 +587,18 @@ void MAKELOADWINDOW()
         }
     } else
     {
-        if (0 == PLANET_MyPlanetHeader->Population)
+        if (0 == MyPlanetHeader->Population)
         {
             xpos = 112;
-        } else  // if (0 < PLANET_MyPlanetHeader->Population) .... implicit .. Population is uint .. >=0 !
+        } else  // if (0 < MyPlanetHeader->Population) .... implicit .. Population is uint .. >=0 !
         {
             xpos = 227;
         }
         MAKEWINBORDER(MyRPort_PTR[0],xpos,228,xpos+100,258,12,6,1);
 
-        if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
+        if ((((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
         || ((ActPProjects->data[PROJECT_SDI] == 0) && (ActPProjects->data[PROJECT_SPACEPHALANX] == 0))
-        || (PLANET_MyPlanetHeader->ProjectPtr == NULL)) && (PLANET_MyPlanetHeader->Class != CLASS_STONES))
+        || (MyPlanetHeader->ProjectPtr == NULL)) && (MyPlanetHeader->Class != CLASS_STONES))
         {
             MAKEWINBORDER(MyRPort_PTR[0],342,228,442,258,12,6,1);
         }
@@ -611,50 +609,50 @@ void MAKELOADWINDOW()
     WRITE_RP0(363,203,ActPlayerFlag,JAM1,3,PText[458]);
 }
 
-void WRITELOADDATA(int LTOut)
+void WRITELOADDATA(int LTOut, r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
 {
-    // ActPProjects, ActPlayerFlag, PLANET_MyShipPtr, PLANET_MyPlanetHeader
+    // ActPProjects, ActPlayerFlag
     char    s[6];
     char*   _s;
     uint8   Class;
     uint32  Humidity;
 
-    _s = dez2out(((PLANET_MyShipPtr->Ladung & MASK_SIEDLER) / 16), 2, s);
+    _s = dez2out(((MyShipPtr->Ladung & MASK_SIEDLER) / 16), 2, s);
     *_s++ = ' ';
-    (void) dez2out(ShipData(PLANET_MyShipPtr->SType).MaxLoad, 2, _s);
+    (void) dez2out(ShipData(MyShipPtr->SType).MaxLoad, 2, _s);
     WRITE_RP0(128,171,8,JAM2,1,s);
 
-    _s = dez2out((PLANET_MyShipPtr->Ladung & MASK_LTRUPPS), 2, s);
+    _s = dez2out((MyShipPtr->Ladung & MASK_LTRUPPS), 2, s);
     *_s++ = ' ';
-    (void) dez2out(ShipData(PLANET_MyShipPtr->SType).MaxLoad, 2, _s);
+    (void) dez2out(ShipData(MyShipPtr->SType).MaxLoad, 2, _s);
     WRITE_RP0(243,171,8,JAM2,1,s);
 
-    _s = dez2out(it_round((double) PLANET_MyShipPtr->Fracht/ShipData(PLANET_MyShipPtr->SType).MaxLoad*100.0), 3, s);
+    _s = dez2out(it_round((double) MyShipPtr->Fracht/ShipData(MyShipPtr->SType).MaxLoad*100.0), 3, s);
     *_s++ = '%'; *_s = 0;
     WRITE_RP0(364,171,8,JAM2,1,s);
 
-    if (((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (0 == PLANET_MyPlanetHeader->Population))
+    if (((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag) || (0 == MyPlanetHeader->Population))
     {
         (void) dez2out(ActPProjects->data[PROJECT_SETTLERS], 3, s);
         WRITE_RP0(141,236,8,JAM2,1,s);
     }
-    if ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
+    if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
     {
         (void) dez2out(ActPProjects->data[PROJECT_LANDINGTROOPS], 3, s);
         WRITE_RP0(256,236,8,JAM2,1,s);
-    } else if (0 < PLANET_MyPlanetHeader->Population)
+    } else if (0 < MyPlanetHeader->Population)
     {
         (void) dez2out(LTOut, 3, s);
         WRITE_RP0(256,236,8,JAM2,1,s);
     }
 
-    if ((((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
-      || ((PLANET_MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
+    if ((((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
+      || ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == 0)
       || ((0 == ActPProjects->data[PROJECT_SDI]) && (0 == ActPProjects->data[PROJECT_SPACEPHALANX]))
-      || (NULL == PLANET_MyPlanetHeader->ProjectPtr))
-     && (CLASS_STONES != PLANET_MyPlanetHeader->Class))
+      || (NULL == MyPlanetHeader->ProjectPtr))
+     && (CLASS_STONES != MyPlanetHeader->Class))
     {
-        Humidity = (PLANET_MyPlanetHeader->Water / PLANET_MyPlanetHeader->Size);
+        Humidity = (MyPlanetHeader->Water / MyPlanetHeader->Size);
         _s = dez2out(Humidity, 3, s);
         *_s++ = '%'; *_s = 0;
         WRITE_RP0(353,236,8,JAM2,1,s);
@@ -662,7 +660,7 @@ void WRITELOADDATA(int LTOut)
         Class = CLASS_STONES;
         if (80 < Humidity)
         {
-            if (CLASS_ICE == PLANET_MyPlanetHeader->Class)
+            if (CLASS_ICE == MyPlanetHeader->Class)
             {
                 *_s++ = ' '; *_s++ = 'I'; *_s++ = ' '; *_s++ = ' ';
                 Class = CLASS_ICE;
@@ -689,7 +687,7 @@ void WRITELOADDATA(int LTOut)
     }
 }
 
-bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
+bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* PLANET_MyShipPtr, r_PlanetHeader* PLANET_MyPlanetHeader)
 {
     uint8   GadSet[MAXGADGETS];
     uint8   GadCnt;
@@ -707,8 +705,6 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
     char*   _s;
     uint16  ypos;
 
-    PLANET_MyShipPtr = MyShipPtr;
-    PLANET_MyPlanetHeader = ObjPtr;
     CivVar = GETCIVVAR(PLANET_MyPlanetHeader->PFlags);
     if (CIVVAR_NONE == CivVar)
     {
@@ -863,7 +859,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                         }   break;
                     case GADGET_DIPLOMAT:
                         {
-                            DIPLOMACY();
+                            DIPLOMACY(PLANET_MyShipPtr, PLANET_MyPlanetHeader);
                             b = true;
                         }   break;
                     default:
@@ -884,8 +880,8 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                             ActPProjects = PLANET_MyPlanetHeader->ProjectPtr;
                             ActPProjects->data[PROJECT_NONE] = 1;
                             b = true;
-                            MAKELOADWINDOW();
-                            WRITELOADDATA(LTOut);
+                            MAKELOADWINDOW(PLANET_MyShipPtr, PLANET_MyPlanetHeader);
+                            WRITELOADDATA(LTOut, PLANET_MyShipPtr, PLANET_MyPlanetHeader);
                             do
                             {
                                 Delay(RDELAY);
@@ -969,7 +965,7 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                                     PLANET_MyPlanetHeader->Water -= 5;
                                                     ++FIn;
                                                     ++(PLANET_MyShipPtr->Fracht);
-                                                    WRITELOADDATA(LTOut);
+                                                    WRITELOADDATA(LTOut, PLANET_MyShipPtr, PLANET_MyPlanetHeader);
                                                 }
                                                 if ((227 < MouseY(0)) && (259 > MouseY(0))
                                                 && (0 < PLANET_MyShipPtr->Fracht)
@@ -983,13 +979,13 @@ bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* MyShipPtr)
                                                     }
                                                     --FIn;
                                                     --(PLANET_MyShipPtr->Fracht);
-                                                    WRITELOADDATA(LTOut);
+                                                    WRITELOADDATA(LTOut, PLANET_MyShipPtr, PLANET_MyPlanetHeader);
                                                 }
                                             }
                                         }
                                         while (LMB_PRESSED);
                                     }
-                                    WRITELOADDATA(LTOut);
+                                    WRITELOADDATA(LTOut, PLANET_MyShipPtr, PLANET_MyPlanetHeader);
                                 }
                             }
                             while (RMB_NOTPRESSED);

@@ -187,7 +187,7 @@ void SETFLEETPOSITION(uint8 ActSys, r_ShipHeader* StShipPtr, r_ShipHeader* MyShi
 void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX, sint8 XPosY);
 // <<<
 void PEACEINFO(int CivVar1, int CivVar2, int CivFlag1, int CivFlag2);
-bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* _MyShipPtr);
+bool PLANETHANDLING(uint8 ActSys, r_ShipHeader* PLANET_MyShipPtr, r_PlanetHeader* PLANET_MyPlanetHeader);
 void PLANETINFO(const int ActSys, r_PlanetHeader* PlanetHeader);
 void PLAYERHIGHSCORE(uint8 PHS_ActPlayer);
 void PLAYERJINGLE(const int JingleID);

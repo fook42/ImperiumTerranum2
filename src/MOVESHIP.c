@@ -399,7 +399,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                             }
                                         }
                                     } break;
-                    case TYPE_SHIP:     {   OtherShipPtr = ObjPtr;
+                    case TYPE_SHIP:     {   OtherShipPtr = (r_ShipHeader*) ObjPtr;
                                             if ((OtherShipPtr->Owner != MyShipPtr->Owner)
                                                 && ((Save.WarState[CivVar-1][GETCIVVAR(OtherShipPtr->Owner)-1] == LEVEL_WAR)
                                                  || (Save.WarState[CivVar-1][GETCIVVAR(OtherShipPtr->Owner)-1] == LEVEL_COLDWAR)))
@@ -589,14 +589,14 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                             switch (ObjType) {
                                 case TYPE_PLANET:   {
                                                         PLAYSOUND(0,300);
-                                                        if (!PLANETHANDLING(ActSys,MyShipPtr)) // uses "ObjPtr" as PlanetPointer filled by FINDOBJECT...
+                                                        if (!PLANETHANDLING(ActSys,MyShipPtr,(r_PlanetHeader*) ObjPtr))
                                                         {
                                                             MyShipPtr->Moving = 0;
                                                             return;
                                                         }
                                                     } break;
                                 case TYPE_SHIP:     {
-                                                        OtherShipPtr = ObjPtr;
+                                                        OtherShipPtr = (r_ShipHeader*) ObjPtr;
                                                         if (OtherShipPtr->Owner != MyShipPtr->Owner)
                                                         {
                                                             CivFlag = OtherShipPtr->Owner;
