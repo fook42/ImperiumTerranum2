@@ -245,7 +245,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                         WRITE(195,16,MyShipPtr->Owner,(1|WRITE_Center),RPort_PTR,3,s);
                                         _s=my_strcpy(s, _PT_System);
                                         *_s++ = ' ';
-                                        (void) my_strcpy(_s, Save.SystemName.data[i-1]);
+                                        (void) my_strcpy(_s, Save.SystemName[i-1]);
                                         if ((SystemFlags[0][i-1] & FLAG_CIV_MASK) != 0)
                                         {
                                             WRITE(195,43,SystemFlags[0][i-1] & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);

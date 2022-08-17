@@ -48,12 +48,12 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     } else {
                         WRITE_RP0(40,y,ActPlayerFlag,0,2, Project.data[MyShipPtr->SType]);
                         if (-3 == Mode) {
-                            _s = my_strcpy(s, Save.SystemName.data[MyShipPtr->Source-1]);
+                            _s = my_strcpy(s, Save.SystemName[MyShipPtr->Source-1]);
                             *_s++ = ' ';
                             *_s++ = '-';
                             *_s++ = '>';
                             *_s++ = ' ';
-                            _s = my_strcpy(_s, Save.SystemName.data[MyShipPtr->Target-1]);
+                            _s = my_strcpy(_s, Save.SystemName[MyShipPtr->Target-1]);
                             *_s++ = ' ';
                             *_s++ = '(';
                             _s = dez2out(-MyShipPtr->Moving,0,_s);

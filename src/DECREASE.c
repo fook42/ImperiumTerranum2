@@ -25,7 +25,7 @@ void DECREASE(uint8 ActSys, r_PlanetHeader* PPtr)
         _s=my_strcpy(s, _PT_System);
         *_s++ = ':';
         *_s++ = ' ';
-        (void) my_strcpy(_s, Save.SystemName.data[ActSys-1]);
+        (void) my_strcpy(_s, Save.SystemName[ActSys-1]);
         WRITE(176, 7,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
         _s=my_strcpy(s, _PT_Planet);
         *_s++ = ':';

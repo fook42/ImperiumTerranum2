@@ -253,7 +253,7 @@ void VERHANDLUNG(int CivFlag, int Mode)
                 TArr4.data[2] = PText[295];
                 _s=my_strcpy(s, PText[174]);
                 *_s++ = ' ';
-                _s=my_strcpy(_s, Save.SystemName.data[XSystem-1]);
+                _s=my_strcpy(_s, Save.SystemName[XSystem-1]);
                 *_s++ = '.';
                 *_s = 0;
                 TArr4.data[3] = s;
@@ -396,7 +396,7 @@ void VERHANDLUNG(int CivFlag, int Mode)
             *_s++ = ' ';
             _s=my_strcpy(_s, PText[321]);       // "n Systems"
             *_s++ = ' ';
-            _s=my_strcpy(_s, Save.SystemName.data[XSystem-1]);
+            _s=my_strcpy(_s, Save.SystemName[XSystem-1]);
             *_s++ = '.';
             *_s = 0;
             WRITE_RP0(256,170,CivFlag,WRITE_Center,3,s);

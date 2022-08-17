@@ -34,7 +34,6 @@ typedef struct PenArr { uint16      data[13]; } PenArr;
 
 typedef struct ColSpecArr { sint16  data[5]; } ColSpecArr;
 
-typedef struct StrArr           { char  data[MAXSYSTEMS][12];   } StrArr;
 typedef struct StrArr11         { char  data[12][15];           } StrArr11;
 typedef struct StrArr42         { char  data[43][30];           } StrArr42;
 typedef struct StrArrMAXPLANETS { char  data[MAXPLANETS+1][6];  } StrArrMAXPLANETS;
@@ -124,7 +123,7 @@ typedef struct r_Save {
     uint8       Military[MAXCIVS+1];
     bool        PlayMySelf, SmallFight, SmallLand, FastMove, NoWorm;
     uint8       WorldFlag, Systems, CivilWar;
-    StrArr      SystemName;
+    char        SystemName[MAXSYSTEMS][12];
     uint8       CivPlayer[MAXCIVS];
 } r_Save;
 /*

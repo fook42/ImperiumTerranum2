@@ -166,9 +166,9 @@ void OPTION_MULTIPLAYER(void)
 
     // randomly exchange one StarSystemName with the first one (Solar-system)
     i = 1+(rand()%(MAXSYSTEMS-1));
-    (void) my_strcpy(s, Save.SystemName.data[i]);
-    (void) my_strcpy(Save.SystemName.data[i], Save.SystemName.data[0]);
-    (void) my_strcpy(Save.SystemName.data[0], s);
+    (void) my_strcpy(s, Save.SystemName[i]);
+    (void) my_strcpy(Save.SystemName[i], Save.SystemName[0]);
+    (void) my_strcpy(Save.SystemName[0], s);
 
     // pick the civilization names for each player...
     _s1=my_strcpy(s, _PTx_Player);

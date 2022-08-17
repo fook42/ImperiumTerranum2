@@ -128,7 +128,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     _s=my_strcpy(s, _PT_System);
                     *_s++ = ':';
                     *_s++ = ' ';
-                    (void) my_strcpy(_s, Save.SystemName.data[i]);
+                    (void) my_strcpy(_s, Save.SystemName[i]);
                     WRITE_RP0(256,131,12,WRITE_Center,3, s);
                     WRITE_RP0(256,151,12,WRITE_Center,3, _PT_Umlaufbahn_kollabiert);
                     WRITE_RP0(256,171,12,WRITE_Center,3, _PT_Stargate_zerstoert);
@@ -302,7 +302,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             _s=my_strcpy(s, _PT_System);
                             *_s++ = ':';
                             *_s++ = ' ';
-                            (void) my_strcpy(_s, Save.SystemName.data[i]);
+                            (void) my_strcpy(_s, Save.SystemName[i]);
                             WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
 
                             _s=my_strcpy(s, _PT_Planet);
@@ -641,7 +641,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                 _s=my_strcpy(s, _PT_System);
                                 *_s++ = ':';
                                 *_s++ = ' ';
-                                (void) my_strcpy(_s, Save.SystemName.data[i]);
+                                (void) my_strcpy(_s, Save.SystemName[i]);
                                 WRITE(171, 7,ActPlayerFlag,(1|WRITE_Center),RPort_PTR,3,s);
 
                                 _s=my_strcpy(s, _PT_Planet);

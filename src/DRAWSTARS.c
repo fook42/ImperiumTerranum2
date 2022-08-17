@@ -106,7 +106,7 @@ void DRAWSTARS(const int Mode)
             RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             SetAPen(MyRPort_PTR[0],12);
             WritePixel(MyRPort_PTR[0],SystemX[i],SystemY[i]);
-            WRITE_RP0(SystemX[i]+3,SystemY[i]+3,12,1,0,Save.SystemName.data[i]);
+            WRITE_RP0(SystemX[i]+3,SystemY[i]+3,12,1,0,Save.SystemName[i]);
         }
         else
         {
@@ -125,7 +125,7 @@ void DRAWSTARS(const int Mode)
             } else {
                 RectFill(MyRPort_PTR[0],(SystemX[i]-1),(SystemY[i]-1),(SystemX[i]+1),(SystemY[i]+1));
             }
-            WRITE_RP0(SystemX[i]+3,SystemY[i]+3,CivmaskFlag,Write_DrawMode,0,Save.SystemName.data[i]);
+            WRITE_RP0(SystemX[i]+3,SystemY[i]+3,CivmaskFlag,Write_DrawMode,0,Save.SystemName[i]);
         }
     }
     PRINTGLOBALINFOS(DS_ActPlayer);

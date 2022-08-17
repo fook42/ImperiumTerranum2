@@ -51,7 +51,7 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
         _s=my_strcpy(s, _PT_System);
         *_s++ = ':';
         *_s++ = ' ';
-        _s=my_strcpy(_s, Save.SystemName.data[SysID-1]);
+        _s=my_strcpy(_s, Save.SystemName[SysID-1]);
         *_s++ = ' ';
         *_s++ = ' ';
         *_s++ = ' ';

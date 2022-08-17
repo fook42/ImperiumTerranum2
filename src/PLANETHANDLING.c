@@ -286,7 +286,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
             case OPT_SYSTEM:{
                                 _s=my_strcpy(s2, PText[436]); // "das System"
                                 *_s++ = ' ';
-                                _s=my_strcpy(_s, Save.SystemName.data[XSystem-1]);
+                                _s=my_strcpy(_s, Save.SystemName[XSystem-1]);
                                 *_s++ = ' ';
                                 (void) my_strcpy(_s, PText[437]); // "zu übergeben"
                                 SYSINFO(XSystem,CivFlag);

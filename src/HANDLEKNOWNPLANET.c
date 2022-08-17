@@ -243,7 +243,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
     _s=my_strcpy(s, _PT_System);
     *_s++ = ':';
     *_s++ = ' ';
-    (void) my_strcpy(_s, Save.SystemName.data[ActSys-1]);
+    (void) my_strcpy(_s, Save.SystemName[ActSys-1]);
     WRITE_RP1(5,5,1,1,3,s);
 
     _s=my_strcpy(s, _PT_Planet);

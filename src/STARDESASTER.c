@@ -222,13 +222,13 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     {
                         if ((i+1) != ActSys)
                         {
-                            Save.SystemName.data[i][0]='D';
-                            Save.SystemName.data[i][1]='c';
-                            Save.SystemName.data[i][2]=Nvokal[rand()%NvokalLen];
-                            Save.SystemName.data[i][3]=Nkonsonant[rand()%NkonsoLen];
-                            Save.SystemName.data[i][4]=Nvokal[rand()%NvokalLen];
-                            Save.SystemName.data[i][5]=Nkonsonant[rand()%NkonsoLen];
-                            Save.SystemName.data[i][6]=0;
+                            Save.SystemName[i][0]='D';
+                            Save.SystemName[i][1]='c';
+                            Save.SystemName[i][2]=Nvokal[rand()%NvokalLen];
+                            Save.SystemName[i][3]=Nkonsonant[rand()%NkonsoLen];
+                            Save.SystemName[i][4]=Nvokal[rand()%NvokalLen];
+                            Save.SystemName[i][5]=Nkonsonant[rand()%NkonsoLen];
+                            Save.SystemName[i][6]=0;
                             // Dc + vokal + kons + vokal + kons 
                             SystemHeader[i].FirstShip.SType = 0;
                             SystemHeader[i].FirstShip.Owner = 0;

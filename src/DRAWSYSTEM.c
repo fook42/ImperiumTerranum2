@@ -105,7 +105,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                         {
                             BelongsTo = 12;
                         }
-                        WRITE_RP0(x+16,y+20,BelongsTo,JAM1|WRITE_Center,0, Save.SystemName.data[MyWormHole[j].System[1-i]-1]);
+                        WRITE_RP0(x+16,y+20,BelongsTo,JAM1|WRITE_Center,0, Save.SystemName[MyWormHole[j].System[1-i]-1]);
                     }
                     if (0 != Save.CivPlayer[ActPlayer-1])
                     {
@@ -258,7 +258,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     {
         BelongsTo = 12;
     }
-    WRITE_RP0(200,491,BelongsTo,JAM1,3,Save.SystemName.data[ActSys]);
+    WRITE_RP0(200,491,BelongsTo,JAM1,3,Save.SystemName[ActSys]);
     PRINTGLOBALINFOS(ActPlayer-1);
     if (!Save.PlayMySelf) { ScreenToFront(MyScreen[0]); }
 }

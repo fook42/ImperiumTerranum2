@@ -200,7 +200,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         _s1=my_strcpy(s, _PT_System);
         *_s1++ = ':';
         *_s1++ = ' ';
-        (void) my_strcpy(_s1, Save.SystemName.data[ActSys-1]);
+        (void) my_strcpy(_s1, Save.SystemName[ActSys-1]);
         WRITE(171, 7,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
         _s1=my_strcpy(s, _PT_Planet);
         *_s1++ = ':';

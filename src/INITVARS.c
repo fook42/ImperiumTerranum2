@@ -106,7 +106,7 @@ void INITVARS()
 
     memset(&Save, 0, sizeof(Save)); // saves time to clean all values in Save-struct
 
-    for (i = 0;  i<25; ++i ) { (void) my_strcpy(Save.SystemName.data[i], PText[i+1] ); }
+    for (i = 0;  i<25; ++i ) { (void) my_strcpy(Save.SystemName[i], PText[i+1] ); }
 
     for (i = 0;  i<42; ++i ) { (void) my_strcpy(TechnologyL.data[i+1], PText[i+30]); }
 

@@ -45,7 +45,7 @@ void CREATENEWSYSTEM(const int ActSys, const int CivVar, const int minHomePlanet
         MyPlanetHeader->PFlags = 0;
 
         // generate the name by using the systemname + romanum-number (I, II, III...etc)
-        _s=my_strcpy(MyPlanetHeader->PName, Save.SystemName.data[ActSys]);
+        _s=my_strcpy(MyPlanetHeader->PName, Save.SystemName[ActSys]);
         (void) my_strcpy(_s, Romanum[i]);
 
         MyPlanetHeader->PosX = (float) ((rand()%2 == 0) ? (i+i+i+4) : -(i+i+i+4));
