@@ -30,12 +30,10 @@ int MAININTRO_PART4()
     struct TmpRas       MyTmpRas;
     struct AreaInfo     MyAI;
     struct RastPort*    actRastPort;
-    APTR        ShipCoordMem = NULL;
-    uint32      ShipCoordSize;
 
-    r_Coords_t* ShipX;
-    r_Coords_t* ShipY;
-    r_Coords_t* ShipZ;
+    double ShipX[] = { 390, 264,252,186,186,192,256,290,354,360,360,294,282, 252, 256, 290,294, 282,294,294, 258,265,273,281,288, 185,185,190,190, 356,356,361,361,0,0,0,0,0,0,0,0};
+    double ShipY[] = { 315, 174,275,250,188,225,234,234,225,188,250,275,174, 275, 243, 243,275, 174,275,275, 269,342,269,342,269, 187,172,172,187, 187,172,172,187,0,0,0,0,0,0,0,0};
+    double ShipZ[] = {-2.5,  -5, -1, -5, -5, -5, -1, -1, -5, -5, -5, -1, -5,  -1,-1.1,-1.1, -1,  -5, -8, -1,  -2, -2, -2, -2, -2,  -5, -5, -5, -5,  -5, -5, -5, -5,0,0,0,0,0,0,0,0};
 
     sint16      LEdge[2], TEdge[2];
     uint32      l, ISize;
@@ -89,27 +87,10 @@ int MAININTRO_PART4()
     MyRPort_PTR[0]->AreaInfo = &MyAI;
     MyRPort_PTR[1]->AreaInfo = &MyAI;
 
-/**** new .. alloc mem for r_Coords .. free this later ***/
-    ShipCoordSize = sizeof(r_Coords_t)*3;
-    ShipCoordMem = (uint8*) AllocMem(ShipCoordSize, MEMF_ANY | MEMF_CLEAR);
-    if (NULL == ShipCoordMem)
-    {
-        ret_code = -34;
-        goto leave_part;
-    }
-    ShipX = (r_Coords_t*) (ShipCoordMem);
-    ShipY = (r_Coords_t*) (((ULONG) ShipCoordMem)+sizeof(r_Coords_t));
-    ShipZ = (r_Coords_t*) (((ULONG) ShipCoordMem)+2*sizeof(r_Coords_t));
-
-    *ShipX = (r_Coords_t) {{ 390, 264,252,186,186,192,256,290,354,360,360,294,282, 252, 256, 290,294, 282,294,294, 258,265,273,281,288, 185,185,190,190, 356,356,361,361,0,0,0,0,0,0,0,0}};
-    *ShipY = (r_Coords_t) {{ 315, 174,275,250,188,225,234,234,225,188,250,275,174, 275, 243, 243,275, 174,275,275, 269,342,269,342,269, 187,172,172,187, 187,172,172,187,0,0,0,0,0,0,0,0}};
-    *ShipZ = (r_Coords_t) {{-2.5,  -5, -1, -5, -5, -5, -1, -1, -5, -5, -5, -1, -5,  -1,-1.1,-1.1, -1,  -5, -8, -1,  -2, -2, -2, -2, -2,  -5, -5, -5, -5,  -5, -5, -5, -5,0,0,0,0,0,0,0,0}};
-/**** new .. */
-
     for (i = 1; i<41; ++i)
     {
-        ShipX->data[i] = 273-ShipX->data[i];
-        ShipY->data[i] = 257-ShipY->data[i];
+        ShipX[i] = 273-ShipX[i];
+        ShipY[i] = 257-ShipY[i];
     }
 
     // rotate around x-axis
@@ -117,9 +98,9 @@ int MAININTRO_PART4()
     FacCos = cos(1.35);
     for (i = 1; i<41; ++i)
     {
-        store = ShipY->data[i];
-        ShipY->data[i] = store*FacCos - ShipZ->data[i]*FacSin;
-        ShipZ->data[i] = store*FacSin + ShipZ->data[i]*FacCos;
+        store = ShipY[i];
+        ShipY[i] = store*FacCos - ShipZ[i]*FacSin;
+        ShipZ[i] = store*FacSin + ShipZ[i]*FacCos;
     }
 
     // rotate around y-axis
@@ -127,9 +108,9 @@ int MAININTRO_PART4()
     FacCos = cos(-0.44);
     for (i = 1; i<41; ++i)
     {
-        store = ShipX->data[i];
-        ShipX->data[i] = store*FacCos - ShipZ->data[i]*FacSin;
-        ShipZ->data[i] = store*FacSin + ShipZ->data[i]*FacCos;
+        store = ShipX[i];
+        ShipX[i] = store*FacCos - ShipZ[i]*FacSin;
+        ShipZ[i] = store*FacSin + ShipZ[i]*FacCos;
     }
 
     // rotate around z-axis
@@ -137,9 +118,9 @@ int MAININTRO_PART4()
     FacCos = cos(-0.08);
     for (i = 1; i<41; ++i)
     {
-        store = ShipX->data[i];
-        ShipX->data[i] = store*FacCos - ShipY->data[i]*FacSin;
-        ShipY->data[i] = store*FacSin + ShipY->data[i]*FacCos;
+        store = ShipX[i];
+        ShipX[i] = store*FacCos - ShipY[i]*FacSin;
+        ShipY[i] = store*FacSin + ShipY[i]*FacCos;
     }
 
     if (LMB_PRESSED)
@@ -159,10 +140,10 @@ int MAININTRO_PART4()
         ScreenToFront(MyScreen[AScr]);
         AScr = 1-AScr;
         actRastPort = MyRPort_PTR[AScr];
-        ShipX->data[0] = ShipX->data[0]-Factor-Factor-0.22;
-        ShipY->data[0] = ShipY->data[0]-Factor;
-        SXdata0int = it_round(ShipX->data[0]);
-        SYdata0int = it_round(ShipY->data[0]);
+        ShipX[0] = ShipX[0]-Factor-Factor-0.22;
+        ShipY[0] = ShipY[0]-Factor;
+        SXdata0int = it_round(ShipX[0]);
+        SYdata0int = it_round(ShipY[0]);
 
         BltBitMapRastPort(&MyBitMap,LEdge[AScr],TEdge[AScr]-75,actRastPort,LEdge[AScr],TEdge[AScr],160,80,192);
         BltBitMapRastPort(&MyBitMap,20,145,actRastPort,20,220,600,55,192);
@@ -173,47 +154,47 @@ int MAININTRO_PART4()
         TEdge[AScr] = SYdata0int-60;
         if (TEdge[AScr]<75) { TEdge[AScr] = 75; }
 
-        store = ShipX->data[0];
+        store = ShipX[0];
         for (i = 1; i<41; ++i)
         {
-            if (store < (ShipX->data[i]*SizeFactor))
+            if (store < (ShipX[i]*SizeFactor))
             {
-                FacSin = 1+ ((abs(store-ShipX->data[i]*SizeFactor))/store);
-                ShipX->data[i] = store/SizeFactor;
-                ShipY->data[i] = ShipY->data[i]/FacSin;
+                FacSin = 1+ ((abs(store-ShipX[i]*SizeFactor))/store);
+                ShipX[i] = store/SizeFactor;
+                ShipY[i] = ShipY[i]/FacSin;
             }
         }
 
         SetAPen(actRastPort,124);
         /*** Antrieb ***/
-        AreaMove(actRastPort,SXdata0int-it_round(ShipX->data[20]*SizeFactor),SYdata0int-it_round(ShipY->data[20]*SizeFactor));
-        for (k = 21; k<25; ++k) { AreaDraw(actRastPort,SXdata0int-it_round(ShipX->data[k]*SizeFactor),SYdata0int-it_round(ShipY->data[k]*SizeFactor)); }
+        AreaMove(actRastPort,SXdata0int-it_round(ShipX[20]*SizeFactor),SYdata0int-it_round(ShipY[20]*SizeFactor));
+        for (k = 21; k<25; ++k) { AreaDraw(actRastPort,SXdata0int-it_round(ShipX[k]*SizeFactor),SYdata0int-it_round(ShipY[k]*SizeFactor)); }
         AreaEnd(actRastPort);
 
         SetAPen(actRastPort,126);
         /*** BodenPlatte hell ***/
-        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[13]*SizeFactor),SYdata0int -it_round(ShipY->data[13]*SizeFactor));
-        for (k = 14; k<17; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX[13]*SizeFactor),SYdata0int -it_round(ShipY[13]*SizeFactor));
+        for (k = 14; k<17; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX[k]*SizeFactor),SYdata0int -it_round(ShipY[k]*SizeFactor)); }
         AreaEnd(actRastPort);
 
         /*** Seitenwand ***/
-        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[17]*SizeFactor),SYdata0int -it_round(ShipY->data[17]*SizeFactor));
-        for (k = 18; k<20; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX[17]*SizeFactor),SYdata0int -it_round(ShipY[17]*SizeFactor));
+        for (k = 18; k<20; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX[k]*SizeFactor),SYdata0int -it_round(ShipY[k]*SizeFactor)); }
         AreaEnd(actRastPort);
 
         SetAPen(actRastPort,127);
         /*** BodenPlatte ***/
-        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[1]*SizeFactor),SYdata0int -it_round(ShipY->data[1]*SizeFactor));
-        for (k = 2; k<13; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX[1]*SizeFactor),SYdata0int -it_round(ShipY[1]*SizeFactor));
+        for (k = 2; k<13; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX[k]*SizeFactor),SYdata0int -it_round(ShipY[k]*SizeFactor)); }
         AreaEnd(actRastPort);
 
         SetAPen(actRastPort,125);
         /*** Waffen ***/
-        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[25]*SizeFactor),SYdata0int -it_round(ShipY->data[25]*SizeFactor));
-        for (k = 26; k<29; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX[25]*SizeFactor),SYdata0int -it_round(ShipY[25]*SizeFactor));
+        for (k = 26; k<29; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX[k]*SizeFactor),SYdata0int -it_round(ShipY[k]*SizeFactor)); }
         AreaEnd(actRastPort);
-        AreaMove(actRastPort,SXdata0int -it_round(ShipX->data[29]*SizeFactor),SYdata0int -it_round(ShipY->data[29]*SizeFactor));
-        for (k = 30; k<33; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX->data[k]*SizeFactor),SYdata0int -it_round(ShipY->data[k]*SizeFactor)); }
+        AreaMove(actRastPort,SXdata0int -it_round(ShipX[29]*SizeFactor),SYdata0int -it_round(ShipY[29]*SizeFactor));
+        for (k = 30; k<33; ++k) { AreaDraw(actRastPort,SXdata0int -it_round(ShipX[k]*SizeFactor),SYdata0int -it_round(ShipY[k]*SizeFactor)); }
         AreaEnd(actRastPort);
 
         if (1 < ISize)
@@ -260,11 +241,6 @@ leave_part:
 
     /*****************************************************************************/
     // cleanup...
-
-    if (NULL != ShipCoordMem)
-    {
-        FreeMem((APTR) ShipCoordMem, ShipCoordSize);
-    }
 
     if (NULL != IntroAreaMem)
     {

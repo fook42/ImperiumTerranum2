@@ -41,8 +41,6 @@ typedef struct StrArrMAXPLANETS { char  data[MAXPLANETS+1][6];  } StrArrMAXPLANE
 
 typedef struct ByteArr42 { uint8    data[43]; } ByteArr42; // range 0..42
 
-typedef struct r_Coords { double    data[41]; } r_Coords_t;
-
 typedef struct ITBitMap {
     uint16          BytesPerRow, Rows;
     uint8           Flags, Depth;
