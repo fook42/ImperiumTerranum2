@@ -127,8 +127,8 @@ void INITVARS()
         vNSonde[i] = false;
         Save.GlobalFlags[i] = GFLAG_EXPLORE;
 
-        memcpy(Save.TechCosts[i],    techcosts, sizeof(Save.TechCosts[i]) * sizeof(Save.TechCosts[i][1]));
-        memcpy(Save.ProjectCosts[i], projcosts, sizeof(Save.ProjectCosts[i]) * sizeof(Save.ProjectCosts[i][1]));
+        memcpy(Save.TechCosts[i],    techcosts, sizeof(techcosts));
+        memcpy(Save.ProjectCosts[i], projcosts, sizeof(projcosts));
         Save.ImperatorState[i] = 2500;
         Save.Bevoelkerung[i] = 5;
         Save.GSteuer[i] = 10;
