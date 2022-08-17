@@ -24,14 +24,14 @@ void CREATEJAHADR(const int CJ_ActPlayer)
     }
     Save.CivPlayer[7] = 0;
     if (2050 < Year) { Save.Staatstopf[7] += abs(Year)*120; }
-    Save.TechCosts[7].data[15] = 0;
-    Save.TechCosts[7].data[16] = 0;
+    Save.TechCosts[7][15] = 0;
+    Save.TechCosts[7][16] = 0;
     Save.GSteuer[7] = 0;
     for(i = 1; i < 43; ++i)
     {
-        if (Save.TechCosts[CJ_ActPlayer].data[i] <= 0)
+        if (Save.TechCosts[CJ_ActPlayer][i] <= 0)
         {
-            Save.TechCosts[7].data[i] = 0;
+            Save.TechCosts[7][i] = 0;
         }
     }
     for(i = 0; i < Save.Systems; ++i)

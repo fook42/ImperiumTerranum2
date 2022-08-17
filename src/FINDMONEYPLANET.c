@@ -67,7 +67,7 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
         while (((PROJECT_SPACEDOCK != XProjectID) && ((PROJECT_CONT_UNION > XProjectID) || (PROJECT_WEATHERSTATION < XProjectID)))
              || (1 > ActPProject->data[XProjectID]));
         ActPProject->data[XProjectID] = 0;
-        Save.Staatstopf[CivVar] += (Save.ProjectCosts[CivVar].data[XProjectID] / 29);
+        Save.Staatstopf[CivVar] += (Save.ProjectCosts[CivVar][XProjectID] / 29);
     }
     return XProjectID;
 }

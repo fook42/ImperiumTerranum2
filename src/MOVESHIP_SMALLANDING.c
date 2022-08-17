@@ -35,10 +35,10 @@ void MOVESHIP_SMALLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys
     {
         CivVar--; // to shift the Save-array
         GroundWeapon = WEAPON_GUN;
-        if (Save.TechCosts[CivVar].data[15] == 0) { GroundWeapon = WEAPON_LASER; }
-        if (Save.TechCosts[CivVar].data[24] == 0) { GroundWeapon = WEAPON_PHASER; }
-        if (Save.TechCosts[CivVar].data[32] == 0) { GroundWeapon = WEAPON_DISRUPTOR; }
-        if (Save.TechCosts[CivVar].data[27] == 0) { GroundWeapon = WEAPON_PTORPEDO; }
+        if (Save.TechCosts[CivVar][15] == 0) { GroundWeapon = WEAPON_LASER; }
+        if (Save.TechCosts[CivVar][24] == 0) { GroundWeapon = WEAPON_PHASER; }
+        if (Save.TechCosts[CivVar][32] == 0) { GroundWeapon = WEAPON_DISRUPTOR; }
+        if (Save.TechCosts[CivVar][27] == 0) { GroundWeapon = WEAPON_PTORPEDO; }
     } else {
         GroundWeapon = WEAPON_PTORPEDO;
     }

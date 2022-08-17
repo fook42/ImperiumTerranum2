@@ -201,7 +201,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
     XTech = 0;
     for (i = 42; i > 0; --i)
     {
-        if ((0 < Save.TechCosts[ActPlayer-1].data[i]) && (0 >= Save.TechCosts[CivVar-1].data[i]))
+        if ((0 < Save.TechCosts[ActPlayer-1][i]) && (0 >= Save.TechCosts[CivVar-1][i]))
         {
             XTech = i;
         }
@@ -308,7 +308,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
                                 {
                                     POSITIVEANSWER(CivVar);
-                                    Save.TechCosts[ActPlayer-1].data[XTech] = 0;
+                                    Save.TechCosts[ActPlayer-1][XTech] = 0;
                                     DISPLAYTECH(XTech);
                                 } else {
                                     NEGATIVEANSWER();
@@ -407,7 +407,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
                             } else if (0 != (rand()%3))
                             {
                                 POSITIVEANSWER(CivVar);
-                                Save.TechCosts[ActPlayer-1].data[XTech] = 0;
+                                Save.TechCosts[ActPlayer-1][XTech] = 0;
                                 DISPLAYTECH(XTech);
                                 if ((Save.WorldFlag == ActPlayerFlag) && (CivVar == 8))
                                 {
@@ -496,7 +496,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
                                 XTech = 0;
                                 for (i = 40; i > 0; --i)
                                 {
-                                    if ((Save.TechCosts[ActPlayer-1].data[i] <= 0) && (Save.TechCosts[CivVar-1].data[i]>0))
+                                    if ((Save.TechCosts[ActPlayer-1][i] <= 0) && (Save.TechCosts[CivVar-1][i]>0))
                                     {
                                         XTech = i;
                                     }
@@ -509,7 +509,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
                                     _s=my_strcpy(s2, TechnologyL.data[XTech]);
                                     (void) my_strcpy(_s, ".");
                                     REQUEST(PText[450],s2,ActPlayerFlag,ActPlayerFlag);
-                                    Save.TechCosts[CivVar-1].data[XTech] = 0;
+                                    Save.TechCosts[CivVar-1][XTech] = 0;
                                     Save.WarState[CivVar-1][ActPlayer-1] = LEVEL_ALLIANZ;
                                     Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_ALLIANZ;
                                 }

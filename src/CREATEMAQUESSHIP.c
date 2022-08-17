@@ -22,10 +22,10 @@ bool CREATEMAQUESSHIP(const int SysID, int ShipID)
 
         ActShipPtr->Weapon = WEAPON_GUN;
         --ActPlayer; // to shift the array
-        if (1 > Save.TechCosts[ActPlayer].data[15]) { ActShipPtr->Weapon = WEAPON_LASER; }
-        if (1 > Save.TechCosts[ActPlayer].data[24]) { ActShipPtr->Weapon = WEAPON_PHASER; }
-        if (1 > Save.TechCosts[ActPlayer].data[32]) { ActShipPtr->Weapon = WEAPON_DISRUPTOR; }
-        if (1 > Save.TechCosts[ActPlayer].data[27]) { ActShipPtr->Weapon = WEAPON_PTORPEDO; }
+        if (1 > Save.TechCosts[ActPlayer][15]) { ActShipPtr->Weapon = WEAPON_LASER; }
+        if (1 > Save.TechCosts[ActPlayer][24]) { ActShipPtr->Weapon = WEAPON_PHASER; }
+        if (1 > Save.TechCosts[ActPlayer][32]) { ActShipPtr->Weapon = WEAPON_DISRUPTOR; }
+        if (1 > Save.TechCosts[ActPlayer][27]) { ActShipPtr->Weapon = WEAPON_PTORPEDO; }
         ++ActPlayer; // to shift the array
 
         LINKSHIP(ActShipPtr, &(SystemHeader[SysID].FirstShip), 0);

@@ -146,7 +146,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
     for(i = 0; i < 7; ++i)
     {
         // did we finished this project here?
-        if (Save.ProjectCosts[ActPlayer-1].data[i+1] <= 0)
+        if (Save.ProjectCosts[ActPlayer-1][i+1] <= 0)
         {
             // was this project invented at this planet first?
             if (ActPProjects->data[i+1]>0)
@@ -167,7 +167,7 @@ void WRITEPROJECTSSTATUS(r_PlanetHeader* MyPlanetHeader, ByteArr42* ActPProjects
 
     for(i = 25; i < 43; ++i)
     {
-        if ((0 < ActPProjects->data[i]) || ((39 == i) && (0 >= Save.ProjectCosts[ActPlayer-1].data[i])))
+        if ((0 < ActPProjects->data[i]) || ((39 == i) && (0 >= Save.ProjectCosts[ActPlayer-1][i])))
         {
             if (28 > i)
             {
@@ -383,12 +383,12 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 {
                     DoIt = false;
                     /* Technologie vorhanden */
-                    if ((Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[i]] <= 0)
+                    if ((Save.TechCosts[ActPlayer-1][ProjectNeedsTech[i]] <= 0)
                      && ((ActPProjects->data[ProjectNeedsProject[i]]>0)
-                        || (Save.ProjectCosts[ActPlayer-1].data[ProjectNeedsProject[i]] <= 0)))
+                        || (Save.ProjectCosts[ActPlayer-1][ProjectNeedsProject[i]] <= 0)))
                     {
                         /* nötiges Projekt vorhanden */
-                        if ((((0 < i) && (8 > i)) || (PROJECT_VON_NEUMANN == i)) && (Save.ProjectCosts[ActPlayer-1].data[i]>0))
+                        if ((((0 < i) && (8 > i)) || (PROJECT_VON_NEUMANN == i)) && (Save.ProjectCosts[ActPlayer-1][i]>0))
                         {
                             DoIt = true;
                         }
@@ -407,7 +407,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     }
                     if (DoIt)
                     {
-                        ProjectRounds[j] = Save.ProjectCosts[ActPlayer-1].data[i];
+                        ProjectRounds[j] = Save.ProjectCosts[ActPlayer-1][i];
                         (void) my_strcpy(NewProject[j], Project.data[i]);
                         ProjectNum[j] = i;
                         if ((7 < i) && (25 > i))

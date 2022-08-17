@@ -22,7 +22,7 @@ void CREATECIVILWAR(int CivVar)
         --CivVar; // to shift the arrays ...
         if (0 != Save.CivPlayer[CivVar])
         {
-            _s=my_strcpy(s, PText[385]);        // das Militär der ..
+            _s=my_strcpy(s, PText[385]);        // das Militï¿½r der ..
             *_s++ = ' ';
             _s=my_strcpy(_s, GETCIVNAME(CivVar+1));
             *_s++ = ' ';
@@ -42,8 +42,8 @@ void CREATECIVILWAR(int CivVar)
         Save.Staatstopf[7] = -5000;
         for(i = 1; i < 43; ++i)
         {
-            Save.TechCosts[   7].data[i] = Save.TechCosts[   CivVar].data[i];
-            Save.ProjectCosts[7].data[i] = Save.ProjectCosts[CivVar].data[i];
+            Save.TechCosts[   7][i] = Save.TechCosts[   CivVar][i];
+            Save.ProjectCosts[7][i] = Save.ProjectCosts[CivVar][i];
         }
         ++CivVar; // to shift the arrays ...
     }

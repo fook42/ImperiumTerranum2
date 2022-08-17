@@ -249,7 +249,7 @@ void MAIN_FNC()
 
                 for (i = 0; i < 7; ++i)
                 {
-                    if (Save.ProjectCosts[i].data[7] <= 0)
+                    if (Save.ProjectCosts[i][7] <= 0)
                     {
                         Bool_var = true;
                     }
@@ -257,7 +257,7 @@ void MAIN_FNC()
             }
             else
             {
-                if ((Save.ProjectCosts[ActPlayer-1].data[7] <= 0) && (Save.WarState[ActPlayer-1][ActPlayer-1] != LEVEL_DIED))
+                if ((Save.ProjectCosts[ActPlayer-1][7] <= 0) && (Save.WarState[ActPlayer-1][ActPlayer-1] != LEVEL_DIED))
                 {
                     Bool_var = true;
 
@@ -333,7 +333,7 @@ void MAIN_FNC()
                         Bool_var = false;
                         for (i = 0; i < MAXCIVS; i++)
                         {
-                            if (Save.ProjectCosts[i].data[5] <= 0)
+                            if (Save.ProjectCosts[i][5] <= 0)
                             {
                                 Bool_var = true;
                             }
@@ -365,7 +365,7 @@ void MAIN_FNC()
         {
             for (i = 0; i < (MAXCIVS-1); ++i)
             {
-                if (0 >= Save.ProjectCosts[i].data[7])
+                if (0 >= Save.ProjectCosts[i][7])
                 {
                     j = i+1;
                     if ((MAXCIVS-2) == i)
@@ -375,7 +375,7 @@ void MAIN_FNC()
                             Save.ImperatorState[(MAXCIVS-2)] -= rand()%250;
                         }
                     }
-                    if ((i == 0) && (Save.ProjectCosts[0].data[5]>0))
+                    if ((i == 0) && (Save.ProjectCosts[0][5]>0))
                     {
                         ENDSEQUENZ(-2);
                         GAMEEXIT();

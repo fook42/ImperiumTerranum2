@@ -19,8 +19,8 @@ void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner)
     {
         if (0 < ActPProject->data[i])
         {
-            Save.ProjectCosts[GETCIVVAR(NewOwner)-1              ].data[i] = 0;
-            Save.ProjectCosts[GETCIVVAR(MyPlanetHeader->PFlags)-1].data[i] = abs(Year)*i*11;
+            Save.ProjectCosts[GETCIVVAR(NewOwner)-1              ][i] = 0;
+            Save.ProjectCosts[GETCIVVAR(MyPlanetHeader->PFlags)-1][i] = abs(Year)*i*11;
             if ((0 != Save.CivPlayer[GETCIVVAR(NewOwner)-1              ])
              || (0 != Save.CivPlayer[GETCIVVAR(MyPlanetHeader->PFlags)-1]))
             {

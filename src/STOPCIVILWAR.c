@@ -73,9 +73,9 @@ void STOPCIVILWAR(uint8 EndText)
 
     for(i = 1; i <= 42; i++)
     {
-        if (Save.TechCosts[7].data[i] <= 0)
+        if (Save.TechCosts[7][i] <= 0)
         {
-            Save.TechCosts[CivVar].data[i] = 0;
+            Save.TechCosts[CivVar][i] = 0;
         }
     }
     for(i = 0; i < Save.Systems; i++)

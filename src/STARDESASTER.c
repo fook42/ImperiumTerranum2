@@ -23,7 +23,7 @@ void FUCKSYSTEM(uint8 ActSys)
                 {
                     if (0 < ActPPRoject->data[j])
                     {
-                        Save.ProjectCosts[GETCIVVAR(MyPlanetHeader->PFlags)-1].data[j] = abs(Year)*j*10;
+                        Save.ProjectCosts[GETCIVVAR(MyPlanetHeader->PFlags)-1][j] = abs(Year)*j*10;
                     }
                 }
                 for(j = 8; j <= 42; j++)
@@ -154,10 +154,10 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                     for(j = 0; j < 7; ++j)
                     {
                         for(i = 0;  i < 7;  ++i) { Save.WarState[j][i] = LEVEL_COLDWAR; }
-                        for(i = 1;  i < 26; ++i) { Save.TechCosts[j].data[i]    = 0; }
-                        for(i = 26; i < 43; ++i) { Save.TechCosts[j].data[i]    = i*2500; }
-                        for(i = 2;  i < 8;  ++i) { Save.ProjectCosts[j].data[i] = i*100000; }
-                        Save.ProjectCosts[j].data[39] = 40000;
+                        for(i = 1;  i < 26; ++i) { Save.TechCosts[j][i]    = 0; }
+                        for(i = 26; i < 43; ++i) { Save.TechCosts[j][i]    = i*2500; }
+                        for(i = 2;  i < 8;  ++i) { Save.ProjectCosts[j][i] = i*100000; }
+                        Save.ProjectCosts[j][39] = 40000;
                         Save.ActTech[j] = 0;
                     }
                     for(i = 0; i < Save.Systems; ++i)
@@ -260,11 +260,11 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
                                         // for(k = 0; k < 7; k++)
                                         // {
                                             // ...todo ... 7* same comparison ? ... ProjectPtr->data[i] makes no sense.. 
-                                            if ((0 < ActPPRoject->data[i+1]) && (0 == Save.ProjectCosts[7].data[i+1]))
+                                            if ((0 < ActPPRoject->data[i+1]) && (0 == Save.ProjectCosts[7][i+1]))
                                             {
                                                 ActPPRoject->data[i+1] = 0;
                                             } else {
-                                                Save.ProjectCosts[7].data[i+1] = 0;
+                                                Save.ProjectCosts[7][i+1] = 0;
                                             }
                                         // }
                                     }
@@ -282,7 +282,7 @@ void STARDESASTER(uint8 ActSys, r_ShipHeader* ShipPtr)
 
                     for(i = 1; i < 26; ++i)
                     {
-                        Save.TechCosts[7].data[i] = 0;
+                        Save.TechCosts[7][i] = 0;
                     }
                     SD_TEXTWINDOW(_PT_Der_Spieler_wurde, PText[401], PText[402]);
                 } break;

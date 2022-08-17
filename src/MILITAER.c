@@ -15,8 +15,8 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 
     SetAPen(RPort,0);
     if (((0 < BSet) && (9 > BSet))
-     || ((16 == BSet) && (Save.TechCosts[ActPlayer-1].data[9]  <= 0))
-     || ((32 == BSet) && (Save.TechCosts[ActPlayer-1].data[23] <= 0)))
+     || ((16 == BSet) && (Save.TechCosts[ActPlayer-1][9]  <= 0))
+     || ((32 == BSet) && (Save.TechCosts[ActPlayer-1][23] <= 0)))
     {
         Save.Military[ActPlayer-1] ^= BSet;
     }
@@ -56,7 +56,7 @@ void DRAWDATA(struct RastPort* RPort, uint8 BSet)
 void MILITAER()
 {
     char    s[40];
-    const char Txt_notavail[] = {"--- (benötigt \0"};
+    const char Txt_notavail[] = {"--- (benï¿½tigt \0"};
     char*   _s;
     int     i;
     uint16  ypos;
@@ -84,7 +84,7 @@ void MILITAER()
     WRITE(60,115,12,0, RPort_PTR,3,PText[670]);
     WRITE(60,145,12,0, RPort_PTR,3,PText[671]);
 
-    if (Save.TechCosts[ActPlayer-1].data[9]  <= 0)
+    if (Save.TechCosts[ActPlayer-1][9]  <= 0)
     {
         _s = PText[672];
     } else {
@@ -96,7 +96,7 @@ void MILITAER()
     }
     WRITE(60,175,12,0, RPort_PTR,3,_s);
 
-    if (Save.TechCosts[ActPlayer-1].data[23] <= 0)
+    if (Save.TechCosts[ActPlayer-1][23] <= 0)
     {
         _s = PText[673];
     } else {

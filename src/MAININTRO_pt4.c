@@ -3,6 +3,24 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+const char* SArr[] = {"",
+    "Software & Design",            "Oxygenic",
+    "Art Director",                 "Cybertrace",
+    "Music by",                     "Ludwig v.Beethoven   N.N. Ikonnikow   Richard Wagner",
+    "Special Effects",              "Oxygenic",
+    "Credits go to",                "Adam Benjamin   Rikard Cederlund",
+    "Jakob Gaardsted   Andy Jones", "George Moore",
+    "Surround-Sounds created with", "WaveTracer DSï¿½",
+    "Colors in Technicolorï¿½",       "Panaflexï¿½ Camera and Lenses by Panavisionï¿½",
+    "Ported to C & improved by",    "Fook42"};
+const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3, 3,4};
+
+const struct worldcolors_t Frame6_Colours[] = { {0xEEEEEEEE,0xEEEEEEEE,0xFFFFFFFF},
+                                                {0xDDDDDDDD,         0,         0},
+                                                {0xFFFFFFFF,         0,0xFFFFFFFF},
+                                                {0xBBBBBBBB,0xBBBBBBBB,0xFFFFFFFF},
+                                                {0x99999999,0x99999999,0xBBBBBBBB} };
+
 int MAININTRO_PART4()
 {
     char        s[40];
@@ -14,25 +32,6 @@ int MAININTRO_PART4()
     struct RastPort*    actRastPort;
     APTR        ShipCoordMem = NULL;
     uint32      ShipCoordSize;
-
-    const char* SArr[] = {"",
-        "Software & Design",            "Oxygenic",
-        "Art Director",                 "Cybertrace",
-        "Music by",                     "Ludwig v.Beethoven   N.N. Ikonnikow   Richard Wagner",
-        "Special Effects",              "Oxygenic",
-        "Credits go to",                "Adam Benjamin   Rikard Cederlund",
-        "Jakob Gaardsted   Andy Jones", "George Moore",
-        "Surround-Sounds created with", "WaveTracer DS®",
-        "Colors in Technicolor®",       "Panaflex® Camera and Lenses by Panavision®",
-        "Ported to C & improved by",    "Fook42"};
-    const uint8 FArr[] = {0, 3,4, 3,4, 3,4, 3,4, 3,4, 4,4, 3,4, 3,3, 3,4};
-
-    const struct worldcolors_t Frame6_Colours[] = { {0xEEEEEEEE,0xEEEEEEEE,0xFFFFFFFF},
-                                                    {0xDDDDDDDD,         0,         0},
-                                                    {0xFFFFFFFF,         0,0xFFFFFFFF},
-                                                    {0xBBBBBBBB,0xBBBBBBBB,0xFFFFFFFF},
-                                                    {0x99999999,0x99999999,0xBBBBBBBB} };
-
 
     r_Coords_t* ShipX;
     r_Coords_t* ShipY;
@@ -142,6 +141,7 @@ int MAININTRO_PART4()
         ShipX->data[i] = store*FacCos - ShipY->data[i]*FacSin;
         ShipY->data[i] = store*FacSin + ShipY->data[i]*FacCos;
     }
+
     if (LMB_PRESSED)
         { ret_code = 1; goto leave_part; }
 

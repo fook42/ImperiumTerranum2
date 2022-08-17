@@ -38,7 +38,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         if (0 == ActPProjects->data[PROJECT_RECYCLINGPLANT])
         {
             /* RECYCLINGANLAGE */
-            if ((5500 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_RECYCLINGPLANT]] > 0)
+            if ((5500 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1][ProjectNeedsTech[PROJECT_RECYCLINGPLANT]] > 0)
                     || (PROJECT_RECYCLINGPLANT == MyPlanetHeader->ProjectID))
             {
                 return;
@@ -48,7 +48,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         } else if (0 == ActPProjects->data[PROJECT_HYDROPOWER])
         {
             /* HYDROKRAFTWERK */
-            if ((7000 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_HYDROPOWER]] > 0)
+            if ((7000 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1][ProjectNeedsTech[PROJECT_HYDROPOWER]] > 0)
                     || (PROJECT_HYDROPOWER == MyPlanetHeader->ProjectID))
             {
                 return;
@@ -57,7 +57,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         } else if (0 == ActPProjects->data[PROJECT_FUSIONPOWER])
         {
             /* FUSIONSKRAFTWERK */
-            if ((9000 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_FUSIONPOWER]] > 0)
+            if ((9000 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1][ProjectNeedsTech[PROJECT_FUSIONPOWER]] > 0)
                     || (PROJECT_FUSIONPOWER == MyPlanetHeader->ProjectID))
             {
                 return;
@@ -65,7 +65,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             TheProject = PROJECT_FUSIONPOWER;
         } else if (0 == ActPProjects->data[PROJECT_WEATHERSTATION])
         {
-            if ((11500 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PROJECT_WEATHERSTATION]] > 0)
+            if ((11500 >= MyPlanetHeader->Population) || (Save.TechCosts[ActPlayer-1][ProjectNeedsTech[PROJECT_WEATHERSTATION]] > 0)
                     || (PROJECT_WEATHERSTATION == MyPlanetHeader->ProjectID))
             {
                 return;
@@ -110,7 +110,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             break;
 
         case 2:
-            if (0 == Save.ProjectCosts[ActPlayer-1].data[4])
+            if (0 == Save.ProjectCosts[ActPlayer-1][4])
             {
                 return;
             }
@@ -207,7 +207,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         *_s1++ = ' ';
         (void) my_strcpy(_s1, MyPlanetHeader->PName);
         WRITE(171,27,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
-        if ((PROJECT_NONE < TheProject) && (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[TheProject]]))
+        if ((PROJECT_NONE < TheProject) && (0 >= Save.TechCosts[ActPlayer-1][ProjectNeedsTech[TheProject]]))
         {
             _s1=my_strcpy(s, PText[570]);   // Bürger fordern
             *_s1++ = ' ';

@@ -3,6 +3,13 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
+const char* InfoBox_Texts[] = { "Auf der Erde nimmt Dank Gene Roddenberry", "eine Legende ihren Anfang!",
+                                "Auf der Erde wird ein", "genialer Programmierer geboren!",
+                                "Stanley Kubricks & Arthur C. Clarkes", "Vision wird Wirklichkeit!",
+                                "Peter Hyams & Arthur C. Clarkes", "Vision wird Wirklichkeit!",
+                                "Auf der Erde findet", "\"Der erste Kontakt\" statt!" };
+const int InfoBox_Years[] = { 1963, 1973, 2001, 2010, 2063 };
+
 void CREATEINFOBOX(struct Window** CIB_Window, struct RastPort** CIB_RPort_PTR)
 {
     char    s[60];
@@ -39,14 +46,6 @@ void STARTROTATEPLANETS()
     char*   _s;
     struct Window*   SRP_Window = NULL;
     struct RastPort* RPort_PTR = NULL;
-
-    const char* InfoBox_Texts[] = {"Auf der Erde nimmt Dank Gene Roddenberry", "eine Legende ihren Anfang!",
-                                   "Auf der Erde wird ein", "genialer Programmierer geboren!",
-                                   "Stanley Kubricks & Arthur C. Clarkes", "Vision wird Wirklichkeit!",
-                                   "Peter Hyams & Arthur C. Clarkes", "Vision wird Wirklichkeit!",
-                                   "Auf der Erde findet", "\"Der erste Kontakt\" statt!" };
-    const int InfoBox_Years[] = { 1963, 1973, 2001, 2010, 2063 };
-
 
     for(i = 0; i < MAXCIVS; i++)
     {

@@ -72,8 +72,8 @@ void VERHANDLUNG(int CivFlag, int Mode)
     XTech = 0;
     for (i = 42; i>0; --i)
     {
-        if (   (Save.TechCosts[CivVar-1].data[i] > 0)
-            && (Save.TechCosts[ActPlayer-1].data[i] <= 0))
+        if (   (Save.TechCosts[CivVar-1][i] > 0)
+            && (Save.TechCosts[ActPlayer-1][i] <= 0))
         {
             XTech = i;
         }
@@ -305,7 +305,7 @@ void VERHANDLUNG(int CivFlag, int Mode)
                     SYSTEMTOENEMY(XSystem-1,CivFlag,ActPlayerFlag);
                 } else if ((Save.WarPower[ActPlayer-1] < (Save.WarPower[CivVar-1]*3)) && (XTech>0))
                 {
-                    Save.TechCosts[XTech-1].data[CivVar] = 0;
+                    Save.TechCosts[XTech-1][CivVar] = 0;
                 } else {
                     Save.Staatstopf[CivVar-1]    += XCosts;
                     Save.Staatstopf[ActPlayer-1] -= XCosts;

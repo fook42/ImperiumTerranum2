@@ -7,9 +7,9 @@ void QUOTEPICARD()
 {
     int     i, ypos;
     const char* Txt_Picard[] = {"Ich frage mich, ob es Kaiser Honorius klar",
-                                "war, als er sah, daß die Westgoten den siebten",
-                                "Hügel Roms überwanden, daß das Römische Reich",
-                                "fallen würde ... Das hier ist nur eine weitere",
+                                "war, als er sah, daï¿½ die Westgoten den siebten",
+                                "Hï¿½gel Roms ï¿½berwanden, daï¿½ das Rï¿½mische Reich",
+                                "fallen wï¿½rde ... Das hier ist nur eine weitere",
                                 "Episode der Geschichte. Wird hier unsere",
                                 "Zivilisation enden?"};
     const char* Txt_Picard2[] = {"Jean Luc Picard",

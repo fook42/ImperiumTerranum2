@@ -13,11 +13,11 @@ void STATISTIK()
     char*   _s;
     int     i, j, posy;
 
-    char*   StimmungTexts[] = {PText[712],PText[713],PText[714],PText[715],PText[716],
-                               PText[717],PText[718],PText[719],PText[720],PText[711]};
+    const char* StimmungTexts[] = { PText[712],PText[713],PText[714],PText[715],PText[716],
+                                    PText[717],PText[718],PText[719],PText[720],PText[711]};
 
-    char*   EntwicklungTexts[] = {PText[723],PText[724],PText[725],PText[726],PText[727],
-                                  PText[728],PText[729],PText[730],PText[731],PText[732]};
+    const char* EntwicklungTexts[] = {  PText[723],PText[724],PText[725],PText[726],PText[727],
+                                        PText[728],PText[729],PText[730],PText[731],PText[732]};
 
     struct Window* STA_Window;
     struct RastPort* RPort_PTR;
@@ -148,7 +148,7 @@ void STATISTIK()
     _s=my_strcpy(s, PText[736]);
     *_s++ = ':';
     *_s++ = ' ';
-    _s=dez2out((sint32) (Save.TechCosts[ActPlayer].data[Save.ActTech[ActPlayer]] / (AllCreative[ActPlayer]+1)), 0, _s);
+    _s=dez2out((sint32) (Save.TechCosts[ActPlayer][Save.ActTech[ActPlayer]] / (AllCreative[ActPlayer]+1)), 0, _s);
     *_s++ = ' ';
     (void) my_strcpy(_s, _PT_Jahre);
     WRITE(20,300,12,JAM1,RPort_PTR,3,s);

@@ -11,7 +11,7 @@ void DOINFLATION(uint8 DI_ActPlayer)
     {
         // costs += ((costs>>6)*0x7B) >>6;    // = costs+(costs>>6)+(costs>>7)+(costs>>8)+(costs>>9)+(costs>>11)+(costs>>12);
         // =~  costs* 1,03 (INFLATION)
-        Save.ProjectCosts[DI_ActPlayer].data[j] += ((Save.ProjectCosts[DI_ActPlayer].data[j]>>6)*0x7B)>>6;
-        Save.TechCosts[   DI_ActPlayer].data[j] += ((   Save.TechCosts[DI_ActPlayer].data[j]>>6)*0x7B)>>6;
+        Save.ProjectCosts[DI_ActPlayer][j] += ((Save.ProjectCosts[DI_ActPlayer][j]>>6)*0x7B)>>6;
+        Save.TechCosts[   DI_ActPlayer][j] += ((   Save.TechCosts[DI_ActPlayer][j]>>6)*0x7B)>>6;
     }
 }

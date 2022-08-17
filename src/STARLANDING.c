@@ -674,10 +674,10 @@ void STARLANDING(r_PlanetHeader* PPtr, r_ShipHeader* SPtr, uint8 ActSys)
     {
         CivVar--; // to shift the Save.TechCosts-array
         GroundWeapon = WEAPON_GUN;
-        if (0 == Save.TechCosts[CivVar].data[15]) { GroundWeapon = WEAPON_LASER; }
-        if (0 == Save.TechCosts[CivVar].data[24]) { GroundWeapon = WEAPON_PHASER; }
-        if (0 == Save.TechCosts[CivVar].data[32]) { GroundWeapon = WEAPON_DISRUPTOR; }
-        if (0 == Save.TechCosts[CivVar].data[27]) { GroundWeapon = WEAPON_PTORPEDO; }
+        if (0 == Save.TechCosts[CivVar][15]) { GroundWeapon = WEAPON_LASER; }
+        if (0 == Save.TechCosts[CivVar][24]) { GroundWeapon = WEAPON_PHASER; }
+        if (0 == Save.TechCosts[CivVar][32]) { GroundWeapon = WEAPON_DISRUPTOR; }
+        if (0 == Save.TechCosts[CivVar][27]) { GroundWeapon = WEAPON_PTORPEDO; }
     } else {
         GroundWeapon = WEAPON_PTORPEDO;
     }

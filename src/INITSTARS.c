@@ -50,7 +50,7 @@ void INIT_HOMEPLANETS(uint8 Civ, uint8 HomeSystem, uint8 HomePlanet)
     {
         for (i = 1; i < 43; ++i)
         {
-            Save.TechCosts[Civ].data[i] = it_round((double) Save.TechCosts[Civ].data[i]*(HomePlanetProd/15.0));
+            Save.TechCosts[Civ][i] = it_round((double) Save.TechCosts[Civ][i]*(HomePlanetProd/15.0));
         }
     }
     Save.ImperatorState[Civ] -= HomePlanetProd*3;
@@ -246,7 +246,7 @@ bool INITSTARS()
             {
                 for(j = 1; j < 43; ++j)
                 {
-                    Save.ProjectCosts[i].data[j] += (HomePlanets+3)*((Save.ProjectCosts[i].data[j] * 0x7B)>>12); // 0x7B >> 12 =~ 0.03
+                    Save.ProjectCosts[i][j] += (HomePlanets+3)*((Save.ProjectCosts[i][j] * 0x7B)>>12); // 0x7B >> 12 =~ 0.03
                 }
             }
         }

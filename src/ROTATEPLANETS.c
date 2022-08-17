@@ -42,13 +42,13 @@ void ROTATEPLANETS(uint8 ActSys)
     AllCreative[ActPlayer] = 0;
     for(j = 1; j < 8; ++j)
     {
-        if (0 >= Save.ProjectCosts[ActPlayer].data[j])
+        if (0 >= Save.ProjectCosts[ActPlayer][j])
         {
             if (0 < Year)
             {
-                Save.ProjectCosts[ActPlayer].data[j] = 50 * Year * j;
+                Save.ProjectCosts[ActPlayer][j] = 50 * Year * j;
             } else {
-                Save.ProjectCosts[ActPlayer].data[j] = 180000 * j;
+                Save.ProjectCosts[ActPlayer][j] = 180000 * j;
             }
         }
     }
@@ -64,7 +64,7 @@ void ROTATEPLANETS(uint8 ActSys)
         }
     }
 
-    if (0 >= Save.ProjectCosts[ActPlayer].data[PROJECT_VON_NEUMANN])
+    if (0 >= Save.ProjectCosts[ActPlayer][PROJECT_VON_NEUMANN])
     {
         for(i = 0; i < Save.Systems; ++i)
         {
@@ -166,7 +166,7 @@ void ROTATEPLANETS(uint8 ActSys)
                         {
                             if (ActPProjects->data[k]>0)
                             {
-                                Save.ProjectCosts[GETCIVVAR(PlanetHeader->PFlags)-1].data[k] = 0;
+                                Save.ProjectCosts[GETCIVVAR(PlanetHeader->PFlags)-1][k] = 0;
                             }
                         }
                     }
@@ -200,9 +200,9 @@ void ROTATEPLANETS(uint8 ActSys)
                         {
                             PlanetHeader->Population += 1+(ActPProjects->data[PROJECT_MICROIDS]+ActPProjects->data[PROJECT_WEATHERSTATION])*20;
                             PlanetHeader->Population = it_round(PlanetHeader->Population*1.008);
-                            if (0 == Save.ProjectCosts[CivVar-1].data[3])
+                            if (0 == Save.ProjectCosts[CivVar-1][3])
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.028); }
-                            if (0 == Save.ProjectCosts[CivVar-1].data[4])
+                            if (0 == Save.ProjectCosts[CivVar-1][4])
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.029); }
                             if (1000 > PlanetHeader->Population)
                                 { PlanetHeader->Population = it_round(PlanetHeader->Population*1.05); }
@@ -332,9 +332,9 @@ void ROTATEPLANETS(uint8 ActSys)
                 if ((PlanetHeader->PFlags & FLAG_CIV_MASK) == ActPlayerFlag)
                 {
                     if ((((PlanetHeader->ProjectID>=1) && (PlanetHeader->ProjectID<=7)) || (39 == PlanetHeader->ProjectID))
-                        && (Save.ProjectCosts[ActPlayer-1].data[PlanetHeader->ProjectID] <= 0))
+                        && (Save.ProjectCosts[ActPlayer-1][PlanetHeader->ProjectID] <= 0))
                     {
-                        if ((39 == PlanetHeader->ProjectID) && (Save.ProjectCosts[ActPlayer-1].data[39]>0))
+                        if ((39 == PlanetHeader->ProjectID) && (Save.ProjectCosts[ActPlayer-1][39]>0))
                         {
                             for(k = 0; k < MAXCIVS; ++k)
                             {
@@ -535,10 +535,10 @@ void ROTATEPLANETS(uint8 ActSys)
                                                     Moving,Source,Target,Tactical,TargetShip,BeforeShip,NextShip*/
                                     ActShipPtr->Weapon = WEAPON_GUN;
                                     --ActPlayer;
-                                    if (1 > Save.TechCosts[ActPlayer].data[15]) { ActShipPtr->Weapon = WEAPON_LASER; }
-                                    if (1 > Save.TechCosts[ActPlayer].data[24]) { ActShipPtr->Weapon = WEAPON_PHASER; }
-                                    if (1 > Save.TechCosts[ActPlayer].data[32]) { ActShipPtr->Weapon = WEAPON_DISRUPTOR; }
-                                    if (1 > Save.TechCosts[ActPlayer].data[27]) { ActShipPtr->Weapon = WEAPON_PTORPEDO; }
+                                    if (1 > Save.TechCosts[ActPlayer][15]) { ActShipPtr->Weapon = WEAPON_LASER; }
+                                    if (1 > Save.TechCosts[ActPlayer][24]) { ActShipPtr->Weapon = WEAPON_PHASER; }
+                                    if (1 > Save.TechCosts[ActPlayer][32]) { ActShipPtr->Weapon = WEAPON_DISRUPTOR; }
+                                    if (1 > Save.TechCosts[ActPlayer][27]) { ActShipPtr->Weapon = WEAPON_PTORPEDO; }
                                     ++ActPlayer;
 
                                     if ((21 == ProjID) && (0 == SystemHeader[i].FirstShip.SType)
@@ -554,7 +554,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             }
                             if ((8 > ProjID) || (PROJECT_VON_NEUMANN == ProjID))
                             {
-                                Save.ProjectCosts[ActPlayer-1].data[ProjID] = 0;
+                                Save.ProjectCosts[ActPlayer-1][ProjID] = 0;
                             }
                             l = 1;
                         }
@@ -731,7 +731,7 @@ void ROTATEPLANETS(uint8 ActSys)
                             PlanetHeader->ProjectID = PROJECT_NONE;
                             for(k = 8; k <= 24; k++)
                             {
-                                if ((Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[k]] <= 0)
+                                if ((Save.TechCosts[ActPlayer-1][ProjectNeedsTech[k]] <= 0)
                                     && (ActPProjects->data[ProjectNeedsProject[k]]>0))
                                 {
                                     if (((k == 21) && (PlanetHeader->ProjectID<18))
@@ -916,15 +916,15 @@ void ROTATEPLANETS(uint8 ActSys)
                             {
                                 for (k = 22; k>=1; --k)
                                 {
-                                    if ((Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[PriorityList[k]]] <= 0)
+                                    if ((Save.TechCosts[ActPlayer-1][ProjectNeedsTech[PriorityList[k]]] <= 0)
                                             /* Technologie vorhanden */
                                         && ((ActPProjects->data[ProjectNeedsProject[PriorityList[k]]]>0)
-                                        || (Save.ProjectCosts[ActPlayer-1].data[ProjectNeedsProject[PriorityList[k]]] == 0)))
+                                        || (Save.ProjectCosts[ActPlayer-1][ProjectNeedsProject[PriorityList[k]]] == 0)))
                                     {
                                         /* evtl. noetiges Projekt vorhanden */
                                         if ((PriorityList[k]>=1) && (PriorityList[k]<=7)
-                                            && (Save.ProjectCosts[ActPlayer-1].data[ProjectNeedsProject[PriorityList[k]]] == 0)
-                                            && (Save.ProjectCosts[ActPlayer-1].data[PriorityList[k]]>0))
+                                            && (Save.ProjectCosts[ActPlayer-1][ProjectNeedsProject[PriorityList[k]]] == 0)
+                                            && (Save.ProjectCosts[ActPlayer-1][PriorityList[k]]>0))
                                         {
                                             PlanetHeader->ProjectID = PriorityList[k];
                                             /* Großprojekt noch nicht gebaut */
@@ -938,7 +938,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                     }
                                 }
                             }
-                            if (Save.ProjectCosts[ActPlayer-1].data[1]>0)
+                            if (Save.ProjectCosts[ActPlayer-1][1]>0)
                                 { PlanetHeader->ProjectID = 1; }
                             if (0 == PlanetHeader->ProjectID)
                             {
@@ -947,7 +947,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                 if (200 > PlanetHeader->Biosphaere)    { PlanetHeader->ProjectID = PROJECT_CLEAR_BIOPHERE; }
                             } else if (0 < PlanetHeader->ProjectID)
                             {
-                                PlanetHeader->XProjectCosts = Save.ProjectCosts[ActPlayer-1].data[PlanetHeader->ProjectID];
+                                PlanetHeader->XProjectCosts = Save.ProjectCosts[ActPlayer-1][PlanetHeader->ProjectID];
                             }
                         }
                         if ((0 == Save.CivPlayer[ActPlayer-1]) || (Save.PlayMySelf))
@@ -1108,11 +1108,11 @@ void ROTATEPLANETS(uint8 ActSys)
             { /* Forschung */
                 if (AllCreative[ActPlayer-1] < 0)
                 {
-                    Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] = 0;
+                    Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] = 0;
                 } else {
-                    Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] -= AllCreative[ActPlayer-1];
+                    Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] -= AllCreative[ActPlayer-1];
                 }
-                if (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] <= 0)
+                if (Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] <= 0)
                 {
                     Save.ImperatorState[ActPlayer-1] += 50;
                     if (Save.CivPlayer[ActPlayer-1] != 0)
@@ -1120,14 +1120,14 @@ void ROTATEPLANETS(uint8 ActSys)
                         INFORMUSER();
                         DISPLAYTECH(Save.ActTech[ActPlayer-1]);
                     }
-                    Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] = 0;
+                    Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] = 0;
                 }
             }
             if ((Save.CivPlayer[ActPlayer-1] == 0) || (Save.PlayMySelf))
             {
-                if (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] <= 0)
+                if (Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] <= 0)
                 {
-                    Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] = 0;
+                    Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] = 0;
                     l = Save.ActTech[ActPlayer-1];
                     Save.ActTech[ActPlayer-1] = 0;
                     do
@@ -1138,28 +1138,28 @@ void ROTATEPLANETS(uint8 ActSys)
                         else if (l == 11) { j = 4; }
                         else if (l == 4)  { j = 16; }
                         else              { j = (rand()%42)+1; }
-                        if (Save.TechCosts[ActPlayer-1].data[j]>0)
+                        if (Save.TechCosts[ActPlayer-1][j]>0)
                         {
                             if (TechUse1[j] == 0)
                             {
                                 Save.ActTech[ActPlayer-1] = j;
-                            } else if ((Save.TechCosts[ActPlayer-1].data[TechUse1[j]] <= 0)
-                                    && (Save.TechCosts[ActPlayer-1].data[TechUse2[j]] <= 0))
+                            } else if ((Save.TechCosts[ActPlayer-1][TechUse1[j]] <= 0)
+                                    && (Save.TechCosts[ActPlayer-1][TechUse2[j]] <= 0))
                             {
                                 Save.ActTech[ActPlayer-1] = j;
                             }
                        }
                        l = -1;
                     }
-                    while ((Save.ActTech[ActPlayer-1] == 0) && (Save.TechCosts[ActPlayer-1].data[42] > 0));
+                    while ((Save.ActTech[ActPlayer-1] == 0) && (Save.TechCosts[ActPlayer-1][42] > 0));
                 }
                 if ((ActPlayer == 8) && (Save.ActTech[ActPlayer-1] == 42))
                     { Save.ActTech[ActPlayer-1] = 0; }
 
-                if ((Save.ActTech[ActPlayer-1] == 42) && (Save.ProjectCosts[ActPlayer-1].data[6]>0))
+                if ((Save.ActTech[ActPlayer-1] == 42) && (Save.ProjectCosts[ActPlayer-1][6]>0))
                     { Save.ActTech[ActPlayer-1] = 0; }
 
-            } else if ((Save.ActTech[ActPlayer-1] == 0) || (Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] <= 0))
+            } else if ((Save.ActTech[ActPlayer-1] == 0) || (Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] <= 0))
             {
                 Save.ActTech[ActPlayer-1] = 0;
                 for(j = 0; j < 6; ++j)
@@ -1171,11 +1171,11 @@ void ROTATEPLANETS(uint8 ActSys)
                 do
                 {
                     ++i;
-                    if (0 < Save.TechCosts[ActPlayer-1].data[i])
+                    if (0 < Save.TechCosts[ActPlayer-1][i])
                     {
                         if ( (0 == TechUse1[i])
-                             || (   (0 >= Save.TechCosts[ActPlayer-1].data[TechUse1[i]])
-                                 && (0 >= Save.TechCosts[ActPlayer-1].data[TechUse2[i]])) )
+                             || (   (0 >= Save.TechCosts[ActPlayer-1][TechUse1[i]])
+                                 && (0 >= Save.TechCosts[ActPlayer-1][TechUse2[i]])) )
                         {
                             NewTech[j++] = i;
                         }
@@ -1185,7 +1185,7 @@ void ROTATEPLANETS(uint8 ActSys)
 
                 if (0 < j)
                 {
-                    if ((42 == NewTech[0]) && (0 < Save.ProjectCosts[ActPlayer-1].data[6]))
+                    if ((42 == NewTech[0]) && (0 < Save.ProjectCosts[ActPlayer-1][6]))
                     {
                         if (0 == (Year % 13))
                         {
@@ -1595,7 +1595,7 @@ void ROTATEPLANETS(uint8 ActSys)
             Save.Staatstopf[ActPlayer] += Year*120;
             for(i = 1; i < 8; i++)
             {
-                Save.TechCosts[ActPlayer].data[(rand()%30)+1] = 0;
+                Save.TechCosts[ActPlayer][(rand()%30)+1] = 0;
             }
             for(i = 0; i < (MAXCIVS-1); i++)
             {

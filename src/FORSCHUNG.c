@@ -39,7 +39,7 @@ void FORSCHUNG()
         {
             haveTechColor = 29;
             offset = i*21+j+1;
-            if (Save.TechCosts[ActPlayer-1].data[offset]<=0)
+            if (Save.TechCosts[ActPlayer-1][offset]<=0)
             {
                 haveTechColor = 12;
             }
@@ -54,15 +54,15 @@ void FORSCHUNG()
         _s=my_strcpy(s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
         *_s++ = ',';
         *_s++ = ' ';
-        _s = dez2out((Save.TechCosts[ActPlayer-1].data[Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
+        _s = dez2out((Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
         *_s++ = ' ';
         (void) my_strcpy(_s, _PT_Jahre);
         WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,s);
 
         MAKEWINBORDER(RPort_PTR,20,365,492,390,6,12,0);
-        l = Save.TechCosts[ActPlayer-1].data[Save.ActTech[0]];
+        l = Save.TechCosts[ActPlayer-1][Save.ActTech[0]];
         if (l < 0) { l = 0; }
-        RECTWIN(RPort_PTR,8,22,367,490-it_round(468.0*l/Save.TechCosts[ActPlayer-1].data[42]),388);
+        RECTWIN(RPort_PTR,8,22,367,490-it_round(468.0*l/Save.TechCosts[ActPlayer-1][42]),388);
     } else {
         WRITE(255,342,ActPlayerFlag,WRITE_Center,RPort_PTR,3,PText[173]);
     }
@@ -77,7 +77,7 @@ void FORSCHUNG()
     l = 0;
     for (i = 24; (i>=8) && (l<4); i--)
     {
-        if (0 >= Save.TechCosts[ActPlayer-1].data[ProjectNeedsTech[i]])
+        if (0 >= Save.TechCosts[ActPlayer-1][ProjectNeedsTech[i]])
         {
             if (4 > l)
             {

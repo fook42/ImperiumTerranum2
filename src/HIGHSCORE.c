@@ -4,10 +4,9 @@
 #include "IT2_Functions.h"
 
 const uint8 _GETCOLOR[]={122,122,123,124,2,125,126,11};
-
 const char* const def_HSNames[] = {
-     "Oxygenic", "Kha`thak", "Tomalak", "Megalith",
-     "Monolith", "The One", "Dark Blitter", "CyberTrace"};
+        "Oxygenic", "Kha`thak", "Tomalak", "Megalith",
+        "Monolith", "The One", "Dark Blitter", "CyberTrace"};
 
 void CREATEHIGHSCORE(char* HScoreFileName)
 {

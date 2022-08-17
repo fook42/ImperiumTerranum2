@@ -18,8 +18,8 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
     TechID = 0;
     for (i = 41; i>0; i--)
     {
-        if ((0 <  Save.TechCosts[CivVar1-1].data[i]) &&
-            (0 >= Save.TechCosts[CivVar2-1].data[i]))
+        if ((0 <  Save.TechCosts[CivVar1-1][i]) &&
+            (0 >= Save.TechCosts[CivVar2-1][i]))
         {
             TechID = i;
         }
@@ -57,7 +57,7 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
                 DISPLAYTECH(TechID);
             }
         }
-        Save.TechCosts[CivVar1-1].data[TechID] = 0;
+        Save.TechCosts[CivVar1-1][TechID] = 0;
         if (Save.ActTech[CivVar1-1] == TechID)
         {
             Save.ActTech[CivVar1-1] = 0;

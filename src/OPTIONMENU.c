@@ -132,8 +132,8 @@ void OPTION_REDUCECOSTS(void)
             {
                 for (i = 1; i<43; ++i)
                 {
-                    Save.TechCosts[j].data[i]    -= (Save.TechCosts[j].data[i]   *Factor)>>10;
-                    Save.ProjectCosts[j].data[i] -= (Save.ProjectCosts[j].data[i]*Factor)>>10;
+                    Save.TechCosts[j][i]    -= (Save.TechCosts[j][i]   *Factor)>>10;
+                    Save.ProjectCosts[j][i] -= (Save.ProjectCosts[j][i]*Factor)>>10;
                 }
             }
         }
@@ -146,8 +146,8 @@ void OPTION_REDUCECOSTS(void)
             {
                 for (i = 1; i<43; ++i)
                 {
-                    Save.TechCosts[j].data[i]    -= (Save.TechCosts[j].data[i]   *Factor)>>10;
-                    Save.ProjectCosts[j].data[i] -= (Save.ProjectCosts[j].data[i]*Factor)>>10;
+                    Save.TechCosts[j][i]    -= (Save.TechCosts[j][i]   *Factor)>>10;
+                    Save.ProjectCosts[j][i] -= (Save.ProjectCosts[j][i]*Factor)>>10;
                 }
             }
         }

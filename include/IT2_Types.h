@@ -41,8 +41,6 @@ typedef struct StrArrMAXPLANETS { char  data[MAXPLANETS+1][6];  } StrArrMAXPLANE
 
 typedef struct ByteArr42 { uint8    data[43]; } ByteArr42; // range 0..42
 
-typedef struct LongArr42 { sint32   data[43]; } LongArr42;
-
 typedef struct r_Coords { double    data[41]; } r_Coords_t;
 
 typedef struct ITBitMap {
@@ -117,8 +115,8 @@ typedef struct r_Save {
     uint32      MaxWarPower[MAXCIVS];
     uint32      ImperatorState[MAXCIVS];
     uint32      SSMoney[MAXCIVS][MAXCIVS];
-    LongArr42   TechCosts[MAXCIVS];
-    LongArr42   ProjectCosts[MAXCIVS];
+    sint32      TechCosts[MAXCIVS][43];
+    sint32      ProjectCosts[MAXCIVS][43];
     sint8       ActTech[MAXCIVS+1];
     uint8       GlobalFlags[MAXCIVS+1];
     sint8       GSteuer[MAXCIVS+1];
