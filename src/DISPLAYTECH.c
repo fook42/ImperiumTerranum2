@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-const char* const Technology[] =
+const char* const TechnologyFileName[] =
         {   "Halbleiter",              "Informatik",
             "Recycling",               "Kernfusion",
             "Carbonfasern",            "Keramik-Technologie",
@@ -53,7 +53,7 @@ void DISPLAYTECH(const int TechID)
     {
         _s=my_strcpy(_s, "selbstSys");
     } else {
-        _s=my_strcpy(_s, Technology[TechID-1]);
+        _s=my_strcpy(_s, TechnologyFileName[TechID-1]);
     }
     _s=my_strcpy(_s, ".pal");
     Depth = SETCOLOR(MyScreen[1],s);
@@ -66,14 +66,14 @@ void DISPLAYTECH(const int TechID)
     if (!DISPLAYIMAGE(s,0,40,320,256,Depth,MyScreen[1],0)) { }
 
     WRITE_RP1(340,50,1,0,2,PText[223]);
-    WRITE_RP1(340,70,1,0,3,TechnologyL.data[TechID]);
+    WRITE_RP1(340,70,1,0,3,TechnologyName[TechID]);
     if (0 < TechUse1[TechID])
     {
         WRITE_RP1(340,110,1,0,3,PText[224]);
-        WRITE_RP1(370,130,1,0,3,TechnologyL.data[TechUse1[TechID]]);
+        WRITE_RP1(370,130,1,0,3,TechnologyName[TechUse1[TechID]]);
         if (TechUse1[TechID] != TechUse2[TechID])
         {
-            WRITE_RP1(370,150,1,0,3,TechnologyL.data[TechUse2[TechID]]);
+            WRITE_RP1(370,150,1,0,3,TechnologyName[TechUse2[TechID]]);
         }
     }
     if (27 != TechID)
@@ -85,10 +85,10 @@ void DISPLAYTECH(const int TechID)
             if (TechUse1[CivVar] == TechID) { l      = CivVar; }
             if (TechUse2[CivVar] == TechID) { Offset = CivVar; }
         }
-        if (0 < l) { WRITE_RP1(370,210,1,0,3,TechnologyL.data[l]); }
+        if (0 < l) { WRITE_RP1(370,210,1,0,3,TechnologyName[l]); }
         if ((l != Offset) && (0 < Offset) && (43 > Offset))
         {
-            WRITE_RP1(370,230,1,0,3,TechnologyL.data[Offset]);
+            WRITE_RP1(370,230,1,0,3,TechnologyName[Offset]);
         }
     }
     l = 320;
@@ -103,7 +103,7 @@ void DISPLAYTECH(const int TechID)
 
             *_s++ = ' ';
             *_s++ = ' ';
-            (void) my_strcpy(_s, Project.data[CivVar]);
+            (void) my_strcpy(_s, ProjectName[CivVar]);
             WRITE_RP1(20,l,1,0,3,s);
             l += 20;
         }

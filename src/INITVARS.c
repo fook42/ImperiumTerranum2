@@ -108,11 +108,11 @@ void INITVARS()
 
     for (i = 0;  i<25; ++i ) { (void) my_strcpy(Save.SystemName[i], PText[i+1] ); }
 
-    for (i = 0;  i<42; ++i ) { (void) my_strcpy(TechnologyL.data[i+1], PText[i+30]); }
+    for (i = 0;  i<42; ++i ) { (void) my_strcpy(TechnologyName[i+1], PText[i+30]); }
 
-    for (i = 1;  i<8;  ++i )            { (void) my_strcpy(Project.data[i], PText[i+74]); }
-    for (i = 8;  i<25; ++i )            { (void) my_strcpy(Project.data[i], ProjectShips[i-8]); }
-    for (i = 25; i<PROJECT_NOMORE; ++i ){ (void) my_strcpy(Project.data[i], PText[i+60]); }
+    for (i = 1;  i<8;  ++i )            { (void) my_strcpy(ProjectName[i], PText[i+74]); }
+    for (i = 8;  i<25; ++i )            { (void) my_strcpy(ProjectName[i], ProjectShips[i-8]); }
+    for (i = 25; i<PROJECT_NOMORE; ++i ){ (void) my_strcpy(ProjectName[i], PText[i+60]); }
 
     for (i = 0; i < MAXCIVS; ++i)        // TODO ... added due to shift of Save-array
     {

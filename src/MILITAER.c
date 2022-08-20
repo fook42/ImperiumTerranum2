@@ -89,7 +89,7 @@ void MILITAER()
         _s = PText[672];
     } else {
         _s=my_strcpy(s, Txt_notavail);
-        _s=my_strcpy(_s, TechnologyL.data[9]);
+        _s=my_strcpy(_s, TechnologyName[9]);
         *_s++ = ')';
         *_s = 0;
         _s = s;
@@ -101,7 +101,7 @@ void MILITAER()
         _s = PText[673];
     } else {
         _s=my_strcpy(s, Txt_notavail);
-        _s=my_strcpy(_s, TechnologyL.data[9]);
+        _s=my_strcpy(_s, TechnologyName[23]);
         *_s++ = ')';
         *_s = 0;
         _s = s;

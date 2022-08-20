@@ -90,7 +90,8 @@ _EXTERN_  sint16            SystemY[MAXSYSTEMS];  // new range 0..MAXSYSTEMS-1
 _EXTERN_  uint8             SystemFlags[MAXCIVS][MAXSYSTEMS]; // new range: 0..MAXCIVS-1, 0..MAXSYSTEMS-1
 _EXTERN_  r_SystemHeader    SystemHeader[MAXSYSTEMS];  // new range 0..MAXSYSTEMS-1
 
-_EXTERN_  StrArr42          TechnologyL, Project;
+_EXTERN_  char          TechnologyName[43][30];
+_EXTERN_  char          ProjectName[43][30];
 
 _EXTERN_  UWORD*        SoundMemA[SOUNDS]; // new range 0..SOUNDS-1
 _EXTERN_  UWORD         SoundSize[SOUNDS]; // new range 0..SOUNDS-1

@@ -43,7 +43,7 @@ void FORSCHUNG()
             {
                 haveTechColor = 12;
             }
-            WRITE(posx, posy, haveTechColor, 0, RPort_PTR,2, TechnologyL.data[offset]);
+            WRITE(posx, posy, haveTechColor, 0, RPort_PTR,2, TechnologyName[offset]);
             posy += 14;
         }
         posx += 245;
@@ -51,7 +51,7 @@ void FORSCHUNG()
 
     if (0 < Save.ActTech[ActPlayer-1])
     {
-        _s=my_strcpy(s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
+        _s=my_strcpy(s, TechnologyName[Save.ActTech[ActPlayer-1]]);
         *_s++ = ',';
         *_s++ = ' ';
         _s = dez2out((Save.TechCosts[ActPlayer-1][Save.ActTech[ActPlayer-1]] / (AllCreative[ActPlayer-1]+1)), 0, _s);
@@ -83,7 +83,7 @@ void FORSCHUNG()
             {
                 ++l;
                 posy=415+l*18;
-                WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR,2, Project.data[i]);
+                WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR,2, ProjectName[i]);
                 (void) dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
                 (void) dez2out(ShipData(i).MaxMove,0,s);     WRITE(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
                 (void) dez2out(ShipData(i).MaxShield,0,s);   WRITE(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);

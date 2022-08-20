@@ -272,7 +272,7 @@ void VERHANDLUNG(int CivFlag, int Mode)
                     _s=my_strcpy(s, PText[298]);
                 }
                 *_s++ = ' ';
-                _s=my_strcpy(_s, TechnologyL.data[XTech]);
+                _s=my_strcpy(_s, TechnologyName[XTech]);
                 *_s++ = '.';
                 *_s = 0;
                 TArr4.data[2] = PText[299];

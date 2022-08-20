@@ -20,7 +20,7 @@ void WRITECURRENTPROJECT(r_PlanetHeader* MyPlanetHeader)
     {
         if (PROJECT_NONE < MyPlanetHeader->ProjectID)
         {
-            _s = Project.data[MyPlanetHeader->ProjectID];
+            _s = ProjectName[MyPlanetHeader->ProjectID];
             l = MyPlanetHeader->XProjectPayed*100 / (MyPlanetHeader->XProjectCosts+1);
         } else {
             switch (MyPlanetHeader->ProjectID) {
@@ -281,7 +281,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
         _s=my_strcpy(s, PText[172]);
         *_s++ = ':';
         *_s++ = ' ';
-        (void) my_strcpy(_s, TechnologyL.data[Save.ActTech[ActPlayer-1]]);
+        (void) my_strcpy(_s, TechnologyName[Save.ActTech[ActPlayer-1]]);
         WRITE_RP1(275,5,1,1,3,s);
     } else {
         WRITE_RP1(275,5,1,1,3,PText[173]);
@@ -408,7 +408,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     if (DoIt)
                     {
                         ProjectRounds[j] = Save.ProjectCosts[ActPlayer-1][i];
-                        (void) my_strcpy(NewProject[j], Project.data[i]);
+                        (void) my_strcpy(NewProject[j], ProjectName[i]);
                         ProjectNum[j] = i;
                         if ((7 < i) && (25 > i))
                         {
@@ -493,7 +493,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     MyPlanetHeader->XProjectCosts = ProjectRounds[btx];
                     if (PROJECT_NONE < MyPlanetHeader->ProjectID)
                     {
-                        (void) my_strcpy(s, Project.data[MyPlanetHeader->ProjectID]);
+                        (void) my_strcpy(s, ProjectName[MyPlanetHeader->ProjectID]);
                     }
                 }
                 WRITECURRENTPROJECT(MyPlanetHeader);

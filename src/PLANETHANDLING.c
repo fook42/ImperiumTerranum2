@@ -302,7 +302,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
             case OPT_TECH:  {
                                 _s=my_strcpy(s2, PText[438]);
                                 *_s++ = ' ';
-                                _s=my_strcpy(_s, TechnologyL.data[XTech]);
+                                _s=my_strcpy(_s, TechnologyName[XTech]);
                                 *_s++ = ' ';
                                 (void) my_strcpy(_s, PText[437]); // "zu übergeben"
                                 if (SMALLREQUEST(s2, CivVar, CivFlag))
@@ -506,7 +506,7 @@ void DIPLOMACY(r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetHeader)
                                     i = 2;
                                 } else {
                                     i = 0;
-                                    _s=my_strcpy(s2, TechnologyL.data[XTech]);
+                                    _s=my_strcpy(s2, TechnologyName[XTech]);
                                     (void) my_strcpy(_s, ".");
                                     REQUEST(PText[450],s2,ActPlayerFlag,ActPlayerFlag);
                                     Save.TechCosts[CivVar-1][XTech] = 0;

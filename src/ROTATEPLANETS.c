@@ -579,7 +579,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                         (void) my_strcpy(_s, PText[579]); // fuehren als erste
                                         WRITE(171, 7,GETCIVFLAG(ActPlayer),(1|WRITE_Center),RPort_PTR,3,s);
 
-                                        _s=my_strcpy(s, Project.data[ProjID]);
+                                        _s=my_strcpy(s, ProjectName[ProjID]);
                                         *_s++ = '-';
                                         *_s = 0;
                                         WRITE(171,29,                   12,(1|WRITE_Center),RPort_PTR,3,s);
@@ -654,7 +654,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                 {
                                     _s=my_strcpy(s, PText[583]);  // baut
                                     *_s++ = ' ';
-                                    (void) my_strcpy(_s, Project.data[ProjID]);
+                                    (void) my_strcpy(_s, ProjectName[ProjID]);
                                 } else {
                                     switch (ProjID)
                                     {
@@ -1210,7 +1210,7 @@ void ROTATEPLANETS(uint8 ActSys)
                     {
                         if (0 < NewTech[j])
                         {
-                            WRITE(10,j*20+40,12,0,RPort_PTR,3,TechnologyL.data[NewTech[j]]);
+                            WRITE(10,j*20+40,12,0,RPort_PTR,3,TechnologyName[NewTech[j]]);
                         }
                     }
                     i = 255;
@@ -1225,12 +1225,12 @@ void ROTATEPLANETS(uint8 ActSys)
                             {
                                 if (0 < NewTech[j])
                                 {
-                                    WRITE(10,j*20+40,12,0,RPort_PTR,3,TechnologyL.data[NewTech[j]]);
+                                    WRITE(10,j*20+40,12,0,RPort_PTR,3,TechnologyName[NewTech[j]]);
                                 }
                             }
                             if (0 < NewTech[i])
                             {
-                                WRITE(10,i*20+40,ActPlayerFlag,0,RPort_PTR,3,TechnologyL.data[NewTech[i]]);
+                                WRITE(10,i*20+40,ActPlayerFlag,0,RPort_PTR,3,TechnologyName[NewTech[i]]);
                             }
                         }
                         if (LMB_PRESSED)
@@ -1485,7 +1485,7 @@ void ROTATEPLANETS(uint8 ActSys)
             WRITE_RP0(256,127,12,WRITE_Center,3,s);
             _s=my_strcpy(s, PText[616]);
             *_s++ = ' ';
-            _s=my_strcpy(_s, Project.data[btx]);
+            _s=my_strcpy(_s, ProjectName[btx]);
             *_s++ = ' ';
             (void) my_strcpy(_s, PText[617]);
             WRITE_RP0(256,175,12,WRITE_Center,3,s);

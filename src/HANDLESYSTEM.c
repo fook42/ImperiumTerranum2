@@ -46,7 +46,7 @@ uint8 HANDLESYSTEM_DRAWSHIPS(sint8 Mode, uint8 stSys, uint8* PSys, r_ShipHeader*
                     {
                         WRITE_RP0(40,y,ActPlayerFlag,0,2, _PT_Flotte);
                     } else {
-                        WRITE_RP0(40,y,ActPlayerFlag,0,2, Project.data[MyShipPtr->SType]);
+                        WRITE_RP0(40,y,ActPlayerFlag,0,2, ProjectName[MyShipPtr->SType]);
                         if (-3 == Mode) {
                             _s = my_strcpy(s, Save.SystemName[MyShipPtr->Source-1]);
                             *_s++ = ' ';
@@ -140,7 +140,7 @@ uint8 DRAWPLANETS(uint8 CivFlag, uint8 stSys, uint8* PSys, uint8* PNum, uint8* P
                             case PROJECT_REPAIR_INFRA:    _s = PText[164]; break;
                             case PROJECT_REPAIR_INDUSTRY: _s = PText[165]; break;
                             case PROJECT_NONE:            _s = _Txt_Separator; break;
-                            default:                      _s = Project.data[MyPlanet->ProjectID];
+                            default:                      _s = ProjectName[MyPlanet->ProjectID];
                         }
                         WRITE_RP0(170,y,12,0,2, _s);
 
@@ -284,7 +284,7 @@ void SEARCHOBJECT(uint8* ActSys)
                             {
                                 _s = _PT_Flotte;
                             } else {
-                                _s = Project.data[MyShipPtr->SType];
+                                _s = ProjectName[MyShipPtr->SType];
                             }
                             WRITE_RP0(40,(LastP-1)*14,ActPlayerFlag,1,2, _s);
                         } else {
@@ -297,7 +297,7 @@ void SEARCHOBJECT(uint8* ActSys)
                             {
                                 _s = _PT_Flotte;
                             } else {
-                                _s = Project.data[MyShipPtr->SType];
+                                _s = ProjectName[MyShipPtr->SType];
                             }
                             WRITE_RP0(40,(ThisP-1)*14,ActPlayerFlag,5,2, _s);
                         } else {

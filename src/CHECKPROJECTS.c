@@ -35,7 +35,7 @@ void CHECKPROJECTS(r_PlanetHeader* PlanetPtr, uint8 NewOwner)
                     (void) my_strcpy(_s, PText[205]);
                     WRITE(171,12,MyPlanetHeader->PFlags & FLAG_CIV_MASK,(1|WRITE_Center),RPort_PTR,3,s);
 
-                    _s=my_strcpy(s, Project.data[i]);
+                    _s=my_strcpy(s, ProjectName[i]);
                     *_s++ = '-';
                     *_s = 0;
                     WRITE(171,32,12,(1|WRITE_Center),RPort_PTR,3,s);

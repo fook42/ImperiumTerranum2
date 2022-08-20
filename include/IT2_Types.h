@@ -35,7 +35,6 @@ typedef struct PenArr { uint16      data[13]; } PenArr;
 typedef struct ColSpecArr { sint16  data[5]; } ColSpecArr;
 
 typedef struct StrArr11         { char  data[12][15];           } StrArr11;
-typedef struct StrArr42         { char  data[43][30];           } StrArr42;
 typedef struct StrArrMAXPLANETS { char  data[MAXPLANETS+1][6];  } StrArrMAXPLANETS;
 
 typedef struct ByteArr42 { uint8    data[43]; } ByteArr42; // range 0..42

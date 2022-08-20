@@ -211,7 +211,7 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
         {
             _s1=my_strcpy(s, PText[570]);   // Bürger fordern
             *_s1++ = ' ';
-            (void) my_strcpy(_s1, Project.data[TheProject]);
+            (void) my_strcpy(_s1, ProjectName[TheProject]);
             WRITE(171,68,12,(1|WRITE_Center),RPort_PTR,2, s);
         }
         if (-1 == TheProject)

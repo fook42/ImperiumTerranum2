@@ -75,11 +75,11 @@ bool INITIMAGES()
     char*   _s2;
 
     _s1=my_strcpy( s, PathStr[5]);  /* SHIPS/ */
-    _s2=my_strcpy(_s1, Project.data[ShipPtr1->SType]);
+    _s2=my_strcpy(_s1, ProjectName[ShipPtr1->SType]);
     (void) my_strcpy(_s2, ".img");
     if (!RAWLOADIMAGE(s,0,32,512,32,4, &ImgBitMap4)) { return false; }
 
-    _s2=my_strcpy(_s1, Project.data[ShipPtr2->SType]);
+    _s2=my_strcpy(_s1, ProjectName[ShipPtr2->SType]);
     (void) my_strcpy(_s2, ".img");
     if (!RAWLOADIMAGE(s,0,64,512,32,4, &ImgBitMap4)) { return false; }
 

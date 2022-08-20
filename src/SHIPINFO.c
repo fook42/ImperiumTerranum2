@@ -94,11 +94,11 @@ void SHIPINFO(uint8 ActSys, r_ShipHeader* MyShipPtr)
 
     INITSCREEN(SCREEN_TECH);
     _s=my_strcpy( s, PathStr[5]);
-    _s=my_strcpy(_s,Project.data[MyShipPtr->SType]);
+    _s=my_strcpy(_s,ProjectName[MyShipPtr->SType]);
     (void) my_strcpy(_s, "Tech.img");
     if (!DISPLAYIMAGE(s,6,7,256,498,5,MyScreen[1],0)) { }
 
-    WRITE_RP1(290,15,1,0,3,Project.data[MyShipPtr->SType]);
+    WRITE_RP1(290,15,1,0,3,ProjectName[MyShipPtr->SType]);
     s[0] = '-'; s[1] = ' ';
     _s2=s+2;
     _s = SHIPINFO_MAKETEXT(_s2, PText[190]);

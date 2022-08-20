@@ -44,7 +44,7 @@ bool TAKETECH(uint8 CivFlag1, uint8 CivFlag2)
                 *_s = 0;
 
                 WRITE(171,22,CivFlag1,WRITE_Center|JAM1,RPort_PTR,3, s);
-                WRITE(171,42,      12,WRITE_Center|JAM1,RPort_PTR,3, TechnologyL.data[TechID]);
+                WRITE(171,42,      12,WRITE_Center|JAM1,RPort_PTR,3, TechnologyName[TechID]);
                 if (Save.PlayMySelf)
                 {
                     Delay(PAUSE);

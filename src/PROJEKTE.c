@@ -22,7 +22,7 @@ void PROJEKTE()
     XPos = 172;
     for (i = 1; i<4; ++i)
     {
-        WRITE(XPos,14,12,WRITE_Right,RPort_PTR,0,Project.data[i]);
+        WRITE(XPos,14,12,WRITE_Right,RPort_PTR,0,ProjectName[i]);
         XPos += 167;
         YPos[i] = 40;
     }
@@ -74,7 +74,7 @@ void PROJEKTE()
         XPos = 130;
         for (i = 4; i<8; ++i)
         {
-            WRITE(XPos,YPos[i],12,WRITE_Right,RPort_PTR,0,Project.data[i]);
+            WRITE(XPos,YPos[i],12,WRITE_Right,RPort_PTR,0,ProjectName[i]);
             XPos += 125;
             YPos[i] += 15;
         }
