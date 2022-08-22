@@ -18,10 +18,10 @@ extern struct Custom custom;
 #ifndef _EXTERN_
 #define _EXTERN_ extern
 _EXTERN_ struct CIA *ciaa;
-_EXTERN_ uint8 TechUse1[43];
-_EXTERN_ uint8 TechUse2[43];
-_EXTERN_ uint8 ProjectNeedsTech[43];
-_EXTERN_ uint8 ProjectNeedsProject[43];
+_EXTERN_ const uint8 TechUse1[43];
+_EXTERN_ const uint8 TechUse2[43];
+_EXTERN_ const uint8 ProjectNeedsTech[43];
+_EXTERN_ const uint8 ProjectNeedsProject[43];
 _EXTERN_ r_ShipHeader DefaultShip;
 _EXTERN_ char _Txt_FontName[];
 _EXTERN_ char _Txt_Separator[];
@@ -35,11 +35,11 @@ _EXTERN_ const char PlanetClassName[];
 #else
 struct CIA *ciaa = (struct CIA *) 0xBFE001;
 
-uint8 TechUse1[] = {0,  0,0,0,0,0,  0,1,1,3,4,  3,6,2,8,10,   4,11,13,13,15, 16,18,19,20,21,  12,23,24,24,21,  27,29,25, 2,26,  31,32,34,13,36,  39,38};
-uint8 TechUse2[] = {0,  0,0,0,0,0,  0,1,1,3,4,  5,6,7,9,16,  11,12,13,14,17, 20,18,22,20,30,  22,23,24,24,28,  29,33,30,31,31,  32,33,35,13,37,  40,41};
-uint8 ProjectNeedsTech[]    = {0,0,0,9,19, 40,41,42,7,11, 15,16,20,21,24, 28,30,25,33,32, 35,31,36,37,38,
+const uint8 TechUse1[] = {0,  0,0,0,0,0,  0,1,1,3,4,  3,6,2,8,10,   4,11,13,13,15, 16,18,19,20,21,  12,23,24,24,21,  27,29,25, 2,26,  31,32,34,13,36,  39,38};
+const uint8 TechUse2[] = {0,  0,0,0,0,0,  0,1,1,3,4,  5,6,7,9,16,  11,12,13,14,17, 20,18,22,20,30,  22,23,24,24,28,  29,33,30,31,31,  32,33,35,13,37,  40,41};
+const uint8 ProjectNeedsTech[]    = {0,0,0,9,19, 40,41,42,7,11, 15,16,20,21,24, 28,30,25,33,32, 35,31,36,37,38,
                                16,0,0,0,2, 3,4,8,10,12, 13,18,22,23,26, 29,34,39};
-uint8 ProjectNeedsProject[] = {0,0,29,0,3, 0,0,6,0,0, 0,25,25,25,25, 25,25,25,25,25, 25,25,25,25,25,
+const uint8 ProjectNeedsProject[] = {0,0,29,0,3, 0,0,6,0,0, 0,25,25,25,25, 25,25,25,25,25, 25,25,25,25,25,
                                 0,1,0,0,28, 0,32,0,0,0, 0,0,0,35,0, 34,0,0};
 r_ShipHeader DefaultShip = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL};
 
