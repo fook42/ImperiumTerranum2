@@ -106,6 +106,7 @@ void STARFLY(uint8 Ship)
 {
     uint16  FireFactor;
     sint16  dx,dy,da = 0;
+    const sint16  XYvalue[2][4] = { {90,510,370,90}, {40,560,420,40}};
 
     ++Rotation;
     if (2 < Rotation)
@@ -159,24 +160,16 @@ void STARFLY(uint8 Ship)
         if (1 < StepCtr)
         {
             Angle[Ship] += 32;
-        } else if ( ((y[Ship]<40)  && (Angle[Ship] >= 0)   && (Angle[Ship] <= 128) && (Ship == 1)) ||
-                    ((y[Ship]<90)  && (Angle[Ship] >= 0)   && (Angle[Ship] <= 128) && (Ship == 0)) ||
-                    ((x[Ship]>560) && (Angle[Ship] >= 128) && (Angle[Ship] <= 256) && (Ship == 1)) ||
-                    ((x[Ship]>510) && (Angle[Ship] >= 128) && (Angle[Ship] <= 256) && (Ship == 0)) ||
-                    ((y[Ship]>420) && (Angle[Ship] >= 256) && (Angle[Ship] <= 384) && (Ship == 1)) ||
-                    ((y[Ship]>370) && (Angle[Ship] >= 256) && (Angle[Ship] <= 384) && (Ship == 0)) ||
-                    ((x[Ship]<40)  && (((Angle[Ship] >= 384) && (Angle[Ship] <= 480)) || (Angle[Ship] == 0)) && (Ship == 1)) ||
-                    ((x[Ship]<90)  && (((Angle[Ship] >= 384) && (Angle[Ship] <= 480)) || (Angle[Ship] == 0)) && (Ship == 0)))
+        } else if ( ((y[Ship]<XYvalue[Ship][0]) &&   (Angle[Ship] >= 0)   && (Angle[Ship] <= 128)) ||
+                    ((x[Ship]>XYvalue[Ship][1]) &&   (Angle[Ship] >= 128) && (Angle[Ship] <= 256)) ||
+                    ((y[Ship]>XYvalue[Ship][2]) &&   (Angle[Ship] >= 256) && (Angle[Ship] <= 384)) ||
+                    ((x[Ship]<XYvalue[Ship][3]) && (((Angle[Ship] >= 384) && (Angle[Ship] <= 480)) || (Angle[Ship] == 0))))
         {
             Angle[Ship] += 32;
-        } else if ( ((y[Ship]<40)  && (Angle[Ship] >= 384) && (Angle[Ship] <= 480) && (Ship == 1)) ||
-                    ((y[Ship]<90)  && (Angle[Ship] >= 384) && (Angle[Ship] <= 480) && (Ship == 0)) ||
-                    ((x[Ship]>560) && (Angle[Ship] >= 0)   && (Angle[Ship] <= 96)  && (Ship == 1)) ||
-                    ((x[Ship]>510) && (Angle[Ship] >= 0)   && (Angle[Ship] <= 96)  && (Ship == 0)) ||
-                    ((y[Ship]>420) && (Angle[Ship] >= 128) && (Angle[Ship] <= 224) && (Ship == 1)) ||
-                    ((y[Ship]>370) && (Angle[Ship] >= 128) && (Angle[Ship] <= 224) && (Ship == 0)) ||
-                    ((x[Ship]<40)  && (Angle[Ship] >= 256) && (Angle[Ship] <= 352) && (Ship == 1)) ||
-                    ((x[Ship]<90)  && (Angle[Ship] >= 256) && (Angle[Ship] <= 352) && (Ship == 0)))
+        } else if ( ((y[Ship]<XYvalue[Ship][0]) && (Angle[Ship] >= 384) && (Angle[Ship] <= 480)) ||
+                    ((x[Ship]>XYvalue[Ship][1]) && (Angle[Ship] >= 0)   && (Angle[Ship] <= 96))  ||
+                    ((y[Ship]>XYvalue[Ship][2]) && (Angle[Ship] >= 128) && (Angle[Ship] <= 224)) ||
+                    ((x[Ship]<XYvalue[Ship][3]) && (Angle[Ship] >= 256) && (Angle[Ship] <= 352)))
         {
             Angle[Ship] -= 32;
         } else if ((x[Ship] >= (x[1-Ship]-130)) && (x[Ship] <= (x[1-Ship]+130))
