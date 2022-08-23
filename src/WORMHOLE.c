@@ -459,7 +459,7 @@ bool WORMHOLE(r_ShipHeader* ShipPtr, uint8 ActSys)
     WRITE_RP0(Area_CenterX,Offset+35,ActPlayerFlag,WRITE_Center,3,PText[468]);
     _s=my_strcpy(s, PText[469]);
     *_s++ = ' ';
-    (void) my_strcpy(_s, Save.SystemName.data[SysID]);
+    (void) my_strcpy(_s, Save.SystemName[SysID]);
     WRITE_RP0(Area_CenterX,Offset+57,ActPlayerFlag,WRITE_Center,3,s);
     if (0 == SystemHeader[SysID].Planets)
     {
