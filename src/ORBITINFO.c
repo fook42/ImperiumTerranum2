@@ -20,7 +20,7 @@ int DRAWSHIPS(int i, char (*ShipNames)[15], r_ShipHeader* MyShipPtr, int max_shi
             if (0 != MyShipPtr->Owner)
             {
                 BltBitMapRastPort((struct BitMap*) &ImgBitMap4,(MyShipPtr->SType-8)*32,32,RPort_PTR,15,7+i*32,32,32,192);
-                WRITE(52,15+i*32,12,0,RPort_PTR,3,Project.data[MyShipPtr->SType]);
+                WRITE(52,15+i*32,12,0,RPort_PTR,3,ProjectName[MyShipPtr->SType]);
 
                 (void) my_strcpy(ShipNames[j], ProjectName[MyShipPtr->SType]);
 

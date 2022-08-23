@@ -39,7 +39,7 @@ void SYSINFO(int SysID, uint8 ThePlayerFlag)
         _s=my_strcpy(s, _PT_System);
         *_s++ = ':';
         *_s++ = ' ';
-        (void) my_strcpy(_s, Save.SystemName.data[SysID]);
+        (void) my_strcpy(_s, Save.SystemName[SysID]);
         WRITE_RP0(Area_CenterX,260,SystemFlags[0][SysID] & FLAG_CIV_MASK,WRITE_Center,3,s);
 
         _s=my_strcpy(s, _PT_Bevoelkerung);
