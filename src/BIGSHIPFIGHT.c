@@ -149,11 +149,11 @@ void STARFLY(uint8 Ship)
     if (0 == Rotation)
     {
         StepCtr = 0;
-        if ((x[Ship]<15) || (x[Ship]>592))
+        if ((x[Ship]<15) || (x[Ship]>(HighRes_Width-48)))
         {
             StepCtr = 1;
         }
-        if ((y[Ship]<15) || (y[Ship]>462))
+        if ((y[Ship]<15) || (y[Ship]>(HighRes_Height-48)))
         {
             StepCtr++;
         }
@@ -257,19 +257,19 @@ void DRAWFIRE()
     sint16  ShieldValue;
 
     // draw shield-bars at the bottom...
-    RECTWIN(MyRPort_PTR[AScr],7,0,500,639,511);
+    RECTWIN(MyRPort_PTR[AScr],7,0,HighRes_Height-12,HighRes_Width-1,HighRes_Height-1);
     ShieldValue = SSHeader[0].ShieldS;
-    if (ShieldValue > 319)
+    if (ShieldValue > (CenterX-1))
     {
-        ShieldValue = 319;
+        ShieldValue = (CenterX-1);
     }
-    RECTWIN(MyRPort_PTR[AScr],14,0,501,ShieldValue,510);
+    RECTWIN(MyRPort_PTR[AScr],14,0,HighRes_Height-11,ShieldValue,HighRes_Height-2);
     ShieldValue = SSHeader[1].ShieldS;
-    if (ShieldValue > 319)
+    if (ShieldValue > (CenterX-1))
     {
-        ShieldValue = 319;
+        ShieldValue = (CenterX-1);
     }
-    RECTWIN(MyRPort_PTR[AScr],15,319,501,319+ShieldValue,510);
+    RECTWIN(MyRPort_PTR[AScr],15,CenterX,HighRes_Height-11,CenterX+ShieldValue,HighRes_Height-2);
     for(Ship = 0; Ship < 2; ++Ship)
     {
         if (0 < sx1[Ship][AScr])
@@ -347,15 +347,15 @@ void XTRAROUND()
     Rotation = 0;
     for(i = 0; i < STARS; ++i)
     {
-        StarX[i] = ((rand()%(639 / STARS))+1)*STARS;
-        StarY[i] = ((rand()%(505 / STARS))+1)*STARS;
+        StarX[i] = ((rand()%((HighRes_Width-1)  / STARS))+1)*STARS;
+        StarY[i] = ((rand()%((HighRes_Height-7) / STARS))+1)*STARS;
     }
     sx1[0][0] = 0;
     sx1[1][0] = 0;
     sx1[0][1] = 0;
     sx1[1][1] = 0;
-    x[1] = 520; y[1] = 100; Angle[1] = (rand()%17)*32;
-    x[0] = 120; y[0] = 412; Angle[0] = (rand()%17)*32;
+    x[0] = CenterX/2;         y[0] = CenterY+CenterY/2; Angle[0] = (rand()%17)*32;
+    x[1] = CenterX+CenterX/2; y[1] = CenterY/2;         Angle[1] = (rand()%17)*32;
     StepCtr = 1;
     SetRast(MyRPort_PTR[0], 0);
     SetRast(MyRPort_PTR[1], 0);
@@ -536,7 +536,7 @@ void BIGFIGHTEXIT(uint8 Mode, uint8 ActSys, uint8* BIGSHIPFIGHT)
 uint8 BIGSHIPFIGHT(r_ShipHeader* Ship1, r_ShipHeader* Ship2, uint8 Mode, uint8 ActSys)
 {
     uint8   _BIGSHIPFIGHT = 2;
-    struct NewScreen BSF_NeuScreen = {0,0,640,512,4,0,0,HIRES+LACE,CUSTOMSCREEN|SCREENQUIET, NULL,NULL,NULL,NULL};
+    struct NewScreen BSF_NeuScreen = {0,0,HighRes_Width,HighRes_Height,4,0,0,HIRES+LACE,CUSTOMSCREEN|SCREENQUIET, NULL,NULL,NULL,NULL};
     const struct worldcolors_t BSF_Colors[]= {
                                         {         0,         0,         0},{0xDDDDDDDD,0xDDDDDDDD,0xFFFFFFFF},
                                         {0xCCCCCCCC,0xCCCCCCCC,0xEEEEEEEE},{0xBBBBBBBB,0xBBBBBBBB,0xDDDDDDDD},
