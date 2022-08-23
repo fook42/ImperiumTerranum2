@@ -154,8 +154,8 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                             {
                                 if (Visible)
                                 {
-                                    if (((Area_CenterX+(MyShipPtr->PosX+OffsetX)*32) < 1) || ((Area_CenterX+(MyShipPtr->PosX+OffsetX)*32) > (Area_Width-44))
-                                        ||((Area_CenterY+(MyShipPtr->PosY+OffsetY)*32) < 1) || ((Area_CenterY+(MyShipPtr->PosY+OffsetY)*32) > (Area_Width-44))
+                                    if (((Area_CenterX+(MyShipPtr->PosX+OffsetX)*32) < 1) || ((Area_CenterX+(MyShipPtr->PosX+OffsetX)*32) > (Area_Width-34))
+                                        ||((Area_CenterY+(MyShipPtr->PosY+OffsetY)*32) < 1) || ((Area_CenterY+(MyShipPtr->PosY+OffsetY)*32) > (Area_Width-34))
                                         || (Display != i))
                                     {
                                         OffsetX = -MyShipPtr->PosX-1;
@@ -217,7 +217,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                         default: { }
                                     }
                                 }
-                                while (FINDOBJECT(i-1, (MyShipPtr->PosX+OffsetX)<<5, (MyShipPtr->PosY+OffsetY)<<5, MyShipPtr));
+                                while (FINDOBJECT(i-1, (MyShipPtr->PosX+OffsetX)*32, (MyShipPtr->PosY+OffsetY)*32, MyShipPtr));
 
                                 if ((((SystemFlags[0][i-1] & ActPlayerFlag) == ActPlayerFlag) || (CivVar == ActPlayer))
                                     && (Save.CivPlayer[ActPlayer-1] != 0) && (!DconDone))
