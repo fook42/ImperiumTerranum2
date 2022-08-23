@@ -260,7 +260,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     {
         BelongsTo = 12;
     }
-    WRITE_RP0(Area_CenterX, (HighRes_Height-21),BelongsTo,(JAM1 | WRITE_Center),3,Save.SystemName.data[ActSys]);
+    WRITE_RP0(Area_CenterX, (HighRes_Height-21),BelongsTo,(JAM1 | WRITE_Center),3,Save.SystemName[ActSys]);
     PRINTGLOBALINFOS(ActPlayer-1);
     if (!Save.PlayMySelf) { ScreenToFront(MyScreen[0]); }
 }
