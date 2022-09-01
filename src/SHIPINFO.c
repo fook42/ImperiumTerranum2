@@ -96,7 +96,7 @@ void SHIPINFO(uint8 ActSys, r_ShipHeader* MyShipPtr)
     _s=my_strcpy( s, PathStr[5]);
     _s=my_strcpy(_s,ProjectName[MyShipPtr->SType]);
     (void) my_strcpy(_s, "Tech.img");
-    if (!DISPLAYIMAGE(s,6,7,256,498,5,MyScreen[1],0)) { }
+    if (!DISPLAYIMAGE(s,6,7,256,498,5,MyScreen[1],MyRPort_PTR[1],0)) { }
 
     WRITE_RP1(290,15,1,0,3,ProjectName[MyShipPtr->SType]);
     s[0] = '-'; s[1] = ' ';
