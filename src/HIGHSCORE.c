@@ -84,7 +84,7 @@ void HIGHSCORE()
         {
             Delay(RDELAY);
         }
-        while (LMB_PRESSED && RMB_PRESSED && (!Bool_var));
+        while ((LMB_PRESSED || RMB_PRESSED) && (!Bool_var));
     }
     ScreenToBack(MyScreen[1]);
 }

@@ -63,7 +63,7 @@ void DISPLAYTECH(const int TechID)
         Depth = SETCOLOR(MyScreen[1],s);
     }
     (void) my_strcpy(_s-3, "img");
-    if (!DISPLAYIMAGE(s,0,40,320,256,Depth,MyScreen[1],0)) { }
+    if (!DISPLAYIMAGE(s,0,40,320,256,Depth,MyScreen[1],MyRPort_PTR[1],0)) { }
 
     WRITE_RP1(340,50,1,0,2,PText[223]);
     WRITE_RP1(340,70,1,0,3,TechnologyName[TechID]);

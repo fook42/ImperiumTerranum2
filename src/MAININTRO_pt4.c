@@ -58,7 +58,7 @@ int MAININTRO_PART4()
     }
 
     (void) my_strcpy(_s, "Frame6.img");
-    if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[AScr],0)) { ret_code = -31; goto leave_part; }
+    if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[AScr],MyRPort_PTR[AScr],0)) { ret_code = -31; goto leave_part; }
     ScreenToFront(MyScreen[AScr]);
     struct BitMap MyBitMap = (struct BitMap) { 80, 360, 1, 7, 0, \
                             {(PLANEPTR) (IMemA[0]),       (PLANEPTR) (IMemA[0]+28800), (PLANEPTR) (IMemA[0]+57600), \
