@@ -163,8 +163,6 @@ void OPTION_MULTIPLAYER(void)
     char*   _s1;
     char*   _s2;
     bool    b;
-    const int   NewXBase = (HighRes_Width-def_HighRes_Width)/2;
-    const int   NewYBase = (HighRes_Height-def_HighRes_Height)/2;
 
     // randomly exchange one StarSystemName with the first one (Solar-system)
     i = 1+(rand()%(MAXSYSTEMS-1));
@@ -182,7 +180,7 @@ void OPTION_MULTIPLAYER(void)
         INITMENU();
         *_s1     = i + '1';
         *(_s1+1) = ' ';
-        WRITE_RP1(CenterX,NewYBase+50,40,WRITE_Center,3,s);
+        WRITE_RP1(320,50,40,WRITE_Center,3,s);
         btx = 7;
         if (0 == i)
         {
@@ -190,19 +188,19 @@ void OPTION_MULTIPLAYER(void)
             Save.CivPlayer[0] = 0;
         }
         *(_s1+1) = 0;
-        offset = NewYBase+100;
+        offset = 100;
         for (j = 0; j < btx; ++j)
         {
             if (0 == Save.CivPlayer[j])
             {
-                MAKEWINBORDER(MyRPort_PTR[1], CenterX-220, offset, CenterX+220, offset+30,14,40,0);
+                MAKEWINBORDER(MyRPort_PTR[1],100, offset, 540, offset+30,14,40,0);
                 _s2 = GETCIVNAME(j+1);
             } else {
-                RECT_RP1_C0(CenterX-220, offset, CenterX+220, offset+30);
+                RECT_RP1_C0( 100, offset, 540, offset+30);
                 *_s1 = Save.CivPlayer[j]+'0';
                 _s2 = s;
             }
-            WRITE_RP1(CenterX, offset+8,40,WRITE_Center,3, _s2);
+            WRITE_RP1(320, offset+8,40,WRITE_Center,3, _s2);
             offset += 50;
         }
 
@@ -211,16 +209,16 @@ void OPTION_MULTIPLAYER(void)
         do
         {
             Delay(RDELAY);
-            if (LMB_PRESSED && (MouseX(1)>=(CenterX-220)) && (MouseX(1)<=(CenterX+220)))
+            if (LMB_PRESSED && (WinMouseX(1)>=100) && (WinMouseX(1)<=540))
             {
-                offset = NewYBase+100;
+                offset = 100;
                 for (j = 0; j < btx; ++j)
                 {
                     if ((WinMouseY(1)>=offset) && (WinMouseY(1)<=(offset+30)) && (0 == Save.CivPlayer[j]))
                     {
                         b = true;
                         Save.CivPlayer[j] = i+1;
-                        CLICKRECT(MyRPort_PTR[1], (CenterX-220), offset, (CenterX+220), offset+30, 40);
+                        CLICKRECT(MyRPort_PTR[1], 100, offset, 540, offset+30, 40);
                         PLAYERJINGLE(j);
                     }
                     offset += 50;
@@ -243,14 +241,14 @@ void OPTION_MULTIPLAYER(void)
     // pick the number of home-planets (1..5) **************
     SWITCHDISPLAY();
     INITMENU();
-    WRITE_RP1(CenterX,NewYBase+100,40,WRITE_Center,3,PText[521]);
-    offset = NewXBase+123;
+    WRITE_RP1(320,100,40,WRITE_Center,3,PText[521]);
+    offset = 123;
     for (i = 0; i < 5; ++i)
     {
-        MAKEWINBORDER(MyRPort_PTR[1], offset, NewYBase+200, offset+40, NewYBase+240,14,40,0);
+        MAKEWINBORDER(MyRPort_PTR[1], offset, 200, offset+40, 240,14,40,0);
         s[0] = i+'1';
         s[1] = 0;
-        WRITE_RP1(offset+20,NewYBase+213,40,WRITE_Center,3,s);
+        WRITE_RP1(offset+20,213,40,WRITE_Center,3,s);
         offset += 88;
     }
 
@@ -259,9 +257,9 @@ void OPTION_MULTIPLAYER(void)
     do
     {
         Delay(RDELAY);
-        if (LMB_PRESSED && (MouseY(1)>=(NewYBase+200)) && (MouseY(1)<=(NewYBase+240))) 
+        if (LMB_PRESSED && (WinMouseY(1)>=(200)) && (WinMouseY(1)<=(240))) 
         {
-            offset = NewXBase+123;
+            offset = 123;
             for (i = 0; i < 5; ++i)
             {
                 if ((WinMouseX(1)>offset) && (WinMouseX(1)<(offset+40)))
@@ -277,7 +275,7 @@ void OPTION_MULTIPLAYER(void)
 
     ++HomePlanets;
 
-    CLICKRECT(MyRPort_PTR[1],offset,NewYBase+200,offset+40,NewYBase+240,40);
+    CLICKRECT(MyRPort_PTR[1],offset,200,offset+40,240,40);
 
     OPTION_REDUCECOSTS();
 
@@ -287,8 +285,6 @@ void OPTION_MULTIPLAYER(void)
 
 void OPTIONMENU(int Mode)
 {
-    const int   NewXBase = (HighRes_Width-def_HighRes_Width)/2;
-    const int   NewYBase = (HighRes_Height-def_HighRes_Height)/2;
     int     i, y;
     const sint32 bitmap_srcCord[5][2] = { {384,448},{384,448},{384,512},{384,448},{576,512} };
     const char*  button_txt[5] = {_PTx_Player, PText[514], PText[515], PText[516], PText[517]};
@@ -305,43 +301,41 @@ void OPTIONMENU(int Mode)
             ++Player;
         }
     }
-    WRITE_RP1(CenterX,NewYBase+55,40,WRITE_Center,3,PText[513]);
+    WRITE_RP1(320,55,40,WRITE_Center,3,PText[513]);
 
     // draw left 5*2 images
-    y = NewYBase+80;
+    y = 80;
     for (i = 0; i < 5; ++i)
     {
-        MAKEWINBORDER(MyRPort_PTR[1], NewXBase+236, y+31, NewXBase+390, y+54, 14, 40, 1);
-        BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][0], 128, MyRPort_PTR[1],NewXBase+ 60, y, 64, 64, 192);
-        BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][1], 128, MyRPort_PTR[1],NewXBase+150, y, 64, 64, 192);
-        WRITE_RP1(NewXBase+240,y+10,40,0,3,button_txt[i]);
+        MAKEWINBORDER(MyRPort_PTR[1], 236, y+31, 390, y+54, 14, 40, 1);
+        BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][0], 128, MyRPort_PTR[1], 60, y, 64, 64, 192);
+        BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][1], 128, MyRPort_PTR[1],150, y, 64, 64, 192);
+        WRITE_RP1(240,y+10,40,0,3,button_txt[i]);
         y += 80;
     }
 
-    WRITE_RP1(NewXBase+460,NewYBase+100,40,WRITE_Center,3,"Level");
+    WRITE_RP1(460,100,40,WRITE_Center,3,"Level");
     if (1 == Mode)
     {
-        WRITE_RP1(NewXBase+455,NewYBase+120,40,0,1,"I");
-        WRITE_RP1(NewXBase+455,NewYBase+320,40,0,1,"J");
+        WRITE_RP1(455,120,40,0,1,"I");
+        WRITE_RP1(455,320,40,0,1,"J");
     }
-    MAKEWINBORDER(MyRPort_PTR[1],NewXBase+445,NewYBase+139,NewXBase+475,NewYBase+312,14,40,1);
-    MAKEWINBORDER(MyRPort_PTR[1],NewXBase+410,NewYBase+339,NewXBase+510,NewYBase+362,14,40,1);
+    MAKEWINBORDER(MyRPort_PTR[1],445,139,475,312,14,40,1);
+    MAKEWINBORDER(MyRPort_PTR[1],410,339,510,362,14,40,1);
 
-    WRITE_RP1(NewXBase+555,100,40,WRITE_Center,3,_PTx_Player);
+    WRITE_RP1(555,100,40,WRITE_Center,3,_PTx_Player);
     if (1 == Mode)
     {
-        WRITE_RP1(NewXBase+550,NewYBase+120,40,0,1,"I");
-        WRITE_RP1(NewXBase+550,NewYBase+320,40,0,1,"J");
+        WRITE_RP1(550,120,40,0,1,"I");
+        WRITE_RP1(550,320,40,0,1,"J");
     }
-    MAKEWINBORDER(MyRPort_PTR[1],NewXBase+540,NewYBase+139,NewXBase+570,NewYBase+312,14,40,1);
+    MAKEWINBORDER(MyRPort_PTR[1],540,139,570,312,14,40,1);
 
-    // new .. audio-option!!!
-    WRITE_RP1(NewXBase+507,NewYBase+410,40,WRITE_Center,3,"Audio");
-    RECT_RP1_C0(NewXBase+442,NewYBase+431,NewXBase+504,NewYBase+454);
-    WRITE_RP1(NewXBase+473,NewYBase+435,40,WRITE_Center,3,_PT_ein);
-    RECT_RP1_C0(NewXBase+510,NewYBase+431,NewXBase+572,NewYBase+454);
-    WRITE_RP1(NewXBase+541,NewYBase+435,40,WRITE_Center,3,_PT_aus);
-    // ----
+    WRITE_RP1(507,410,40,WRITE_Center,3,"Audio");
+    RECT_RP1_C0(442,431,504,454);
+    WRITE_RP1(473,435,40,WRITE_Center,3,_PT_ein);
+    RECT_RP1_C0(510,431,572,454);
+    WRITE_RP1(541,435,40,WRITE_Center,3,_PT_aus);
 
     CHECKGADS(0);
 
