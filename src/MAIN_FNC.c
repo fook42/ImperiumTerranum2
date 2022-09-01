@@ -118,7 +118,15 @@ void MAIN_FNC()
         return;
     }
 
+    // new: center Option-window to new/bigger resolution
+    SizeWindow(MyWindow[1],def_HighRes_Width-MyWindow[1]->Width, def_HighRes_Height-MyWindow[1]->Height);
+    MoveWindow(MyWindow[1], (HighRes_Width-def_HighRes_Width)/2, (HighRes_Height-def_HighRes_Height)/2);
+
     i = FIRSTMENU();
+
+    // new: move Option-Window back to original origin and size
+    SizeWindow(MyWindow[1],    HighRes_Width-MyWindow[1]->Width,    HighRes_Height-MyWindow[1]->Height);
+    MoveWindow(MyWindow[1], (def_HighRes_Width-HighRes_Width)/2, (def_HighRes_Height-HighRes_Height)/2);
 
     if (!INITSTARS())
     {

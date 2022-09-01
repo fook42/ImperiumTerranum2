@@ -12,7 +12,7 @@ void INITSCREEN(const int Mode)
                             if (Screen2 == Mode) { return; }
                             SetRast(MyRPort_PTR[1], 0);     // fill a complete RastPort with color..
                             (void) my_strcpy(my_strcpy(s, PathStr[0]), "PlanetDesk.img");
-                            if (!DISPLAYIMAGE(s,0,94,384,394,8,MyScreen[1],2)) { return; }
+                            if (!DISPLAYIMAGE(s,0,94,384,394,8,MyScreen[1],MyRPort_PTR[1],2)) { return; }
                             WRITE_RP1( 62,126,2,WRITE_Left  ,3,_PT_Biosphaere);
                             WRITE_RP1( 62,175,2,WRITE_Left  ,3,_PT_Infrastruktur);
                             WRITE_RP1( 62,224,2,WRITE_Left  ,3,_PT_Industriealisierung);
@@ -31,11 +31,11 @@ void INITSCREEN(const int Mode)
         case SCREEN_HISCORE:
                             if (Screen2 == Mode) { return; }
                             (void) my_strcpy(my_strcpy(s, PathStr[4]), "HiScore.img");
-                            if (!DISPLAYIMAGE(s,0,0,640,512,7,MyScreen[1],3)) { return; }
+                            if (!DISPLAYIMAGE(s,0,0,640,512,7,MyScreen[1],MyRPort_PTR[1],3)) { return; }
                             break;
         case SCREEN_TECH:
                             (void) my_strcpy(my_strcpy(s, PathStr[5]), "ShipTech.img");
-                            if (!DISPLAYIMAGE(s,0,0,640,512,3,MyScreen[1],1)) { return; }
+                            if (!DISPLAYIMAGE(s,0,0,640,512,3,MyScreen[1],MyRPort_PTR[1],1)) { return; }
                             break;
         default:            {}
     }

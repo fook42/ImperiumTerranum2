@@ -499,7 +499,7 @@ void STARLANDING_LANDING(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr
     _s=my_strcpy(_s, "Paper.pal");
     (void) SETCOLOR(MyScreen[AScr],s);
     (void) my_strcpy(_s-3, "img");
-    if (!DISPLAYIMAGE(s,0,0,256,256,5,MyScreen[AScr],0)) { }
+    if (!DISPLAYIMAGE(s,0,0,256,256,5,MyScreen[AScr],MyRPort_PTR[AScr],0)) { }
     if (SDIBaseDrawed>0) { ActPProjects->data[PROJECT_SDI]          -= (SDIBaseHit*ActPProjects->data[PROJECT_SDI] / SDIBaseDrawed); }
     if (SPHBaseDrawed>0) { ActPProjects->data[PROJECT_SPACEPHALANX] -= (SPHBaseHit*ActPProjects->data[PROJECT_SPACEPHALANX] / SPHBaseDrawed); }
     if ((SDIBaseDrawed>0) && (SPHBaseDrawed>0))

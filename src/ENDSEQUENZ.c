@@ -80,7 +80,7 @@ typedef struct SArr13 { char* data[11]; } SArr13;
     (void) SETCOLOR(MyScreen[0], s);
     (void) my_strcpy( _s-3, "img" );
 
-    if (!DISPLAYIMAGE(s,0,75,640,360,8,MyScreen[0],0))
+    if (!DISPLAYIMAGE(s,0,75,640,360,8,MyScreen[0],MyRPort_PTR[0],0))
     {
         puts("can not display image - exit!\n");
         return; // @TODO .. cleanup and free all memory!
