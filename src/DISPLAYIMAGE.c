@@ -3,7 +3,7 @@
 #include "IT2_Vars.h"
 #include "IT2_Functions.h"
 
-bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, struct Screen* DI_Screen, const int CacheNum)
+bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, struct Screen* DI_Screen, struct RastPort* RPort, const int CacheNum)
 {
     char    FName[80];
     char*   _s;
@@ -56,7 +56,7 @@ bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, c
     }
 
     struct Image DI_Img = {0, 0, (WORD) Width, (WORD) Height, (WORD) Depth, (UWORD*) IMemA[0], CNum-1, 0, NULL};
-    DrawImage(&(DI_Screen->RastPort), &DI_Img,(WORD) LEdge,(WORD) TEdge);
+    DrawImage(RPort, &DI_Img,(WORD) LEdge,(WORD) TEdge);
 
     // if Image was not in cache, store it there, together with colorpalette-data
     if ((0 != CacheNum) && (false == ImageIsValid))

@@ -74,7 +74,7 @@ int MAININTRO_PART3(uint16** SMemA, LONG* SMemL, struct MMD0 **SndModulePtr)
     (void) my_strcpy(_s, "Frame4.pal");
     SETDARKCOLOR(s, Colors);
     (void) my_strcpy(_s, "Frame4.img");       // terrain with stars...
-    if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[1],0))
+    if (!DISPLAYIMAGE(s,0,75,640,360,7,MyScreen[1],MyRPort_PTR[1],0))
     {
         return -23;
     }

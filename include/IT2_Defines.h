@@ -181,6 +181,9 @@ enum {  SCREEN_PLANET = 1,
 #define MouseX(...)     MyScreen[(__VA_ARGS__)]->MouseX
 #define MouseY(...)     MyScreen[(__VA_ARGS__)]->MouseY
 
+#define WinMouseX(...)  MyWindow[(__VA_ARGS__)]->MouseX
+#define WinMouseY(...)  MyWindow[(__VA_ARGS__)]->MouseY
+
 #define SPAddr(...)      custom.aud[(__VA_ARGS__)].ac_ptr
 #define SPLength(...)    custom.aud[(__VA_ARGS__)].ac_len
 #define SPFreq(...)      custom.aud[(__VA_ARGS__)].ac_per

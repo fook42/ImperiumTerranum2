@@ -68,7 +68,7 @@ void DECODEDATA();
 void NOMEMMESSAGE();
 bool DISKMENU(uint8 Auto);
 // <<<
-bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, struct Screen* DI_Screen, const int CacheNum);
+bool DISPLAYIMAGE(char* Fn, const int LEdge, const int TEdge, const int Width, const int Height, const int Depth, struct Screen* DI_Screen, struct RastPort* RPort, const int CacheNum);
 void DISPLAYLOGO(const int DL_ActPlayer, const int LEdge, const int TEdge);
 void DISPLAYSTATE();
 void DISPLAYTECH(const int TechID);
