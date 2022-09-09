@@ -225,11 +225,10 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             CPA2_Window=MAKEWINDOWBORDER(85,208,341,41,MyScreen[0]);
             if (NULL == CPA2_Window)
             {
-                return;
+                CloseWindow(CPA_Window);
+                goto leave_func;
             }
             RPort2_PTR = CPA2_Window->RPort;
-
-
 
             BltBitMapRastPort((struct BitMap*) &ImgBitMap7, MyPlanetHeader->Class*32,0,RPort2_PTR,10,4,32,32,192);
             DrawImage(RPort2_PTR,&GadImg1, 55,10);
@@ -271,11 +270,12 @@ void CREATEPANIC(r_PlanetHeader* PPtr, uint8 ActSys, uint8 PlanetNum)
             CHECKPROJECTS(&OldPlanet, MyPlanetHeader->PFlags);
         }
     }
+
+    leave_func:
     if (NULL != ModC)
     {
         StopPlayer();
         UnLoadModule(ModC);
         FreePlayer();
     }
-
 }
