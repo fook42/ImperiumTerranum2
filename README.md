@@ -44,14 +44,15 @@ now using CMAKE:
 
 create a folder "build", and use cmake to generate a Makefile with the given toolchain-file
 
+```
 mkdir build
 cd build
 cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/toolchain-amigagcc.cmake ..
-
+```
 run make to generate the IT2C binary:
-
+```
 make -j4
-
+```
 currently the toolchain-file is written to use installed amigagcc from bebbo: https://github.com/bebbo/amiga-gcc
 other compilers are usable as well.
 
