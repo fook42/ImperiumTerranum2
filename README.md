@@ -39,6 +39,23 @@ Make sure to use the right savegame for the right version of IT2.
 
 How to compile
 ---
-fetch the sources and adopt the Makefile to your needs.
 
-currently the Makefile is written to be used with amigagcc from bebbo: https://github.com/bebbo/amiga-gcc
+now using CMAKE:
+
+create a folder "build", and use cmake to generate a Makefile with the given toolchain-file
+
+mkdir build
+cd build
+cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/toolchain-amigagcc.cmake ..
+
+run make to generate the IT2C binary:
+
+make -j4
+
+currently the toolchain-file is written to use installed amigagcc from bebbo: https://github.com/bebbo/amiga-gcc
+other compilers are usable as well.
+
+
+HINT:
+medplayer headers and lib are needed for compilation!
+
