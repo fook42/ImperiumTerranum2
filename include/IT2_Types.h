@@ -9,7 +9,7 @@
 #include <proto/medplayer.h>
 
 #include <math.h>
-#include <hardware/custom.h>
+// #include <hardware/custom.h>
 #include <hardware/cia.h>
 #include <graphics/gfxmacros.h>
 #include <utility/tagitem.h>
