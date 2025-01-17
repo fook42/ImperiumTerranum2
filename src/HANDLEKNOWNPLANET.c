@@ -439,9 +439,9 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                 // clear right project-area to print the list of available Projects to build
                 RECT_RP1_C0(360,92,HighRes_Width-1,HighRes_Height-1);
                 WRITE_RP1(365,474,4,1,3,PText[177]);
+                ypos = 94;
                 for(i = 1; i <= j; ++i)
                 {
-                    WRITE_RP1(365,78+i*16,ProjectType[i],1,2,NewProject[i]);
                     if (0 < ProjectNum[i])
                     {
                         l = ProjectRounds[i]-MyPlanetHeader->XProjectPayed;
@@ -451,7 +451,9 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                     l = (l / PMoney ) +1;
                     if (1 > l) { l = 1; }
                     (void) dez2out(l, 7 ,s);
-                    WRITE_RP1(HighRes_Width-65,78+i*16,ProjectType[i],1,2,s);
+                    WRITE_RP1(365,            ypos,ProjectType[i],            1,2,NewProject[i]);
+                    WRITE_RP1(HighRes_Width-1,ypos,ProjectType[i],WRITE_Right|1,2,s);
+                    ypos += 16;
                 }
                 btx = 1;
                 MyPlanetHeader->ProjectID = PROJECT_NONE;

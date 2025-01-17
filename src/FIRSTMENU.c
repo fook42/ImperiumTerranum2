@@ -43,6 +43,9 @@ uint8 FIRSTMENU()
                     CLICKRECT(MyRPort_PTR[1],150,240,490,270,40);
                 }
             }
+            do
+            {}
+            while (LMB_PRESSED);
         }
     }
     while (0 == selection);
