@@ -285,7 +285,7 @@ void OPTION_MULTIPLAYER(void)
 
 void OPTIONMENU(int Mode)
 {
-    int     i, y;
+    int     i, y=0;
     const sint32 bitmap_srcCord[5][2] = { {384,448},{384,448},{384,512},{384,448},{576,512} };
     const char*  button_txt[5] = {_PTx_Player, PText[514], PText[515], PText[516], PText[517]};
 
@@ -304,14 +304,13 @@ void OPTIONMENU(int Mode)
     WRITE_RP1(320,55,40,WRITE_Center,3,PText[513]);
 
     // draw left 5*2 images
-    y = 80;
     for (i = 0; i < 5; ++i)
     {
+        y += 80;
         MAKEWINBORDER(MyRPort_PTR[1], 236, y+31, 390, y+54, 14, 40, 1);
         BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][0], 128, MyRPort_PTR[1], 60, y, 64, 64, 192);
         BltBitMapRastPort((struct BitMap *) &ImgBitMap8, bitmap_srcCord[i][1], 128, MyRPort_PTR[1],150, y, 64, 64, 192);
         WRITE_RP1(240,y+10,40,0,3,button_txt[i]);
-        y += 80;
     }
 
     WRITE_RP1(460,100,40,WRITE_Center,3,"Level");
@@ -399,12 +398,14 @@ void OPTIONMENU(int Mode)
                     CHECKGADS(5);
                 }
             }
-            while(LMB_PRESSED) {};
+            do
+            {}
+            while (LMB_PRESSED);
         }
     }
     while (RMB_NOTPRESSED);
 
-    while (RMB_PRESSED) {};
+//    while (RMB_PRESSED) {};
     PLAYSOUND(0,300);
 
     ScreenToFront(XScreen);

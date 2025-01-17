@@ -179,11 +179,11 @@ void MAIN_FNC()
                 Delay(3);
             }
             if ((LMB_PRESSED && (MouseX(0) > (HighRes_Width-123)) && (MouseX(0) < (HighRes_Width-5))
-                             && (MouseY(0) > 471) && (MouseY(0) < 493))
+                             && (MouseY(0) > (HighRes_Height-41)) && (MouseY(0) < (HighRes_Height-19)))
                 || (LMB_PRESSED && RMB_PRESSED)
                 || ((64 == RawCode) || (67 == RawCode) || (68 == RawCode)))
             {
-                KLICKGAD((HighRes_Width-122), 472);
+                KLICKGAD((HighRes_Width-122), (HighRes_Height-40));
                 STARTROTATEPLANETS();
             }
             if (LMB_PRESSED && (Save.CivPlayer[ActPlayer-1] != 0))
@@ -198,17 +198,17 @@ void MAIN_FNC()
                     }
                 } else if ((MouseX(0) > (HighRes_Width-123)) && (MouseX(0) < (HighRes_Width-5)))
                 {
-                    if ((MouseY(0) > 443) && (MouseY(0) < 465))
+                    if ((MouseY(0) > (HighRes_Height-69)) && (MouseY(0) < (HighRes_Height-47)))
                     {
-                        KLICKGAD((HighRes_Width-122), 444);
+                        KLICKGAD((HighRes_Width-122), (HighRes_Height-68));
                         if (!DISKMENU(DISKMENU_PROMPT))
                         {
                             GAMEEXIT();
                             return;
                         }
-                    } else if ((MouseY(0) > 415) && (MouseY(0) < 437))
+                    } else if ((MouseY(0) > (HighRes_Height-97)) && (MouseY(0) < (HighRes_Height-75)))
                     {
-                        KLICKGAD((HighRes_Width-122), 416);
+                        KLICKGAD((HighRes_Width-122), (HighRes_Height-96));
                         REGIERUNG();
                     }
                 }
