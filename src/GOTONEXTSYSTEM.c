@@ -5,13 +5,12 @@
 
 uint8 GOTONEXTSYSTEM(uint8 ActSys, r_ShipHeader* MyShipPtr)
 {
-    sint32  distance, distanceY,SysEntfernung;
+    sint32  distance, distanceY, SysEntfernung;
     uint8   i,j;
     uint8   SysID, CivVar;
     time_t  t;
     srand((unsigned) time(&t));
 
-    --ActSys;   // shifted arrays
     if ((8 > MyShipPtr->SType) || (24 < MyShipPtr->SType))
     {
         MyShipPtr->SType = 8;

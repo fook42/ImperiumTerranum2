@@ -99,7 +99,7 @@ void FADESTARGATE(uint8 SysID, uint8 ActSys, r_ShipHeader* MyShipPtr)
     }
     if (MyShipPtr->Flags == SHIPFLAG_WATER)
     {
-        SysID = FINDNEXTPLANET(SysID,MyShipPtr);
+        SysID = FINDNEXTPLANET(SysID-1,MyShipPtr)+1;
     }
     MyShipPtr->Moving = MyShipPtr->Moving-1;
     if (MyShipPtr->Owner == FLAG_OTHER)

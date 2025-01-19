@@ -7,51 +7,51 @@ uint8 FINDMONEYPLANET(uint8 CivFlag, uint8 CivVar, char* s)
 {
     r_PlanetHeader* MyPlanetHeader;
     ByteArr42*      ActPProject;
-    uint8           i,j,k,l,SysID,PID,Objects,XProjectID;
+    uint8           i,j,k,l,SysID,PlanetID,Objects,XProjectID;
     char*           _s;
 
-    SysID = 0;
-    PID = 0;
+    SysID = MAXSYSTEMS;
+    PlanetID = 0;
     Objects = 0;
     XProjectID = 0;
     for(i = 0; i < Save.Systems; ++i)
     {
-        if (0 < SystemHeader[i].Planets)
+        if (0 == SystemHeader[i].Planets) { continue; }
+
+        for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
-            for(j = 0; j < SystemHeader[i].Planets; ++j)
+            MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
+            l = 0;
+            if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == CivFlag)
             {
-                MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                l = 0;
-                if ((MyPlanetHeader->PFlags & FLAG_CIV_MASK) == CivFlag)
+                ActPProject = MyPlanetHeader->ProjectPtr;
+                l = ActPProject->data[PROJECT_SPACEDOCK];
+                for(k = PROJECT_CONT_UNION; k < PROJECT_NOMORE; ++k)
                 {
-                    ActPProject = MyPlanetHeader->ProjectPtr;
-                    l = ActPProject->data[PROJECT_SPACEDOCK];
-                    for(k = 28; k < 43; ++k)
+                    if (0 < ActPProject->data[k])
                     {
-                        if (ActPProject->data[k] > 0 )
-                        {
-                            ++l;
-                        }
+                        ++l;
                     }
                 }
-                if (l > Objects)
-                {
-                    SysID = i+1;
-                    PID = j;
-                    Objects = l;
-                }
+            }
+            if (l > Objects)
+            {
+                SysID = i;
+                PlanetID = j;
+                Objects = l;
             }
         }
     }
     if (0 == Objects) { return 0; }
-    if (SysID>0)
+
+    if (MAXSYSTEMS != SysID)
     {
-        MyPlanetHeader = &(SystemHeader[SysID-1].PlanetMemA[PID]);
+        MyPlanetHeader = &(SystemHeader[SysID].PlanetMemA[PlanetID]);
         ActPProject = MyPlanetHeader->ProjectPtr;
         _s=my_strcpy(s, _PT_System);
         *_s++ = ':';
         *_s++ = ' ';
-        _s=my_strcpy(_s, Save.SystemName[SysID-1]);
+        _s=my_strcpy(_s, Save.SystemName[SysID]);
         *_s++ = ' ';
         *_s++ = ' ';
         *_s++ = ' ';

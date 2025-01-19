@@ -19,7 +19,7 @@ bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr,
                     ++(MyShipPtr->Fracht);
                     MyPlanetHeader->Water -= 5;
                 }
-                (void) FINDNEXTPLANET(ActSys, MyShipPtr);
+                (void) FINDNEXTPLANET(ActSys-1, MyShipPtr);
                 if (0 < MyShipPtr->Moving)
                 {
                     MyShipPtr->Moving = 0;
@@ -35,7 +35,7 @@ bool AUTOWATERTRANSPORT(r_PlanetHeader* MyPlanetHeader, r_ShipHeader* MyShipPtr,
                     --(MyShipPtr->Fracht);
                     MyPlanetHeader->Water += 5;
                 }
-                (void) FINDNEXTPLANET(ActSys, MyShipPtr);
+                (void) FINDNEXTPLANET(ActSys-1, MyShipPtr);
                 if (0 < MyShipPtr->Moving)
                 {
                     MyShipPtr->Moving = 0;

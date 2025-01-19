@@ -21,9 +21,9 @@ void FINDENEMYOBJECT(uint8 ActSys, r_ShipHeader* ShipPtr)
     }
     btx = 0;
     DistOld = 10000;
-    for(k = 0; k < SystemHeader[ActSys-1].Planets; k++)
+    for(k = 0; k < SystemHeader[ActSys].Planets; k++)
     {
-        MyPlanetHeader = &(SystemHeader[ActSys-1].PlanetMemA[k]);
+        MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[k]);
         ActPProjects = MyPlanetHeader->ProjectPtr;
         CivVar2 = GETCIVVAR(MyPlanetHeader->PFlags);
         if ((0 != CivVar2) && (CivVar2 != CivVar))
@@ -45,16 +45,16 @@ void FINDENEMYOBJECT(uint8 ActSys, r_ShipHeader* ShipPtr)
                         DistOld = DistNew;
                         if (btx == 0) { btx = k+1; }
                         MyShipPtr->Target = k+1;
-                        MyShipPtr->Source = ActSys;
+                        MyShipPtr->Source = ActSys+1;
                     }
                 }
             }
         }
     }
     if ((btx>0) && (MyShipPtr->Owner == FLAG_MAQUES)) { return; }
-    if (SystemHeader[ActSys-1].FirstShip.NextShip != NULL)
+    if (SystemHeader[ActSys].FirstShip.NextShip != NULL)
     {
-        OtherShipPtr = SystemHeader[ActSys-1].FirstShip.NextShip;
+        OtherShipPtr = SystemHeader[ActSys].FirstShip.NextShip;
         if (MyShipPtr->Owner != FLAG_MAQUES)
         {
             while (OtherShipPtr != NULL)

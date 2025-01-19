@@ -13,15 +13,15 @@ uint8 FINDNEXTPLANET(uint8 ActSys, r_ShipHeader* ShipPtr)
     uint32  DistOld,DistNew,WPerc,WPercLow;
 
 
-    if (FINDMAQUESSHIP(ActSys-1,ShipPtr)) { return ActSys; }
+    if (FINDMAQUESSHIP(ActSys,ShipPtr)) { return ActSys; }
     MyShipPtr = ShipPtr;
     CivVar = GETCIVVAR(MyShipPtr->Owner);
     CivFlag = MyShipPtr->Owner & FLAG_CIV_MASK;
     btx = 0;
     DistOld = 10000;
-    for(k = 0; k < SystemHeader[ActSys-1].Planets; k++)
+    for(k = 0; k < SystemHeader[ActSys].Planets; k++)
     {
-        MyPlanetHeader = &(SystemHeader[ActSys-1].PlanetMemA[k]);
+        MyPlanetHeader = &(SystemHeader[ActSys].PlanetMemA[k]);
         OtherShipPtr = MyPlanetHeader->FirstShip.NextShip;
         while ((NULL != OtherShipPtr) && (0 == OtherShipPtr->Owner))
         {
@@ -72,10 +72,10 @@ uint8 FINDNEXTPLANET(uint8 ActSys, r_ShipHeader* ShipPtr)
     }
     if (btx <= 0)
     {
-        SystemHeader[ActSys-1].State |= STATE_ALL_OCC;
+        SystemHeader[ActSys].State |= STATE_ALL_OCC;
         return GOTONEXTSYSTEM(ActSys, MyShipPtr);
     } else {
-        SystemHeader[ActSys-1].State &= (~STATE_ALL_OCC);
+        SystemHeader[ActSys].State &= (~STATE_ALL_OCC);
     }
     return ActSys;
 }

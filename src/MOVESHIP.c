@@ -119,7 +119,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                 while (MyShipPtr->Target > SystemHeader[ActSys-1].Planets)
                 {
                     /* Unkorrektes Ziel für Bewässerung */
-                    SysID = FINDNEXTPLANET(ActSys,MyShipPtr);
+                    SysID = FINDNEXTPLANET(ActSys-1,MyShipPtr)+1;
                     if (ActSys != SysID)
                     {
                         AUTOSHIPTRAVEL(SysID,MODE_SHIPS,MyShipPtr);
@@ -258,7 +258,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     MyPlanetHeader->Population += 10;
                                                     if ((MyShipPtr->Ladung & MASK_SIEDLER)>0)
                                                     {
-                                                        SysID = FINDNEXTPLANET(ActSys,MyShipPtr);
+                                                        SysID = FINDNEXTPLANET(ActSys-1,MyShipPtr)+1;
                                                         if (ActSys != SysID)
                                                         {
                                                             AUTOSHIPTRAVEL(SysID,MODE_SHIPS,MyShipPtr);
@@ -352,7 +352,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     }
                                                     SUPPORTCIVI(MyPlanetHeader->XProjectPayed / 5);
                                                     MyPlanetHeader->XProjectPayed -= (MyPlanetHeader->XProjectPayed*0xCD)>>10; // -0.2x
-                                                    (void) GOTONEXTSYSTEM(ActSys,MyShipPtr);
+                                                    (void) GOTONEXTSYSTEM(ActSys-1,MyShipPtr);
                                                 } else if ((MyShipPtr->Ladung & MASK_LTRUPPS)>0)
                                                 {
                                                     CHECKPLANET(MyPlanetHeader);
@@ -375,7 +375,7 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                     }
                                                     return;
                                                 } else {
-                                                    FINDENEMYOBJECT(ActSys,MyShipPtr);
+                                                    FINDENEMYOBJECT(ActSys-1,MyShipPtr);
                                                 }
                                             } else {
                                                 MyShipPtr->PosX = MOVESHIP_FromX;
@@ -391,9 +391,9 @@ void MOVESHIP(uint8 ActSys, r_ShipHeader* ShipPtr, bool Visible)
                                                  || ((Save.WarState[CivVar-1][7]==LEVEL_WAR) || (Save.WarState[CivVar-1][7]==LEVEL_COLDWAR)))
                                                 {
                                                     // FINDENEMYOBJECT(i,MyShipPtr); // ... todo .. i is uninitialized .. where are we looking for enemy objects?
-                                                    FINDENEMYOBJECT(ActSys, MyShipPtr);
+                                                    FINDENEMYOBJECT(ActSys-1, MyShipPtr);
                                                 } else {
-                                                    (void) GOTONEXTSYSTEM(ActSys,MyShipPtr);
+                                                    (void) GOTONEXTSYSTEM(ActSys-1,MyShipPtr);
                                                 }
                                                 return;
                                             }

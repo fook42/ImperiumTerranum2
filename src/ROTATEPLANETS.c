@@ -786,7 +786,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                             MyShipPtr->PosX = it_round(PlanetHeader->PosX);
                                             MyShipPtr->PosY = it_round(PlanetHeader->PosY);
                                             LINKSHIP(MyShipPtr, &(SystemHeader[i].FirstShip), 1);
-                                            FINDENEMYOBJECT(i+1,MyShipPtr);
+                                            FINDENEMYOBJECT(i,MyShipPtr);
                                             MyShipPtr = ActShipPtr;
                                         }
                                     } else if (((SystemHeader[i].State & STATE_TACTICAL) != STATE_ALL_OCC)
@@ -807,7 +807,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                             }
                                             MyShipPtr->PosX = it_round(PlanetHeader->PosX);
                                             MyShipPtr->PosY = it_round(PlanetHeader->PosY);
-                                            l = GOTONEXTPLANET(i+1,MyShipPtr);
+                                            l = GOTONEXTPLANET(i,MyShipPtr)+1;
                                         } else {
                                             PlanetHeader->ProjectID = PROJECT_SETTLERS;
                                         }
@@ -840,7 +840,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                                         MyShipPtr->Ladung++;
                                                     }
                                                 }
-                                                l = GOTONEXTSYSTEM(i+1,MyShipPtr);
+                                                l = GOTONEXTSYSTEM(i,MyShipPtr);
                                             } else {
                                                 if (ActPProjects->data[PROJECT_SETTLERS]<ShipData(MyShipPtr->SType).MaxLoad)
                                                 {

@@ -83,7 +83,7 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                     /**** Computership mit Playership als Ziel ****/
                     if (TARGET_ENEMY_SHIP == MyShipPtr->Target)
                     {
-                        FINDENEMYOBJECT(i,MyShipPtr);
+                        FINDENEMYOBJECT(i-1,MyShipPtr);
                     }
 
                     if ((NULL != MyShipPtr->TargetShip) && (SHIPTYPE_FLEET != MyShipPtr->SType))
@@ -143,10 +143,10 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                                     (Save.WarState[CivVar-1][6]==LEVEL_WAR) || (Save.WarState[CivVar-1][6]==LEVEL_COLDWAR) ||
                                     (Save.WarState[CivVar-1][7]==LEVEL_WAR) || (Save.WarState[CivVar-1][7]==LEVEL_COLDWAR))
                                 {
-                                    FINDENEMYOBJECT(i,MyShipPtr);
+                                    FINDENEMYOBJECT(i-1,MyShipPtr);
                                 } else {
                                     // l = FINDNEXTPLANET(i,MyShipPtr); // ...todo ... l is unused here
-                                    (void) FINDNEXTPLANET(i,MyShipPtr);
+                                    (void) FINDNEXTPLANET(i-1,MyShipPtr);
                                 }
                             }
                             if (Visible) { INFORMUSER(); }
