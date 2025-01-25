@@ -225,7 +225,6 @@ void STARTROTATEPLANETS();
 void STATISTIK();
 void STOPCIVILWAR(uint8 EndText);
 void SUPPORTCIVI(uint32 XValue);
-void SWITCHDISPLAY();
 void SYSINFO(int SysID, uint8 ThePlayerFlag);
 void SYSTEMINFO(uint8 ActSys, r_ShipHeader* MyShipPtr);
 void SYSTEMTOENEMY(uint8 ActSys, uint8 NewOwner, uint8 OldOwner);

@@ -179,6 +179,8 @@ enum {  SCREEN_PLANET = 1,
 #define SPVol(...)       custom.aud[(__VA_ARGS__)].ac_vol
 #define SPData(...)      custom.aud[(__VA_ARGS__)].ac_dat
 
+#define SWITCHDISPLAY(...) custom.dmacon=(BITCLR|DMAF_RASTER)
+
 // example to access array with offset
 #define SHIPDATA_OFFSET     8
 #define ShipData(...)       ShipData[(__VA_ARGS__) - SHIPDATA_OFFSET]
