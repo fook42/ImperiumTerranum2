@@ -519,8 +519,8 @@ bool DISKMENU(uint8 Autoselect)
 
                     OPTIONMENU(0);
 
-                    SizeWindow(MyWindow[1],    HighRes_Width-MyWindow[1]->Width,    HighRes_Height-MyWindow[1]->Height);
                     MoveWindow(MyWindow[1], (def_HighRes_Width-HighRes_Width)/2, (def_HighRes_Height-HighRes_Height)/2);
+                    SizeWindow(MyWindow[1],    HighRes_Width-MyWindow[1]->Width,    HighRes_Height-MyWindow[1]->Height);
                     ScreenToFront(MyScreen[0]);
                 } else if ((DIS_Window->MouseY > 90) && (DIS_Window->MouseY < 112))
                 {
@@ -530,8 +530,8 @@ bool DISKMENU(uint8 Autoselect)
 
                     HIGHSCORE();
 
-                    SizeWindow(MyWindow[1],    HighRes_Width-MyWindow[1]->Width,    HighRes_Height-MyWindow[1]->Height);
                     MoveWindow(MyWindow[1], (def_HighRes_Width-HighRes_Width)/2, (def_HighRes_Height-HighRes_Height)/2);
+                    SizeWindow(MyWindow[1],    HighRes_Width-MyWindow[1]->Width,    HighRes_Height-MyWindow[1]->Height);
                 } else if ((DIS_Window->MouseY > 112) && (DIS_Window->MouseY < 134))
                 {
                     KLICKWINGAD(RPort_PTR,4,113);

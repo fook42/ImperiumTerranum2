@@ -125,8 +125,8 @@ void MAIN_FNC()
     i = FIRSTMENU();
 
     // new: move Option-Window back to original origin and size
-    SizeWindow(MyWindow[1],    HighRes_Width-MyWindow[1]->Width,    HighRes_Height-MyWindow[1]->Height);
     MoveWindow(MyWindow[1], (def_HighRes_Width-HighRes_Width)/2, (def_HighRes_Height-HighRes_Height)/2);
+    SizeWindow(MyWindow[1],    HighRes_Width-MyWindow[1]->Width,    HighRes_Height-MyWindow[1]->Height);
 
     if (!INITSTARS())
     {
