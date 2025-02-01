@@ -11,8 +11,15 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     r_PlanetHeader* PlanetHeader;
     uint8           Leave, j;
     uint8           BelongsTo, DrawMode;
-    int             Sunleft, Sunwidth;
-
+    sint16          Sun_PosX, Sunright, Sunwidth;
+    sint16          Sun_PosY, Sun_PosY0, Sun_PosY1;
+    sint16          Suntop_source_top, Sunbottom_source_top;
+    sint16          Suntop_height, Sunbottom_height;
+    uint8           gridSize_X, gridSize_Y;
+    const uint16    MiniMap_right  = HighRes_Width-11;
+    const uint16    MiniMap_center = HighRes_Width-64;
+    const uint16    MiniMap_left   = HighRes_Width-118;
+ 
 /*    OffsetX,Y = centre of current view */
     OldX = OffsetX;
     OldY = OffsetY;
@@ -26,63 +33,112 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                 DrawImage(MyRPort_PTR[0],&GadImg1,(HighRes_Width-122), y);
                 y+=28;
             }
-            WRITE_RP0((HighRes_Width-64),(HighRes_Height-94),0,JAM1|WRITE_Center             ,3,_PT_Suchen);
-            WRITE_RP0((HighRes_Width-64),(HighRes_Height-66),0,JAM1|WRITE_Center             ,3,_PT_Sternenkarte);
-            WRITE_RP0((HighRes_Width-64),(HighRes_Height-38),8,JAM1|WRITE_Center|WRITE_Shadow,3,_PT_Rundenende);
+            WRITE_RP0(MiniMap_center,(HighRes_Height-94),0,JAM1|WRITE_Center             ,3,_PT_Suchen);
+            WRITE_RP0(MiniMap_center,(HighRes_Height-66),0,JAM1|WRITE_Center             ,3,_PT_Sternenkarte);
+            WRITE_RP0(MiniMap_center,(HighRes_Height-38),8,JAM1|WRITE_Center|WRITE_Shadow,3,_PT_Rundenende);
         }
         // Display = ActSys;
         SetAPen(MyRPort_PTR[0], 0);
         RectFill(MyRPort_PTR[0], 0, 0, Area_Width-1, Area_Height-1);   // clear main display
-        RectFill(MyRPort_PTR[0], (HighRes_Width-118), 9, (HighRes_Width-11), 116); // clear little map
+        RectFill(MyRPort_PTR[0], MiniMap_left, 9, MiniMap_right, 116); // clear little map
         SetAPen(MyRPort_PTR[0], 10);
-        RectFill(MyRPort_PTR[0], (HighRes_Width-65), 62, (HighRes_Width-63), 63); // draw sun-spot inside little map
+        RectFill(MyRPort_PTR[0], MiniMap_center-1, 62, MiniMap_center+1, 63); // draw sun-spot inside little map
     }
     Display = ActSys;
     SetAPen(MyRPort_PTR[0],109);
-    x = 63-OffsetY-10;      // upper line (little map)
-    y = 63-OffsetY+8;       // lower line (little map)
+
+    gridSize_X=(uint8) (Area_Width >>5); // = div 32
+    gridSize_Y=(uint8) (Area_Height>>5);
+
+    x = 63-OffsetY-(gridSize_Y/2)-2;    // upper line (little map)
+    y = 63-OffsetY+(gridSize_Y/2);      // lower line (little map)
     if (x<9)   { x = 9; }
     if (y>116) { y = 116; }
-    Move(MyRPort_PTR[0],(HighRes_Width-118),x);
-    Draw(MyRPort_PTR[0],(HighRes_Width- 11),x);
-    Move(MyRPort_PTR[0],(HighRes_Width-118),y);
-    Draw(MyRPort_PTR[0],(HighRes_Width- 11),y);
-    x = (HighRes_Width-64)-OffsetX-10;     // left  line (little map)
-    y = (HighRes_Width-64)-OffsetX+8;      // right line (little map)
-    if (x<(HighRes_Width-118)) { x = (HighRes_Width-118); }
-    if (y>(HighRes_Width- 11)) { y = (HighRes_Width- 11); }
+    Move(MyRPort_PTR[0],MiniMap_left ,x);
+    Draw(MyRPort_PTR[0],MiniMap_right,x);
+    Move(MyRPort_PTR[0],MiniMap_left ,y);
+    Draw(MyRPort_PTR[0],MiniMap_right,y);
+
+    x = MiniMap_center-OffsetX-(gridSize_X/2)-2;    // left  line (little map)
+    y = MiniMap_center-OffsetX+(gridSize_X/2);      // right line (little map)
+    if (x<MiniMap_left ) { x = MiniMap_left; }
+    if (y>MiniMap_right) { y = MiniMap_right; }
     Move(MyRPort_PTR[0],x,9);
     Draw(MyRPort_PTR[0],x,116);
     Move(MyRPort_PTR[0],y,9);
     Draw(MyRPort_PTR[0],y,116);
 
-    /*       .---.   A 
-      Sun   /     \  B
-            \     /  C
-             '---'   D
+    /*       .---.   Sun_PosY0
+      Sun   /     \   -Suntop_height
+            \     /  Sun_PosY1
+           | '---'    -Sunbottom_height
+     Sun_PosX -Sunwidth
     */
-    if ((-10 < OffsetY) && (9 > OffsetY) && (-10 < OffsetX) && (9 > OffsetX))  // draw the sun to the main view
+
+    Sun_PosY0 = 0;
+    Sun_PosY1 = 0;
+    Suntop_height = 0;
+    Sunbottom_height = 0;
+    Suntop_source_top = 0;
+    Sunbottom_source_top = 0;
+    Sun_PosY = Area_CenterY+(OffsetY-1)*32;
+
+    if ((-64 <= Sun_PosY) && (Area_Height > Sun_PosY))
     {
-        if      (-9 == OffsetX) { Sunleft=48; Sunwidth=16-2; }
-        else if (-8 == OffsetX) { Sunleft=16; Sunwidth=48-2; }
-        else if ( 7 == OffsetX) { Sunleft=0;  Sunwidth=48; }
-        else if ( 8 == OffsetX) { Sunleft=0;  Sunwidth=16; }
-        else                    { Sunleft=0;  Sunwidth=64-2; }
-
-        if       ((-8 == OffsetY) || (8 == OffsetY)) {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft, 8-OffsetY,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY-8-OffsetY+(OffsetY*32),Sunwidth,16,192); // A or B
-        } else if (-9 != OffsetY) {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+Sunleft, 0,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY-16+(OffsetY*32),Sunwidth,32,192); // A+B
+        Suntop_source_top = 32; // => h0 = 0
+        Sunbottom_source_top = 0-(Sun_PosY+32);
+        if (-32 <= Sun_PosY)
+        {
+            Suntop_source_top = 0-Sun_PosY;
+            Sunbottom_source_top = 0;
+            if (0 <= Sun_PosY)
+            {
+                Suntop_source_top = 0;
+            }
         }
+        Suntop_height    = 32-Suntop_source_top;
+        Sunbottom_height = 32-Sunbottom_source_top;
+        if ((Area_Height-64) <= Sun_PosY)
+        {
+            if ((Area_Height-32) > Sun_PosY)
+            {
+                Sunbottom_height = Area_Height-(Sun_PosY+32);
+            }
+            if ((Area_Height-32) <= Sun_PosY)
+            {
+                Suntop_height = Area_Height-Sun_PosY;
+                Sunbottom_height = 0;
+            }
+        }
+    }
 
-        if       ((-9 == OffsetY) || (7 == OffsetY)) {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft, 7-OffsetY,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY+23-OffsetY+(OffsetY*32),Sunwidth,16,192); // C or D
-        } else if ( 8 != OffsetY) {
-            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+Sunleft, 0,MyRPort_PTR[0],
-                                                           Area_CenterX-16+Sunleft+(OffsetX*32),Area_CenterY+16+(OffsetY*32),Sunwidth,32,192); // C+D
+    Sun_PosY0 = Sun_PosY   +Suntop_source_top;
+    Sun_PosY1 = Sun_PosY+32+Sunbottom_source_top;
+
+    Sunwidth = 0;
+    Sunright = Area_CenterX+(OffsetX+1)*32;
+    Sun_PosX  = Sunright-64;
+    if ((Sunright > 0) && (Sun_PosX < Area_Width))
+    {
+        if (Sunright > Area_Width)
+        {
+            Sunwidth = Area_Width-Sun_PosX;
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288, Suntop_source_top, MyRPort_PTR[0],
+                            Sun_PosX, Sun_PosY0, Sunwidth, Suntop_height,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352, Sunbottom_source_top, MyRPort_PTR[0],
+                            Sun_PosX, Sun_PosY1, Sunwidth, Sunbottom_height,192);
+        } else
+        {
+            Sunwidth = 64;
+            if (Sunright < 64)
+            {
+                Sunwidth = Sunright;
+                Sun_PosX  = 0;
+            }
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,288+64-Sunwidth, Suntop_source_top, MyRPort_PTR[0],
+                            Sun_PosX, Sun_PosY0, Sunwidth, Suntop_height,192);
+            BltBitMapRastPort((struct BitMap*) &ImgBitMap7,352+64-Sunwidth, Sunbottom_source_top, MyRPort_PTR[0],
+                            Sun_PosX, Sun_PosY1, Sunwidth, Sunbottom_height,192);
         }
     }
 
@@ -116,7 +172,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                 }
                 if (FLAG_KNOWN == MyWormHole[j].CivKnowledge[ActPlayer-1])
                 {
-                    WritePixel(MyRPort_PTR[0],(HighRes_Width-65)+MyWormHole[j].PosX[i],62+MyWormHole[j].PosY[i]);
+                    WritePixel(MyRPort_PTR[0],MiniMap_center-1+MyWormHole[j].PosX[i],62+MyWormHole[j].PosY[i]);
                 }
             }
         }
@@ -137,7 +193,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
         if (MODE_REDRAW == Mode)
         {
             SetAPen(MyRPort_PTR[0],BelongsTo);
-            RectFill(MyRPort_PTR[0], (HighRes_Width-65)+x, 62+y, (HighRes_Width-64)+x, 63+y);
+            RectFill(MyRPort_PTR[0], MiniMap_center-1+x, 62+y, MiniMap_center+x, 63+y);
         }
         x = Area_CenterX+((x+OffsetX)*32);
         y = Area_CenterY+((y+OffsetY)*32);
@@ -213,7 +269,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
                 } else {
                     SetAPen(MyRPort_PTR[0],12);
                 }
-                WritePixel(MyRPort_PTR[0],(HighRes_Width-65)+MyShipPtr->PosX,62+MyShipPtr->PosY);
+                WritePixel(MyRPort_PTR[0],MiniMap_center-1+MyShipPtr->PosX,62+MyShipPtr->PosY);
                 if ((0 <= x) && ((Area_Width-32) > x) && (0 <= y) && ((Area_Height-32) > y) && (TARGET_STARGATE != MyShipPtr->SType))
                 {
                     BOX(MyRPort_PTR[0],x,y,x+31,y+31);
