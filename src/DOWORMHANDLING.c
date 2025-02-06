@@ -29,7 +29,7 @@ void DOWORMHANDLING(r_ShipHeader* MyShipPtr, uint8 ActSys, bool Visible)
     if (Visible)
     {
         DRAWMOVINGSHIP(MyShipPtr, ActSys);
-        if ((MOVESHIP_ToX<0) || (MOVESHIP_ToX>478) || (MOVESHIP_ToY<0) || (MOVESHIP_ToY>478))
+        if ((0>MOVESHIP_ToX) || ((Area_Width-34)<MOVESHIP_ToX) || (0>MOVESHIP_ToY) || ((Area_Height-34)<MOVESHIP_ToY))
         {
             OffsetX = -MyShipPtr->PosX-1;
             OffsetY = -MyShipPtr->PosY-1;
