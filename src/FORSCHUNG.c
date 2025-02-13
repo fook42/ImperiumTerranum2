@@ -12,9 +12,10 @@ void FORSCHUNG()
     uint8   haveTechColor;
     char    s[50];
     char*   _s;
-    const char* FOR_ShipInfos[] = {PText[740], PText[741], PText[742], PText[743], PText[744]};
+    const char*     FOR_ShipInfos[] = {PText[740], PText[741], PText[742], PText[743], PText[744]};
+    const uint16    xstep = (Area_Width/(sizeof(FOR_ShipInfos)/sizeof(FOR_ShipInfos[0])))-4;
 
-    struct Window* FOR_Window = NULL;
+    struct Window*  FOR_Window = NULL;
     struct RastPort* RPort_PTR;
     FOR_Window=MAKEWINDOW(0,0,Area_Width,Area_Height,MyScreen[0]);
     if (NULL != FOR_Window)
@@ -35,10 +36,11 @@ void FORSCHUNG()
     for (i = 0; i < 2; ++i)
     {
         posy = 29;
+        offset = i*21;
         for (j = 0; j < 21; ++j)
         {
             haveTechColor = 29;
-            offset = i*21+j+1;
+            ++offset;
             if (Save.TechCosts[ActPlayer-1][offset]<=0)
             {
                 haveTechColor = 12;
@@ -46,7 +48,7 @@ void FORSCHUNG()
             WRITE(posx, posy, haveTechColor, 0, RPort_PTR,2, TechnologyName[offset]);
             posy += 14;
         }
-        posx += 245;
+        posx = Area_CenterX;
     }
 
     if (0 < Save.ActTech[ActPlayer-1])
@@ -69,24 +71,33 @@ void FORSCHUNG()
 
     /* ShipData:    MaxLoad,MaxShield,MaxMove,WeaponPower */
     posx = 10;
-    for (i = 0; i < count_of(FOR_ShipInfos); ++i)
+    WRITE(posx,410,12,WRITE_Left,RPort_PTR,2,FOR_ShipInfos[0]);
+    posx += ((uint16)(xstep/2));
+    for (i = 1; i < count_of(FOR_ShipInfos); ++i)
     {
-        WRITE(posx,410,12,0,RPort_PTR,2,FOR_ShipInfos[i]);
-        posx += 100;
+        posx += xstep;
+        WRITE(posx,410,12,WRITE_Center,RPort_PTR,2,FOR_ShipInfos[i]);
     }
     l = 0;
-    posy = 415;
-    for (i = 24; (8 <= i) && (4 > l); i--)
+    for (i = 24; i >= 8; i--)
     {
         if (0 >= Save.TechCosts[ActPlayer-1][ProjectNeedsTech[i]])
         {
             ++l;
-            posy += 18;
-            WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR,2, ProjectName[i]);
-            (void) dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-            (void) dez2out(ShipData(i).MaxMove,0,s);     WRITE(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-            (void) dez2out(ShipData(i).MaxShield,0,s);   WRITE(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-            (void) dez2out(ShipData(i).WeaponPower,0,s); WRITE(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+            posy=415+l*18;
+            posx=10;
+            WRITE(posx, posy, ActPlayerFlag, 0, RPort_PTR,2, ProjectName[i]);
+            posx += (uint16)(xstep/2);
+            posx += xstep;
+            (void) dez2out(ShipData(i).MaxLoad,0,s);     WRITE(posx,posy,ActPlayerFlag,WRITE_Center,RPort_PTR,2,s);
+            posx += xstep;
+            (void) dez2out(ShipData(i).MaxMove,0,s);     WRITE(posx,posy,ActPlayerFlag,WRITE_Center,RPort_PTR,2,s);
+            posx += xstep;
+            (void) dez2out(ShipData(i).MaxShield,0,s);   WRITE(posx,posy,ActPlayerFlag,WRITE_Center,RPort_PTR,2,s);
+            posx += xstep;
+            (void) dez2out(ShipData(i).WeaponPower,0,s); WRITE(posx,posy,ActPlayerFlag,WRITE_Center,RPort_PTR,2,s);
+
+            if (4 <= l) { break; }
         }
     }
     WAITLOOP(false);
