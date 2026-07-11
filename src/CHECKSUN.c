@@ -7,15 +7,13 @@ bool CHECKSUN(r_ShipHeader* MyShipPtr)
 {
     bool _CHECKSUN = false;
 
-    if ((MyShipPtr->PosX>=-2) && (MyShipPtr->PosX<=2) &&
-        (MyShipPtr->PosY>=-2) && (MyShipPtr->PosY<=2))
+    if ((-2 <= MyShipPtr->PosX) && (2 >= MyShipPtr->PosX) &&
+        (-2 <= MyShipPtr->PosY) && (2 >= MyShipPtr->PosY))
     {
-        if ((MOVESHIP_FromX<-2)  || (MOVESHIP_FromX>2) ||
-            (MyShipPtr->PosY<-2) || (MyShipPtr->PosY>2))
+        if ((-2 > MOVESHIP_FromX) || (2 < MOVESHIP_FromX))
         {
             MyShipPtr->PosX = MOVESHIP_FromX;
-        } else if ((MOVESHIP_FromY<-2)  || (MOVESHIP_FromY>2) ||
-                   (MyShipPtr->PosX<-2) || (MyShipPtr->PosX>2))
+        } else if ((-2 > MOVESHIP_FromY) || (2 < MOVESHIP_FromY))
         {
             MyShipPtr->PosY = MOVESHIP_FromY;
         } else {

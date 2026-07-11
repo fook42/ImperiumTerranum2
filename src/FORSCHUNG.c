@@ -69,26 +69,24 @@ void FORSCHUNG()
 
     /* ShipData:    MaxLoad,MaxShield,MaxMove,WeaponPower */
     posx = 10;
-    for (i = 0; i < (sizeof(FOR_ShipInfos)/sizeof(FOR_ShipInfos[0])); ++i)
+    for (i = 0; i < count_of(FOR_ShipInfos); ++i)
     {
         WRITE(posx,410,12,0,RPort_PTR,2,FOR_ShipInfos[i]);
         posx += 100;
     }
     l = 0;
-    for (i = 24; (i>=8) && (l<4); i--)
+    posy = 415;
+    for (i = 24; (8 <= i) && (4 > l); i--)
     {
         if (0 >= Save.TechCosts[ActPlayer-1][ProjectNeedsTech[i]])
         {
-            if (4 > l)
-            {
-                ++l;
-                posy=415+l*18;
-                WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR,2, ProjectName[i]);
-                (void) dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-                (void) dez2out(ShipData(i).MaxMove,0,s);     WRITE(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-                (void) dez2out(ShipData(i).MaxShield,0,s);   WRITE(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-                (void) dez2out(ShipData(i).WeaponPower,0,s); WRITE(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
-            }
+            ++l;
+            posy += 18;
+            WRITE(10, posy, ActPlayerFlag, 0, RPort_PTR,2, ProjectName[i]);
+            (void) dez2out(ShipData(i).MaxLoad,0,s);     WRITE(150,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+            (void) dez2out(ShipData(i).MaxMove,0,s);     WRITE(250,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+            (void) dez2out(ShipData(i).MaxShield,0,s);   WRITE(350,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
+            (void) dez2out(ShipData(i).WeaponPower,0,s); WRITE(450,posy,ActPlayerFlag,WRITE_Right,RPort_PTR,2,s);
         }
     }
     WAITLOOP(false);

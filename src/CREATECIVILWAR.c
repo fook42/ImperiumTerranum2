@@ -57,7 +57,6 @@ void CREATECIVILWAR(int CivVar)
         for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-            if (NULL == MyPlanetHeader) { continue; }
 
             if ((GETCIVVAR(MyPlanetHeader->PFlags) == CivVar) && (49 < (rand()%100)))
             {

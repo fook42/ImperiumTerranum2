@@ -54,7 +54,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     Move(MyRPort_PTR[0],y,9);
     Draw(MyRPort_PTR[0],y,116);
 
-    /*       .---.   A 
+    /*       .---.   A
       Sun   /     \  B
             \     /  C
              '---'   D
@@ -123,7 +123,6 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
     for (i = 0; i < SystemHeader[ActSys].Planets; ++i)
     {
         PlanetHeader = &(SystemHeader[ActSys].PlanetMemA[i]);
-        if (NULL == PlanetHeader) { continue; }
 
         BelongsTo = PlanetHeader->PFlags;
         if (0 == BelongsTo)
@@ -241,7 +240,7 @@ void DRAWSYSTEM(const int Mode, int ActSys, r_ShipHeader* ActShipPtr)
 */
                     }
                 }
-                
+
             }
         }
         MyShipPtr = MyShipPtr->NextShip;

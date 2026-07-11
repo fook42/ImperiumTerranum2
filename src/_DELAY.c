@@ -27,8 +27,9 @@ char* dez2out(int value, int digits, char* dest)
         *dest++='-';
         value=-value;
     }
-    while (digits--)
+    while (digits>0)
     {
+        --digits;
         c = value/_dez[digits];
         if ((true == show) || (0 != c) || (0 == digits))
         {
@@ -60,8 +61,9 @@ char* hex2out(int dez, int digits, char* dest)
         digits = 8;
         show = false;
     }
-    while (digits--)
+    while (digits>0)
     {
+        --digits;
         c=(dez>>(digits<<2))&0x0F;
         if ((true == show) || (0 != c) || (0 == digits))
         {
@@ -137,11 +139,11 @@ char* my_strcpy(char* destination, const char* source)
     // return if no memory is allocated to the destination
     if (destination == NULL)
         return NULL;
- 
+
     // copy the C-string pointed by source into the array
     // pointed by destination
     while ((*destination++ = *source++) != '\0');
- 
+
     // destination is returned by standard strcpy()
     return (destination-1);
 }

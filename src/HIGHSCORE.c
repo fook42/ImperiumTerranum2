@@ -35,7 +35,7 @@ void CREATEHIGHSCORE(char* HScoreFileName)
 
 uint8 GETCOLOR(const int Col)
 {
-    if ((Col>0) && (Col<(sizeof(_GETCOLOR)/sizeof(_GETCOLOR[0]))))
+    if ((0 < Col) && (count_of(_GETCOLOR) > Col))
     {
         return _GETCOLOR[Col];
     } else {

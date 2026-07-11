@@ -657,7 +657,6 @@ void WRITELOADDATA(int LTOut, r_ShipHeader* MyShipPtr, r_PlanetHeader* MyPlanetH
         *_s++ = '%'; *_s = 0;
         WRITE_RP0(353,236,8,JAM2,1,s);
         _s = s;
-        Class = CLASS_STONES;
         if (80 < Humidity)
         {
             if (CLASS_ICE == MyPlanetHeader->Class)

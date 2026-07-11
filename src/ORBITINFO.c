@@ -95,7 +95,7 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
     WRITE_RP0(232,56,12,0,0,PText[409]);
 
     i = DRAWSHIPS(1, ShipNames, MyShipPtr);
-    if ((i>12) && (NULL != MyShipPtr))
+    if (i>12)
     {
 //         MoreThanShown = true;
         DrawImage(MyRPort_PTR[0],&GadImg1,300,457);
@@ -205,10 +205,6 @@ void ORBITINFO(r_ShipHeader* StShipPtr, char* ReqText, uint8 ActSys, sint8 XPosX
             } else {
                 MyShipPtr->PosX = XPosX;
                 MyShipPtr->PosY = XPosY;
-                if (FleetUsed)
-                {
-                    SETFLEETPOSITION(ActSys-1, StShipPtr, MyShipPtr);
-                }
                 LINKSHIP(MyShipPtr, &SystemHeader[ActSys-1].FirstShip, 1);
             }
             REFRESHDISPLAY();

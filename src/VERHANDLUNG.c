@@ -201,9 +201,6 @@ void VERHANDLUNG(int CivFlag, int Mode)
                 RECT_RP0_C0(30,80,480,230);
                 return;
             }
-        } else if ((Save.WarPower[7]*2) > Save.WarPower[ActPlayer-1])
-        {
-            return;
         }
     }
     if (MODE_BELEIDIGUNG == Mode)
@@ -418,7 +415,7 @@ void VERHANDLUNG(int CivFlag, int Mode)
                 Save.WarState[ActPlayer-1][CivVar-1] = LEVEL_PEACE;
                 if ((rand()%100)<25)
                 {
-                    XSystem = 0;
+                    // XSystem = 0;
                 } else {
                     PEACEINFO(ActPlayer,CivVar,ActPlayerFlag,CivFlag);
                     return;

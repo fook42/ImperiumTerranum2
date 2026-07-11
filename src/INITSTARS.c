@@ -113,7 +113,7 @@ void INIT_SOLARSYSTEM(void)
 
     PlanetHeader = &(SystemHeader[0].PlanetMemA[8]);
     *PlanetHeader = (r_PlanetHeader) {CLASS_DESERT,   1,FLAG_UNKNOWN,0,"",30.0,30.0,0,11,0,0,0,0,0,0,DefaultShip,NULL};
-    
+
     for(i=0; i < 9; ++i)
     {
         (void) my_strcpy(SystemHeader[0].PlanetMemA[i].PName, PNames[1].data[i]);
@@ -195,6 +195,10 @@ bool INITSTARS()
             {
                 break;
             }
+        }
+        if (MAXSYSTEMS == i) // bad situation: no empty star-system was found ..
+        {
+            return false;
         }
         // mark this system (i) for _all other_ players (j) as "taken" by Civ (k)
         for (j = 0; j < (MAXCIVS-2); ++j) { SystemFlags[j][i] = GETCIVFLAG(k+1); }

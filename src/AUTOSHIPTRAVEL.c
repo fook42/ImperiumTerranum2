@@ -89,18 +89,13 @@ void AUTOSHIPTRAVEL(uint8 ActSys, uint8 Mode, r_ShipHeader* ShipPtr)
                     if ((NULL != MyShipPtr->TargetShip) && (SHIPTYPE_FLEET != MyShipPtr->SType))
                     {
                         CivVar2 = GETCIVVAR(MyShipPtr->TargetShip->Owner);
-                        if ((CIVVAR_NONE != CivVar2)
-                            && (MAXCIVS >= CivVar2)
-                            && (Save.CivPlayer[CivVar2-1] != 0))
+                        if ((CIVVAR_NONE != CivVar2) && (MAXCIVS >= CivVar2))
                         {
-                            if ((CivVar2 == ActPlayer)
-                                && (Save.CivPlayer[CivVar-1] == 0))
+                            if ((0 != Save.CivPlayer[CivVar2-1])
+                                && (0 == Save.CivPlayer[CivVar-1]) && (CivVar2 == ActPlayer))
                             {
                                 b = true;
-                                if (Save.CivPlayer[CivVar2-1] != 0)
-                                {
-                                    Visible = true;
-                                }
+                                Visible = true;
                             } else {
                                 b = false;
                             }

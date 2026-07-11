@@ -214,4 +214,9 @@ enum Projects {
 #define AreaFillVectors (200)
 #define IntroAreaSize (AreaFillVectors*5)
 
+// Macro to determine the number of elements in an array
+#ifndef count_of
+#define count_of(a) (sizeof(a)/sizeof((a)[0]))
+#endif
+
 #endif

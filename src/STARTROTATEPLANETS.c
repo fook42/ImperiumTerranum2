@@ -202,7 +202,7 @@ void STARTROTATEPLANETS()
 
     if ((0 != Save.CivPlayer[ActPlayer]) && (0 == (rand()%10)))
     {
-        for (i = 0; i < (sizeof(InfoBox_Years)/sizeof(InfoBox_Years[0])); ++i)
+        for (i = 0; i < count_of(InfoBox_Years); ++i)
         {
             if (InfoBox_Years[i] == Year)
             {

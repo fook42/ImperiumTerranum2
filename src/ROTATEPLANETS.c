@@ -150,7 +150,6 @@ void ROTATEPLANETS(uint8 ActSys)
             for(j = 0; j < SystemHeader[i].Planets; ++j)
             {
                 PlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-                if (NULL == PlanetHeader) { continue; }
 
                 if ((FLAG_OTHER == PlanetHeader->Ethno) && (WFLAG_JAHADR != Save.WorldFlag))
                 {
@@ -513,7 +512,7 @@ void ROTATEPLANETS(uint8 ActSys)
                                      || ((24 < ProjID) && (PROJECT_VON_NEUMANN != ProjID) && (PROJECT_NOMORE > ProjID)) )
                             {
                                 ActPProjects->data[ProjID]++;
-                            } else if  ((7 < ProjID)  && (25 > ProjID))
+                            } else if (25 > ProjID)
                             {
                                 /* a new ship has been built ... */
 
@@ -842,15 +841,15 @@ void ROTATEPLANETS(uint8 ActSys)
                                                 }
                                                 l = GOTONEXTSYSTEM(i,MyShipPtr);
                                             } else {
-                                                if (ActPProjects->data[PROJECT_SETTLERS]<ShipData(MyShipPtr->SType).MaxLoad)
+                                                if (ActPProjects->data[PROJECT_SETTLERS ] < ShipData(MyShipPtr->SType).MaxLoad)
                                                 {
                                                     PlanetHeader->ProjectID = PROJECT_SETTLERS;
                                                 }
                                                 if (2 > ActPProjects->data[PROJECT_LANDINGTROOPS])
                                                 {
                                                     PlanetHeader->ProjectID = PROJECT_LANDINGTROOPS;
-                                                } else {
-                                                    PlanetHeader->ProjectID = PROJECT_SETTLERS;
+                                                // } else {
+                                                //     PlanetHeader->ProjectID = PROJECT_SETTLERS;
                                                 }
                                             }
                                         }

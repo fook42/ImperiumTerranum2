@@ -388,12 +388,12 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         || (Save.ProjectCosts[ActPlayer-1][ProjectNeedsProject[i]] <= 0)))
                     {
                         /* nötiges Projekt vorhanden */
-                        if ((((0 < i) && (8 > i)) || (PROJECT_VON_NEUMANN == i)) && (Save.ProjectCosts[ActPlayer-1][i]>0))
+                        if (((8 > i) || (PROJECT_VON_NEUMANN == i)) && (Save.ProjectCosts[ActPlayer-1][i]>0))
                         {
                             DoIt = true;
                         }
                         /* Großprojekt noch nicht gebaut */
-                        if (((PROJECT_SPACEDOCK == i) || ((PROJECT_LANDINGTROOPS < i) && (PROJECT_VON_NEUMANN != i) && (PROJECT_NOMORE > i)))
+                        if (((PROJECT_SPACEDOCK == i) || ((PROJECT_LANDINGTROOPS < i) && (PROJECT_VON_NEUMANN != i)))
                             && (0 == ActPProjects->data[i]))
                         {
                             DoIt = true;
@@ -410,7 +410,12 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                         ProjectRounds[j] = Save.ProjectCosts[ActPlayer-1][i];
                         (void) my_strcpy(NewProject[j], ProjectName[i]);
                         ProjectNum[j] = i;
-                        if ((7 < i) && (25 > i))
+
+                        if (8 > i)
+                        {
+                            ProjectType[j] = 2;
+                        }
+                        else if (25 > i)
                         {
                             if (3 < Ships)
                             {
@@ -421,11 +426,7 @@ void HANDLEKNOWNPLANET(uint8 ActSys, uint8 Mode, r_PlanetHeader* PlanetPtr)
                                 ProjectRounds[j] += it_round(ProjectRounds[j]*(Save.Military[ActPlayer-1]/100.0));
                             }
                         }
-                        if ((0 < i) && (8 > i))
-                        {
-                            ProjectType[j] = 2;
-                        }
-                        if (24 < i)
+                        else
                         {
                             ProjectType[j] = 4;
                         }

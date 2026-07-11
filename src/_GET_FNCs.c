@@ -15,7 +15,7 @@ const uint8 CIVADJs8[]={122, 123};
 
 uint8 GETCIVFLAG(const int CivVar)
 {
-    if ((0 < CivVar) && ((sizeof(CIVFLAGs)/sizeof(CIVFLAGs[0])) > CivVar))
+    if ((0 < CivVar) && (count_of(CIVFLAGs) > CivVar))
     {
         return CIVFLAGs[CivVar];
     } else {
@@ -48,12 +48,12 @@ char* GETCIVADJ(int CivVar)
 {
     if (0 < CivVar)
     {
-        if ((sizeof(CIVADJs)/sizeof(CIVADJs[0])) > CivVar)
+        if (count_of(CIVADJs) > CivVar)
         {
             return PText[CIVADJs[CivVar]];
         } else {
-            CivVar -= (sizeof(CIVADJs)/sizeof(CIVADJs[0]))-1;
-            if ((CivVar>0) && (CivVar < (sizeof(CIVADJs8)/sizeof(CIVADJs8[0]))))
+            CivVar -= count_of(CIVADJs)-1;
+            if (count_of(CIVADJs8) > CivVar)
             {
                 return PText[CIVADJs8[CivVar]];
             } else {

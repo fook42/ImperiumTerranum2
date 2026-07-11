@@ -40,7 +40,6 @@ void CREATEJAHADR(const int CJ_ActPlayer)
         for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-            if (NULL == MyPlanetHeader) { continue; }
 
             if (GETCIVVAR(MyPlanetHeader->PFlags) == (CJ_ActPlayer+1))
             {

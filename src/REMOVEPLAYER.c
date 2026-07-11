@@ -20,7 +20,6 @@ void REMOVEPLAYER(const int RP_ActPlayer)
         for(j = 0; j < SystemHeader[i].Planets; ++j)
         {
             MyPlanetHeader = &(SystemHeader[i].PlanetMemA[j]);
-            if (NULL == MyPlanetHeader) { continue; }
 
             if (RP_ActPlayerFlag == (MyPlanetHeader->PFlags & FLAG_CIV_MASK))
             {

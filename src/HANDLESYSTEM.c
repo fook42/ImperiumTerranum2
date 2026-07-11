@@ -421,7 +421,7 @@ void HANDLESYSTEM(uint8* ActSys, r_ShipHeader* ShipPtr)
         CLOCK();
         RawCode = GETRAWCODE();
         if ((Save.PlayMySelf) || (Save.CivPlayer[ActPlayer-1] == 0) || (!Informed)
-          || ((!MultiPlayer) && (!Informed) && ((Year % 10) != 0)))
+          || ((!MultiPlayer) && ((Year % 10) != 0)))
         {
             STARTROTATEPLANETS();
         } else {

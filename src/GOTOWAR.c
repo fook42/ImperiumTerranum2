@@ -13,11 +13,11 @@ void GOTOWAR(int CivFlag1, int CivFlag2)
     CivVar2 = GETCIVVAR(CivFlag2);
     CivFlag1 = CivFlag1 & FLAG_CIV_MASK;
     CivFlag2 = CivFlag2 & FLAG_CIV_MASK;
-    Save.ImperatorState[CivVar1-1] -= 150;
-    if ((0 == CivVar1) || (0 == CivVar2))
+    if ((CIVVAR_NONE == CivVar1) || (CIVVAR_NONE == CivVar2))
     {
         return;
     }
+    Save.ImperatorState[CivVar1-1] -= 150;
     if ((LEVEL_WAR == Save.WarState[CivVar1-1][CivVar2-1])
      || (LEVEL_WAR == Save.WarState[CivVar2-1][CivVar1-1]))
     {

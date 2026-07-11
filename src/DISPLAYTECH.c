@@ -35,7 +35,7 @@ void DISPLAYTECH(const int TechID)
     uint16  l;
     APTR    ModC = NULL;
 
-    if (0 == TechID)
+    if ((0 >= TechID) || (42 < TechID))
     {
         return;
     }
@@ -43,9 +43,9 @@ void DISPLAYTECH(const int TechID)
     ModC = GETTHESOUND(0);
     SetRast(MyRPort_PTR[1], 0); // clear the screen
 
-    if      ((0  < TechID) && (19 > TechID)) { textid = 1; }
-    else if ((18 < TechID) && (39 > TechID)) { textid = 2; }
-    else if ((38 < TechID) && (43 > TechID)) { textid = 3; }
+    if      (19 > TechID) { textid = 1; }
+    else if (39 > TechID) { textid = 2; }
+    else                  { textid = 3; }
 
     _s = my_strcpy(s, PathStr[textid]);
 
@@ -96,9 +96,10 @@ void DISPLAYTECH(const int TechID)
     {
         if (ProjectNeedsTech[CivVar] == TechID)
         {
-            textid = 228;
-            if       (8 > CivVar)                   { textid = 226; }
-            else if ((7 < CivVar) && (25 > CivVar)) { textid = 227; }
+            if       (8 > CivVar) { textid = 226; }
+            else if (25 > CivVar) { textid = 227; }
+            else                  { textid = 228; }
+
             _s=my_strcpy(s, PText[textid]);
 
             *_s++ = ' ';

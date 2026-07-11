@@ -51,7 +51,7 @@ struct TextAttr CustomTA[FONTS]={{(STRPTR) _Txt_FontName,11,0,0}, \
                                  {(STRPTR) _Txt_FontName,15,0,0}, \
                                  {(STRPTR) _Txt_FontName,17,0,0}, \
                                  {(STRPTR) _Txt_FontName,24,0,0}};
-                                
+
 struct Image    GadImg1 = { 0, 0, 116, 20, 7, NULL , 127, 0, NULL};
 struct Image    GadImg2 = { 0, 0, 116, 20, 7, NULL , 127, 0, NULL};
 char _PTx_Player[] = "Player\0";
@@ -75,14 +75,13 @@ _EXTERN_  PenArr            Pens;
 _EXTERN_  ColSpecArr        ColSpec;
 
 _EXTERN_  struct Screen*    MyScreen[2];
-_EXTERN_  struct NewWindow  NeuWindow;
 _EXTERN_  struct Window*    MyWindow[2];
 _EXTERN_  struct Screen*    XScreen;
 _EXTERN_  struct RastPort*  MyRPort_PTR[2];
 _EXTERN_  struct ViewPort*  MyVPort_PTR[2];
 
 _EXTERN_  struct ITBitMap   ImgBitMap4, ImgBitMap7, ImgBitMap8;
-  
+
 _EXTERN_  r_WormHole        MyWormHole[MAXHOLES];  // shift done..
 _EXTERN_  StrArr11          PNames[MAXCIVS-1];  // range 0..MAXCIVS-2
 _EXTERN_  sint16            SystemX[MAXSYSTEMS];  // new range 0..MAXSYSTEMS-1
